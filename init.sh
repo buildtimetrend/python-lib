@@ -18,15 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-BUILD_TREND_INIT=1
 # get folder where script is located
 BUILD_TREND_HOME=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 BUILD_TREND_LOGFILE=$BUILD_TREND_HOME/timestamps.csv
 
-export BUILD_TREND_INIT BUILD_TREND_HOME BUILD_TREND_LOGFILE
+export BUILD_TREND_HOME BUILD_TREND_LOGFILE
 
 #cleanup previous logfile
 if [ -f $BUILD_TREND_LOGFILE ]; then
     rm $BUILD_TREND_LOGFILE
 fi
 
+export BUILD_TREND_INIT=1
