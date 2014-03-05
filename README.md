@@ -1,6 +1,8 @@
 Build trend
 ===========
 
+[![Build Status](https://travis-ci.org/ruleant/build-trend.png?branch=master)](https://travis-ci.org/ruleant/build-trend)
+
 Create trends of a build process
 
 Usage
