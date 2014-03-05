@@ -18,5 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-echo $1 : `date +%s`
-#echo \"$1\",\"`date +%s`\" >> $BUILD_LOGFILE
+if [ "$BUILD_TREND_INIT" == "1" ]; then
+    echo $1 : `date +%s`
+    echo \"$1\",\"`date +%s`\" >> $BUILD_TREND_LOGFILE
+else
+    echo "Build-trend not initialised, run 'source init.sh'"
+fi
