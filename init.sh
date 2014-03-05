@@ -21,12 +21,12 @@
 # get folder where script is located
 BUILD_TREND_HOME=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 BUILD_TREND_LOGFILE=$BUILD_TREND_HOME/timestamps.csv
-
-export BUILD_TREND_HOME BUILD_TREND_LOGFILE
+PATH=${PATH}:${BUILD_TREND_HOME}
 
 #cleanup previous logfile
 if [ -f $BUILD_TREND_LOGFILE ]; then
     rm $BUILD_TREND_LOGFILE
 fi
 
+export BUILD_TREND_HOME BUILD_TREND_LOGFILE PATH
 export BUILD_TREND_INIT=1
