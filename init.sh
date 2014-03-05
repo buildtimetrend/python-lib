@@ -19,7 +19,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 BUILD_TREND_INIT=1
-BUILD_TREND_HOME=`pwd`
+# get folder where script is located
+BUILD_TREND_HOME=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 BUILD_TREND_LOGFILE=$BUILD_TREND_HOME/timestamps.csv
 
 export BUILD_TREND_INIT BUILD_TREND_HOME BUILD_TREND_LOGFILE
