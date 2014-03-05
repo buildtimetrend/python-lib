@@ -14,7 +14,7 @@ First the timestamp recording needs to be initialised :
 
 This script will detect the location of the build-trend script folder,
 adds it to the PATH and cleans logfiles of previous runs.
-Executing the init script with ´source´ is required to be able to export environment variables to the current shell session.
+Executing the init script with `source` is required to be able to export environment variables to the current shell session.
 
 Because the script dir is added to PATH, no path needs to be added
 when logging a timestamp :
