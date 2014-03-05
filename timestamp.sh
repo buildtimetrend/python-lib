@@ -20,7 +20,7 @@
 
 if [ "$BUILD_TREND_INIT" == "1" ]; then
     TIMESTAMP=`date +%s`
-    echo $1 : $TIMESTAMP
+    echo "Timestamp $1 : $TIMESTAMP"
     echo \"$1\",\"$TIMESTAMP\" >> $BUILD_TREND_LOGFILE
 else
     echo "Build-trend not initialised, run 'source init.sh'"
