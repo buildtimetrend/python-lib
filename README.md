@@ -3,6 +3,30 @@ Build trend
 
 Create trends of a build process
 
+Usage
+-----
+
+First the timestamp recording needs to be initialised :
+
+`touch /path/to/init.sh`
+
+This script will detect the location of the build-trend script folder,
+adds it to the PATH and cleans logfiles of previous runs.
+
+Because the script dir is added to PATH, no path needs to be added
+when logging a timestamp :
+
+`timestamp.sh eventname`
+
+This will log the current timestamp to a file and display it on STDOUT.
+Repeat this step as much as needed.
+
+When finished, run 
+
+`analyse.sh`
+
+to analyse the logfile and print out the results.
+
 License
 -------
 
