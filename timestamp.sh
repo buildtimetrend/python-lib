@@ -19,8 +19,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 if [ "$BUILD_TREND_INIT" == "1" ]; then
-    echo $1 : `date +%s`
-    echo \"$1\",\"`date +%s`\" >> $BUILD_TREND_LOGFILE
+    TIMESTAMP=`date +%s`
+    echo $1 : $TIMESTAMP
+    echo \"$1\",\"$TIMESTAMP\" >> $BUILD_TREND_LOGFILE
 else
     echo "Build-trend not initialised, run 'source init.sh'"
 fi
