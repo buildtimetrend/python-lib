@@ -1,7 +1,7 @@
 #!/bin/bash
 # Tests logging timestamps
 #
-# usage : source ./test/test_timestamp.sh
+# Usage : ./test/test_timestamp.sh
 #
 # Copyright (C) 2014 Dieter Adriaenssens
 #
@@ -18,9 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# get folder where script is locatedi (bootstrap, init.sh will set BUILD_TREND_HOME)
+# get folder where script is located (bootstrap, init.sh will set BUILD_TREND_HOME)
 BUILD_TREND_TEST=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
-BUILD_TREND_HOME=$BUILD_TREND_TEST/..
 
 source $BUILD_TREND_TEST/../init.sh
 echo "location of build-trend scripts : " $BUILD_TREND_HOME
