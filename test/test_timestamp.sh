@@ -36,5 +36,7 @@ echo "sleep 10 seconds"
 sleep 10
 
 echo
+echo "timestamps"
+cat $BUILD_TREND_LOGFILE
 echo "analyse timestamps"
 analyse.sh
