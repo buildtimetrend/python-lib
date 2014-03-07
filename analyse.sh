@@ -19,7 +19,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 if [ "$BUILD_TREND_INIT" == "1" ]; then
+    ./timestamp.sh end
     cat $BUILD_TREND_LOGFILE
+    ./analyse.py
 else
     echo "Build-trend not initialised, run 'source init.sh'"
 fi
