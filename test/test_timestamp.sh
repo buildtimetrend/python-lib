@@ -25,16 +25,15 @@ source $BUILD_TREND_TEST/../init.sh
 echo "location of build-trend scripts : " $BUILD_TREND_HOME
 echo
 
-timestamp.sh start
+timestamp.sh stage1
 echo "sleep 2 seconds"
 sleep 2
-timestamp.sh test1
+timestamp.sh stage2
 echo "sleep 5 seconds"
 sleep 5
-timestamp.sh test2
+timestamp.sh stage3
 echo "sleep 10 seconds"
 sleep 10
-timestamp.sh end
 
 echo
 echo "analyse timestamps"
