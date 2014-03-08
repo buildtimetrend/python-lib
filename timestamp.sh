@@ -18,11 +18,33 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# check if init.sh was run
 if [ ! "$BUILD_TREND_INIT" == "1" ]; then
      echo "Build-trend not initialised, first run 'source init.sh'"
      exit 1
 fi
 
+VERBOSE=1
+
+# parse command line options
+while getopts ":qh" option; do
+#  echo $option
+  case $option in
+    q) VERBOSE=0 ;;
+    h) echo "usage: $0 [-h] [-q] name"; exit ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# remove the options from the positional parameters
+shift $(( OPTIND - 1 ))
+
+# generate timestamp and log it
 TIMESTAMP=`date +%s`
-echo "Timestamp $1 : $TIMESTAMP"
+if [ $VERBOSE -gt 0 ]; then
+  echo "Timestamp $1 : $TIMESTAMP"
+fi
 echo \"$1\",\"$TIMESTAMP\" >> $BUILD_TREND_LOGFILE
