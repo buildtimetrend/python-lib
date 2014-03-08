@@ -1,7 +1,10 @@
 #!/usr/bin/env python
-import csv
-# TODO use parameter for timestamps file and check if file exists
-with open('timestamps.csv', 'rb') as csvfile:
+import csv, os
+# use parameter for timestamps file and check if file exists
+timeStampFile = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
+if not os.path.isfile(timeStampFile):quit()
+
+with open(timeStampFile, 'rb') as csvfile:
     timestamps = csv.reader(csvfile, delimiter=',', quotechar='"')
     previousTime = 0
     eventName = None
