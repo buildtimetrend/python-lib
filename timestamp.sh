@@ -18,10 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-if [ "$BUILD_TREND_INIT" == "1" ]; then
-    TIMESTAMP=`date +%s`
-    echo "Timestamp $1 : $TIMESTAMP"
-    echo \"$1\",\"$TIMESTAMP\" >> $BUILD_TREND_LOGFILE
-else
-    echo "Build-trend not initialised, run 'source init.sh'"
+if [ ! "$BUILD_TREND_INIT" == "1" ]; then
+     echo "Build-trend not initialised, first run 'source init.sh'"
+     exit 1
 fi
+
+TIMESTAMP=`date +%s`
+echo "Timestamp $1 : $TIMESTAMP"
+echo \"$1\",\"$TIMESTAMP\" >> $BUILD_TREND_LOGFILE
