@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import csv, os
+import csv
+import os
 # use parameter for timestamps file and check if file exists
 timeStampFile = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
 if not os.path.isfile(timeStampFile):quit()
