@@ -1,0 +1,4 @@
+[BASIC]
+
+# regular expression which should only match correct module level names
+const-rgx=(([A-Z_][A-Z0-9_]*)|([a-z_][a-z0-9_]*)|(__.*__)|register|urlpatterns)$
