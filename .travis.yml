@@ -1,2 +1,2 @@
-install: true
+install: pip install --use-mirrors lxml
 script: ./test/test_timestamp.sh
