@@ -6,6 +6,11 @@ Build trend
 
 Create trends of the duration of the stages of a build process
 
+Dependencies
+------------
+
+- lxml (python wrapper for libxml2 and libxslt)
+
 Usage
 -----
 
