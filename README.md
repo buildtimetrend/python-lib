@@ -4,7 +4,7 @@ Build trend
 [![Build Status](https://travis-ci.org/ruleant/buildtime-trend.png?branch=master)](https://travis-ci.org/ruleant/buildtime-trend)
 [![Code Health](https://landscape.io/github/ruleant/buildtime-trend/master/landscape.png)](https://landscape.io/github/ruleant/buildtime-trend/master)
 
-Create trends of a build process
+Create trends of the duration of the stages of a build process
 
 Usage
 -----
