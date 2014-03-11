@@ -4,7 +4,8 @@ import csv
 import os
 # use parameter for timestamps file and check if file exists
 timestamp_file = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
-if not os.path.isfile(timestamp_file):quit()
+if not os.path.isfile(timestamp_file):
+    quit()
 
 with open(timestamp_file, 'rb') as csvfile:
     timestamps = csv.reader(csvfile, delimiter=',', quotechar='"')
