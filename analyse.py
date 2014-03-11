@@ -3,18 +3,18 @@
 import csv
 import os
 # use parameter for timestamps file and check if file exists
-timeStampFile = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
-if not os.path.isfile(timeStampFile):quit()
+timestamp_file = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
+if not os.path.isfile(timestamp_file):quit()
 
-with open(timeStampFile, 'rb') as csvfile:
+with open(timestamp_file, 'rb') as csvfile:
     timestamps = csv.reader(csvfile, delimiter=',', quotechar='"')
-    previousTime = 0
-    eventName = None
+    previous_timestamp = 0
+    event_name = None
     for row in timestamps:
-        if eventName is not None:
-            if eventName == 'end':
+        if event_name is not None:
+            if event_name == 'end':
                 break
-            duration = int(row[1]) - previousTime
-            print 'Duration ' + eventName + ' : ' + str(duration) + 's'
-        eventName = row[0]
-        previousTime = int(row[1])
+            duration = int(row[1]) - previous_timestamp
+            print 'Duration ' + event_name + ' : ' + str(duration) + 's'
+        event_name = row[0]
+        previous_timestamp = int(row[1])
