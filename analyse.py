@@ -22,7 +22,7 @@ from lxml import etree
 
 # use parameter for timestamps file and check if file exists
 timestamp_file = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
-RESULT_FILE = 'buildtimes.xml'
+RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'buildtimes.xml')
 if not os.path.isfile(timestamp_file):
     quit()
 
