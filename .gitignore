@@ -1,4 +1,5 @@
 timestamps.csv
+buildtimes.xml
 *.py[cod]
 
 # C extensions
