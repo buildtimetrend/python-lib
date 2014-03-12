@@ -45,4 +45,4 @@ with open(timestamp_file, 'rb') as csvfile:
         event_name = row[0]
         previous_timestamp = int(row[1])
 
-print(etree.tostring(build_xml, pretty_print=True))
+print etree.tostring(build_xml, pretty_print=True)
