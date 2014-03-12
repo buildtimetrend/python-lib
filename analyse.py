@@ -22,6 +22,7 @@ from lxml import etree
 
 # use parameter for timestamps file and check if file exists
 timestamp_file = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
+RESULT_FILE = 'buildtimes.xml'
 if not os.path.isfile(timestamp_file):
     quit()
 
@@ -45,4 +46,5 @@ with open(timestamp_file, 'rb') as csvfile:
         event_name = row[0]
         previous_timestamp = int(row[1])
 
-print etree.tostring(build_xml, pretty_print=True)
+with open(RESULT_FILE, 'wb') as xmlfile:
+    xmlfile.write(etree.tostring(build_xml, pretty_print=True))
