@@ -26,8 +26,13 @@ RESULT_FILE = 'buildtimes.xml'
 if not os.path.isfile(timestamp_file):
     quit()
 
-# create xml root tag
-build_xml = etree.Element("build")
+# load previous builtimes file, or create a new xml root
+if os.path.isfile(RESULT_FILE):
+    root_xml = etree.parse(RESULT_FILE).getroot()
+else:
+    root_xml = etree.Element("builds")
+
+build_xml = etree.SubElement(root_xml, "build")
 stages_xml = etree.SubElement(build_xml, "stages")
 
 with open(timestamp_file, 'rb') as csvfile:
@@ -46,5 +51,7 @@ with open(timestamp_file, 'rb') as csvfile:
         event_name = row[0]
         previous_timestamp = int(row[1])
 
+# write xml to file
 with open(RESULT_FILE, 'wb') as xmlfile:
-    xmlfile.write(etree.tostring(build_xml, pretty_print=True))
+    xmlfile.write(etree.tostring(root_xml, xml_declaration=True,
+        encoding='utf-8', pretty_print=True))
