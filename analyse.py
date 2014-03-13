@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # vim: set expandtab sw=4 ts=4:
+# Reads timestamps.csv, calculates stage duration and saves the result
+# to an xml file
+# usage : analyse.py -h --build=<buildID= --job=<jobID> --branch=<branchname>
 #
 # Copyright (C) 2014 Dieter Adriaenssens
 #
@@ -19,6 +22,7 @@
 import csv
 import os
 import sys
+import getopt
 from lxml import etree
 
 # use parameter for timestamps file and check if file exists
@@ -36,8 +40,31 @@ def analyse(argv):
         root_xml = etree.Element("builds")
 
     build_xml = etree.SubElement(root_xml, "build")
+
+    # process arguments
+    usage_string = 'analyse.py -h --build=<buildID=' \
+        ' --job=<jobID> --branch=<branchname>'
+    try:
+        opts, args = getopt.getopt(
+            argv, "h", ["build=", "job=", "branch=", "help"])
+    except getopt.GetoptError:
+        print usage_string
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ('-h', "--help"):
+            print usage_string
+            sys.exit()
+        elif opt == "--build":
+            build_xml.set("id", arg)
+        elif opt == "--job":
+            build_xml.set("job", arg)
+        elif opt == "--branch":
+            build_xml.set("branch", arg)
+
+    # create stages element
     stages_xml = etree.SubElement(build_xml, "stages")
 
+    # read timestamps, calculate stage duration and add it to xml tree
     with open(TIMESTAMP_FILE, 'rb') as csvfile:
         timestamps = csv.reader(csvfile, delimiter=',', quotechar='"')
         previous_timestamp = 0
