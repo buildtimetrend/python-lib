@@ -21,9 +21,9 @@ import os
 from lxml import etree
 
 # use parameter for timestamps file and check if file exists
-timestamp_file = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
+TIMESTAMP_FILE = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
 RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'buildtimes.xml')
-if not os.path.isfile(timestamp_file):
+if not os.path.isfile(TIMESTAMP_FILE):
     quit()
 
 # load previous builtimes file, or create a new xml root
@@ -35,7 +35,7 @@ else:
 build_xml = etree.SubElement(root_xml, "build")
 stages_xml = etree.SubElement(build_xml, "stages")
 
-with open(timestamp_file, 'rb') as csvfile:
+with open(TIMESTAMP_FILE, 'rb') as csvfile:
     timestamps = csv.reader(csvfile, delimiter=',', quotechar='"')
     previous_timestamp = 0
     event_name = None
