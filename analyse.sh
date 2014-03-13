@@ -20,7 +20,11 @@
 
 if [ "$BUILD_TREND_INIT" == "1" ]; then
     timestamp.sh -q end
-    analyse.py
+    if [[ "$TRAVIS" == "true" ]]; then
+	analyse.py --branch=$TRAVIS_BRANCH --build=$TRAVIS_BUILD_NUMBER --job=$TRAVIS_JOB_NUMBER
+    else
+	analyse.py
+    fi
 else
     echo "Build-trend not initialised, run 'source init.sh'"
 fi
