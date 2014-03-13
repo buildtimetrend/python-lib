@@ -18,6 +18,7 @@
 
 import csv
 import os
+import sys
 from lxml import etree
 
 # use parameter for timestamps file and check if file exists
@@ -26,35 +27,40 @@ RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'buildtimes.xml')
 if not os.path.isfile(TIMESTAMP_FILE):
     quit()
 
-# load previous builtimes file, or create a new xml root
-if os.path.isfile(RESULT_FILE):
-    root_xml = etree.parse(RESULT_FILE).getroot()
-else:
-    root_xml = etree.Element("builds")
 
-build_xml = etree.SubElement(root_xml, "build")
-stages_xml = etree.SubElement(build_xml, "stages")
+def analyse(argv):
+    # load previous builtimes file, or create a new xml root
+    if os.path.isfile(RESULT_FILE):
+        root_xml = etree.parse(RESULT_FILE).getroot()
+    else:
+        root_xml = etree.Element("builds")
 
-with open(TIMESTAMP_FILE, 'rb') as csvfile:
-    timestamps = csv.reader(csvfile, delimiter=',', quotechar='"')
-    previous_timestamp = 0
-    event_name = None
-    for row in timestamps:
-        if event_name is not None:
-            if event_name == 'end':
-                break
-            duration = int(row[1]) - previous_timestamp
-            print 'Duration ' + event_name + ' : ' + str(duration) + 's'
-            # add stage duration to xml tree
-            stages_xml.append(etree.Element(
-                "stage", name=event_name, duration=str(duration)))
-        event_name = row[0]
-        previous_timestamp = int(row[1])
+    build_xml = etree.SubElement(root_xml, "build")
+    stages_xml = etree.SubElement(build_xml, "stages")
 
-print etree.tostring(build_xml, pretty_print=True)
+    with open(TIMESTAMP_FILE, 'rb') as csvfile:
+        timestamps = csv.reader(csvfile, delimiter=',', quotechar='"')
+        previous_timestamp = 0
+        event_name = None
+        for row in timestamps:
+            if event_name is not None:
+                if event_name == 'end':
+                    break
+                duration = int(row[1]) - previous_timestamp
+                print 'Duration ' + event_name + ' : ' + str(duration) + 's'
+                # add stage duration to xml tree
+                stages_xml.append(etree.Element(
+                    "stage", name=event_name, duration=str(duration)))
+            event_name = row[0]
+            previous_timestamp = int(row[1])
 
-# write xml to file
-with open(RESULT_FILE, 'wb') as xmlfile:
-    xmlfile.write(etree.tostring(
-        root_xml, xml_declaration=True,
-        encoding='utf-8', pretty_print=True))
+    print etree.tostring(build_xml, pretty_print=True)
+
+    # write xml to file
+    with open(RESULT_FILE, 'wb') as xmlfile:
+        xmlfile.write(etree.tostring(
+            root_xml, xml_declaration=True,
+            encoding='utf-8', pretty_print=True))
+
+if __name__ == "__main__":
+    analyse(sys.argv[1:])
