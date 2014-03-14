@@ -35,7 +35,9 @@ When finished, run
 
 `analyse.sh`
 
-to analyse the logfile and print out the results.
+to analyse the logfile with timestamps and print out the results.
+It will calculate the duration between the timestamps and add them to
+a file with the analysed data of previous builds.
 
 License
 -------
