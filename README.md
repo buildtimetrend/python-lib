@@ -38,6 +38,7 @@ When finished, run
 to analyse the logfile with timestamps and print out the results.
 It will calculate the duration between the timestamps and add them to
 a file with the analysed data of previous builds.
+When run on Travis CI, it will automatically add build/job related info.
 
 License
 -------
