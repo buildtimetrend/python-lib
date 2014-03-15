@@ -29,16 +29,18 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   git config --global user.email "travis@travis-ci.org"
   git config --global user.name "travis-ci"
   
+  GH_PAGES=$HOME/gh-pages
+
   # clone or update gh-pages dir
-  if [ -d $BUILD_TREND_HOME/gh-pages ]; then
-    cd $BUILD_TREND_HOME/gh-pages
+  if [ -d $GH_PAGES ]; then
+    cd $GH_PAGES
     git pull --rebase
   else
-    cd $BUILD_TREND_HOME
-    git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG} gh-pages > /dev/null
+    git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG} $GH_PAGES > /dev/null
+    cd $GH_PAGES
   fi
 
-  GH_PAGES_BUILD_TREND_DIR=$BUILD_TREND_HOME/gh-pages/buildtime-trend
+  GH_PAGES_BUILD_TREND_DIR=$GH_PAGES/buildtime-trend
 
   # create data dir if it doesn't exist
   if [ ! -d $GH_PAGES_BUILD_TREND_DIR ]; then
