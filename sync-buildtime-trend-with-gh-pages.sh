@@ -53,7 +53,7 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   analyse.sh
 
   # update buildtime trend data on gh-pages
-  cd $BUILD_TREND_HOME/gh-pages
+  cd $GH_PAGES
   git add -f .
   git commit -m "buildtime-trend of build $TRAVIS_JOB_NUMBER synchronised with gh-pages"
   git push -fq origin gh-pages > /dev/null
