@@ -26,8 +26,6 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
 
   echo -e "Start synchronising buildtime-trend results on gh-pages..."
 
-  git config --global user.email "travis@travis-ci.org"
-  git config --global user.name "travis-ci"
   
   GH_PAGES=$HOME/gh-pages
 
@@ -39,6 +37,10 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
     git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG} $GH_PAGES > /dev/null
     cd $GH_PAGES
   fi
+
+  # set git user in gh-pages repo
+  git config user.email "travis@travis-ci.org"
+  git config user.name "travis-ci"
 
   GH_PAGES_BUILD_TREND_DIR=$GH_PAGES/buildtime-trend
 
