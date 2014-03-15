@@ -25,7 +25,6 @@
 if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
 
   echo -e "Start synchronising buildtime-trend results on gh-pages..."
-
   
   GH_PAGES=$HOME/gh-pages
 
