@@ -3,4 +3,4 @@
   <build branch="" id="" job="12">
     <stages/>
   </build>
-<build branch="master" id="30" job="30.1"><stages><stage duration="2" name="stage1"/><stage duration="5" name="stage2"/><stage duration="10" name="stage3"/></stages></build><build branch="master" id="31" job="31.1"><stages><stage duration="2" name="stage1"/><stage duration="5" name="stage2"/><stage duration="10" name="stage3"/></stages></build></builds>
+<build branch="master" id="30" job="30.1"><stages><stage duration="2" name="stage1"/><stage duration="5" name="stage2"/><stage duration="10" name="stage3"/></stages></build><build branch="master" id="31" job="31.1"><stages><stage duration="2" name="stage1"/><stage duration="5" name="stage2"/><stage duration="10" name="stage3"/></stages></build><build branch="master" id="32" job="32.1"><stages><stage duration="2" name="stage1"/><stage duration="6" name="stage2"/><stage duration="10" name="stage3"/></stages></build></builds>
