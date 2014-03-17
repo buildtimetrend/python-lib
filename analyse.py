@@ -81,8 +81,6 @@ def analyse(argv):
             event_name = row[0]
             previous_timestamp = int(row[1])
 
-    print etree.tostring(build_xml, pretty_print=True)
-
     # write xml to file
     with open(RESULT_FILE, 'wb') as xmlfile:
         xmlfile.write(etree.tostring(
