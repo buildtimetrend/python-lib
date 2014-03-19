@@ -22,6 +22,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# only run this script on Travis CI
+# and if the initialise script (`source init.sh`) was run first
 if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
 
   echo -e "Start synchronising buildtime-trend results on gh-pages..."
@@ -48,6 +50,8 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
     mkdir -p $GH_PAGES_BUILD_TREND_DIR
   fi
 
+  # set enviroment variable for the analysis result file
+  # BUILD_TREND_OUTPUTFILE is used by the analysis script
   BUILD_TREND_OUTPUTFILE=$GH_PAGES_BUILD_TREND_DIR/buildtimes.xml
 
   # perfom analysis
