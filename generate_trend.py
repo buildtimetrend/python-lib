@@ -36,6 +36,22 @@ def generate_trend():
     # load builtimes file
     root_xml = etree.parse(RESULT_FILE).getroot()
 
+    # print number of builds in buildtimes file
+    print("Number of builds : " + str(len(root_xml)))
+
+    # print content of buildtimes file
+    for build_xml in root_xml:
+        build_summary = "Build ID : "
+        if build_xml.get('id') is None:
+            build_summary += " unknown"
+        else:
+            build_summary += build_xml.get('id')
+            build_summary += ", Job : " + build_xml.get('job')
+        print build_summary
+        for build_child in build_xml:
+            if build_child.tag == 'stages':
+                print ("Stages : " + str(len(build_child)))
+        print("")
 
 if __name__ == "__main__":
     generate_trend()
