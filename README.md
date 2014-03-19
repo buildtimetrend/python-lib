@@ -12,6 +12,14 @@ Dependencies
 
 - lxml (python wrapper for libxml2 and libxslt)
 
+Install using pip :
+
+`pip install lxml`
+
+or as a Debian package :
+
+`apt-get install python-lxml`
+
 Usage
 -----
 
