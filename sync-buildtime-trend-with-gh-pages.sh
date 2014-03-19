@@ -7,7 +7,9 @@
 # to update generated javadoc on the Github pages (gh-pages) of a project :
 # https://github.com/treelogic-swe/aws-mock/blob/04746419b409e1689632da53a7ea6063dbe33ef8/.utility/push-javadoc-to-gh-pages.sh
 #
-# Copyright 2014 Dieter Adriaenssens
+# Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
+#
+# This file is part of buildtime-trend <https://github.com/ruleant/buildtime-trend/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

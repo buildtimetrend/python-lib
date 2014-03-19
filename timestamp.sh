@@ -3,7 +3,9 @@
 #
 # usage : ./timestamp.sh timestamp_name
 #
-# Copyright (C) 2014 Dieter Adriaenssens
+# Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
+#
+# This file is part of buildtime-trend <https://github.com/ruleant/buildtime-trend/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
