@@ -41,3 +41,6 @@ cat $BUILD_TREND_LOGFILE
 echo "analyse timestamps"
 analyse.sh
 cat $BUILD_TREND_OUTPUTFILE
+echo "generate trend"
+generate_trend.py
+

@@ -1,7 +1,9 @@
-#!/bin/bash
-# Initialises variables and file needed for logging timestamps
+#!/usr/bin/env python
+# vim: set expandtab sw=4 ts=4:
 #
-# usage : source ./init.sh
+# Generates a trend (graph) from the buildtimes in buildtimes.xml
+#
+# usage : generate_trend.py
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -20,18 +22,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# get folder where script is located
-BUILD_TREND_HOME=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
-BUILD_TREND_LOGFILE=$BUILD_TREND_HOME/timestamps.csv
-BUILD_TREND_OUTPUTFILE=$BUILD_TREND_HOME/buildtimes.xml
-BUILD_TREND_TRENDFILE=$BUILD_TREND_HOME/trend.png
-PATH=${PATH}:${BUILD_TREND_HOME}
+import os
+from lxml import etree
 
-#cleanup previous logfile
-if [ -f $BUILD_TREND_LOGFILE ]; then
-    rm $BUILD_TREND_LOGFILE
-fi
+# use parameter for timestamps file and check if file exists
+RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'buildtimes.xml')
+GRAPH_FILE = os.getenv('BUILD_TREND_TRENDFILE', 'trend.png')
+if not os.path.isfile(RESULT_FILE):
+    quit()
 
-export BUILD_TREND_HOME BUILD_TREND_LOGFILE BUILD_TREND_OUTPUTFILE
-export BUILD_TREND_TRENDFILE PATH
-export BUILD_TREND_INIT=1
+
+def generate_trend():
+    # load builtimes file
+    root_xml = etree.parse(RESULT_FILE).getroot()
+
+
+if __name__ == "__main__":
+    generate_trend()

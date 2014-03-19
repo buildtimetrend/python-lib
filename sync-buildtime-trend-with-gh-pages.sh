@@ -55,9 +55,12 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   # set enviroment variable for the analysis result file
   # BUILD_TREND_OUTPUTFILE is used by the analysis script
   BUILD_TREND_OUTPUTFILE=$GH_PAGES_BUILD_TREND_DIR/buildtimes.xml
+  BUILD_TREND_TRENDFILE=$GH_PAGES_BUILD_TREND_DIR/trend.png
 
   # perfom analysis
   analyse.sh
+  # generate trend
+  generate_trend.py
 
   # update buildtime trend data on gh-pages
   cd $GH_PAGES
