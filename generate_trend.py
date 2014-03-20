@@ -31,34 +31,42 @@ GRAPH_FILE = os.getenv('BUILD_TREND_TRENDFILE', 'trend.png')
 if not os.path.isfile(RESULT_FILE):
     quit()
 
+
 class Trend:
-    stages = []
-    builds = []
+    def __init__(self):
+        self.stages = {}
+        self.builds = []
 
     def gather_data(self):
         # load builtimes file
         root_xml = etree.parse(RESULT_FILE).getroot()
-
-        # print number of builds in buildtimes file
-        print "Number of builds : " + str(len(root_xml))
 
         # print content of buildtimes file
         for build_xml in root_xml:
             build_summary = "Build ID : "
             if build_xml.get('id') is None:
                 build_summary += "unknown"
+                self.builds.append("#" + str(len(self.builds) + 1))
             else:
                 build_summary += build_xml.get('id')
-                build_summary += ", Job : " + build_xml.get('job')
-            print build_summary
+                build_summary += ", Job : "
+                if build_xml.get('job') is None:
+                    build_summary += "unknown"
+                    self.builds.append("#" + str(len(self.builds) + 1))
+                else:
+                    build_summary += build_xml.get('job')
+                    self.builds.append(build_xml.get('job'))
             for build_child in build_xml:
                 if build_child.tag == 'stages':
-                    print "Stages : " + str(len(build_child))
-            print ""
+                    build_summary += ", stages : " + str(len(build_child))
+            print build_summary
+
     def generate(self):
         return None
 
 if __name__ == "__main__":
     trend = Trend()
     trend.gather_data()
+    # print number of builds and list of buildnames
+    print "Builds (%d) :" % len(trend.builds), trend.builds
     trend.generate()
