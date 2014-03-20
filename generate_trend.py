@@ -43,7 +43,7 @@ def generate_trend():
     for build_xml in root_xml:
         build_summary = "Build ID : "
         if build_xml.get('id') is None:
-            build_summary += " unknown"
+            build_summary += "unknown"
         else:
             build_summary += build_xml.get('id')
             build_summary += ", Job : " + build_xml.get('job')
