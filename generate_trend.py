@@ -70,7 +70,9 @@ class Trend:
                 if build_child.tag == 'stages':
                     build_summary += ", stages : " + str(len(build_child))
                     for stage in build_child:
-                        if stage.tag == 'stage' and stage.get('name') is not None:
+                        if (stage.tag == 'stage' and
+                                stage.get('name') is not None and
+                                stage.get('duration') is not None):
                             if stage.get('name') in self.stages:
                                 temp_dict = self.stages[stage.get('name')]
                             else:
