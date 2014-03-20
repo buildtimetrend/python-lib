@@ -59,6 +59,14 @@ class Trend:
             for build_child in build_xml:
                 if build_child.tag == 'stages':
                     build_summary += ", stages : " + str(len(build_child))
+                    for stage in build_child:
+                        if stage.tag == 'stage' and stage.get('name') is not None:
+                            if stage.get('name') in self.stages:
+                                temp_dict = self.stages[stage.get('name')]
+                            else:
+                                temp_dict = []
+                            temp_dict.append(stage.get('duration'))
+                            self.stages[stage.get('name')] = temp_dict
             print build_summary
 
     def generate(self):
@@ -69,4 +77,5 @@ if __name__ == "__main__":
     trend.gather_data()
     # print number of builds and list of buildnames
     print "Builds (%d) :" % len(trend.builds), trend.builds
+    print "Stages (%d) :" % len(trend.stages), trend.stages
     trend.generate()
