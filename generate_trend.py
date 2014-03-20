@@ -32,7 +32,7 @@ if not os.path.isfile(RESULT_FILE):
     quit()
 
 
-class Trend:
+class Trend(object):
     def __init__(self):
         self.stages = {}
         self.builds = []
