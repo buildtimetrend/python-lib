@@ -6,7 +6,10 @@ before_install:
   # initialise buildtime-trend scripts
   - source ./init.sh
 install: CFLAGS="-O0" pip install -r requirements.txt
-script: ./test/test_timestamp.sh
+script:
+  - ./test/test_timestamp.sh
+  - nosetests --with-coverage --cover-package=buildtimetrend
+after_success: coveralls
 after_script:
   # synchronise buildtime-trend result with gh-pages
   - sync-buildtime-trend-with-gh-pages.sh
