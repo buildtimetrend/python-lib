@@ -28,8 +28,6 @@ from lxml import etree
 # use parameter for timestamps file and check if file exists
 RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'buildtimes.xml')
 GRAPH_FILE = os.getenv('BUILD_TREND_TRENDFILE', 'trend.png')
-if not os.path.isfile(RESULT_FILE):
-    quit()
 
 
 class Trend(object):
@@ -37,9 +35,13 @@ class Trend(object):
         self.stages = {}
         self.builds = []
 
-    def gather_data(self):
+    def gather_data(self, result_file):
         # load builtimes file
-        root_xml = etree.parse(RESULT_FILE).getroot()
+        if os.path.isfile(result_file):
+            root_xml = etree.parse(result_file).getroot()
+        else:
+            print "File doesn't exist : %d" % result_file
+            return False
 
         index = 0
         # print content of buildtimes file
@@ -84,14 +86,15 @@ class Trend(object):
                             self.stages[stage.get('name')] = temp_dict
             print build_summary
             index += 1
+        return True
 
     def generate(self):
         return None
 
 if __name__ == "__main__":
     trend = Trend()
-    trend.gather_data()
-    # print number of builds and list of buildnames
-    print "Builds (%d) :" % len(trend.builds), trend.builds
-    print "Stages (%d) :" % len(trend.stages), trend.stages
-    trend.generate()
+    if trend.gather_data(RESULT_FILE):
+        # print number of builds and list of buildnames
+        print "Builds (%d) :" % len(trend.builds), trend.builds
+        print "Stages (%d) :" % len(trend.stages), trend.stages
+        trend.generate()
