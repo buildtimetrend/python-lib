@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <builds>
-  <build>
+  <build id="10">
     <stages>
       <stage duration="4" name="stage1"/>
       <stage duration="5" name="stage2"/>

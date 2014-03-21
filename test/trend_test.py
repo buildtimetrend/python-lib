@@ -51,7 +51,7 @@ class TestTrend(unittest.TestCase):
         self.assertEquals(5, len(self.trend.stages))
 
         # test buildnames
-        self.assertListEqual(['#1', '11.1', '#3'], self.trend.builds)
+        self.assertListEqual(['10', '11.1', '#3'], self.trend.builds)
 
         # test stages (names + duration)
         self.assertDictEqual(
