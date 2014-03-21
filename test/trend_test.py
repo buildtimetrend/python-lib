@@ -29,6 +29,11 @@ class TestTrend(unittest.TestCase):
     def setUp(self):
         self.trend = Trend()
 
+    def test_novalue(self):
+         # number of builds and stages should be zero
+        self.assertEquals(0, len(self.trend.builds))
+        self.assertEquals(0, len(self.trend.stages))
+
     def test_nofile(self):
         # function should return false when file doesn't exist
         self.assertFalse(self.trend.gather_data('nofile.xml'))
