@@ -38,19 +38,21 @@ class Trend(object):
         index = 0
         # print content of buildtimes file
         for build_xml in root_xml:
+            build_id = "#%d" % (index + 1)
             build_summary = "Build ID : "
             if build_xml.get('id') is None:
                 build_summary += "unknown"
-                self.builds.append("#" + str(index + 1))
             else:
                 build_summary += build_xml.get('id')
                 build_summary += ", Job : "
                 if build_xml.get('job') is None:
+                    build_id = build_xml.get('id')
                     build_summary += "unknown"
-                    self.builds.append("#" + str(index + 1))
                 else:
                     build_summary += build_xml.get('job')
-                    self.builds.append(build_xml.get('job'))
+                    build_id = build_xml.get('job')
+
+            self.builds.append(build_id)
 
             # add 0 to each existing stage, to make sure that
             # the indexes of each value
