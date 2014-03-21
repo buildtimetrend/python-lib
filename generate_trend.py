@@ -23,73 +23,11 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from lxml import etree
+from buildtimetrend.trend import Trend
 
 # use parameter for timestamps file and check if file exists
 RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'buildtimes.xml')
 GRAPH_FILE = os.getenv('BUILD_TREND_TRENDFILE', 'trend.png')
-
-
-class Trend(object):
-    def __init__(self):
-        self.stages = {}
-        self.builds = []
-
-    def gather_data(self, result_file):
-        # load builtimes file
-        if os.path.isfile(result_file):
-            root_xml = etree.parse(result_file).getroot()
-        else:
-            print "File doesn't exist : %d" % result_file
-            return False
-
-        index = 0
-        # print content of buildtimes file
-        for build_xml in root_xml:
-            build_summary = "Build ID : "
-            if build_xml.get('id') is None:
-                build_summary += "unknown"
-                self.builds.append("#" + str(index + 1))
-            else:
-                build_summary += build_xml.get('id')
-                build_summary += ", Job : "
-                if build_xml.get('job') is None:
-                    build_summary += "unknown"
-                    self.builds.append("#" + str(index + 1))
-                else:
-                    build_summary += build_xml.get('job')
-                    self.builds.append(build_xml.get('job'))
-
-            # add 0 to each existing stage, to make sure that
-            # the indexes of each value
-            # are correct, even if a stage does not exist in a build
-            # if a stage exists, the zero will be replaced by its duration
-            for stage in self.stages:
-                self.stages[stage].append(0)
-
-            # add duration of each stage to stages list
-            for build_child in build_xml:
-                if build_child.tag == 'stages':
-                    build_summary += ", stages : " + str(len(build_child))
-                    for stage in build_child:
-                        if (stage.tag == 'stage' and
-                                stage.get('name') is not None and
-                                stage.get('duration') is not None):
-                            if stage.get('name') in self.stages:
-                                temp_dict = self.stages[stage.get('name')]
-                            else:
-                                # when a new stage is added,
-                                # create list with zeros,
-                                # one for each existing build
-                                temp_dict = [0 for x in range(index + 1)]
-                            temp_dict[index] = stage.get('duration')
-                            self.stages[stage.get('name')] = temp_dict
-            print build_summary
-            index += 1
-        return True
-
-    def generate(self):
-        return None
 
 if __name__ == "__main__":
     trend = Trend()
