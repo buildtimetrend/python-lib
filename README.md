@@ -12,14 +12,15 @@ Dependencies
 ------------
 
 - lxml (python wrapper for libxml2 and libxslt)
+- matplotlib (for drawing the trend graph)
 
 Install using pip :
 
-`pip install lxml`
+`pip install lxml matplotlib`
 
 or as a Debian package :
 
-`apt-get install python-lxml`
+`apt-get install python-lxml python-matplotlib`
 
 Usage
 -----

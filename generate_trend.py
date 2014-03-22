@@ -35,4 +35,4 @@ if __name__ == "__main__":
         # print number of builds and list of buildnames
         print "Builds (%d) :" % len(trend.builds), trend.builds
         print "Stages (%d) :" % len(trend.stages), trend.stages
-        trend.generate()
+        trend.generate(GRAPH_FILE)

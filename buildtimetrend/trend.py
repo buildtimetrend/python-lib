@@ -21,7 +21,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import numpy as np
 from lxml import etree
+from matplotlib import pyplot as plt
 
 
 class Trend(object):
@@ -84,5 +86,7 @@ class Trend(object):
             index += 1
         return True
 
-    def generate(self):
-        return None
+    def generate(self, trend_file):
+        fig, ax = plt.subplots()
+        ax.stackplot(np.arange(len(self.builds)), self.stages.values())
+        plt.savefig(trend_file)
