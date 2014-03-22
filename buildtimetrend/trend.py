@@ -23,6 +23,9 @@
 import os
 import numpy as np
 from lxml import etree
+import matplotlib
+# Force matplotlib to not use any Xwindows backend.
+matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
 
