@@ -78,7 +78,7 @@ class Trend(object):
                                 # create list with zeros,
                                 # one for each existing build
                                 temp_dict = [0]*(index + 1)
-                            temp_dict[index] = stage.get('duration')
+                            temp_dict[index] = int(stage.get('duration'))
                             self.stages[stage.get('name')] = temp_dict
             print build_summary
             index += 1
