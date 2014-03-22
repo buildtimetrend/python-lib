@@ -23,6 +23,7 @@
 import os
 from lxml import etree
 
+
 class Trend(object):
     def __init__(self):
         self.stages = {}
