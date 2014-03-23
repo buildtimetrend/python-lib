@@ -63,6 +63,11 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   # generate trend
   generate_trend.py
 
+  # print trend location
+  REPO_OWNER=${TRAVIS_REPO_SLUG%/*}
+  REPO_NAME=${TRAVIS_REPO_SLUG#*/}
+  echo "Trend located at : http://${REPO_OWNER}.github.io/${REPO_NAME}/buildtime-trend/trend.png"
+
   # update buildtime trend data on gh-pages
   cd $GH_PAGES
   git add -f .
