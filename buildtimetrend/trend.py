@@ -93,13 +93,20 @@ class Trend(object):
 
         # add data
         x = range(len(self.builds))
-        axes.stackplot(x, self.stages.values())
+        plots = axes.stackplot(x, self.stages.values())
         plt.xticks(x, self.builds)
 
         # label axes and add graph title
         axes.set_xlabel("Builds", {'fontsize': 14})
         axes.set_ylabel("Duration [s]", {'fontsize': 14})
         axes.set_title("Build duration trend", {'fontsize': 22})
+
+        # display legend
+        legend_proxies = []
+        for plot in plots:
+            legend_proxies.append(
+                plt.Rectangle((0, 0), 1, 1, fc=plot.get_facecolor()[0]))
+        axes.legend(legend_proxies, self.stages.keys(), loc=7)
 
         # save figure
         plt.savefig(trend_file)
