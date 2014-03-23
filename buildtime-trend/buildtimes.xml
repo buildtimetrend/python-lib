@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<builds>
+  <build branch="master" id="50" job="50.1">
+    <stages>
+      <stage duration="85" name="install"/>
+      <stage duration="4" name="tests"/>
+      <stage duration="6" name="coveralls"/>
+    </stages>
+  </build>
+</builds>
