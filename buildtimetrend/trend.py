@@ -21,7 +21,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import numpy as np
 from lxml import etree
 import matplotlib
 # Force matplotlib to not use any Xwindows backend.
@@ -91,9 +90,16 @@ class Trend(object):
 
     def generate(self, trend_file):
         fig, axes = plt.subplots()
-        axes.stackplot(np.arange(len(self.builds)), self.stages.values())
+
+        # add data
+        x = range(len(self.builds))
+        axes.stackplot(x, self.stages.values())
+        plt.xticks(x, self.builds)
+
         # label axes and add graph title
         axes.set_xlabel("Builds", {'fontsize': 14})
         axes.set_ylabel("Duration [s]", {'fontsize': 14})
         axes.set_title("Build duration trend", {'fontsize': 22})
+
+        # save figure
         plt.savefig(trend_file)
