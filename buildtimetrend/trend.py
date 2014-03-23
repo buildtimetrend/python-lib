@@ -92,4 +92,8 @@ class Trend(object):
     def generate(self, trend_file):
         fig, axes = plt.subplots()
         axes.stackplot(np.arange(len(self.builds)), self.stages.values())
+        # label axes and add graph title
+        axes.set_xlabel("Builds", {'fontsize': 14})
+        axes.set_ylabel("Duration [s]", {'fontsize': 14})
+        axes.set_title("Build duration trend", {'fontsize': 22})
         plt.savefig(trend_file)
