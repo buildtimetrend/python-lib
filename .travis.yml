@@ -8,6 +8,7 @@ before_install:
 install:
   - timestamp.sh install
   - CFLAGS="-O0" pip install -r requirements.txt
+  - CFLAGS="-O0" pip install -r requirements-tests.txt
 script:
   - timestamp.sh tests
   - nosetests --with-coverage --cover-package=buildtimetrend
