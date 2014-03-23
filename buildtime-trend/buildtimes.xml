@@ -7,4 +7,4 @@
       <stage duration="6" name="coveralls"/>
     </stages>
   </build>
-</builds>
+<build branch="master" id="51" job="51.1"><stages><stage duration="75" name="install"/><stage duration="4" name="tests"/><stage duration="6" name="coveralls"/></stages></build></builds>
