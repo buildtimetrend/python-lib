@@ -90,6 +90,6 @@ class Trend(object):
         return True
 
     def generate(self, trend_file):
-        fig, ax = plt.subplots()
-        ax.stackplot(np.arange(len(self.builds)), self.stages.values())
+        fig, axes = plt.subplots()
+        axes.stackplot(np.arange(len(self.builds)), self.stages.values())
         plt.savefig(trend_file)
