@@ -99,7 +99,7 @@ class Trend(object):
         # label axes and add graph title
         axes.set_xlabel("Builds", {'fontsize': 14})
         axes.set_ylabel("Duration [s]", {'fontsize': 14})
-        axes.set_title("Build duration trend", {'fontsize': 22})
+        axes.set_title("Build stages trend", {'fontsize': 22})
 
         # display legend
         legend_proxies = []
