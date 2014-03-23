@@ -106,7 +106,8 @@ class Trend(object):
         for plot in plots:
             legend_proxies.append(
                 plt.Rectangle((0, 0), 1, 1, fc=plot.get_facecolor()[0]))
-        axes.legend(legend_proxies, self.stages.keys(), loc=7)
+        # add legend in reverse order
+        axes.legend(legend_proxies[::-1], self.stages.keys()[::-1], loc=7)
 
         # save figure
         plt.savefig(trend_file)
