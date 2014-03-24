@@ -36,23 +36,21 @@
         <span class="blc"></span><span class="trc"></span>
         </div>
         <article class="markdown-body">
-          <h1>
-<a name="build-trend" class="anchor" href="#build-trend"><span class="octicon octicon-link"></span></a>Build trend</h1>
-
-<p>Create trends of the duration of the stages of a build process</p>
+          <p>Create a trendline of the different stages of a build process</p>
 
 <h2>
 <a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
 
 <ul>
 <li>lxml (python wrapper for libxml2 and libxslt)</li>
+<li>matplotlib v1.2.0 or higher (for drawing the trend graph, stackplot is introduced in v1.2.0)</li>
 </ul><p>Install using pip :</p>
 
-<p><code>pip install lxml</code></p>
+<p><code>pip install lxml 'matplotlib&gt;=1.2.0'</code></p>
 
 <p>or as a Debian package :</p>
 
-<p><code>apt-get install python-lxml</code></p>
+<p><code>apt-get install python-lxml python-matplotlib</code></p>
 
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
@@ -101,6 +99,16 @@ When run on Travis CI, it will automatically add build/job related info.</p>
     <p class="name"></p>
   </div>
 
-  
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-49318924-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
 </body>
 </html>
