@@ -50,8 +50,23 @@ It will calculate the duration between the timestamps and add them to
 a file with the analysed data of previous builds.
 When run on Travis CI, it will automatically add build/job related info.
 
-Usage on Travis CI
-------------------
+Integrate with Travis CI
+------------------------
+
+You can integrate Buildtime Trend with your build process on Travis CI : 
+install and initialise the buildtime trend scripts, add timestamp labels, generate the trend
+and synchronise it with your gh-pages branch.
+
+All you need is a github repo, a travis account for your repo and a gh-pages branch to publish the results.
+
+You also need to create an encrypted GH_TOKEN to get write access to your repo (publish results on gh-pages branch) :
+- [create](https://github.com/settings/applications) the access token for your github repo, `repo` scope is sufficient
+- encrypt the environment variable using the [travis tool](http://docs.travis-ci.com/user/encryption-keys/) :
+`travis encrypt GH_TOKEN=github_access_token`
+- add the encrypted token to your .travis.yml file (see below)
+ 
+The generated trend graph and build-data will be put in folder `buildtime-trend` on your `gh-pages` branch.
+The trend is available on http://{username}.github.io/{repo_name}/buildtime-trend/trend.png
 
 Example `.travis.yml` file :
 
