@@ -50,6 +50,38 @@ It will calculate the duration between the timestamps and add them to
 a file with the analysed data of previous builds.
 When run on Travis CI, it will automatically add build/job related info.
 
+Usage on Travis CI
+------------------
+
+Example `.travis.yml` file :
+
+    language: python
+    env:
+      global:
+        secure: # your secure GH_TOKEN goes here (required to share trend on gh-pages)
+    before_install:
+      # install and initialise build-trend scripts
+      - git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend
+      # initialise buildtime-trend scripts
+      - source $HOME/buildtime-trend/init.sh
+    install:
+      # generate timestamp with label 'install'
+      - timestamp.sh install
+      # install buildtime-trend dependencies
+      - CFLAGS="-O0" pip install -r ${BUILD_TREND_HOME}/requirements.txt
+      # install dependencies
+    script:
+      # generate timestamp with label 'tests'
+      - timestamp.sh tests
+      # run your tests
+    after_success:
+      # generate timestamp with label 'after_success'
+      - timestamp.sh after_success
+      # after_success scripts
+    after_script:
+      # synchronise buildtime-trend result with gh-pages
+      - sync-buildtime-trend-with-gh-pages.sh
+
 License
 -------
 
