@@ -7,4 +7,4 @@
       <stage duration="6" name="coveralls"/>
     </stages>
   </build>
-<build branch="master" id="51" job="51.1"><stages><stage duration="75" name="install"/><stage duration="4" name="tests"/><stage duration="6" name="coveralls"/></stages></build><build branch="master" id="52" job="52.1"><stages><stage duration="119" name="install"/><stage duration="7" name="tests"/><stage duration="6" name="coveralls"/></stages></build></builds>
+<build branch="master" id="51" job="51.1"><stages><stage duration="75" name="install"/><stage duration="4" name="tests"/><stage duration="6" name="coveralls"/></stages></build><build branch="master" id="52" job="52.1"><stages><stage duration="119" name="install"/><stage duration="7" name="tests"/><stage duration="6" name="coveralls"/></stages></build><build branch="master" id="53" job="53.1"><stages><stage duration="73" name="install"/><stage duration="4" name="tests"/><stage duration="7" name="coveralls"/></stages></build></builds>
