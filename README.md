@@ -12,11 +12,11 @@ Dependencies
 ------------
 
 - lxml (python wrapper for libxml2 and libxslt)
-- matplotlib (for drawing the trend graph)
+- matplotlib v1.2.0 or higher (for drawing the trend graph, stackplot is introduced in v1.2.0)
 
 Install using pip :
 
-`pip install lxml matplotlib`
+`pip install lxml matplotlib>=1.2.0`
 
 or as a Debian package :
 
