@@ -84,6 +84,57 @@ a file with the analysed data of previous builds.
 When run on Travis CI, it will automatically add build/job related info.</p>
 
 <h2>
+<a name="integrate-with-travis-ci" class="anchor" href="#integrate-with-travis-ci"><span class="octicon octicon-link"></span></a>Integrate with Travis CI</h2>
+
+<p>To integrate Buildtime Trend with your build process on Travis CI : 
+install and initialise the buildtime trend scripts, add timestamp labels, generate the trend
+and synchronise it with your gh-pages branch.</p>
+
+<p>All you need is a github repo, a travis account for your repo and a gh-pages branch to publish the results.</p>
+
+<p>You also need to create an encrypted GH_TOKEN to get write access to your repo (publish results on gh-pages branch) :</p>
+
+<ul>
+<li>
+<a href="https://github.com/settings/applications">create</a> the access token for your github repo, <code>repo</code> scope is sufficient</li>
+<li>encrypt the environment variable using the <a href="http://docs.travis-ci.com/user/encryption-keys/">travis tool</a> :
+<code>travis encrypt GH_TOKEN=github_access_token</code>
+</li>
+<li>add the encrypted token to your .travis.yml file (see below)</li>
+</ul><p>The generated trend graph and build-data will be put in folder <code>buildtime-trend</code> on your <code>gh-pages</code> branch.
+The trend is available on http://{username}.github.io/{repo_name}/buildtime-trend/trend.png</p>
+
+<p>Example <code>.travis.yml</code> file :</p>
+
+<pre><code>language: python
+env:
+  global:
+    secure: # your secure GH_TOKEN goes here (required to share trend on gh-pages)
+before_install:
+  # install and initialise build-trend scripts
+  - git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend
+  # initialise buildtime-trend scripts
+  - source $HOME/buildtime-trend/init.sh
+install:
+  # generate timestamp with label 'install'
+  - timestamp.sh install
+  # install buildtime-trend dependencies
+  - CFLAGS="-O0" pip install -r ${BUILD_TREND_HOME}/requirements.txt
+  # install dependencies
+script:
+  # generate timestamp with label 'tests'
+  - timestamp.sh tests
+  # run your tests
+after_success:
+  # generate timestamp with label 'after_success'
+  - timestamp.sh after_success
+  # after_success scripts
+after_script:
+  # synchronise buildtime-trend result with gh-pages
+  - sync-buildtime-trend-with-gh-pages.sh
+</code></pre>
+
+<h2>
 <a name="contact" class="anchor" href="#contact"><span class="octicon octicon-link"></span></a>Contact</h2>
 
 <p>Follow us on <a href="https://twitter.com/buildtime_trend">Twitter</a> and <a href="https://www.ohloh.net/p/buildtime-trend">Ohloh</a>.</p>
