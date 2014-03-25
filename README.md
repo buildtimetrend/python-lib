@@ -97,6 +97,12 @@ Example `.travis.yml` file :
       # synchronise buildtime-trend result with gh-pages
       - sync-buildtime-trend-with-gh-pages.sh
 
+Bugs and feature requests
+-------------------------
+
+Please report bugs and add feature requests in the Github [issue tracker](https://github.com/ruleant/buildtime-trend/issues).
+
+
 License
 -------
 
