@@ -94,7 +94,7 @@ class Trend(object):
         # add data
         x = range(len(self.builds))
         plots = plt.stackplot(x, self.stages.values())
-        plt.xticks(x, self.builds, rotation=45)
+        plt.xticks(x, self.builds, rotation=45, size=10)
 
         # label axes and add graph title
         axes.set_xlabel("Builds", {'fontsize': 14})
