@@ -97,8 +97,8 @@ class Trend(object):
         plt.xticks(x, self.builds, rotation=45)
 
         # label axes and add graph title
-        axes.set_xlabel("Builds", {'fontsize': 12})
-        axes.xaxis.set_label_coords(1.05, -0.025)
+        axes.set_xlabel("Builds", {'fontsize': 14})
+        axes.xaxis.set_label_coords(1.1, -0.05)
         axes.set_ylabel("Duration [s]", {'fontsize': 14})
         axes.set_title("Build stages trend", {'fontsize': 22})
 
