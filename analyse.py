@@ -36,7 +36,7 @@ if not os.path.isfile(TIMESTAMP_FILE):
 
 
 def analyse(argv):
-    # load previous builtimes file, or create a new xml root
+    # load previous buildtimes file, or create a new xml root
     if os.path.isfile(RESULT_FILE):
         root_xml = etree.parse(RESULT_FILE).getroot()
     else:
