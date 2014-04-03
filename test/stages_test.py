@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.stages import Stages
+from lxml import etree
 import unittest
 
 TEST_SAMPLE_FILE = 'test/testsample_timestamps.csv'
@@ -31,8 +32,11 @@ class TestTimestamps(unittest.TestCase):
         self.stages = Stages()
 
     def test_novalue(self):
-         # number of stages should be zero
+        # number of stages should be zero
         self.assertEquals(0, len(self.stages.stages))
+        # xml shouldn't contain items
+        self.assertEquals("<stages/>", etree.tostring(self.stages.to_xml()))
+        self.assertEquals("<stages/>\n", self.stages.to_xml_string())
 
     def test_nofile(self):
         # function should return false when file doesn't exist
@@ -52,6 +56,30 @@ class TestTimestamps(unittest.TestCase):
         # test stages (names + duration)
         self.assertDictEqual(
             {'stage1': 2, 'stage2': 5, 'stage3': 10}, self.stages.stages)
+
+    def test_to_xml(self):
+        # read and parse sample file
+        self.stages.read_csv(TEST_SAMPLE_FILE)
+
+        # test xml output
+        self.assertEquals(
+            '<stages><stage duration="2" name="stage1"/>'
+            '<stage duration="5" name="stage2"/>'
+            '<stage duration="10" name="stage3"/></stages>',
+            etree.tostring(self.stages.to_xml()))
+
+    def test_to_xml_string(self):
+        # read and parse sample file
+        self.stages.read_csv(TEST_SAMPLE_FILE)
+
+        # test xml string output
+        self.assertEquals(
+            '<stages>\n'
+            '  <stage duration="2" name="stage1"/>\n'
+            '  <stage duration="5" name="stage2"/>\n'
+            '  <stage duration="10" name="stage3"/>\n'
+            '</stages>\n',
+            self.stages.to_xml_string())
 
 if __name__ == '__main__':
     unittest.main()

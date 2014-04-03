@@ -23,6 +23,7 @@
 
 import csv
 import os
+from lxml import etree
 
 
 class Stages(object):
@@ -52,3 +53,15 @@ class Stages(object):
                 previous_timestamp = int(row[1])
 
         return True
+
+    def to_xml(self):
+        root = etree.Element("stages")
+
+        for stage_id in self.stages:
+            root.append(etree.Element(
+                "stage", name=stage_id, duration=str(self.stages[stage_id])))
+
+        return root
+
+    def to_xml_string(self):
+        return etree.tostring(self.to_xml(), pretty_print=True)
