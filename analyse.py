@@ -22,11 +22,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import csv
 import os
 import sys
 import getopt
 from lxml import etree
+from buildtimetrend.stages import Stages
 
 # use parameter for timestamps file and check if file exists
 TIMESTAMP_FILE = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
@@ -65,24 +65,9 @@ def analyse(argv):
             build_xml.set("branch", arg)
 
     # create stages element
-    stages_xml = etree.SubElement(build_xml, "stages")
-
-    # read timestamps, calculate stage duration and add it to xml tree
-    with open(TIMESTAMP_FILE, 'rb') as csvfile:
-        timestamps = csv.reader(csvfile, delimiter=',', quotechar='"')
-        previous_timestamp = 0
-        event_name = None
-        for row in timestamps:
-            if event_name is not None:
-                if event_name == 'end':
-                    break
-                duration = int(row[1]) - previous_timestamp
-                print 'Duration ' + event_name + ' : ' + str(duration) + 's'
-                # add stage duration to xml tree
-                stages_xml.append(etree.Element(
-                    "stage", name=event_name, duration=str(duration)))
-            event_name = row[0]
-            previous_timestamp = int(row[1])
+    stages = Stages()
+    if stages.read_csv(TIMESTAMP_FILE):
+        build_xml.append(stages.to_xml())
 
     # write xml to file
     with open(RESULT_FILE, 'wb') as xmlfile:
