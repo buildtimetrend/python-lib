@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 '''
 vim: set expandtab sw=4 ts=4:
 
