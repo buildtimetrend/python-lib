@@ -42,14 +42,13 @@ class TestBuild(unittest.TestCase):
             '  <stages/>\n'
             '</build>\n', self.build.to_xml_string())
 
-    ''' def test_nofile(self):
-        # function should return false when file doesn't exist
-        self.assertFalse(self.stages.read_csv('nofile.csv'))
-        self.assertFalse(self.stages.read_csv(''))
+    def test_nofile(self):
+        # number of stages should be zero when file doesn't exist
+        self.build = Build('nofile.csv')
+        self.assertEquals(0, len(self.build.stages.stages))
 
-        # function should thrown an error  when no filename is set
-        self.assertRaises(TypeError, self.stages.read_csv)
-    '''
+        self.build = Build('')
+        self.assertEquals(0, len(self.build.stages.stages))
 
     def test_to_xml(self):
         # read and parse sample file
