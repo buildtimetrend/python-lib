@@ -23,9 +23,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import os
 from lxml import etree
-from stages import Stages
+from buildtimetrend.stages import Stages
 
 
 class Build(object):
