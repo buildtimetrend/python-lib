@@ -76,6 +76,3 @@ class TestBuild(unittest.TestCase):
             '  </stages>\n'
             '</build>\n',
             self.build.to_xml_string())
-
-if __name__ == '__main__':
-    unittest.main()

@@ -58,7 +58,3 @@ class TestTrend(unittest.TestCase):
             {'stage1': [4, 3, 2], 'stage2': [5, 6, 7], 'stage3': [10, 11, 12],
             'stage4': [1, 0, 3], 'stage5': [0, 6, 0]},
             self.trend.stages)
-
-
-if __name__ == '__main__':
-    unittest.main()

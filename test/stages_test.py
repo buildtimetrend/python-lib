@@ -80,6 +80,3 @@ class TestTimestamps(unittest.TestCase):
             '  <stage duration="10" name="stage3"/>\n'
             '</stages>\n',
             self.stages.to_xml_string())
-
-if __name__ == '__main__':
-    unittest.main()
