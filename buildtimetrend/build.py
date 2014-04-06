@@ -52,7 +52,7 @@ class Build(object):
         '''
         data = {}
 
-        if self.stages is not None and type(self.stages) is Stages:
+        if type(self.stages) is Stages:
             data["stages"] = self.stages.stages
 
         return data
@@ -61,7 +61,8 @@ class Build(object):
         '''Generates xml object of Build instance'''
         root = etree.Element("build")
 
-        root.append(self.stages.to_xml())
+        if type(self.stages) is Stages:
+            root.append(self.stages.to_xml())
 
         return root
 
