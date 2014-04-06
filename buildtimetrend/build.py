@@ -40,7 +40,7 @@ class Build(object):
 
     def add_stages(self, stages):
         '''
-        Add a stages instance
+        Add a Stages instance
 
         Parameters :
         - stages : Stages instance
