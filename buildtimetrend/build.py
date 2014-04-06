@@ -32,10 +32,9 @@ class Build(object):
     '''
 
     def __init__(self, csv_filename=None):
-        self.data = {}
         self.stages = Stages()
-        if csv_filename is not None and self.stages.read_csv(csv_filename):
-            self.data["stages"] = self.stages.stages
+        if csv_filename is not None:
+            self.stages.read_csv(csv_filename)
 
     def add_stages(self, stages):
         '''
@@ -46,6 +45,17 @@ class Build(object):
         '''
         if stages is not None and type(stages) is Stages:
             self.stages = stages
+
+    def to_dict(self):
+        '''
+        Return object as dictionary
+        '''
+        data = {}
+
+        if self.stages is not None and type(self.stages) is Stages:
+            data["stages"] = self.stages.stages
+
+        return data
 
     def to_xml(self):
         '''Generates xml object of Build instance'''

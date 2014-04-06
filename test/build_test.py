@@ -34,6 +34,10 @@ class TestBuild(unittest.TestCase):
     def test_novalue(self):
         # number of stages should be zero
         self.assertEquals(0, len(self.build.stages.stages))
+
+        # dict should be empty
+        self.assertDictEqual({'stages' : {}}, self.build.to_dict())
+
         # xml shouldn't contain items
         self.assertEquals(
             '<build><stages/></build>', etree.tostring(self.build.to_xml()))
@@ -49,6 +53,15 @@ class TestBuild(unittest.TestCase):
 
         self.build = Build('')
         self.assertEquals(0, len(self.build.stages.stages))
+
+    def test_to_dict(self):
+        # read and parse sample file
+        self.build = Build(TEST_SAMPLE_FILE)
+
+        # test dict
+        self.assertDictEqual(
+            {'stages': {'stage1': 2, 'stage2': 5, 'stage3': 10}},
+            self.build.to_dict())
 
     def test_to_xml(self):
         # read and parse sample file
