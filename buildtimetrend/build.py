@@ -22,6 +22,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import copy
 from lxml import etree
 from buildtimetrend.stages import Stages
 
@@ -32,6 +33,7 @@ class Build(object):
     '''
 
     def __init__(self, csv_filename=None):
+        self.properties = {}
         self.stages = Stages()
         if csv_filename is not None:
             self.stages.read_csv(csv_filename)
@@ -46,12 +48,24 @@ class Build(object):
         if stages is not None and type(stages) is Stages:
             self.stages = stages
 
+    def add_property(self, name, value):
+        '''
+        Add a build property
+
+        Parameters :
+        - name : Property name
+        - value : Property value
+        '''
+        self.properties[name] = value
+
     def to_dict(self):
         '''
         Return object as dictionary
         '''
-        data = {}
+        # copy values of properties
+        data = copy.deepcopy(self.properties)
 
+        # add stages
         if type(self.stages) is Stages:
             data["stages"] = self.stages.stages
 
@@ -61,6 +75,11 @@ class Build(object):
         '''Generates xml object of Build instance'''
         root = etree.Element("build")
 
+        # add properties
+        for key in self.properties:
+            root.set(str(key), str(self.properties[key]))
+
+        # add stages
         if type(self.stages) is Stages:
             root.append(self.stages.to_xml())
 

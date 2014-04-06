@@ -34,6 +34,7 @@ class TestBuild(unittest.TestCase):
     def test_novalue(self):
         # number of stages should be zero
         self.assertEquals(0, len(self.build.stages.stages))
+        self.assertEquals(0, len(self.build.properties))
 
         # dict should be empty
         self.assertDictEqual({'stages' : {}}, self.build.to_dict())
@@ -54,6 +55,19 @@ class TestBuild(unittest.TestCase):
         self.build = Build('')
         self.assertEquals(0, len(self.build.stages.stages))
 
+    def test_add_property(self):
+        self.build.add_property('test1', 2)
+        self.assertEquals(1, len(self.build.properties))
+        self.assertDictEqual({'test1': 2}, self.build.properties)
+
+        self.build.add_property('test2', 3)
+        self.assertEquals(2, len(self.build.properties))
+        self.assertDictEqual({'test1': 2, 'test2': 3}, self.build.properties)
+
+        self.build.add_property('test2', 4)
+        self.assertEquals(2, len(self.build.properties))
+        self.assertDictEqual({'test1': 2, 'test2': 4}, self.build.properties)
+
     def test_to_dict(self):
         # read and parse sample file
         self.build = Build(TEST_SAMPLE_FILE)
@@ -61,6 +75,15 @@ class TestBuild(unittest.TestCase):
         # test dict
         self.assertDictEqual(
             {'stages': {'stage1': 2, 'stage2': 5, 'stage3': 10}},
+            self.build.to_dict())
+
+        # add properties
+        self.build.add_property('test1', 2)
+        self.build.add_property('test2', 3)
+        # test dict
+        self.assertDictEqual(
+            {'test1': 2, 'test2': 3,
+            'stages': {'stage1': 2, 'stage2': 5, 'stage3': 10}},
             self.build.to_dict())
 
     def test_to_xml(self):
@@ -74,6 +97,17 @@ class TestBuild(unittest.TestCase):
             '<stage duration="10" name="stage3"/></stages></build>',
             etree.tostring(self.build.to_xml()))
 
+        # add properties
+        self.build.add_property('test1', 2)
+        self.build.add_property('test2', 3)
+        # test xml output
+        self.assertEquals(
+            '<build test1="2" test2="3">'
+            '<stages><stage duration="2" name="stage1"/>'
+            '<stage duration="5" name="stage2"/>'
+            '<stage duration="10" name="stage3"/></stages></build>',
+            etree.tostring(self.build.to_xml()))
+
     def test_to_xml_string(self):
         # read and parse sample file
         self.build = Build(TEST_SAMPLE_FILE)
@@ -81,6 +115,20 @@ class TestBuild(unittest.TestCase):
         # test xml string output
         self.assertEquals(
             '<build>\n'
+            '  <stages>\n'
+            '    <stage duration="2" name="stage1"/>\n'
+            '    <stage duration="5" name="stage2"/>\n'
+            '    <stage duration="10" name="stage3"/>\n'
+            '  </stages>\n'
+            '</build>\n',
+            self.build.to_xml_string())
+
+        # add properties
+        self.build.add_property('test1', 2)
+        self.build.add_property('test2', 3)
+        # test xml string output
+        self.assertEquals(
+            '<build test1="2" test2="3">\n'
             '  <stages>\n'
             '    <stage duration="2" name="stage1"/>\n'
             '    <stage duration="5" name="stage2"/>\n'
