@@ -26,7 +26,7 @@ import os
 import sys
 import getopt
 from lxml import etree
-from buildtimetrend.stages import Stages
+from buildtimetrend.build import Build
 
 # use parameter for timestamps file and check if file exists
 TIMESTAMP_FILE = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
@@ -42,7 +42,7 @@ def analyse(argv):
     else:
         root_xml = etree.Element("builds")
 
-    build_xml = etree.SubElement(root_xml, "build")
+    build = Build(TIMESTAMP_FILE)
 
     # process arguments
     usage_string = 'analyse.py -h --build=<buildID=' \
@@ -58,16 +58,14 @@ def analyse(argv):
             print usage_string
             sys.exit()
         elif opt == "--build":
-            build_xml.set("id", arg)
+            build.add_property("id", arg)
         elif opt == "--job":
-            build_xml.set("job", arg)
+            build.add_property("job", arg)
         elif opt == "--branch":
-            build_xml.set("branch", arg)
+            build.add_property("branch", arg)
 
-    # create stages element
-    stages = Stages()
-    if stages.read_csv(TIMESTAMP_FILE):
-        build_xml.append(stages.to_xml())
+    # add build data to xml
+    root_xml.append(build.to_xml())
 
     # write xml to file
     with open(RESULT_FILE, 'wb') as xmlfile:
