@@ -16,7 +16,7 @@ Dependencies
 
 Install using pip :
 
-`pip install lxml 'matplotlib>=1.2.0'`
+`pip install keen lxml 'matplotlib>=1.2.0'`
 
 or as a Debian package :
 
