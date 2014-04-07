@@ -45,7 +45,7 @@ def analyse(argv):
     build = Build(TIMESTAMP_FILE)
 
     # process arguments
-    usage_string = 'analyse.py -h --build=<buildID=' \
+    usage_string = 'analyse.py -h --build=<buildID>' \
         ' --job=<jobID> --branch=<branchname>'
     try:
         opts, args = getopt.getopt(
