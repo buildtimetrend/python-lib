@@ -11,6 +11,7 @@ Create a trendline of the different stages of a build process
 Dependencies
 ------------
 
+- keen (client for storing build time data as events in keen.io)
 - lxml (python wrapper for libxml2 and libxslt)
 - matplotlib v1.2.0 or higher (for drawing the trend graph, stackplot is introduced in v1.2.0)
 
