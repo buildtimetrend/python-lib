@@ -48,7 +48,7 @@ class Stages(object):
         '''
         # load timestamps file
         if not os.path.isfile(csv_filename):
-            print "File doesn't exist : %s" % csv_filename
+            print 'File doesn\'t exist : %s' % csv_filename
             return False
 
         # read timestamps, calculate stage duration

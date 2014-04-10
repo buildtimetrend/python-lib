@@ -34,6 +34,6 @@ if __name__ == "__main__":
     trend = Trend()
     if trend.gather_data(RESULT_FILE):
         # print number of builds and list of buildnames
-        print "Builds (%d) :" % len(trend.builds), trend.builds
-        print "Stages (%d) :" % len(trend.stages), trend.stages
+        print 'Builds (%d) :' % len(trend.builds), trend.builds
+        print 'Stages (%d) :' % len(trend.stages), trend.stages
         trend.generate(GRAPH_FILE)
