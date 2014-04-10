@@ -6,7 +6,7 @@ python:
   - "3.3"
 env:
   global:
-    secure: "V5RpOtEm4K4H8hXTPcaPu/z3cbGEdhYyEvN79+qQsGmaymODOFlw53SWPamg7ko6KQXJOu4niZVFU0+IOYxSZqPjXGe5h49+5byp87xhlT/P0vRQdeNC2UDPH4e9O3o+GGB9/yNzyCOOh0G+2M31jK4AkwzXFsMs5wEupuiAOdE="
+    secure: "dR5giy/zGN6FmS4rlJ+RTSwKrbcMSxP9TJ4uW3eT7SpcAHBLPmW1/46vMAVGlHSqjdW0w+DxRjxrLMmo9g3ZZsqFExiXM19W2sbyAuwiAa2WLDTL3IdEdw/wCJm9W1usrRB/oGQjsBvkTzzXlobLXUTcADhUfBSj6XjMiduSAsA="
 before_install:
   # initialise buildtime-trend scripts
   - source ./init.sh
