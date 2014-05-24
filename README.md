@@ -84,7 +84,7 @@ Example `.travis.yml` file :
         secure: # your secure GH_TOKEN goes here (required to share trend on gh-pages)
     before_install:
       # install and initialise build-trend scripts
-      - git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend
+      - if [[ -d $HOME/buildtime-trend/.git ]]; then cd $HOME/buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend; fi
       # initialise buildtime-trend scripts
       - source $HOME/buildtime-trend/init.sh
     install:
