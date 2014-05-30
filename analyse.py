@@ -2,7 +2,7 @@
 # vim: set expandtab sw=4 ts=4:
 # Reads timestamps.csv, calculates stage duration and saves the result
 # to an xml file
-# usage : analyse.py -h --build=<buildID= --job=<jobID> --branch=<branchname>
+# usage : analyse.py -h --build=<buildID> --job=<jobID> --branch=<branchname>
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -48,7 +48,7 @@ def analyse(argv):
     build = Build(TIMESTAMP_FILE)
 
     # process arguments
-    usage_string = 'analyse.py -h --build=<buildID=' \
+    usage_string = 'analyse.py -h --build=<buildID>' \
         ' --job=<jobID> --branch=<branchname>'
     try:
         opts, args = getopt.getopt(
