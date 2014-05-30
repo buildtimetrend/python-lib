@@ -44,6 +44,7 @@ def analyse(argv):
     else:
         root_xml = etree.Element("builds")
 
+    # read build data from timestamp CSV file
     build = Build(TIMESTAMP_FILE)
 
     # process arguments
