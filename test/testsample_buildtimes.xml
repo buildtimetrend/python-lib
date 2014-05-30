@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <builds>
-  <build id="10">
+  <build build="10">
     <stages>
       <stage duration="4" name="stage1"/>
       <stage duration="5" name="stage2"/>
@@ -8,7 +8,7 @@
       <stage duration="1" name="stage4"/>
     </stages>
   </build>
-<build branch="master" id="11" job="11.1"><stages><stage duration="3" name="stage1"/><stage duration="6" name="stage2"/><stage duration="11" name="stage3"/>
+<build branch="master" build="11" job="11.1"><stages><stage duration="3" name="stage1"/><stage duration="6" name="stage2"/><stage duration="11" name="stage3"/>
       <stage duration="6" name="stage5"/>
 </stages></build><build><stages><stage duration="2" name="stage1"/><stage duration="7" name="stage2"/><stage duration="12" name="stage3"/>
       <stage duration="3" name="stage4"/>

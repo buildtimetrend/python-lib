@@ -46,13 +46,13 @@ class Trend(object):
         for build_xml in root_xml:
             build_id = "#%d" % (index + 1)
             build_summary = "Build ID : "
-            if build_xml.get('id') is None:
+            if build_xml.get('build') is None:
                 build_summary += "unknown"
             else:
-                build_summary += build_xml.get('id')
+                build_summary += build_xml.get('build')
                 build_summary += ", Job : "
                 if build_xml.get('job') is None:
-                    build_id = build_xml.get('id')
+                    build_id = build_xml.get('build')
                     build_summary += "unknown"
                 else:
                     build_summary += build_xml.get('job')

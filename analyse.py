@@ -61,7 +61,7 @@ def analyse(argv):
             print usage_string
             sys.exit()
         elif opt == "--build":
-            build.add_property("id", arg)
+            build.add_property("build", arg)
         elif opt == "--job":
             build.add_property("job", arg)
         elif opt == "--branch":
