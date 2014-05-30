@@ -49,6 +49,7 @@ When finished, run
 to analyse the logfile with timestamps and print out the results.
 It will calculate the duration between the timestamps and add them to
 a file with the analysed data of previous builds.
+When Keen.io is enabled, the data will be sent to your Keen.io project for analysis.
 When run on Travis CI, it will automatically add build/job related info.
 
 To generate a graph from previous builds, run
@@ -62,15 +63,15 @@ Use the `sync-buildtime-trend-with-gh-pages.sh` script when you run it as part o
 Store build time data in Keen.io
 --------------------------------
 
-Next to storing your build time data in xml, it can be send to keen.io for storage, analysis and generating graphs.
+Next to storing your build time data in xml, it can be sent to Keen.io for storage, analysis and generating graphs.
 
-Follow these steps to enable using keen.io :
+Follow these steps to enable using Keen.io :
 
 1. [Create a Keen.io account](https://keen.io/signup), if you haven't already done so.
 2. [Create a project](https://keen.io/add-project) in you keen.io account.
 3. Look up the `project ID` and `Write Key` and assign them to environmental variables : 
-`export KEEN_PROJECT_ID=<Project ID>`
-`export KEEN_WRITE_KEY=<Write Key>`
+- `export KEEN_PROJECT_ID=<Project ID>`
+- `export KEEN_WRITE_KEY=<Write Key>`
 
 If these environment variables are set, the scripts will detect this and use Keen.io to store data and do analysis.
 
@@ -90,6 +91,7 @@ You also need to create an encrypted GH_TOKEN to get write access to your repo (
 - add the encrypted token to your .travis.yml file (see below)
 
 To enable integration with Keen.io, `KEEN_PROJECT_ID` and `KEEN_WRITE_KEY` should be set (see above):
+
 1. Follow the steps above to create a Keen.io account and project and look up the Project ID
 2. Encrypt the project ID using the [travis tool](http://docs.travis-ci.com/user/encryption-keys/) :
 `travis encrypt KEEN_PROJECT_ID=<Project ID>` and add it to .travis.yml (see below)
