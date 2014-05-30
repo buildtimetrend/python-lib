@@ -26,7 +26,9 @@ import os
 import sys
 import getopt
 from lxml import etree
+import keen
 from buildtimetrend.build import Build
+from buildtimetrend.keenio import keen_io_writable
 
 # use parameter for timestamps file and check if file exists
 TIMESTAMP_FILE = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
@@ -63,6 +65,10 @@ def analyse(argv):
             build.add_property("job", arg)
         elif opt == "--branch":
             build.add_property("branch", arg)
+
+    # send build data to keen.io
+    if keen_io_writable():
+        keen.add_event("builds", build.to_dict())
 
     # add build data to xml
     root_xml.append(build.to_xml())
