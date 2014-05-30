@@ -24,7 +24,7 @@
 if [ "$BUILD_TREND_INIT" == "1" ]; then
     timestamp.sh -q end
     if [[ "$TRAVIS" == "true" ]]; then
-	analyse.py --branch=$TRAVIS_BRANCH --build=$TRAVIS_BUILD_NUMBER --job=$TRAVIS_JOB_NUMBER
+	analyse.py --branch=$TRAVIS_BRANCH --build=$TRAVIS_BUILD_NUMBER --job=$TRAVIS_JOB_NUMBER --repo=$TRAVIS_REPO_SLUG
     else
 	analyse.py
     fi
