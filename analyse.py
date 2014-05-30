@@ -2,7 +2,7 @@
 # vim: set expandtab sw=4 ts=4:
 # Reads timestamps.csv, calculates stage duration and saves the result
 # to an xml file
-# usage : analyse.py -h --build=<buildID> --job=<jobID> --branch=<branchname>
+# usage : analyse.py -h --build=<buildID> --job=<jobID> --branch=<branchname> --repo=<repo_slug>
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -49,10 +49,10 @@ def analyse(argv):
 
     # process arguments
     usage_string = 'analyse.py -h --build=<buildID>' \
-        ' --job=<jobID> --branch=<branchname>'
+        ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>'
     try:
         opts, args = getopt.getopt(
-            argv, "h", ["build=", "job=", "branch=", "help"])
+            argv, "h", ["build=", "job=", "branch=", "repo=", "help"])
     except getopt.GetoptError:
         print usage_string
         sys.exit(2)
@@ -66,6 +66,8 @@ def analyse(argv):
             build.add_property("job", arg)
         elif opt == "--branch":
             build.add_property("branch", arg)
+        elif opt == "--repo":
+            build.add_property("repo", arg)
 
     # send build data to keen.io
     if keen_io_writable():
