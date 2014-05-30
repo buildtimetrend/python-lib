@@ -32,7 +32,7 @@ First the timestamp recording needs to be initialised :
 
 This script will detect the location of the build-trend script folder,
 adds it to the PATH and cleans logfiles of previous runs.
-Executing the init script with `source` is required to be able to export environment variables to the current shell session.
+Executing the init script with `source` is required to export environment variables to the current shell session.
 
 Because the script dir is added to PATH, no path needs to be added
 when logging a timestamp :
@@ -85,7 +85,7 @@ Example `.travis.yml` file :
         secure: # your secure GH_TOKEN goes here (required to share trend on gh-pages)
     before_install:
       # install and initialise build-trend scripts
-      - git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend
+      - if [[ -d $HOME/buildtime-trend/.git ]]; then cd $HOME/buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend; fi
       # initialise buildtime-trend scripts
       - source $HOME/buildtime-trend/init.sh
     install:

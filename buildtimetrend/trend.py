@@ -38,7 +38,7 @@ class Trend(object):
         if os.path.isfile(result_file):
             root_xml = etree.parse(result_file).getroot()
         else:
-            print "File doesn't exist : %s" % result_file
+            print 'File doesn\'t exist : {}'.format(result_file)
             return False
 
         index = 0

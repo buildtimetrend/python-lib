@@ -48,7 +48,7 @@ class Stages(object):
         '''
         # load timestamps file
         if not os.path.isfile(csv_filename):
-            print "File doesn't exist : %s" % csv_filename
+            print 'File doesn\'t exist : {0}'.format(csv_filename)
             return False
 
         # read timestamps, calculate stage duration
@@ -61,7 +61,7 @@ class Stages(object):
                     if event_name == 'end':
                         break
                     duration = int(row[1]) - previous_timestamp
-                    print 'Duration %s : %ds' % (event_name, duration)
+                    print 'Duration {0} : {1}s'.format(event_name, duration)
                     # add stage duration to stages dict
                     self.stages[event_name] = duration
                 event_name = row[0]
