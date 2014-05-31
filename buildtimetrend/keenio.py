@@ -33,6 +33,7 @@ def keen_io_writable():
         return True
     return False
 
+
 def keen_io_readable():
     '''
     Check if login keys for Keen IO API are set, to allow reading.
