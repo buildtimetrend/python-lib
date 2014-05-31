@@ -43,12 +43,6 @@ if not os.path.isfile(TIMESTAMP_FILE):
 
 
 def analyse(argv):
-    # load previous buildtimes file, or create a new xml root
-    if os.path.isfile(RESULT_FILE):
-        root_xml = etree.parse(RESULT_FILE).getroot()
-    else:
-        root_xml = etree.Element("builds")
-
     # read build data from timestamp CSV file
     build = Build(TIMESTAMP_FILE)
 
@@ -77,6 +71,12 @@ def analyse(argv):
     # send build data to keen.io
     if keen_io_writable():
         keen.add_event("builds", build.to_dict())
+
+    # load previous buildtimes file, or create a new xml root
+    if os.path.isfile(RESULT_FILE):
+        root_xml = etree.parse(RESULT_FILE).getroot()
+    else:
+        root_xml = etree.Element("builds")
 
     # add build data to xml
     root_xml.append(build.to_xml())
