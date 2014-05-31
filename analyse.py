@@ -2,7 +2,12 @@
 # vim: set expandtab sw=4 ts=4:
 # Reads timestamps.csv, calculates stage duration and saves the result
 # to an xml file
-# usage : analyse.py -h --build=<buildID> --job=<jobID> --branch=<branchname> --repo=<repo_slug>
+# usage :
+#  analyse.py -h
+#    --build=<buildID>
+#    --job=<jobID>
+#    --branch=<branchname>
+#    --repo=<repo_slug>
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
