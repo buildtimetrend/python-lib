@@ -90,6 +90,31 @@ class TestBuild(unittest.TestCase):
             'stage3': {'duration': 10, 'name': 'stage3'}}},
             self.build.to_dict())
 
+    def test_stages_to_dict(self):
+        # read and parse sample file
+        self.build = Build(TEST_SAMPLE_FILE)
+
+        # test dict
+        self.assertDictEqual(
+            {'stage1': {'duration': 2, 'name': 'stage1'},
+            'stage2': {'duration': 5, 'name': 'stage2'},
+            'stage3': {'duration': 10, 'name': 'stage3'}},
+            self.build.stages_to_dict())
+
+        # add properties
+        self.build.add_property('test1', 2)
+        self.build.add_property('test2', 3)
+        # test dict
+        self.assertDictEqual(
+            {'stage1': {'duration': 2, 'name': 'stage1',
+            'build': {'test1': 2, 'test2': 3}},
+            'stage2': {'duration': 5, 'name': 'stage2',
+            'build': {'test1': 2, 'test2': 3}},
+            'stage3': {'duration': 10, 'name': 'stage3',
+            'build': {'test1': 2, 'test2': 3}},
+            },
+            self.build.stages_to_dict())
+
     def test_to_xml(self):
         # read and parse sample file
         self.build = Build(TEST_SAMPLE_FILE)

@@ -71,6 +71,22 @@ class Build(object):
 
         return data
 
+    def stages_to_dict(self):
+        '''
+        Return dictionary of stages, all containing the build properties
+        '''
+        if type(self.stages) is Stages:
+            # copy values of stages
+            data = copy.deepcopy(self.stages.stages)
+
+            # add build properties
+            for stage in data:
+                # copy values of properties
+                if len(self.properties) > 0:
+                    data[stage]["build"] = copy.deepcopy(self.properties)
+
+        return data
+
     def to_xml(self):
         '''Generates xml object of Build instance'''
         root = etree.Element("build")
