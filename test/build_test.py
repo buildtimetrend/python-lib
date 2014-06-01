@@ -56,17 +56,17 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(0, len(self.build.stages.stages))
 
     def test_add_property(self):
-        self.build.add_property('test1', 2)
+        self.build.add_property('property1', 2)
         self.assertEquals(1, len(self.build.properties))
-        self.assertDictEqual({'test1': 2}, self.build.properties)
+        self.assertDictEqual({'property1': 2}, self.build.properties)
 
-        self.build.add_property('test2', 3)
+        self.build.add_property('property2', 3)
         self.assertEquals(2, len(self.build.properties))
-        self.assertDictEqual({'test1': 2, 'test2': 3}, self.build.properties)
+        self.assertDictEqual({'property1': 2, 'property2': 3}, self.build.properties)
 
-        self.build.add_property('test2', 4)
+        self.build.add_property('property2', 4)
         self.assertEquals(2, len(self.build.properties))
-        self.assertDictEqual({'test1': 2, 'test2': 4}, self.build.properties)
+        self.assertDictEqual({'property1': 2, 'property2': 4}, self.build.properties)
 
     def test_to_dict(self):
         # read and parse sample file
@@ -80,11 +80,11 @@ class TestBuild(unittest.TestCase):
             self.build.to_dict())
 
         # add properties
-        self.build.add_property('test1', 2)
-        self.build.add_property('test2', 3)
+        self.build.add_property('property1', 2)
+        self.build.add_property('property2', 3)
         # test dict
         self.assertDictEqual(
-            {'test1': 2, 'test2': 3,
+            {'property1': 2, 'property2': 3,
             'stages': {'stage1': {'duration': 2, 'name': 'stage1'},
             'stage2': {'duration': 5, 'name': 'stage2'},
             'stage3': {'duration': 10, 'name': 'stage3'}}},
@@ -102,16 +102,16 @@ class TestBuild(unittest.TestCase):
             self.build.stages_to_dict())
 
         # add properties
-        self.build.add_property('test1', 2)
-        self.build.add_property('test2', 3)
+        self.build.add_property('property1', 2)
+        self.build.add_property('property2', 3)
         # test dict
         self.assertDictEqual(
             {'stage1': {'duration': 2, 'name': 'stage1',
-            'build': {'test1': 2, 'test2': 3}},
+            'build': {'property1': 2, 'property2': 3}},
             'stage2': {'duration': 5, 'name': 'stage2',
-            'build': {'test1': 2, 'test2': 3}},
+            'build': {'property1': 2, 'property2': 3}},
             'stage3': {'duration': 10, 'name': 'stage3',
-            'build': {'test1': 2, 'test2': 3}},
+            'build': {'property1': 2, 'property2': 3}},
             },
             self.build.stages_to_dict())
 
@@ -127,11 +127,11 @@ class TestBuild(unittest.TestCase):
             etree.tostring(self.build.to_xml()))
 
         # add properties
-        self.build.add_property('test1', 2)
-        self.build.add_property('test2', 3)
+        self.build.add_property('property1', 2)
+        self.build.add_property('property2', 3)
         # test xml output
         self.assertEquals(
-            '<build test1="2" test2="3">'
+            '<build property1="2" property2="3">'
             '<stages><stage duration="2" name="stage1"/>'
             '<stage duration="5" name="stage2"/>'
             '<stage duration="10" name="stage3"/></stages></build>',
@@ -153,11 +153,11 @@ class TestBuild(unittest.TestCase):
             self.build.to_xml_string())
 
         # add properties
-        self.build.add_property('test1', 2)
-        self.build.add_property('test2', 3)
+        self.build.add_property('property1', 2)
+        self.build.add_property('property2', 3)
         # test xml string output
         self.assertEquals(
-            '<build test1="2" test2="3">\n'
+            '<build property1="2" property2="3">\n'
             '  <stages>\n'
             '    <stage duration="2" name="stage1"/>\n'
             '    <stage duration="5" name="stage2"/>\n'
