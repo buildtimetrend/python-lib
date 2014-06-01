@@ -63,7 +63,8 @@ class Stages(object):
                     duration = int(row[1]) - previous_timestamp
                     print 'Duration {0} : {1}s'.format(event_name, duration)
                     # add stage duration to stages dict
-                    self.stages[event_name] = {"name" : event_name, "duration" : duration}
+                    self.stages[event_name] = {"name": event_name,
+                        "duration": duration}
                 event_name = row[0]
                 previous_timestamp = int(row[1])
 
