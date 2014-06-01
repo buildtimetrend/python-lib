@@ -55,7 +55,10 @@ class TestTimestamps(unittest.TestCase):
 
         # test stages (names + duration)
         self.assertDictEqual(
-            {'stage1': 2, 'stage2': 5, 'stage3': 10}, self.stages.stages)
+            {'stage1': {'duration': 2, 'name': 'stage1'},
+            'stage2': {'duration': 5, 'name': 'stage2'},
+            'stage3': {'duration': 10, 'name': 'stage3'}},
+            self.stages.stages)
 
     def test_to_xml(self):
         # read and parse sample file

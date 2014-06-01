@@ -63,7 +63,7 @@ class Stages(object):
                     duration = int(row[1]) - previous_timestamp
                     print 'Duration {0} : {1}s'.format(event_name, duration)
                     # add stage duration to stages dict
-                    self.stages[event_name] = duration
+                    self.stages[event_name] = {"name" : event_name, "duration" : duration}
                 event_name = row[0]
                 previous_timestamp = int(row[1])
 
@@ -75,7 +75,8 @@ class Stages(object):
 
         for stage_id in self.stages:
             root.append(etree.Element(
-                "stage", name=stage_id, duration=str(self.stages[stage_id])))
+                "stage", name=self.stages[stage_id]["name"],
+                duration=str(self.stages[stage_id]["duration"])))
 
         return root
 

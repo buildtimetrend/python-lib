@@ -74,7 +74,9 @@ class TestBuild(unittest.TestCase):
 
         # test dict
         self.assertDictEqual(
-            {'stages': {'stage1': 2, 'stage2': 5, 'stage3': 10}},
+            {'stages': {'stage1': {'duration': 2, 'name': 'stage1'},
+            'stage2': {'duration': 5, 'name': 'stage2'},
+            'stage3': {'duration': 10, 'name': 'stage3'}}},
             self.build.to_dict())
 
         # add properties
@@ -83,7 +85,9 @@ class TestBuild(unittest.TestCase):
         # test dict
         self.assertDictEqual(
             {'test1': 2, 'test2': 3,
-            'stages': {'stage1': 2, 'stage2': 5, 'stage3': 10}},
+            'stages': {'stage1': {'duration': 2, 'name': 'stage1'},
+            'stage2': {'duration': 5, 'name': 'stage2'},
+            'stage3': {'duration': 10, 'name': 'stage3'}}},
             self.build.to_dict())
 
     def test_to_xml(self):
