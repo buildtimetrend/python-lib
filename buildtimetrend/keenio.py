@@ -41,4 +41,3 @@ def keen_io_readable():
     if "KEEN_PROJECT_ID" in os.environ and "KEEN_READ_KEY" in os.environ:
         return True
     return False
-
