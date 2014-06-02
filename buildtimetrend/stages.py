@@ -36,7 +36,7 @@ class Stages(object):
     '''
 
     def __init__(self):
-        self.stages = {}
+        self.stages = []
 
     def read_csv(self, csv_filename):
         '''
@@ -63,9 +63,9 @@ class Stages(object):
                     duration = int(row[1]) - previous_timestamp
                     print 'Duration {0} : {1}s'.format(event_name, duration)
                     # add stage duration to stages dict
-                    self.stages[event_name] = {
+                    self.stages.append({
                         "name": event_name,
-                        "duration": duration}
+                        "duration": duration})
                 event_name = row[0]
                 previous_timestamp = int(row[1])
 
@@ -75,10 +75,10 @@ class Stages(object):
         '''Generates xml object from stages dictionary'''
         root = etree.Element("stages")
 
-        for stage_id in self.stages:
+        for stage in self.stages:
             root.append(etree.Element(
-                "stage", name=self.stages[stage_id]["name"],
-                duration=str(self.stages[stage_id]["duration"])))
+                "stage", name=stage["name"],
+                duration=str(stage["duration"])))
 
         return root
 

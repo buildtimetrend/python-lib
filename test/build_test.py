@@ -37,7 +37,7 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(0, len(self.build.properties))
 
         # dict should be empty
-        self.assertDictEqual({'stages' : {}}, self.build.to_dict())
+        self.assertDictEqual({'stages' : []}, self.build.to_dict())
 
         # xml shouldn't contain items
         self.assertEquals(
@@ -74,9 +74,9 @@ class TestBuild(unittest.TestCase):
 
         # test dict
         self.assertDictEqual(
-            {'stages': {'stage1': {'duration': 2, 'name': 'stage1'},
-            'stage2': {'duration': 5, 'name': 'stage2'},
-            'stage3': {'duration': 10, 'name': 'stage3'}}},
+            {'stages': [{'duration': 2, 'name': 'stage1'},
+            {'duration': 5, 'name': 'stage2'},
+            {'duration': 10, 'name': 'stage3'}]},
             self.build.to_dict())
 
         # add properties
@@ -85,35 +85,35 @@ class TestBuild(unittest.TestCase):
         # test dict
         self.assertDictEqual(
             {'property1': 2, 'property2': 3,
-            'stages': {'stage1': {'duration': 2, 'name': 'stage1'},
-            'stage2': {'duration': 5, 'name': 'stage2'},
-            'stage3': {'duration': 10, 'name': 'stage3'}}},
+            'stages': [{'duration': 2, 'name': 'stage1'},
+            {'duration': 5, 'name': 'stage2'},
+            {'duration': 10, 'name': 'stage3'}]},
             self.build.to_dict())
 
     def test_stages_to_dict(self):
         # read and parse sample file
         self.build = Build(TEST_SAMPLE_FILE)
 
-        # test dict
-        self.assertDictEqual(
-            {'stage1': {'duration': 2, 'name': 'stage1'},
-            'stage2': {'duration': 5, 'name': 'stage2'},
-            'stage3': {'duration': 10, 'name': 'stage3'}},
-            self.build.stages_to_dict())
+        # test list
+        self.assertListEqual(
+            [{'duration': 2, 'name': 'stage1'},
+            {'duration': 5, 'name': 'stage2'},
+            {'duration': 10, 'name': 'stage3'}],
+            self.build.stages_to_list())
 
         # add properties
         self.build.add_property('property1', 2)
         self.build.add_property('property2', 3)
         # test dict
-        self.assertDictEqual(
-            {'stage1': {'duration': 2, 'name': 'stage1',
+        self.assertListEqual(
+            [{'duration': 2, 'name': 'stage1',
             'build': {'property1': 2, 'property2': 3}},
-            'stage2': {'duration': 5, 'name': 'stage2',
+            {'duration': 5, 'name': 'stage2',
             'build': {'property1': 2, 'property2': 3}},
-            'stage3': {'duration': 10, 'name': 'stage3',
+            {'duration': 10, 'name': 'stage3',
             'build': {'property1': 2, 'property2': 3}},
-            },
-            self.build.stages_to_dict())
+            ],
+            self.build.stages_to_list())
 
     def test_to_xml(self):
         # read and parse sample file

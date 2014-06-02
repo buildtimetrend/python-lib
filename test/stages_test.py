@@ -54,10 +54,10 @@ class TestTimestamps(unittest.TestCase):
         self.assertEquals(3, len(self.stages.stages))
 
         # test stages (names + duration)
-        self.assertDictEqual(
-            {'stage1': {'duration': 2, 'name': 'stage1'},
-            'stage2': {'duration': 5, 'name': 'stage2'},
-            'stage3': {'duration': 10, 'name': 'stage3'}},
+        self.assertListEqual(
+            [{'duration': 2, 'name': 'stage1'},
+            {'duration': 5, 'name': 'stage2'},
+            {'duration': 10, 'name': 'stage3'}],
             self.stages.stages)
 
     def test_to_xml(self):

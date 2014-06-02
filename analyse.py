@@ -71,7 +71,7 @@ def analyse(argv):
     # send build data to keen.io
     if keen_io_writable():
         keen.add_event("builds", build.to_dict())
-        keen.add_events({"build_stages": build.stages_to_dict()})
+        keen.add_events({"build_stages": build.stages_to_list()})
 
     # load previous buildtimes file, or create a new xml root
     if os.path.isfile(RESULT_FILE):

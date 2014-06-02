@@ -71,9 +71,9 @@ class Build(object):
 
         return data
 
-    def stages_to_dict(self):
+    def stages_to_list(self):
         '''
-        Return dictionary of stages, all containing the build properties
+        Return list of stages, all containing the build properties
         '''
         if type(self.stages) is Stages:
             # copy values of stages
@@ -83,7 +83,7 @@ class Build(object):
             for stage in data:
                 # copy values of properties
                 if len(self.properties) > 0:
-                    data[stage]["build"] = copy.deepcopy(self.properties)
+                    stage["build"] = copy.deepcopy(self.properties)
 
         return data
 
