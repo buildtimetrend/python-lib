@@ -70,7 +70,12 @@ def analyse(argv):
 
     # load previous buildtimes file, or create a new xml root
     if os.path.isfile(RESULT_FILE):
-        root_xml = etree.parse(RESULT_FILE).getroot()
+        try:
+            root_xml = etree.parse(RESULT_FILE).getroot()
+        except etree.XMLSyntaxError:
+            print 'ERROR : XML format invalid : a new file is created,' \
+                ' corrupt file is discarded'
+            root_xml = etree.Element("builds")
     else:
         root_xml = etree.Element("builds")
 
