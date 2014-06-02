@@ -68,11 +68,6 @@ def analyse(argv):
         elif opt == "--repo":
             build.add_property("repo", arg)
 
-    # send build data to keen.io
-    if keen_io_writable():
-        keen.add_event("builds", build.to_dict())
-        keen.add_events({"build_stages": build.stages_to_list()})
-
     # load previous buildtimes file, or create a new xml root
     if os.path.isfile(RESULT_FILE):
         root_xml = etree.parse(RESULT_FILE).getroot()
@@ -87,6 +82,11 @@ def analyse(argv):
         xmlfile.write(etree.tostring(
             root_xml, xml_declaration=True,
             encoding='utf-8', pretty_print=True))
+
+    # send build data to keen.io
+    if keen_io_writable():
+        keen.add_event("builds", build.to_dict())
+        keen.add_events({"build_stages": build.stages_to_list()})
 
 if __name__ == "__main__":
     analyse(sys.argv[1:])
