@@ -69,7 +69,7 @@ Follow these steps to enable using Keen.io :
 
 1. [Create a Keen.io account](https://keen.io/signup), if you haven't already done so.
 2. [Create a project](https://keen.io/add-project) in you keen.io account.
-3. Look up the `project ID` and `Write Key` and assign them to environmental variables : 
+3. Look up the `project ID` and `Write Key` and assign them to environment variables : 
 - `export KEEN_PROJECT_ID=<Project ID>`
 - `export KEEN_WRITE_KEY=<Write Key>`
 
@@ -97,6 +97,8 @@ To enable integration with Keen.io, `KEEN_PROJECT_ID` and `KEEN_WRITE_KEY` shoul
 `travis encrypt KEEN_PROJECT_ID=<Project ID>` and add it to .travis.yml (see below)
 3. For the Write key, the master key of your Keen.io project should be used, because the Write key is too long to encrypt using the Travis encryption tool :
 `travis encrypt KEEN_WRITE_KEY=<Master Key>`
+
+Another option is to export the API master key, generate a scoped key using the Keen.io [Python SDK](https://github.com/keenlabs/KeenClient-Python#create-scoped-keys) and use those keys for write and read access.
  
 The generated trend graph and build-data will be put in folder `buildtime-trend` on your `gh-pages` branch.
 The trend is available on http://{username}.github.io/{repo_name}/buildtime-trend/trend.png
