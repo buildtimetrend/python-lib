@@ -23,7 +23,7 @@
 import os
 from lxml import etree
 import matplotlib
-# Force matplotlib to not use any Xwindows backend.
+# Force matplotlib to not use any Xwindow backend.
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 
@@ -34,7 +34,7 @@ class Trend(object):
         self.builds = []
 
     def gather_data(self, result_file):
-        # load builtimes file
+        # load buildtimes file
         if os.path.isfile(result_file):
             root_xml = etree.parse(result_file).getroot()
         else:
