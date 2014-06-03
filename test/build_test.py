@@ -90,15 +90,15 @@ class TestBuild(unittest.TestCase):
             {'duration': 10, 'name': 'stage3'}]},
             self.build.to_dict())
 
-    def test_stages_to_dict(self):
+    def test_stages_to_list(self):
         # read and parse sample file
         self.build = Build(TEST_SAMPLE_FILE)
 
         # test list
         self.assertListEqual(
-            [{'duration': 2, 'name': 'stage1'},
-            {'duration': 5, 'name': 'stage2'},
-            {'duration': 10, 'name': 'stage3'}],
+            [{'stage': {'duration': 2, 'name': 'stage1'}},
+            {'stage': {'duration': 5, 'name': 'stage2'}},
+            {'stage': {'duration': 10, 'name': 'stage3'}}],
             self.build.stages_to_list())
 
         # add properties
@@ -106,11 +106,11 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property2', 3)
         # test dict
         self.assertListEqual(
-            [{'duration': 2, 'name': 'stage1',
+            [{'stage': {'duration': 2, 'name': 'stage1'},
             'build': {'property1': 2, 'property2': 3}},
-            {'duration': 5, 'name': 'stage2',
+            {'stage': {'duration': 5, 'name': 'stage2'},
             'build': {'property1': 2, 'property2': 3}},
-            {'duration': 10, 'name': 'stage3',
+            {'stage': {'duration': 10, 'name': 'stage3'},
             'build': {'property1': 2, 'property2': 3}},
             ],
             self.build.stages_to_list())

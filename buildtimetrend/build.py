@@ -76,14 +76,18 @@ class Build(object):
         Return list of stages, all containing the build properties
         '''
         if type(self.stages) is Stages:
-            # copy values of stages
-            data = copy.deepcopy(self.stages.stages)
+            # create list to be returned
+            data = []
 
-            # add build properties
-            for stage in data:
+            # iterate all stages
+            for stage in self.stages.stages:
+                temp = {}
+                # copy stage data
+                temp["stage"] = copy.deepcopy(stage)
                 # copy values of properties
                 if len(self.properties) > 0:
-                    stage["build"] = copy.deepcopy(self.properties)
+                    temp["build"] = copy.deepcopy(self.properties)
+                data.append(temp)
 
         return data
 
