@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import os
+from keen import scoped_keys
 
 
 def keen_io_writable():
@@ -41,3 +42,23 @@ def keen_io_readable():
     if "KEEN_PROJECT_ID" in os.environ and "KEEN_READ_KEY" in os.environ:
         return True
     return False
+
+
+def keen_io_generate_read_key(repo):
+    '''
+    Create scoped key for reading only the build-stages related data.
+    Param repo : github repository slug (fe. ruleant/buildtime-trend)
+    '''
+    if "KEEN_MASTER_KEY" in os.environ:
+        master_key = os.getenv("KEEN_MASTER_KEY")
+        privileges = {
+            "filters": [{
+                "property_name": "build.repo",
+                "operator": "eq",
+                "property_value": repo
+            }],
+            "allowed_operations": [ "read" ]
+        }
+
+        return scoped_keys.encrypt(master_key, privileges)
+    return None
