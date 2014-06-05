@@ -57,7 +57,7 @@ def keen_io_generate_read_key(repo):
                 "operator": "eq",
                 "property_value": repo
             }],
-            "allowed_operations": [ "read" ]
+            "allowed_operations": ["read"]
         }
 
         return scoped_keys.encrypt(master_key, privileges)
