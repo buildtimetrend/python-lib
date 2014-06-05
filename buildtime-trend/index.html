@@ -1,4 +1,53 @@
-<html><body><h1>It works!</h1>
-<p>This is the default web page for this server.</p>
-<p>The web server software is running but no content has been added, yet.</p>
-</body></html>
+<html>
+<head>
+<script type="text/javascript">
+    var Keen=Keen||{configure:function(e){this._cf=e},addEvent:function(e,t,n,i){this._eq=this._eq||[],this._eq.push([e,t,n,i])},setGlobalProperties:function(e){this._gp=e},onChartsReady:function(e){this._ocrq=this._ocrq||[],this._ocrq.push(e)}};(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src=("https:"==document.location.protocol?"https://":"http://")+"dc8na2hxrj29i.cloudfront.net/code/keen-2.1.2-min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
+
+Keen.configure({
+    projectId: "53416589ce5e433082000002",
+    readKey: "1defff0981fc7568c641402eeb8facda1ad9480fec0a34d31ae797ac2d693c5ebea7a7b53bd0125dfa63ead6467ad050cacd988497db3439770196ececb6f42658da4cb4c116c7fb348eaeba826ea145bfdd8aa4ce34960dbbe84d176d2b3a2775764d260fcb03ac6ed75b1a8d8dd92575be6ebed63db15bcf0ad36ddb5f2c78a2e9272775a8ba7c0820d84138df89e92e516c1669088634d512a47e044cadf2f1da60f1f8988500471ac338c37368ec"}
+);
+
+// visualization code goes here
+Keen.onChartsReady(function() {
+  var series_week = new Keen.Series("build_stages", {
+    analysisType: "average",
+    timeframe: "this_7_days",
+    interval: "daily",
+    targetProperty: "stage.duration",
+    groupBy: "stage.name",
+    filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
+  });
+  series_week.draw(document.getElementById("stage_duration_week"), { lineWidth: 2 });
+
+  var series_builds = new Keen.Series("build_stages", {
+    analysisType: "count_unique",
+    timeframe: "this_7_days",
+    interval: "daily",
+    targetProperty: "build.build"//,
+    //groupBy: "build.repo"
+  });
+  series_builds.draw(document.getElementById("builds_week"), { lineWidth: 2 });
+
+  var series_month = new Keen.Series("build_stages", {
+    analysisType: "average",
+    timeframe: "this_month",
+    interval: "daily",
+    targetProperty: "stage.duration",
+    groupBy: "stage.name",
+    filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
+  });
+  series_month.draw(document.getElementById("stage_duration_month"), { lineWidth: 2 });
+});
+</script>
+</head>
+<body>
+<h1>Project buildtime trend</h1>
+<h2>Average buildstage duration of last week's builds</h2>
+<div id="stage_duration_week"></div>
+<h2>Number of builds last week</h2>
+<div id="builds_week"></div>
+<h2>Average buildstage duration of this month's builds</h2>
+<div id="stage_duration_month"></div>
+</body>
+</html>
