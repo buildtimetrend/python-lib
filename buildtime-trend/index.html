@@ -18,7 +18,8 @@ Keen.onChartsReady(function() {
     groupBy: "stage.name",
     filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
   });
-  series_week.draw(document.getElementById("stage_duration_week"), { lineWidth: 2 });
+  series_week.draw(document.getElementById("stage_duration_week"),
+    { lineWidth: 2, title: "Build stages trend", yAxisLabel: "duration [s]" });
 
   var series_builds = new Keen.Series("build_stages", {
     analysisType: "count_unique",
@@ -37,7 +38,8 @@ Keen.onChartsReady(function() {
     groupBy: "stage.name",
     filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
   });
-  series_month.draw(document.getElementById("stage_duration_month"), { lineWidth: 2 });
+  series_month.draw(document.getElementById("stage_duration_month"),
+    { lineWidth: 2, title: "Build stages trend", yAxisLabel: "duration [s]" });
 });
 </script>
 </head>
