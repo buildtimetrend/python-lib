@@ -28,7 +28,8 @@ Keen.onChartsReady(function() {
     targetProperty: "build.build"//,
     //groupBy: "build.repo"
   });
-  series_builds.draw(document.getElementById("builds_week"), { lineWidth: 2 });
+  series_builds.draw(document.getElementById("builds_week"),
+    { lineWidth: 2, title: "Number of builds", yAxisLabel: "build count", showLegend: false });
 
   var series_month = new Keen.Series("build_stages", {
     analysisType: "average",
