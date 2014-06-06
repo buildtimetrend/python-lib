@@ -19,7 +19,7 @@ Keen.onChartsReady(function() {
     filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
   });
   series_week.draw(document.getElementById("stage_duration_week"),
-    { lineWidth: 2, title: "Build stages trend", yAxisLabel: "duration [s]" });
+    { lineWidth: 2, title: "Average build stage duration", yAxisLabel: "duration [s]" });
 
   var series_builds = new Keen.Series("build_stages", {
     analysisType: "count_unique",
@@ -39,17 +39,17 @@ Keen.onChartsReady(function() {
     filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
   });
   series_month.draw(document.getElementById("stage_duration_month"),
-    { lineWidth: 2, title: "Build stages trend", yAxisLabel: "duration [s]" });
+    { lineWidth: 2, title: "Average build stage duration", yAxisLabel: "duration [s]" });
 });
 </script>
 </head>
 <body>
 <h1>Project buildtime trend</h1>
-<h2>Average buildstage duration of last week's builds</h2>
+<h2>Last week's builds</h2>
 <div id="stage_duration_week"></div>
 <h2>Number of builds last week</h2>
 <div id="builds_week"></div>
-<h2>Average buildstage duration of this month's builds</h2>
+<h2>This month's builds</h2>
 <div id="stage_duration_month"></div>
 </body>
 </html>
