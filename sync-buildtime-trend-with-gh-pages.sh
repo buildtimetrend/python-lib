@@ -57,11 +57,17 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   # BUILD_TREND_OUTPUTFILE is used by the analysis script
   BUILD_TREND_OUTPUTFILE=$GH_PAGES_BUILD_TREND_DIR/buildtimes.xml
   BUILD_TREND_TRENDFILE=$GH_PAGES_BUILD_TREND_DIR/trend.png
+  BUILD_TREND_OVERVIEWFILE=$GH_PAGES_BUILD_TREND_DIR/index.html
+  BUILD_TREND_ORIGIN_OVERVIEWFILE=$BUILD_TREND_TRENDS_DIR/index.html
+  BUILD_TREND_CONFIGFILE=$GH_PAGES_BUILD_TREND_DIR/config.js
+  BUILD_TREND_SAMPLE_CONFIGFILE=$BUILD_TREND_TRENDS_DIR/config_sample.js
 
   # perform analysis
   analyse.sh
   # generate trend
   generate_trend.py
+  # update trends overview HTML file
+  cp $BUILD_TREND_ORIGIN_OVERVIEWFILE $BUILD_TREND_OVERVIEWFILE
 
   # print trend location
   REPO_OWNER=${TRAVIS_REPO_SLUG%/*}

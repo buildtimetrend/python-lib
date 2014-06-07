@@ -25,6 +25,7 @@
 
 import os
 from buildtimetrend.trend import Trend
+from buildtimetrend.keenio import generate_overview_config_file
 
 # use parameter for timestamps file and check if file exists
 RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'trends/buildtimes.xml')
@@ -37,3 +38,7 @@ if __name__ == "__main__":
         print 'Builds ({}) :'.format(len(trend.builds)), trend.builds
         print 'Stages ({}) :'.format(len(trend.stages)), trend.stages
         trend.generate(GRAPH_FILE)
+
+    # TODO use generic repo value (create general config object)
+    if 'TRAVIS_REPO_SLUG' in os.environ:
+        generate_overview_config_file(os.getenv('TRAVIS_REPO_SLUG'))
