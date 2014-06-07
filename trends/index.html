@@ -49,12 +49,12 @@ Keen.onChartsReady(function() {
 <body>
 <h1 id="title">Build trends</h1>
 <h2>Last week's builds</h2>
-<div id="stage_duration_week" ></div><div id="builds_week" /></div>
+<div id="stage_duration_week"></div>
+<div id="builds_week"></div>
 <h2>This month's builds</h2>
 <div id="stage_duration_month" ></div>
 <p>Powered by <a href="http://ruleant.github.io/buildtime-trend/">Buildtime trend</a>.<br />
 Using the <a href="https://keen.io/">Keen.io</a> API for data analysis and visualisation.</p>
-</body>
 <script>
 // add project name to title
 // check if config.projectName is set
@@ -64,4 +64,5 @@ if (config.projectName != null || config.projectName == 'project_name') {
     document.getElementsByTagName("title")[0].innerHTML = title;
 }
 </script>
+</body>
 </html>
