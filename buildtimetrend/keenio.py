@@ -82,21 +82,19 @@ def generate_overview_config_file(repo):
             print 'File doesn\'t exist : {0}'.format(sample_filename)
             return
 
-        infile = open(sample_filename, 'rb')
-        outfile = open(config_file, 'w')
-
+        # list of string pairs to be replaced (search string : new string)
         replacements = {
             'keen_project_id': str(keen_project_id),
             'keen_read_key': str(read_key),
             'project_name': str(repo)
         }
 
-        for line in infile:
-            for src, target in replacements.iteritems():
-                line = line.replace(src, target)
-            outfile.write(line)
-        infile.close()
-        outfile.close()
+        with open(sample_filename, 'rb') as infile, \
+                open(config_file, 'w') as outfile:
+            for line in infile:
+                for src, target in replacements.iteritems():
+                    line = line.replace(src, target)
+                outfile.write(line)
 
         print "Created trends overview config file"
     else:
