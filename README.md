@@ -97,6 +97,8 @@ To enable integration with Keen.io, `KEEN_PROJECT_ID` and `KEEN_WRITE_KEY` shoul
 `travis encrypt KEEN_PROJECT_ID=<Project ID>` and add it to .travis.yml (see below)
 3. For the Write key, the master key of your Keen.io project should be used, because the Write key is too long to encrypt using the Travis encryption tool :
 `travis encrypt KEEN_WRITE_KEY=<Master Key>`
+4. The master key of your Keen.io project is used to generate a scoped read key:
+`travis encrypt KEEN_MASTER_KEY=<Master Key>`
 
 Another option is to export the API master key, generate a scoped key using the Keen.io [Python SDK](https://github.com/keenlabs/KeenClient-Python#create-scoped-keys) and use those keys for write and read access.
  
@@ -111,6 +113,7 @@ Example `.travis.yml` file :
         - secure: # your secure GH_TOKEN goes here (required to share trend on gh-pages)
         - secure: # your secure KEEN_PROJECT_ID goes here (required to store data on Keen.io)
         - secure: # your secure KEEN_WRITE_KEY goes here (required to store data on Keen.io)
+        - secure: # your secure KEEN_MASTER_KEY goes here (required to generate a scoped read key to generate graphs using the Keen.io API)
     before_install:
       # install and initialise build-trend scripts
       - if [[ -d $HOME/buildtime-trend/.git ]]; then cd $HOME/buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend; fi
