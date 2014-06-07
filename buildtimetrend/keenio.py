@@ -88,3 +88,5 @@ def generate_overview_config_file(repo):
         outfile.close()
 
         print "Created trends overview config file"
+    else:
+        print "Trends overview config file was not created"
