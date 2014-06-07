@@ -27,8 +27,8 @@ import os
 from buildtimetrend.trend import Trend
 
 # use parameter for timestamps file and check if file exists
-RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'buildtimes.xml')
-GRAPH_FILE = os.getenv('BUILD_TREND_TRENDFILE', 'trend.png')
+RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'trends/buildtimes.xml')
+GRAPH_FILE = os.getenv('BUILD_TREND_TRENDFILE', 'trends/trend.png')
 
 if __name__ == "__main__":
     trend = Trend()
