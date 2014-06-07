@@ -58,7 +58,7 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   BUILD_TREND_OUTPUTFILE=$GH_PAGES_BUILD_TREND_DIR/buildtimes.xml
   BUILD_TREND_TRENDFILE=$GH_PAGES_BUILD_TREND_DIR/trend.png
 
-  # perfom analysis
+  # perform analysis
   analyse.sh
   # generate trend
   generate_trend.py
