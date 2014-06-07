@@ -63,6 +63,7 @@ def keen_io_generate_read_key(repo):
         return scoped_keys.encrypt(master_key, privileges)
     return None
 
+
 def generate_overview_config_file(repo):
     '''
     Generates a config file for the overview HTML file that contains the
@@ -82,9 +83,10 @@ def generate_overview_config_file(repo):
         infile = open(sample_filename, 'rb')
         outfile = open(config_file, 'w')
 
-        replacements = {'keen_project_id':str(keen_project_id),
-                'keen_read_key':str(read_key),
-                'project_name':str(repo)
+        replacements = {
+            'keen_project_id': str(keen_project_id),
+            'keen_read_key': str(read_key),
+            'project_name': str(repo)
         }
 
         for line in infile:
