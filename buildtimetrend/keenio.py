@@ -83,7 +83,9 @@ def generate_overview_config_file(repo):
         outfile = open(config_file, 'w')
 
         replacements = {'keen_project_id':str(keen_project_id),
-                'keen_read_key':str(read_key)}
+                'keen_read_key':str(read_key),
+                'project_name':str(repo)
+        }
 
         for line in infile:
             for src, target in replacements.iteritems():
