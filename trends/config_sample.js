@@ -3,3 +3,6 @@ var keenConfig = {
     readKey: "keen_read_key"
 }
 
+var config = {
+    projectName: "project_name"
+}
