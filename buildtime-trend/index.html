@@ -1,12 +1,13 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<script type="text/javascript" src="config.js"></script>
 <script type="text/javascript">
     var Keen=Keen||{configure:function(e){this._cf=e},addEvent:function(e,t,n,i){this._eq=this._eq||[],this._eq.push([e,t,n,i])},setGlobalProperties:function(e){this._gp=e},onChartsReady:function(e){this._ocrq=this._ocrq||[],this._ocrq.push(e)}};(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src=("https:"==document.location.protocol?"https://":"http://")+"dc8na2hxrj29i.cloudfront.net/code/keen-2.1.2-min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
 
-Keen.configure({
-    projectId: "53416589ce5e433082000002",
-    readKey: "1defff0981fc7568c641402eeb8facda1ad9480fec0a34d31ae797ac2d693c5ebea7a7b53bd0125dfa63ead6467ad050cacd988497db3439770196ececb6f42658da4cb4c116c7fb348eaeba826ea145bfdd8aa4ce34960dbbe84d176d2b3a2775764d260fcb03ac6ed75b1a8d8dd92575be6ebed63db15bcf0ad36ddb5f2c78a2e9272775a8ba7c0820d84138df89e92e516c1669088634d512a47e044cadf2f1da60f1f8988500471ac338c37368ec"}
-);
+// configure Keen.io API client, keenConfig is defined in config.js
+Keen.configure(keenConfig);
 
 // visualization code goes here
 Keen.onChartsReady(function() {
