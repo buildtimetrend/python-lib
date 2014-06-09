@@ -67,10 +67,16 @@ function updateCharts(period) {
 function updateTitle() {
   // check if config.projectName is set
   if (config.projectName != null || config.projectName == 'project_name') {
-      var title = 'Buildtrend of project ' + config.projectName;
+      var title = 'Buildtrend of project ' + htmlEntities(config.projectName);
       document.getElementById("title").innerHTML = title;
       document.getElementsByTagName("title")[0].innerHTML = title;
   }
+}
+
+// escape html characters
+// inspired by http://css-tricks.com/snippets/javascript/htmlentities-for-javascript/
+function htmlEntities(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 </script>
 </head>
