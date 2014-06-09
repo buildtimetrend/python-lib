@@ -10,8 +10,6 @@
 // configure Keen.io API client, keenConfig is defined in config.js
 Keen.configure(keenConfig);
 
-updateCharts("week");
-
 function updateCharts(period) {
   switch (period) {
     case "day":
@@ -59,7 +57,7 @@ function updateCharts(period) {
 }
 </script>
 </head>
-<body>
+<body onload='updateCharts("week");'>
 <h1 id="title">Build trends</h1>
 <p>Time period :
   <select id="intervals" onchange="updateCharts(this.value)">
