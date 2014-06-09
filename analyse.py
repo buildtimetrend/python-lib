@@ -8,6 +8,7 @@
 #    --job=<jobID>
 #    --branch=<branchname>
 #    --repo=<repo_slug>
+#    --ci=<ci_platform> : fe. travis, jenkins, shippable, local, ...
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -48,10 +49,12 @@ def analyse(argv):
 
     # process arguments
     usage_string = 'analyse.py -h --build=<buildID>' \
-        ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>'
+        ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
+        ' --ci=<ci_platform>'
     try:
         opts, args = getopt.getopt(
-            argv, "h", ["build=", "job=", "branch=", "repo=", "help"])
+            argv, "h",
+            ["build=", "job=", "branch=", "repo=", "ci=", "help"])
     except getopt.GetoptError:
         print usage_string
         sys.exit(2)
@@ -67,6 +70,8 @@ def analyse(argv):
             build.add_property("branch", arg)
         elif opt == "--repo":
             build.add_property("repo", arg)
+        elif opt == "--ci":
+            build.add_property("ci_platform", arg)
 
     # load previous buildtimes file, or create a new xml root
     if os.path.isfile(RESULT_FILE):
