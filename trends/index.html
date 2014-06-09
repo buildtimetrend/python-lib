@@ -62,9 +62,19 @@ function updateCharts(period) {
       { lineWidth: 2, title: "Number of builds per branch", yAxisLabel: "build count" });
   });
 }
+
+// add project name to title
+function updateTitle() {
+  // check if config.projectName is set
+  if (config.projectName != null || config.projectName == 'project_name') {
+      var title = 'Buildtrend of project ' + config.projectName;
+      document.getElementById("title").innerHTML = title;
+      document.getElementsByTagName("title")[0].innerHTML = title;
+  }
+}
 </script>
 </head>
-<body onload='updateCharts("week");'>
+<body onload='updateTitle(); updateCharts("week");'>
 <h1 id="title">Build trends</h1>
 <p>Time period :
   <select id="intervals" onchange="updateCharts(this.value)">
@@ -79,14 +89,5 @@ function updateCharts(period) {
 <div id="builds_chart"></div>
 <p>Powered by <a href="http://ruleant.github.io/buildtime-trend/">Buildtime trend</a>.<br />
 Using the <a href="https://keen.io/">Keen.io</a> API for data analysis and visualisation.</p>
-<script>
-// add project name to title
-// check if config.projectName is set
-if (config.projectName != null || config.projectName == 'project_name') {
-    var title = 'Buildtrend of project ' + config.projectName;
-    document.getElementById("title").innerHTML = title;
-    document.getElementsByTagName("title")[0].innerHTML = title;
-}
-</script>
 </body>
 </html>
