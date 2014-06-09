@@ -50,6 +50,8 @@ function updateCharts(period) {
     });
     seriesStageDuration.draw(document.getElementById("stage_duration_chart"),
       { lineWidth: 2, title: "Average build stage duration", yAxisLabel: "duration [s]" });
+    // display div inline (show it next to the next chart"
+    document.getElementById("stage_duration_chart").style["display"]= "inline-block";
 
     var seriesBuilds = new Keen.Series("build_stages", {
       analysisType: "count_unique",
@@ -60,6 +62,8 @@ function updateCharts(period) {
     });
     seriesBuilds.draw(document.getElementById("builds_chart"),
       { lineWidth: 2, title: "Number of builds per branch", yAxisLabel: "build count" });
+    // display div inline (show it next to the previous chart"
+    document.getElementById("builds_chart").style["display"]= "inline-block";
   });
 }
 
@@ -93,7 +97,7 @@ function htmlEntities(str) {
 <h2 id="timeframe_title">Last week's builds</h2>
 <div id="stage_duration_chart"></div>
 <div id="builds_chart"></div>
-<p>Powered by <a href="http://ruleant.github.io/buildtime-trend/">Buildtime trend</a>.<br />
+<p>Powered by <a href="http://ruleant.github.io/buildtime-trend/">Buildtime trend</a> (0.1-dev).<br />
 Using the <a href="https://keen.io/">Keen.io</a> API for data analysis and visualisation.</p>
 </body>
 </html>
