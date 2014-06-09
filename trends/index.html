@@ -13,23 +13,30 @@ Keen.configure(keenConfig);
 function updateCharts(period) {
   switch (period) {
     case "day":
+      var timeframeTitle = "Today's builds";
       var keen_timeframe = "today";
       var keen_interval = "hourly";
       break;
     default:
     case "week":
+      var timeframeTitle = "Last week's builds";
       var keen_timeframe = "this_7_days";
       var keen_interval = "daily";
       break;
     case "month":
+      var timeframeTitle = "Last month's builds";
       var keen_timeframe = "this_30_days";
       var keen_interval = "daily";
       break;
     case "year":
+      var timeframeTitle = "Last year's builds";
       var keen_timeframe = "this_365_days";
       var keen_interval = "weekly";
       break;
   }
+
+  // update title
+ document.getElementById("timeframe_title").innerHTML = timeframeTitle;
 
   // visualization code goes here
   Keen.onChartsReady(function() {
@@ -67,7 +74,7 @@ function updateCharts(period) {
     <option value="year">Last year</option>
   </select>
 </p>
-<h2>Last week's builds</h2>
+<h2 id="timeframe_title">Last week's builds</h2>
 <div id="stage_duration_chart"></div>
 <div id="builds_chart"></div>
 <p>Powered by <a href="http://ruleant.github.io/buildtime-trend/">Buildtime trend</a>.<br />
