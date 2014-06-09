@@ -61,7 +61,14 @@ function updateCharts(period) {
 </head>
 <body>
 <h1 id="title">Build trends</h1>
-<p><a href="" onclick='updateCharts();'>Refresh</a></p>
+<p>Time period :
+  <select id="intervals" onchange="updateCharts(this.value)">
+    <option value="day">Today</option>
+    <option value="week" selected="selected">Last week</option>
+    <option value="month">Last month</option>
+    <option value="year">Last year</option>
+  </select>
+</p>
 <h2>Last week's builds</h2>
 <div id="stage_duration_chart"></div>
 <div id="builds_chart"></div>
