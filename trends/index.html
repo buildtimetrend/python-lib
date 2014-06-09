@@ -14,24 +14,24 @@ function updateCharts(period) {
   switch (period) {
     case "day":
       var timeframeTitle = "Today's builds";
-      var keen_timeframe = "today";
-      var keen_interval = "hourly";
+      var keenTimeframe = "today";
+      var keenInterval = "hourly";
       break;
     default:
     case "week":
       var timeframeTitle = "Last week's builds";
-      var keen_timeframe = "this_7_days";
-      var keen_interval = "daily";
+      var keenTimeframe = "this_7_days";
+      var keenInterval = "daily";
       break;
     case "month":
       var timeframeTitle = "Last month's builds";
-      var keen_timeframe = "this_30_days";
-      var keen_interval = "daily";
+      var keenTimeframe = "this_30_days";
+      var keenInterval = "daily";
       break;
     case "year":
       var timeframeTitle = "Last year's builds";
-      var keen_timeframe = "this_365_days";
-      var keen_interval = "weekly";
+      var keenTimeframe = "this_365_days";
+      var keenInterval = "weekly";
       break;
   }
 
@@ -42,8 +42,8 @@ function updateCharts(period) {
   Keen.onChartsReady(function() {
     var series_week = new Keen.Series("build_stages", {
       analysisType: "average",
-      timeframe: keen_timeframe,
-      interval: keen_interval,
+      timeframe: keenTimeframe,
+      interval: keenInterval,
       targetProperty: "stage.duration",
       groupBy: "stage.name",
       filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
@@ -53,8 +53,8 @@ function updateCharts(period) {
 
     var series_builds = new Keen.Series("build_stages", {
       analysisType: "count_unique",
-      timeframe: keen_timeframe,
-      interval: keen_interval,
+      timeframe: keenTimeframe,
+      interval: keenInterval,
       targetProperty: "build.build",
       groupBy: "build.branch"
     });
