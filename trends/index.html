@@ -40,7 +40,7 @@ function updateCharts(period) {
 
   // visualization code goes here
   Keen.onChartsReady(function() {
-    var series_week = new Keen.Series("build_stages", {
+    var seriesStageDuration = new Keen.Series("build_stages", {
       analysisType: "average",
       timeframe: keenTimeframe,
       interval: keenInterval,
@@ -48,17 +48,17 @@ function updateCharts(period) {
       groupBy: "stage.name",
       filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
     });
-    series_week.draw(document.getElementById("stage_duration_chart"),
+    seriesStageDuration.draw(document.getElementById("stage_duration_chart"),
       { lineWidth: 2, title: "Average build stage duration", yAxisLabel: "duration [s]" });
 
-    var series_builds = new Keen.Series("build_stages", {
+    var seriesBuilds = new Keen.Series("build_stages", {
       analysisType: "count_unique",
       timeframe: keenTimeframe,
       interval: keenInterval,
       targetProperty: "build.build",
       groupBy: "build.branch"
     });
-    series_builds.draw(document.getElementById("builds_chart"),
+    seriesBuilds.draw(document.getElementById("builds_chart"),
       { lineWidth: 2, title: "Number of builds per branch", yAxisLabel: "build count" });
   });
 }
