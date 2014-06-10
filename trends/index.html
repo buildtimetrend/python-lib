@@ -72,6 +72,15 @@ function updateCharts(period) {
     });
     totalBuilds.draw(document.getElementById("metric_total_builds"),
       { label: "Total builds" });
+
+    var totalBuildsBranch = new Keen.Metric("build_stages", {
+      analysisType: "count_unique",
+      timeframe: keenTimeframe,
+      targetProperty: "build.build",
+      groupBy: "build.branch"
+    });
+    totalBuildsBranch.draw(document.getElementById("chart_total_builds_branch"),
+      { title: "Builds per branch" });
   });
 }
 
@@ -104,6 +113,7 @@ function htmlEntities(str) {
 </p>
 <h2 id="timeframe_title">Last week's builds</h2>
 <div id="metric_total_builds"></div>
+<div id="chart_total_builds_branch"></div>
 <div id="stage_duration_chart"></div>
 <div id="builds_chart"></div>
 <p>Powered by <a href="http://ruleant.github.io/buildtime-trend/">Buildtime trend</a> (0.1-dev).<br />
