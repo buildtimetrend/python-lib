@@ -4,6 +4,7 @@
 <head>
 <title>Build trends</title>
 <script type="text/javascript" src="config.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
     var Keen=Keen||{configure:function(e){this._cf=e},addEvent:function(e,t,n,i){this._eq=this._eq||[],this._eq.push([e,t,n,i])},setGlobalProperties:function(e){this._gp=e},onChartsReady:function(e){this._ocrq=this._ocrq||[],this._ocrq.push(e)}};(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src=("https:"==document.location.protocol?"https://":"http://")+"dc8na2hxrj29i.cloudfront.net/code/keen-2.1.2-min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
 
@@ -13,30 +14,30 @@ Keen.configure(keenConfig);
 function updateCharts(period) {
   switch (period) {
     case "day":
-      var timeframeTitle = "Today's builds";
       var keenTimeframe = "today";
       var keenInterval = "hourly";
       break;
     default:
+	  period = "week";
     case "week":
-      var timeframeTitle = "Last week's builds";
       var keenTimeframe = "this_7_days";
       var keenInterval = "daily";
       break;
     case "month":
-      var timeframeTitle = "Last month's builds";
       var keenTimeframe = "this_30_days";
       var keenInterval = "daily";
       break;
     case "year":
-      var timeframeTitle = "Last year's builds";
       var keenTimeframe = "this_52_weeks";
       var keenInterval = "weekly";
       break;
   }
+  
+  // update interval selection box
+  $('#intervals').val(period);
 
-  // update title
- document.getElementById("timeframe_title").innerHTML = timeframeTitle;
+  // hide title
+ document.getElementById("timeframe_title").style.display = "none";
 
   // visualization code goes here
   Keen.onChartsReady(function() {
@@ -48,10 +49,23 @@ function updateCharts(period) {
       groupBy: "stage.name",
       filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
     });
-    seriesStageDuration.draw(document.getElementById("stage_duration_chart"),
+    seriesStageDuration.draw(document.getElementById("chart_stage_duration"),
       { lineWidth: 2, title: "Average build stage duration", yAxisLabel: "duration [s]" });
-    // display div inline (show it next to the next chart"
-
+	// display div inline (show it next to the next chart)
+    document.getElementById("chart_stage_duration").style["display"]= "inline-block";
+	  
+	var metricStageFraction = new Keen.Metric("build_stages", {
+      analysisType: "average",
+      timeframe: keenTimeframe,
+      targetProperty: "stage.duration",
+      groupBy: "stage.name",
+      filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
+    });
+    metricStageFraction.draw(document.getElementById("chart_stage_fraction"),
+      { title: "Build stage fraction" });
+	// display div inline (show it next to the previous chart)
+    document.getElementById("chart_stage_fraction").style["display"]= "inline-block";
+    
     var seriesBuilds = new Keen.Series("build_stages", {
       analysisType: "count_unique",
       timeframe: keenTimeframe,
@@ -61,7 +75,7 @@ function updateCharts(period) {
     });
     seriesBuilds.draw(document.getElementById("builds_chart"),
       { lineWidth: 2, title: "Number of builds per branch", yAxisLabel: "build count" });
-    // display div inline (show it next to the previous chart"
+    // display div inline (show it next to the next chart)
     document.getElementById("builds_chart").style["display"]= "inline-block";
 
     var totalBuilds = new Keen.Metric("build_stages", {
@@ -80,6 +94,7 @@ function updateCharts(period) {
     });
     totalBuildsBranch.draw(document.getElementById("chart_total_builds_branch"),
       { title: "Builds per branch" });
+    // display div inline (show it next to the previous chart)
     document.getElementById("chart_total_builds_branch").style["display"]= "inline-block";
   });
 }
@@ -88,7 +103,7 @@ function updateCharts(period) {
 function updateTitle() {
   // check if config.projectName is set
   if (config.projectName != null || config.projectName == 'project_name') {
-      var title = 'Buildtrend of project ' + htmlEntities(config.projectName);
+      var title = 'Build trends of project ' + htmlEntities(config.projectName);
       document.getElementById("title").innerHTML = title;
       document.getElementsByTagName("title")[0].innerHTML = title;
   }
@@ -101,7 +116,7 @@ function htmlEntities(str) {
 }
 </script>
 </head>
-<body onload='updateTitle(); updateCharts("week");'>
+<body onload='updateTitle(); updateCharts();'>
 <h1 id="title">Build trends</h1>
 <p>Timeframe : 
   <select id="intervals" onchange="updateCharts(this.value)">
@@ -113,7 +128,8 @@ function htmlEntities(str) {
 </p>
 <h2 id="timeframe_title">Last week's builds</h2>
 <div id="metric_total_builds"></div>
-<div id="stage_duration_chart"></div>
+<div id="chart_stage_duration"></div>
+<div id="chart_stage_fraction"></div>
 <div id="builds_chart"></div>
 <div id="chart_total_builds_branch"></div>
 <p>Powered by <a href="http://ruleant.github.io/buildtime-trend/">Buildtime trend</a> (0.1-dev).<br />
