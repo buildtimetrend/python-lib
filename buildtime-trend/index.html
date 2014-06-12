@@ -103,12 +103,12 @@ function htmlEntities(str) {
 </head>
 <body onload='updateTitle(); updateCharts("week");'>
 <h1 id="title">Build trends</h1>
-<p>
+<p>Timeframe : 
   <select id="intervals" onchange="updateCharts(this.value)">
-    <option value="day">Period : Today</option>
-    <option value="week" selected="selected">Period : Last 7 days</option>
-    <option value="month">Period : Last 30 days</option>
-    <option value="year">Period : Last 12 months</option>
+    <option value="day">Today</option>
+    <option value="week" selected="selected">Last 7 days</option>
+    <option value="month">Last 30 days</option>
+    <option value="year">Last 12 months</option>
   </select>
 </p>
 <h2 id="timeframe_title">Last week's builds</h2>
