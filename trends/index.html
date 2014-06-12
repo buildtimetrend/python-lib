@@ -48,10 +48,10 @@ function updateCharts(period) {
       groupBy: "stage.name",
       filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
     });
-    seriesStageDuration.draw(document.getElementById("stage_duration_chart"),
+    seriesStageDuration.draw(document.getElementById("chart_stage_duration"),
       { lineWidth: 2, title: "Average build stage duration", yAxisLabel: "duration [s]" });
 	// display div inline (show it next to the next chart)
-    document.getElementById("stage_duration_chart").style["display"]= "inline-block";
+    document.getElementById("chart_stage_duration").style["display"]= "inline-block";
 	  
 	var metricStageFraction = new Keen.Metric("build_stages", {
       analysisType: "average",
@@ -127,7 +127,7 @@ function htmlEntities(str) {
 </p>
 <h2 id="timeframe_title">Last week's builds</h2>
 <div id="metric_total_builds"></div>
-<div id="stage_duration_chart"></div>
+<div id="chart_stage_duration"></div>
 <div id="chart_stage_fraction"></div>
 <div id="builds_chart"></div>
 <div id="chart_total_builds_branch"></div>
