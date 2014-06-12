@@ -4,6 +4,7 @@
 <head>
 <title>Build trends</title>
 <script type="text/javascript" src="config.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript">
     var Keen=Keen||{configure:function(e){this._cf=e},addEvent:function(e,t,n,i){this._eq=this._eq||[],this._eq.push([e,t,n,i])},setGlobalProperties:function(e){this._gp=e},onChartsReady:function(e){this._ocrq=this._ocrq||[],this._ocrq.push(e)}};(function(){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src=("https:"==document.location.protocol?"https://":"http://")+"dc8na2hxrj29i.cloudfront.net/code/keen-2.1.2-min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
 
@@ -18,6 +19,7 @@ function updateCharts(period) {
       var keenInterval = "hourly";
       break;
     default:
+	  period = "week";
     case "week":
       var timeframeTitle = "Last week's builds";
       var keenTimeframe = "this_7_days";
@@ -34,6 +36,9 @@ function updateCharts(period) {
       var keenInterval = "weekly";
       break;
   }
+  
+  // update interval selection box
+  $('#intervals').val(period);
 
   // update title
  document.getElementById("timeframe_title").innerHTML = timeframeTitle;
@@ -115,7 +120,7 @@ function htmlEntities(str) {
 }
 </script>
 </head>
-<body onload='updateTitle(); updateCharts("week");'>
+<body onload='updateTitle(); updateCharts();'>
 <h1 id="title">Build trends</h1>
 <p>Timeframe : 
   <select id="intervals" onchange="updateCharts(this.value)">
