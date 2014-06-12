@@ -50,6 +50,20 @@ function updateCharts(period) {
     });
     seriesStageDuration.draw(document.getElementById("stage_duration_chart"),
       { lineWidth: 2, title: "Average build stage duration", yAxisLabel: "duration [s]" });
+	// display div inline (show it next to the next chart)
+    document.getElementById("stage_duration_chart").style["display"]= "inline-block";
+	  
+	var metricStageFraction = new Keen.Metric("build_stages", {
+      analysisType: "average",
+      timeframe: keenTimeframe,
+      targetProperty: "stage.duration",
+      groupBy: "stage.name",
+      filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
+    });
+    metricStageFraction.draw(document.getElementById("chart_stage_fraction"),
+      { title: "Build stage fraction" });
+	// display div inline (show it next to the previous chart)
+    document.getElementById("chart_stage_fraction").style["display"]= "inline-block";
     
     var seriesBuilds = new Keen.Series("build_stages", {
       analysisType: "count_unique",
@@ -60,7 +74,7 @@ function updateCharts(period) {
     });
     seriesBuilds.draw(document.getElementById("builds_chart"),
       { lineWidth: 2, title: "Number of builds per branch", yAxisLabel: "build count" });
-    // display div inline (show it next to the previous chart)
+    // display div inline (show it next to the next chart)
     document.getElementById("builds_chart").style["display"]= "inline-block";
 
     var totalBuilds = new Keen.Metric("build_stages", {
@@ -114,6 +128,7 @@ function htmlEntities(str) {
 <h2 id="timeframe_title">Last week's builds</h2>
 <div id="metric_total_builds"></div>
 <div id="stage_duration_chart"></div>
+<div id="chart_stage_fraction"></div>
 <div id="builds_chart"></div>
 <div id="chart_total_builds_branch"></div>
 <p>Powered by <a href="http://ruleant.github.io/buildtime-trend/">Buildtime trend</a> (0.1-dev).<br />
