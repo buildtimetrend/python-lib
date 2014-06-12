@@ -30,7 +30,7 @@ function updateCharts(period) {
       break;
     case "year":
       var timeframeTitle = "Last year's builds";
-      var keenTimeframe = "this_365_days";
+      var keenTimeframe = "this_52_weeks";
       var keenInterval = "weekly";
       break;
   }
@@ -103,12 +103,12 @@ function htmlEntities(str) {
 </head>
 <body onload='updateTitle(); updateCharts("week");'>
 <h1 id="title">Build trends</h1>
-<p>Select trend timeframe :
+<p>
   <select id="intervals" onchange="updateCharts(this.value)">
-    <option value="day">Today</option>
-    <option value="week" selected="selected">Last week</option>
-    <option value="month">Last month</option>
-    <option value="year">Last year</option>
+    <option value="day">Period : Today</option>
+    <option value="week" selected="selected">Period : Last 7 days</option>
+    <option value="month">Period : Last 30 days</option>
+    <option value="year">Period : Last 12 months</option>
   </select>
 </p>
 <h2 id="timeframe_title">Last week's builds</h2>
