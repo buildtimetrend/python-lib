@@ -50,8 +50,7 @@ function updateCharts(period) {
     });
     seriesStageDuration.draw(document.getElementById("stage_duration_chart"),
       { lineWidth: 2, title: "Average build stage duration", yAxisLabel: "duration [s]" });
-    // display div inline (show it next to the next chart"
-
+    
     var seriesBuilds = new Keen.Series("build_stages", {
       analysisType: "count_unique",
       timeframe: keenTimeframe,
@@ -61,7 +60,7 @@ function updateCharts(period) {
     });
     seriesBuilds.draw(document.getElementById("builds_chart"),
       { lineWidth: 2, title: "Number of builds per branch", yAxisLabel: "build count" });
-    // display div inline (show it next to the previous chart"
+    // display div inline (show it next to the previous chart)
     document.getElementById("builds_chart").style["display"]= "inline-block";
 
     var totalBuilds = new Keen.Metric("build_stages", {
@@ -80,6 +79,7 @@ function updateCharts(period) {
     });
     totalBuildsBranch.draw(document.getElementById("chart_total_builds_branch"),
       { title: "Builds per branch" });
+    // display div inline (show it next to the previous chart)
     document.getElementById("chart_total_builds_branch").style["display"]= "inline-block";
   });
 }
