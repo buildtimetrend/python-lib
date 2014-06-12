@@ -14,24 +14,20 @@ Keen.configure(keenConfig);
 function updateCharts(period) {
   switch (period) {
     case "day":
-      var timeframeTitle = "Today's builds";
       var keenTimeframe = "today";
       var keenInterval = "hourly";
       break;
     default:
 	  period = "week";
     case "week":
-      var timeframeTitle = "Last week's builds";
       var keenTimeframe = "this_7_days";
       var keenInterval = "daily";
       break;
     case "month":
-      var timeframeTitle = "Last month's builds";
       var keenTimeframe = "this_30_days";
       var keenInterval = "daily";
       break;
     case "year":
-      var timeframeTitle = "Last year's builds";
       var keenTimeframe = "this_52_weeks";
       var keenInterval = "weekly";
       break;
@@ -40,8 +36,8 @@ function updateCharts(period) {
   // update interval selection box
   $('#intervals').val(period);
 
-  // update title
- document.getElementById("timeframe_title").innerHTML = timeframeTitle;
+  // hide title
+ document.getElementById("timeframe_title").style.display = "none";
 
   // visualization code goes here
   Keen.onChartsReady(function() {
