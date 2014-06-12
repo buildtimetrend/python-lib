@@ -1,6 +1,7 @@
 timestamps.csv
 buildtimes.xml
 trend.png
+config.js
 *.py[cod]
 
 # C extensions
