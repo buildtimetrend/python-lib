@@ -50,7 +50,13 @@ function updateCharts(period) {
       filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
     });
     seriesStageDuration.draw(document.getElementById("chart_stage_duration"),
-      { lineWidth: 2, title: "Average build stage duration", yAxisLabel: "duration [s]" });
+      {
+        lineWidth: 2,
+        title: "Average build stage duration",
+        chartAreaLeft: 75,
+        yAxisLabel: "duration [s]"
+      }
+    );
 	// display div inline (show it next to the next chart)
     document.getElementById("chart_stage_duration").style["display"]= "inline-block";
 	  
@@ -74,7 +80,13 @@ function updateCharts(period) {
       groupBy: "build.branch"
     });
     seriesBuilds.draw(document.getElementById("builds_chart"),
-      { lineWidth: 2, title: "Number of builds per branch", yAxisLabel: "build count" });
+      {
+        lineWidth: 2,
+        title: "Number of builds per branch",
+        chartAreaLeft: 75,
+        yAxisLabel: "build count"
+      }
+    );
     // display div inline (show it next to the next chart)
     document.getElementById("builds_chart").style["display"]= "inline-block";
 
