@@ -20,6 +20,8 @@ script:
 after_success:
   - timestamp.sh coveralls
   - coveralls
-after_script:
+  # synchronise buildtime-trend result with gh-pages
+  - sync-buildtime-trend-with-gh-pages.sh
+after_failure:
   # synchronise buildtime-trend result with gh-pages
   - sync-buildtime-trend-with-gh-pages.sh
