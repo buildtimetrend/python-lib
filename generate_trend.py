@@ -37,7 +37,7 @@ def generate_trend(argv):
         print usage_string
         sys.exit(2)
 
-    #check options
+    # check options
     for opt, arg in opts:
         if opt in ('-h', "--help"):
             print usage_string
