@@ -3,8 +3,7 @@
 #
 # Generates a trend (graph) from the buildtimes in buildtimes.xml
 #
-# usage : generate_trend.py -h
-#  --trend=<trend_type> values : native,keen (use multiple --trend arguments)
+# usage : generate_trend.py -h --trend=native
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -31,17 +30,12 @@ import getopt
 
 def generate_trend(argv):
     # process arguments
-    usage_string = 'generate_trend.py -h --trend=native --trend=keen'
+    usage_string = 'generate_trend.py -h --trend=native'
     try:
         opts, args = getopt.getopt(argv, "h", ["trend=", "help"])
     except getopt.GetoptError:
         print usage_string
         sys.exit(2)
-
-    # print help string if no arguments are given
-    if len(opts) == 0:
-        print usage_string
-        sys.exit()
 
     #check options
     for opt, arg in opts:
@@ -51,8 +45,10 @@ def generate_trend(argv):
         elif opt == "--trend":
             if arg == "native":
                 trend_native()
-            elif arg == "keen":
-                trend_keen()
+
+    # run trend_keen() always,
+    # if $KEEN_PROJECT_ID variable is set (checked later), it will be executed
+    trend_keen()
 
 
 def trend_native():
