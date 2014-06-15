@@ -54,15 +54,15 @@ def generate_trend(argv):
 def trend_native():
     from buildtimetrend.trend import Trend
     # use parameter for timestamps file and check if file exists
-    RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'trends/buildtimes.xml')
-    GRAPH_FILE = os.getenv('BUILD_TREND_TRENDFILE', 'trends/trend.png')
+    result_file = os.getenv('BUILD_TREND_OUTPUTFILE', 'trends/buildtimes.xml')
+    chart_file = os.getenv('BUILD_TREND_TRENDFILE', 'trends/trend.png')
 
     trend = Trend()
-    if trend.gather_data(RESULT_FILE):
+    if trend.gather_data(result_file):
         # print number of builds and list of buildnames
         print 'Builds ({}) :'.format(len(trend.builds)), trend.builds
         print 'Stages ({}) :'.format(len(trend.stages)), trend.stages
-        trend.generate(GRAPH_FILE)
+        trend.generate(chart_file)
 
 
 def trend_keen():
