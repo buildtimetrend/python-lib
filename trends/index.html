@@ -60,6 +60,16 @@ function updateCharts(period) {
     // display div inline (show it next to the next chart)
     document.getElementById("metric_total_builds_passed").style["display"]= "inline-block";
 
+    var totalBuildsFailed = new Keen.Metric("builds", {
+      analysisType: "count",
+      timeframe: keenTimeframe,
+      filters: [{"property_name":"build.result","operator":"in","property_value":["failed","errored"]}]
+    });
+    totalBuildsFailed.draw(document.getElementById("metric_total_builds_failed"),
+      { label: "Total builds failed" });
+    // display div inline (show it next to the previous chart)
+    document.getElementById("metric_total_builds_failed").style["display"]= "inline-block";
+
     var seriesStageDuration = new Keen.Series("build_stages", {
       analysisType: "average",
       timeframe: keenTimeframe,
@@ -153,6 +163,7 @@ function htmlEntities(str) {
 <div>
   <div id="metric_total_builds"></div>
   <div id="metric_total_builds_passed"></div>
+  <div id="metric_total_builds_failed"></div>
 </div>
 <div id="chart_stage_duration"></div>
 <div id="chart_stage_fraction"></div>
