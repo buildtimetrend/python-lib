@@ -99,7 +99,7 @@ def analyse(argv):
     # send build data to keen.io
     if keen_io_writable():
         print "Sending data to Keen.io"
-        keen.add_event("builds", build.to_dict())
+        keen.add_event("builds", {"build": build.to_dict()})
         keen.add_events({"build_stages": build.stages_to_list()})
 
 if __name__ == "__main__":
