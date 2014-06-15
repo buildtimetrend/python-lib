@@ -41,6 +41,13 @@ function updateCharts(period) {
 
   // visualization code goes here
   Keen.onChartsReady(function() {
+    var totalBuilds = new Keen.Metric("builds", {
+      analysisType: "count",
+      timeframe: keenTimeframe,
+    });
+    totalBuilds.draw(document.getElementById("metric_total_builds"),
+      { label: "Total builds" });
+
     var seriesStageDuration = new Keen.Series("build_stages", {
       analysisType: "average",
       timeframe: keenTimeframe,
@@ -89,13 +96,6 @@ function updateCharts(period) {
     );
     // display div inline (show it next to the next chart)
     document.getElementById("builds_chart").style["display"]= "inline-block";
-
-    var totalBuilds = new Keen.Metric("builds", {
-      analysisType: "count",
-      timeframe: keenTimeframe,
-    });
-    totalBuilds.draw(document.getElementById("metric_total_builds"),
-      { label: "Total builds" });
 
     var totalBuildsBranch = new Keen.Metric("build_stages", {
       analysisType: "count_unique",
