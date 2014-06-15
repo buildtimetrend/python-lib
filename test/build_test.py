@@ -36,6 +36,9 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(0, len(self.build.stages.stages))
         self.assertEquals(0, len(self.build.properties))
 
+        # get properties should return zero duration
+        self.assertDictEqual({'duration': 0}, self.build.get_properties())
+
         # dict should be empty
         self.assertDictEqual({'duration': 0, 'stages' : []}, self.build.to_dict())
 
@@ -70,6 +73,22 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property2', 4)
         self.assertEquals(2, len(self.build.properties))
         self.assertDictEqual({'property1': 2, 'property2': 4}, self.build.properties)
+
+    def test_get_properties(self):
+        self.build.add_property('property1', 2)
+        self.assertDictEqual(
+            {'duration': 0, 'property1': 2},
+            self.build.get_properties())
+
+        self.build.add_property('property2', 3)
+        self.assertDictEqual(
+            {'duration': 0, 'property1': 2, 'property2': 3},
+            self.build.get_properties())
+
+        self.build.add_property('property2', 4)
+        self.assertDictEqual(
+            {'duration': 0, 'property1': 2, 'property2': 4},
+            self.build.get_properties())
 
     def test_to_dict(self):
         # read and parse sample file

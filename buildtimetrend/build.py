@@ -58,19 +58,28 @@ class Build(object):
         '''
         self.properties[name] = value
 
-    def to_dict(self):
+    def get_properties(self):
         '''
-        Return object as dictionary
+        Return build properties
         '''
         # copy values of properties
         data = copy.deepcopy(self.properties)
 
+        # add total duration
+        data["duration"] = self.stages.total_duration()
+
+        return data
+
+    def to_dict(self):
+        '''
+        Return object as dictionary
+        '''
+        # get build properties
+        data = self.get_properties()
+
         # add stages
         if type(self.stages) is Stages:
             data["stages"] = self.stages.stages
-
-        # add total duration
-        data["duration"] = self.stages.total_duration()
 
         return data
 
@@ -82,9 +91,8 @@ class Build(object):
             # create list to be returned
             data = []
 
-            build_properties = copy.deepcopy(self.properties)
-            # add total duration
-            build_properties["duration"] = self.stages.total_duration()
+            # get build properties
+            build_properties = self.get_properties()
 
             # iterate all stages
             for stage in self.stages.stages:
