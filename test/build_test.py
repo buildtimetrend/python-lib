@@ -37,7 +37,7 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(0, len(self.build.properties))
 
         # dict should be empty
-        self.assertDictEqual({'stages' : []}, self.build.to_dict())
+        self.assertDictEqual({'duration': 0, 'stages' : []}, self.build.to_dict())
 
         # xml shouldn't contain items
         self.assertEquals(
@@ -74,7 +74,8 @@ class TestBuild(unittest.TestCase):
 
         # test dict
         self.assertDictEqual(
-            {'stages': [{'duration': 2, 'name': 'stage1'},
+            {'duration': 17,
+            'stages': [{'duration': 2, 'name': 'stage1'},
             {'duration': 5, 'name': 'stage2'},
             {'duration': 10, 'name': 'stage3'}]},
             self.build.to_dict())
@@ -84,7 +85,7 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property2', 3)
         # test dict
         self.assertDictEqual(
-            {'property1': 2, 'property2': 3,
+            {'duration': 17, 'property1': 2, 'property2': 3,
             'stages': [{'duration': 2, 'name': 'stage1'},
             {'duration': 5, 'name': 'stage2'},
             {'duration': 10, 'name': 'stage3'}]},
@@ -96,9 +97,13 @@ class TestBuild(unittest.TestCase):
 
         # test list
         self.assertListEqual(
-            [{'stage': {'duration': 2, 'name': 'stage1'}},
-            {'stage': {'duration': 5, 'name': 'stage2'}},
-            {'stage': {'duration': 10, 'name': 'stage3'}}],
+            [{'stage': {'duration': 2, 'name': 'stage1'},
+            'build': {'duration': 17}},
+            {'stage': {'duration': 5, 'name': 'stage2'},
+            'build': {'duration': 17}},
+            {'stage': {'duration': 10, 'name': 'stage3'},
+            'build': {'duration': 17}},
+            ],
             self.build.stages_to_list())
 
         # add properties
@@ -107,11 +112,11 @@ class TestBuild(unittest.TestCase):
         # test dict
         self.assertListEqual(
             [{'stage': {'duration': 2, 'name': 'stage1'},
-            'build': {'property1': 2, 'property2': 3}},
+            'build': {'duration': 17, 'property1': 2, 'property2': 3}},
             {'stage': {'duration': 5, 'name': 'stage2'},
-            'build': {'property1': 2, 'property2': 3}},
+            'build': {'duration': 17, 'property1': 2, 'property2': 3}},
             {'stage': {'duration': 10, 'name': 'stage3'},
-            'build': {'property1': 2, 'property2': 3}},
+            'build': {'duration': 17, 'property1': 2, 'property2': 3}},
             ],
             self.build.stages_to_list())
 

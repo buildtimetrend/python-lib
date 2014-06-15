@@ -69,6 +69,9 @@ class Build(object):
         if type(self.stages) is Stages:
             data["stages"] = self.stages.stages
 
+        # add total duration
+        data["duration"] = self.stages.total_duration()
+
         return data
 
     def stages_to_list(self):
@@ -79,14 +82,18 @@ class Build(object):
             # create list to be returned
             data = []
 
+            build_properties = copy.deepcopy(self.properties)
+            # add total duration
+            build_properties["duration"] = self.stages.total_duration()
+
             # iterate all stages
             for stage in self.stages.stages:
                 temp = {}
                 # copy stage data
                 temp["stage"] = copy.deepcopy(stage)
                 # copy values of properties
-                if len(self.properties) > 0:
-                    temp["build"] = copy.deepcopy(self.properties)
+                if len(build_properties) > 0:
+                    temp["build"] = build_properties
                 data.append(temp)
 
         return data
