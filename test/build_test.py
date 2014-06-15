@@ -39,6 +39,9 @@ class TestBuild(unittest.TestCase):
         # dict should be empty
         self.assertDictEqual({'duration': 0, 'stages' : []}, self.build.to_dict())
 
+        # list should be empty
+        self.assertListEqual([], self.build.stages_to_list())
+
         # xml shouldn't contain items
         self.assertEquals(
             '<build><stages/></build>', etree.tostring(self.build.to_xml()))
