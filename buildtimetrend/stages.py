@@ -71,6 +71,15 @@ class Stages(object):
 
         return True
 
+    def total_duration(self):
+        '''Calculate total duration of all stages'''
+        total_duration = 0
+        # calculate total duration
+        for stage in self.stages:
+            total_duration += stage["duration"]
+
+        return total_duration
+
     def to_xml(self):
         '''Generates xml object from stages dictionary'''
         root = etree.Element("stages")

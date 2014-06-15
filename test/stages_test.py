@@ -34,6 +34,8 @@ class TestTimestamps(unittest.TestCase):
     def test_novalue(self):
         # number of stages should be zero
         self.assertEquals(0, len(self.stages.stages))
+        # test total duration
+        self.assertEqual(0, self.stages.total_duration())
         # xml shouldn't contain items
         self.assertEquals("<stages/>", etree.tostring(self.stages.to_xml()))
         self.assertEquals("<stages/>\n", self.stages.to_xml_string())
@@ -59,6 +61,13 @@ class TestTimestamps(unittest.TestCase):
             {'duration': 5, 'name': 'stage2'},
             {'duration': 10, 'name': 'stage3'}],
             self.stages.stages)
+
+    def test_total_duration(self):
+        # read and parse sample file
+        self.assertTrue(self.stages.read_csv(TEST_SAMPLE_FILE))
+
+        # test total duration
+        self.assertEqual(17, self.stages.total_duration())
 
     def test_to_xml(self):
         # read and parse sample file
