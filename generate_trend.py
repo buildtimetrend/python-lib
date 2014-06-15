@@ -3,7 +3,8 @@
 #
 # Generates a trend (graph) from the buildtimes in buildtimes.xml
 #
-# usage : generate_trend.py
+# usage : generate_trend.py -h
+#  --trend=<trend_type> values : native,keen (use multiple --trend arguments)
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -24,14 +25,42 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from buildtimetrend.trend import Trend
-from buildtimetrend.keenio import generate_overview_config_file
+import sys
+import getopt
 
-# use parameter for timestamps file and check if file exists
-RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'trends/buildtimes.xml')
-GRAPH_FILE = os.getenv('BUILD_TREND_TRENDFILE', 'trends/trend.png')
 
-if __name__ == "__main__":
+def generate_trend(argv):
+    # process arguments
+    usage_string = 'generate_trend.py -h --trend=native --trend=keen'
+    try:
+        opts, args = getopt.getopt(argv, "h", ["trend=", "help"])
+    except getopt.GetoptError:
+        print usage_string
+        sys.exit(2)
+
+    # print help string if no arguments are given
+    if len(opts) == 0:
+        print usage_string
+        sys.exit()
+
+    #check options
+    for opt, arg in opts:
+        if opt in ('-h', "--help"):
+            print usage_string
+            sys.exit()
+        elif opt == "--trend":
+            if arg == "native":
+                trend_native()
+            elif arg == "keen":
+                trend_keen()
+
+
+def trend_native():
+    from buildtimetrend.trend import Trend
+    # use parameter for timestamps file and check if file exists
+    RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'trends/buildtimes.xml')
+    GRAPH_FILE = os.getenv('BUILD_TREND_TRENDFILE', 'trends/trend.png')
+
     trend = Trend()
     if trend.gather_data(RESULT_FILE):
         # print number of builds and list of buildnames
@@ -39,6 +68,13 @@ if __name__ == "__main__":
         print 'Stages ({}) :'.format(len(trend.stages)), trend.stages
         trend.generate(GRAPH_FILE)
 
+
+def trend_keen():
+    from buildtimetrend.keenio import generate_overview_config_file
+
     # TODO use generic repo value (create general config object)
     if 'TRAVIS_REPO_SLUG' in os.environ:
         generate_overview_config_file(os.getenv('TRAVIS_REPO_SLUG'))
+
+if __name__ == "__main__":
+    generate_trend(sys.argv[1:])
