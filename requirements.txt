@@ -1,3 +1,2 @@
 keen
 lxml
-matplotlib>=1.2.0

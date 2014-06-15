@@ -17,11 +17,26 @@ Dependencies
 
 Install using pip :
 
-`pip install keen lxml 'matplotlib>=1.2.0'`
+`pip install -r requirements.txt`
+
+or
+
+`pip install -r requirements-native.txt` (if you want to generate charts using `--trend=native` mode)
+
+or install each dependency individually :
+
+```
+pip install keen
+pip install lxml
+pip install 'matplotlib>=1.2.0'
+
+```
 
 or as a Debian package :
 
-`apt-get install python-lxml python-matplotlib`
+`apt-get install python-lxml`
+
+Keen.io client is not available as a Debian package, so look at the `pip` instructions above
 
 Usage
 -----
