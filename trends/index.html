@@ -47,6 +47,18 @@ function updateCharts(period) {
     });
     totalBuilds.draw(document.getElementById("metric_total_builds"),
       { label: "Total builds" });
+    // display div inline (show it next to the next chart)
+    document.getElementById("metric_total_builds").style["display"]= "inline-block";
+
+    var totalBuildsPassed = new Keen.Metric("builds", {
+      analysisType: "count",
+      timeframe: keenTimeframe,
+      filters: [{"property_name":"build.result","operator":"eq","property_value":"passed"}]
+    });
+    totalBuildsPassed.draw(document.getElementById("metric_total_builds_passed"),
+      { label: "Total builds passed" });
+    // display div inline (show it next to the next chart)
+    document.getElementById("metric_total_builds_passed").style["display"]= "inline-block";
 
     var seriesStageDuration = new Keen.Series("build_stages", {
       analysisType: "average",
@@ -138,7 +150,10 @@ function htmlEntities(str) {
   </select>
 </p>
 <h2 id="timeframe_title">Last week's builds</h2>
-<div id="metric_total_builds"></div>
+<div>
+  <div id="metric_total_builds"></div>
+  <div id="metric_total_builds_passed"></div>
+</div>
 <div id="chart_stage_duration"></div>
 <div id="chart_stage_fraction"></div>
 <div id="builds_chart"></div>
