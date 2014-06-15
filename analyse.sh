@@ -27,13 +27,13 @@ if [ "$BUILD_TREND_INIT" == "1" ]; then
         # map $TRAVIS_TEST_RESULT to a more readable value
         case "$TRAVIS_TEST_RESULT" in
         0)
-            test_result = "passed"
+            test_result="passed"
             ;;
         1)
-            test_result = "failed"
+            test_result="failed"
             ;;
         *)
-            test_result = "errored"
+            test_result="errored"
             ;;
         esac
         analyse.py --ci="travis" --branch=$TRAVIS_BRANCH --build=$TRAVIS_BUILD_NUMBER --job=$TRAVIS_JOB_NUMBER --repo=$TRAVIS_REPO_SLUG --result=$test_result
