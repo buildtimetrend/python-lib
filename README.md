@@ -151,9 +151,13 @@ Example `.travis.yml` file :
       # generate timestamp with label 'after_success'
       - timestamp.sh after_success
       # after_success scripts
-    after_script:
       # synchronise buildtime-trend result with gh-pages
       - sync-buildtime-trend-with-gh-pages.sh
+    after_failure:
+      # synchronise buildtime-trend result with gh-pages
+      - sync-buildtime-trend-with-gh-pages.sh
+
+`sync-buildtime-trend-with-gh-pages.sh` has to run in both `after_failure` and `after_success` to report the gathered timestamps.
 
 Bugs and feature requests
 -------------------------
