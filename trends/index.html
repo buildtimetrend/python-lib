@@ -112,7 +112,7 @@ function updateCharts(period) {
     seriesBuilds.draw(document.getElementById("builds_chart"),
       {
         lineWidth: 2,
-        title: "Number of builds per branch",
+        title: "Builds per branch (nominal)",
         chartAreaLeft: 75,
         chartAreaWidth: 350,
         yAxisLabel: "build count"
@@ -128,7 +128,7 @@ function updateCharts(period) {
       groupBy: "build.branch"
     });
     totalBuildsBranch.draw(document.getElementById("chart_total_builds_branch"),
-      { title: "Builds per branch" });
+      { title: "Builds per branch (relative)" });
     // display div inline (show it next to the previous chart)
     document.getElementById("chart_total_builds_branch").style["display"]= "inline-block";
   });
