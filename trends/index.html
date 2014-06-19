@@ -113,7 +113,7 @@ function updateCharts(period) {
     });
     client.draw(seriesBuilds, document.getElementById("builds_chart"),
       {
-        lineWidth: 2,
+        chartType: "columnchart",
         title: "Builds per branch (nominal)",
         chartOptions: {
           chartArea: {left: 75, width: 350},
