@@ -80,9 +80,10 @@ function updateCharts(period) {
     });
     client.draw(seriesStageDuration, document.getElementById("chart_stage_duration"),
       {
-        lineWidth: 2,
+        chartType: "columnchart",
         title: "Average build stage duration",
         chartOptions: {
+          isStacked: true,
           chartArea: {left: 75, width: 350},
           vAxis: {title: "duration [s]"}
         }
