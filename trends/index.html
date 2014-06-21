@@ -116,6 +116,7 @@ function updateCharts(period) {
         chartType: "columnchart",
         title: "Builds per branch (nominal)",
         chartOptions: {
+          isStacked: true,
           chartArea: {left: 75, width: 350},
           vAxis: {title: "build count"}
         }
