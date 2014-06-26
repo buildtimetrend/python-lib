@@ -122,7 +122,7 @@ function updateCharts(period) {
       targetProperty: "build.build",
       groupBy: "build.branch"
     });
-    client.draw(seriesBuilds, document.getElementById("builds_chart"),
+    client.draw(seriesBuilds, document.getElementById("chart_builds"),
       {
         chartType: "columnchart",
         title: "Builds per branch",
@@ -134,7 +134,7 @@ function updateCharts(period) {
       }
     );
     // display div inline (show it next to the next chart)
-    document.getElementById("builds_chart").style["display"]= "inline-block";
+    document.getElementById("chart_builds").style["display"]= "inline-block";
 
     var totalBuildsBranch = new Keen.Query("count_unique", {
       eventCollection: "build_stages",
@@ -185,7 +185,7 @@ function htmlEntities(str) {
 </div>
 <div id="chart_stage_duration"></div>
 <div id="chart_stage_fraction"></div>
-<div id="builds_chart"></div>
+<div id="chart_builds"></div>
 <div id="chart_total_builds_branch"></div>
 <p>Powered by <a href="http://ruleant.github.io/buildtime-trend/">Buildtime trend</a> (0.1-dev).<br />
 Using the <a href="https://keen.io/">Keen.io</a> API for data analysis and visualisation.</p>
