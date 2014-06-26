@@ -166,6 +166,14 @@ Bugs and feature requests
 Please report bugs and add feature requests in the Github [issue tracker](https://github.com/ruleant/buildtime-trend/issues).
 
 
+Contact
+-------
+
+Website : http://ruleant.github.io/buildtime-trend
+
+Follow us on [Twitter](https://twitter.com/buildtime_trend), [Github](https://github.com/ruleant/buildtime-trend) and [Ohloh](https://www.ohloh.net/p/buildtime-trend).
+
+
 Credits
 -------
 
