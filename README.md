@@ -166,6 +166,11 @@ Bugs and feature requests
 Please report bugs and add feature requests in the Github [issue tracker](https://github.com/ruleant/buildtime-trend/issues).
 
 
+Credits
+-------
+
+This application was brought to you by : see [Credits](https://github.com/ruleant/buildtime-trend/wiki/Credits).
+
 License
 -------
 
