@@ -77,7 +77,7 @@ function updateCharts(period) {
       targetProperty: "build.duration"
     });
     client.draw(query, document.getElementById("metric_average_build_time"),
-      { title: "Total time", width: "200px" });
+      { title: "Average build time [s]", width: "250px" });
     // display div inline (show it next to the previous chart)
     document.getElementById("metric_average_build_time").style["display"]= "inline-block";
 
