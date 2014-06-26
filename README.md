@@ -15,16 +15,17 @@ Dependencies
 - lxml (python wrapper for libxml2 and libxslt)
 - matplotlib v1.2.0 or higher (for drawing the native trend graph, can be omitted when only using keen.io to generate charts. Stackplot requires version v1.2.0)
 
-Install using pip :
+Installation options 
+
+- using pip
 
 `pip install -r requirements.txt`
 
-OR
+- if you want to generate charts using `--trend=native` mode :
 
 `pip install -r requirements-native.txt`
-(if you want to generate charts using `--trend=native` mode)
 
-OR install each dependency individually :
+- install each dependency individually :
 
 ```
 pip install keen
@@ -33,7 +34,7 @@ pip install 'matplotlib>=1.2.0'
 
 ```
 
-OR as a Debian package :
+- install as a Debian package :
 
 `apt-get install python-lxml`
 
