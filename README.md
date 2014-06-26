@@ -19,11 +19,12 @@ Install using pip :
 
 `pip install -r requirements.txt`
 
-or
+OR
 
-`pip install -r requirements-native.txt` (if you want to generate charts using `--trend=native` mode)
+`pip install -r requirements-native.txt`
+(if you want to generate charts using `--trend=native` mode)
 
-or install each dependency individually :
+OR install each dependency individually :
 
 ```
 pip install keen
@@ -32,7 +33,7 @@ pip install 'matplotlib>=1.2.0'
 
 ```
 
-or as a Debian package :
+OR as a Debian package :
 
 `apt-get install python-lxml`
 
