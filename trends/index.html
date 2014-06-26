@@ -41,47 +41,47 @@ function updateCharts(period) {
 
   // visualization code goes here
   Keen.ready(function() {
-    var totalBuilds = new Keen.Query("count", {
+    var queryTotalBuilds = new Keen.Query("count", {
       eventCollection: "builds",
       timeframe: keenTimeframe,
     });
-    client.draw(totalBuilds, document.getElementById("metric_total_builds"),
+    client.draw(queryTotalBuilds, document.getElementById("metric_total_builds"),
       { title: "Total builds", width: "200px" });
     // display div inline (show it next to the next chart)
     document.getElementById("metric_total_builds").style["display"]= "inline-block";
 
-    var totalBuildsPassed = new Keen.Query("count", {
+    var queryTotalBuildsPassed = new Keen.Query("count", {
       eventCollection: "builds",
       timeframe: keenTimeframe,
       filters: [{"property_name":"build.result","operator":"eq","property_value":"passed"}]
     });
-    client.draw(totalBuildsPassed, document.getElementById("metric_total_builds_passed"),
+    client.draw(queryTotalBuildsPassed, document.getElementById("metric_total_builds_passed"),
       { title: "Builds passed", width: "200px" });
     // display div inline (show it next to the next chart)
     document.getElementById("metric_total_builds_passed").style["display"]= "inline-block";
 
-    var totalBuildsFailed = new Keen.Query("count", {
+    var queryTotalBuildsFailed = new Keen.Query("count", {
       eventCollection: "builds",
       timeframe: keenTimeframe,
       filters: [{"property_name":"build.result","operator":"in","property_value":["failed","errored"]}]
     });
-    client.draw(totalBuildsFailed, document.getElementById("metric_total_builds_failed"),
+    client.draw(queryTotalBuildsFailed, document.getElementById("metric_total_builds_failed"),
       { title: "Builds failed", width: "200px" });
     // display div inline (show it next to the previous chart)
     document.getElementById("metric_total_builds_failed").style["display"]= "inline-block";
 
     // average build time of all stages
-    var query = new Keen.Query("average", {
+    var queryAverageBuildTime = new Keen.Query("average", {
       eventCollection: "builds",
       timeframe: keenTimeframe,
       targetProperty: "build.duration"
     });
-    client.draw(query, document.getElementById("metric_average_build_time"),
+    client.draw(queryAverageBuildTime, document.getElementById("metric_average_build_time"),
       { title: "Average build time [s]", width: "250px" });
     // display div inline (show it next to the previous chart)
     document.getElementById("metric_average_build_time").style["display"]= "inline-block";
 
-    var seriesStageDuration = new Keen.Query("average", {
+    var queryStageDuration = new Keen.Query("average", {
       eventCollection: "build_stages",
       timeframe: keenTimeframe,
       interval: keenInterval,
@@ -89,7 +89,7 @@ function updateCharts(period) {
       groupBy: "stage.name",
       filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
     });
-    client.draw(seriesStageDuration, document.getElementById("chart_stage_duration"),
+    client.draw(queryStageDuration, document.getElementById("chart_stage_duration"),
       {
         chartType: "columnchart",
         title: "Average build stage duration",
@@ -103,26 +103,26 @@ function updateCharts(period) {
     // display div inline (show it next to the next chart)
     document.getElementById("chart_stage_duration").style["display"]= "inline-block";
 	  
-    var metricStageFraction = new Keen.Query("average", {
+    var queryStageFraction = new Keen.Query("average", {
       eventCollection: "build_stages",
       timeframe: keenTimeframe,
       targetProperty: "stage.duration",
       groupBy: "stage.name",
       filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
     });
-    client.draw(metricStageFraction, document.getElementById("chart_stage_fraction"),
+    client.draw(queryStageFraction, document.getElementById("chart_stage_fraction"),
       { title: "Build stage fraction" });
     // display div inline (show it next to the previous chart)
     document.getElementById("chart_stage_fraction").style["display"]= "inline-block";
     
-    var seriesBuilds = new Keen.Query("count_unique", {
+    var queryBuilds = new Keen.Query("count_unique", {
       eventCollection: "build_stages",
       timeframe: keenTimeframe,
       interval: keenInterval,
       targetProperty: "build.build",
       groupBy: "build.branch"
     });
-    client.draw(seriesBuilds, document.getElementById("chart_builds"),
+    client.draw(queryBuilds, document.getElementById("chart_builds"),
       {
         chartType: "columnchart",
         title: "Builds per branch",
@@ -136,13 +136,13 @@ function updateCharts(period) {
     // display div inline (show it next to the next chart)
     document.getElementById("chart_builds").style["display"]= "inline-block";
 
-    var totalBuildsBranch = new Keen.Query("count_unique", {
+    var queryTotalBuildsBranch = new Keen.Query("count_unique", {
       eventCollection: "build_stages",
       timeframe: keenTimeframe,
       targetProperty: "build.build",
       groupBy: "build.branch"
     });
-    client.draw(totalBuildsBranch, document.getElementById("chart_total_builds_branch"),
+    client.draw(queryTotalBuildsBranch, document.getElementById("chart_total_builds_branch"),
       { title: "Builds per branch (%)" });
     // display div inline (show it next to the previous chart)
     document.getElementById("chart_total_builds_branch").style["display"]= "inline-block";
