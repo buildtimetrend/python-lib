@@ -70,17 +70,17 @@ function updateCharts(period) {
     // display div inline (show it next to the previous chart)
     document.getElementById("metric_total_builds_failed").style["display"]= "inline-block";
 
-	// average build time of all stages
-	var query = new Keen.Query("average", {
+    // average build time of all stages
+    var query = new Keen.Query("average", {
       eventCollection: "builds",
-	  timeframe: keenTimeframe,
+      timeframe: keenTimeframe,
       targetProperty: "build.duration"
     });
     client.draw(query, document.getElementById("metric_average_build_time"),
       { title: "Total time", width: "200px" });
     // display div inline (show it next to the previous chart)
     document.getElementById("metric_average_build_time").style["display"]= "inline-block";
-	
+
     var seriesStageDuration = new Keen.Query("average", {
       eventCollection: "build_stages",
       timeframe: keenTimeframe,
