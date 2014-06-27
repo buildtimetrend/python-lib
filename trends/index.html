@@ -63,9 +63,28 @@ function updateCharts(period) {
       filters: [{"property_name":"build.result","operator":"eq","property_value":"passed"}]
     });
 
-    // draw chart
-    client.draw(queryTotalBuildsPassed, document.getElementById("metric_total_builds_passed"),
-      { title: "Builds passed", width: "200px" });
+    var colorBuildsPassed = client.run([queryTotalBuilds, queryTotalBuildsPassed], function(result){
+      var chartColor = ["green"];
+
+      if (result[0].result === result[1].result) {
+        chartColor = ["green"];
+      } else if (result[0].result > 0) {
+        if ((result[1].result / result[0].result) > 0.75) {
+          chartColor = ["orange"];
+        } else {
+          chartColor = ["red"];
+        }
+      }
+
+      // draw chart
+      client.draw(queryTotalBuildsPassed, document.getElementById("metric_total_builds_passed"),
+        {
+          title: "Builds passed",
+          colors: chartColor,
+          width: "200px"
+        }
+      );
+    });
 
     // display div inline (show it next to the next chart)
     document.getElementById("metric_total_builds_passed").style["display"]= "inline-block";
