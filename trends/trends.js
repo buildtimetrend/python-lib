@@ -7,7 +7,7 @@ function updateCharts(period) {
       keenInterval = "hourly";
       break;
     default:
-	  period = "week";
+      period = "week";
     case "week":
       keenTimeframe = "this_7_days";
       keenInterval = "daily";
