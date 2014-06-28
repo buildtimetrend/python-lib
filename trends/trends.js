@@ -42,7 +42,7 @@ function updateCharts(period) {
       { title: "Total builds", width: "200px" });
 
     // display div inline (show it next to the next chart)
-    document.getElementById("metric_total_builds").style["display"]= "inline-block";
+    document.getElementById("metric_total_builds").style.display = "inline-block";
 
     /* Total builds passed */
     // create query
@@ -57,7 +57,7 @@ function updateCharts(period) {
       { title: "Builds passed", width: "200px" });
 
     // display div inline (show it next to the next chart)
-    document.getElementById("metric_total_builds_passed").style["display"]= "inline-block";
+    document.getElementById("metric_total_builds_passed").style.display = "inline-block";
 
     /* Total builds passed */
     // create query
@@ -72,7 +72,7 @@ function updateCharts(period) {
       { title: "Builds failed", width: "200px" });
 
     // display div inline (show it next to the previous chart)
-    document.getElementById("metric_total_builds_failed").style["display"]= "inline-block";
+    document.getElementById("metric_total_builds_failed").style.display = "inline-block";
 
     /* average build time of all stages */
     // create query
@@ -87,7 +87,7 @@ function updateCharts(period) {
       { title: "Average build time [s]", width: "250px" });
 
     // display div inline (show it next to the previous chart)
-    document.getElementById("metric_average_build_time").style["display"]= "inline-block";
+    document.getElementById("metric_average_build_time").style.display = "inline-block";
 
     /* average stage duration */
     // create query
@@ -114,7 +114,7 @@ function updateCharts(period) {
     );
 
     // display div inline (show it next to the next chart)
-    document.getElementById("chart_stage_duration").style["display"]= "inline-block";
+    document.getElementById("chart_stage_duration").style.display = "inline-block";
 
     /* Stage duration fraction */
     // create query
@@ -131,7 +131,7 @@ function updateCharts(period) {
       { title: "Build stage fraction" });
 
     // display div inline (show it next to the previous chart)
-    document.getElementById("chart_stage_fraction").style["display"]= "inline-block";
+    document.getElementById("chart_stage_fraction").style.display = "inline-block";
 
     /* Builds */
     // create query
@@ -157,7 +157,7 @@ function updateCharts(period) {
     );
 
     // display div inline (show it next to the next chart)
-    document.getElementById("chart_builds").style["display"]= "inline-block";
+    document.getElementById("chart_builds").style.display = "inline-block";
 
     /* Builds per branch */
     // create query
@@ -173,7 +173,7 @@ function updateCharts(period) {
       { title: "Builds per branch (%)" });
 
     // display div inline (show it next to the previous chart)
-    document.getElementById("chart_total_builds_branch").style["display"]= "inline-block";
+    document.getElementById("chart_total_builds_branch").style.display = "inline-block";
   });
 }
 
