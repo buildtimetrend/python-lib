@@ -63,6 +63,7 @@ function updateCharts(period) {
       filters: [{"property_name":"build.result","operator":"eq","property_value":"passed"}]
     });
 
+    // combine queries for conditional coloring of TotalBuildspassed
     var colorBuildsPassed = client.run([queryTotalBuilds, queryTotalBuildsPassed], function(result){
       var chartColor = ["green"];
       var totalBuilds = result[0].result;
