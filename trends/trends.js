@@ -1,22 +1,24 @@
 function updateCharts(period) {
+  var keenTimeframe, keenInterval;
+
   switch (period) {
     case "day":
-      var keenTimeframe = "today";
-      var keenInterval = "hourly";
+      keenTimeframe = "today";
+      keenInterval = "hourly";
       break;
     default:
 	  period = "week";
     case "week":
-      var keenTimeframe = "this_7_days";
-      var keenInterval = "daily";
+      keenTimeframe = "this_7_days";
+      keenInterval = "daily";
       break;
     case "month":
-      var keenTimeframe = "this_30_days";
-      var keenInterval = "daily";
+      keenTimeframe = "this_30_days";
+      keenInterval = "daily";
       break;
     case "year":
-      var keenTimeframe = "this_52_weeks";
-      var keenInterval = "weekly";
+      keenTimeframe = "this_52_weeks";
+      keenInterval = "weekly";
       break;
   }
   
