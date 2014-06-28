@@ -65,11 +65,13 @@ function updateCharts(period) {
 
     var colorBuildsPassed = client.run([queryTotalBuilds, queryTotalBuildsPassed], function(result){
       var chartColor = ["green"];
+      var totalBuilds = result[0].result;
+      var totalBuildsPassed = result[1].result;
 
-      if (result[0].result === result[1].result) {
+      if (totalBuilds === totalBuildsPassed) {
         chartColor = ["green"];
-      } else if (result[0].result > 0) {
-        if ((result[1].result / result[0].result) > 0.75) {
+      } else if (totalBuilds > 0) {
+        if ((totalBuildsPassed / totalBuilds) >= 0.75) {
           chartColor = ["orange"];
         } else {
           chartColor = ["red"];
