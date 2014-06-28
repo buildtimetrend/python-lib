@@ -59,6 +59,8 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   BUILD_TREND_TRENDFILE=$GH_PAGES_BUILD_TREND_DIR/trend.png
   BUILD_TREND_OVERVIEWFILE=$GH_PAGES_BUILD_TREND_DIR/index.html
   BUILD_TREND_ORIGIN_OVERVIEWFILE=$BUILD_TREND_TRENDS_DIR/index.html
+  BUILD_TREND_JSFILE=$GH_PAGES_BUILD_TREND_DIR/trends.js
+  BUILD_TREND_ORIGIN_JSFILE=$BUILD_TREND_TRENDS_DIR/trends.js
   export BUILD_TREND_CONFIGFILE=$GH_PAGES_BUILD_TREND_DIR/config.js
   export BUILD_TREND_SAMPLE_CONFIGFILE=$BUILD_TREND_TRENDS_DIR/config_sample.js
 
@@ -66,8 +68,9 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   analyse.sh
   # generate trend
   generate_trend.py
-  # update trends overview HTML file
+  # update trends overview HTML and JavaScript file
   cp $BUILD_TREND_ORIGIN_OVERVIEWFILE $BUILD_TREND_OVERVIEWFILE
+  cp $BUILD_TREND_ORIGIN_JSFILE $BUILD_TREND_JSFILE
 
   # print trend location
   REPO_OWNER=${TRAVIS_REPO_SLUG%/*}
