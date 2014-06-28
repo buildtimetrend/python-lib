@@ -180,7 +180,7 @@ function updateCharts(period) {
 // add project name to title
 function updateTitle() {
   // check if config.projectName is set
-  if (config.projectName != null || config.projectName == 'project_name') {
+  if (config.projectName !== null || config.projectName == 'project_name') {
       var title = 'Build trends of project ' + htmlEntities(config.projectName);
       document.getElementById("title").innerHTML = title;
       document.getElementsByTagName("title")[0].innerHTML = title;
