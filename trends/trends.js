@@ -1,22 +1,24 @@
 function updateCharts(period) {
+  var keenTimeframe, keenInterval;
+
   switch (period) {
     case "day":
-      var keenTimeframe = "today";
-      var keenInterval = "hourly";
+      keenTimeframe = "today";
+      keenInterval = "hourly";
       break;
     default:
-	  period = "week";
+      period = "week";
     case "week":
-      var keenTimeframe = "this_7_days";
-      var keenInterval = "daily";
+      keenTimeframe = "this_7_days";
+      keenInterval = "daily";
       break;
     case "month":
-      var keenTimeframe = "this_30_days";
-      var keenInterval = "daily";
+      keenTimeframe = "this_30_days";
+      keenInterval = "daily";
       break;
     case "year":
-      var keenTimeframe = "this_52_weeks";
-      var keenInterval = "weekly";
+      keenTimeframe = "this_52_weeks";
+      keenInterval = "weekly";
       break;
   }
   
@@ -40,7 +42,7 @@ function updateCharts(period) {
       { title: "Total builds", width: "200px" });
 
     // display div inline (show it next to the next chart)
-    document.getElementById("metric_total_builds").style["display"]= "inline-block";
+    document.getElementById("metric_total_builds").style.display = "inline-block";
 
     /* Total builds passed */
     // create query
@@ -77,7 +79,7 @@ function updateCharts(period) {
     });
 
     // display div inline (show it next to the next chart)
-    document.getElementById("metric_total_builds_passed").style["display"]= "inline-block";
+    document.getElementById("metric_total_builds_passed").style.display = "inline-block";
 
     /* Total builds passed */
     // create query
@@ -92,7 +94,7 @@ function updateCharts(period) {
       { title: "Builds failed", width: "200px" });
 
     // display div inline (show it next to the previous chart)
-    document.getElementById("metric_total_builds_failed").style["display"]= "inline-block";
+    document.getElementById("metric_total_builds_failed").style.display = "inline-block";
 
     /* average build time of all stages */
     // create query
@@ -107,7 +109,7 @@ function updateCharts(period) {
       { title: "Average build time [s]", width: "250px" });
 
     // display div inline (show it next to the previous chart)
-    document.getElementById("metric_average_build_time").style["display"]= "inline-block";
+    document.getElementById("metric_average_build_time").style.display = "inline-block";
 
     /* average stage duration */
     // create query
@@ -134,7 +136,7 @@ function updateCharts(period) {
     );
 
     // display div inline (show it next to the next chart)
-    document.getElementById("chart_stage_duration").style["display"]= "inline-block";
+    document.getElementById("chart_stage_duration").style.display = "inline-block";
 
     /* Stage duration fraction */
     // create query
@@ -151,7 +153,7 @@ function updateCharts(period) {
       { title: "Build stage fraction" });
 
     // display div inline (show it next to the previous chart)
-    document.getElementById("chart_stage_fraction").style["display"]= "inline-block";
+    document.getElementById("chart_stage_fraction").style.display = "inline-block";
 
     /* Builds */
     // create query
@@ -177,7 +179,7 @@ function updateCharts(period) {
     );
 
     // display div inline (show it next to the next chart)
-    document.getElementById("chart_builds").style["display"]= "inline-block";
+    document.getElementById("chart_builds").style.display = "inline-block";
 
     /* Builds per branch */
     // create query
@@ -193,14 +195,14 @@ function updateCharts(period) {
       { title: "Builds per branch (%)" });
 
     // display div inline (show it next to the previous chart)
-    document.getElementById("chart_total_builds_branch").style["display"]= "inline-block";
+    document.getElementById("chart_total_builds_branch").style.display = "inline-block";
   });
 }
 
 // add project name to title
 function updateTitle() {
   // check if config.projectName is set
-  if (config.projectName != null || config.projectName == 'project_name') {
+  if (config.projectName !== null || config.projectName == 'project_name') {
       var title = 'Build trends of project ' + htmlEntities(config.projectName);
       document.getElementById("title").innerHTML = title;
       document.getElementsByTagName("title")[0].innerHTML = title;
