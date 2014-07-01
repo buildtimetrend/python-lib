@@ -89,9 +89,31 @@ function updateCharts(period) {
       filters: [{"property_name":"build.result","operator":"in","property_value":["failed","errored"]}]
     });
 
-    // draw chart
-    client.draw(queryTotalBuildsFailed, document.getElementById("metric_total_builds_failed"),
-      { title: "Builds failed", width: "200px" });
+    // combine queries for conditional coloring of TotalBuildsfailed
+    var colorBuildsFailed = client.run([queryTotalBuilds, queryTotalBuildsFailed], function(result){
+      var chartColor = ["green"];
+      var totalBuilds = result[0].result;
+      var totalBuildsFailed = result[1].result;
+
+      if (totalBuildsFailed == 0) {
+        chartColor = ["green"];
+      } else if (totalBuilds > 0) {
+        if ((totalBuildsFailed / totalBuilds) < 0.25) {
+          chartColor = ["orange"];
+        } else {
+          chartColor = ["red"];
+        }
+      }
+
+      // draw chart
+      client.draw(queryTotalBuildsFailed, document.getElementById("metric_total_builds_failed"),
+        {
+          title: "Builds failed",
+          colors: chartColor,
+          width: "200px"
+        }
+      );
+    });
 
     // display div inline (show it next to the previous chart)
     document.getElementById("metric_total_builds_failed").style.display = "inline-block";
