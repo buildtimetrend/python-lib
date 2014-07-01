@@ -5,6 +5,7 @@ Buildtime trend
 [![Coverage Status](https://coveralls.io/repos/ruleant/buildtime-trend/badge.png?branch=master)](https://coveralls.io/r/ruleant/buildtime-trend?branch=master)
 [![Code Health](https://landscape.io/github/ruleant/buildtime-trend/master/landscape.png)](https://landscape.io/github/ruleant/buildtime-trend/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ruleant/buildtime-trend/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ruleant/buildtime-trend/?branch=master)
+[![Buildtime trend](http://img.shields.io/badge/buildtime-trend-blue.svg)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
 [![status](https://sourcegraph.com/api/repos/github.com/ruleant/buildtime-trend/badges/status.png)](https://sourcegraph.com/github.com/ruleant/buildtime-trend)
 
 Gather data, analyse and visualise trends of build processes on Continuous Integration platforms
