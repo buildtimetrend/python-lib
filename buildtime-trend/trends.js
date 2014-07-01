@@ -85,13 +85,13 @@ function updateCharts(period) {
     // draw chart
     client.draw(queryAverageBuildTime, document.getElementById("metric_average_build_time"),
       {
-	    title: "Average build time",
-		width: "250px",
-		chartOptions: {
-		  suffix: "s"
-		}
+        title: "Average build time",
+        width: "250px",
+        chartOptions: {
+          suffix: "s"
+        }
       }
-	);
+    );
 
     // display div inline (show it next to the previous chart)
     document.getElementById("metric_average_build_time").style.display = "inline-block";
