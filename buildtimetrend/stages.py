@@ -61,7 +61,7 @@ class Stages(object):
             for row in timestamps:
                 timestamp = int(row[1])
                 if self.started_at is None:
-                    started_datetime = datetime.fromtimestamp(timestamp)
+                    started_datetime = datetime.utcfromtimestamp(timestamp)
                     self.started_at = started_datetime.isoformat()
                 if event_name is not None:
                     if event_name == 'end':
@@ -72,9 +72,9 @@ class Stages(object):
                     self.stages.append({
                         "name": event_name,
                         "started_at":
-                        datetime.fromtimestamp(previous_timestamp).isoformat(),
+                        datetime.utcfromtimestamp(previous_timestamp).isoformat(),
                         "finished_at":
-                        datetime.fromtimestamp(timestamp).isoformat(),
+                        datetime.utcfromtimestamp(timestamp).isoformat(),
                         "duration": duration})
                 event_name = row[0]
                 previous_timestamp = timestamp
