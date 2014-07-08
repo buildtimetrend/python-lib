@@ -71,9 +71,9 @@ class Stages(object):
                     self.stages.append({
                         "name": event_name,
                         "started_at":
-                        datetime.fromtimestamp(timestamp).isoformat(),
-                        "finished_at":
                         datetime.fromtimestamp(previous_timestamp).isoformat(),
+                        "finished_at":
+                        datetime.fromtimestamp(timestamp).isoformat(),
                         "duration": duration})
                 event_name = row[0]
                 previous_timestamp = timestamp

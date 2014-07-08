@@ -63,17 +63,17 @@ class TestStages(unittest.TestCase):
         # test stages (names + duration)
         self.assertListEqual(
            [{'duration': 2,
-             'finished_at': '2014-04-01T20:58:55',
-             'name': 'stage1',
-             'started_at': '2014-04-01T20:58:57'},
-            {'duration': 5,
              'finished_at': '2014-04-01T20:58:57',
-             'name': 'stage2',
-             'started_at': '2014-04-01T20:59:02'},
-            {'duration': 10,
+             'name': 'stage1',
+             'started_at': '2014-04-01T20:58:55'},
+            {'duration': 5,
              'finished_at': '2014-04-01T20:59:02',
+             'name': 'stage2',
+             'started_at': '2014-04-01T20:58:57'},
+            {'duration': 10,
+             'finished_at': '2014-04-01T20:59:12',
              'name': 'stage3',
-             'started_at': '2014-04-01T20:59:12'}],
+             'started_at': '2014-04-01T20:59:02'}],
             self.stages.stages)
 
     def test_total_duration(self):
