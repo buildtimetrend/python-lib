@@ -58,21 +58,22 @@ class Stages(object):
             previous_timestamp = 0
             event_name = None
             for row in timestamps:
+                timestamp = int(row[1])
                 if event_name is not None:
                     if event_name == 'end':
                         break
-                    duration = int(row[1]) - previous_timestamp
+                    duration = timestamp - previous_timestamp
                     print 'Duration {0} : {1}s'.format(event_name, duration)
                     # add stage duration to stages dict
                     self.stages.append({
                         "name": event_name,
                         "started_at":
-                        datetime.fromtimestamp(int(row[1])).isoformat(),
+                        datetime.fromtimestamp(timestamp).isoformat(),
                         "finished_at":
                         datetime.fromtimestamp(previous_timestamp).isoformat(),
                         "duration": duration})
                 event_name = row[0]
-                previous_timestamp = int(row[1])
+                previous_timestamp = timestamp
 
         return True
 
