@@ -35,6 +35,7 @@ import getopt
 from lxml import etree
 import keen
 from buildtimetrend.build import Build
+from buildtimetrend.travis import TravisData
 from buildtimetrend.keenio import keen_io_writable
 
 # use parameter for timestamps file and check if file exists
@@ -75,6 +76,15 @@ def analyse(argv):
             build.add_property("ci_platform", arg)
         elif opt == "--result":
             build.add_property("result", arg)
+
+    # retrieve data from Travis CI API
+    if build.get_property("ci_platform") == "travis":
+        travis_data = TravisData(
+            build.get_property("repo"),
+            build.get_property("build"),
+        )
+        travis_data.get_build_data()
+        build.add_property("started_at", travis_data.get_started_at())
 
     # load previous buildtimes file, or create a new xml root
     if os.path.isfile(RESULT_FILE):
