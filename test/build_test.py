@@ -135,7 +135,7 @@ class TestBuild(unittest.TestCase):
 
         # test dict
         self.assertDictEqual(
-            {'duration': 17,
+            {'duration': 17, 'started_at': '2014-04-01T20:58:55',
             'stages':
             [{'duration': 2,
               'finished_at': '2014-04-01T20:58:57',
@@ -157,7 +157,8 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property2', 3)
         # test dict
         self.assertDictEqual(
-            {'duration': 17, 'property1': 2, 'property2': 3,
+            {'duration': 17, 'started_at': '2014-04-01T20:58:55',
+            'property1': 2, 'property2': 3,
             'stages':
             [{'duration': 2,
               'finished_at': '2014-04-01T20:58:57',
@@ -184,17 +185,17 @@ class TestBuild(unittest.TestCase):
               'finished_at': '2014-04-01T20:58:57',
               'name': 'stage1',
               'started_at': '2014-04-01T20:58:55'},
-            'build': {'duration': 17}},
+            'build': {'duration': 17, 'started_at': '2014-04-01T20:58:55'}},
             {'stage': {'duration': 5,
               'finished_at': '2014-04-01T20:59:02',
               'name': 'stage2',
               'started_at': '2014-04-01T20:58:57'},
-            'build': {'duration': 17}},
+            'build': {'duration': 17, 'started_at': '2014-04-01T20:58:55'}},
             {'stage': {'duration': 10,
               'finished_at': '2014-04-01T20:59:12',
               'name': 'stage3',
               'started_at': '2014-04-01T20:59:02'},
-            'build': {'duration': 17}},
+            'build': {'duration': 17, 'started_at': '2014-04-01T20:58:55'}},
             ],
             self.build.stages_to_list())
 
@@ -207,17 +208,20 @@ class TestBuild(unittest.TestCase):
               'finished_at': '2014-04-01T20:58:57',
               'name': 'stage1',
               'started_at': '2014-04-01T20:58:55'},
-            'build': {'duration': 17, 'property1': 2, 'property2': 3}},
+            'build': {'duration': 17, 'started_at': '2014-04-01T20:58:55',
+            'property1': 2, 'property2': 3}},
             {'stage': {'duration': 5,
               'finished_at': '2014-04-01T20:59:02',
               'name': 'stage2',
               'started_at': '2014-04-01T20:58:57'},
-            'build': {'duration': 17, 'property1': 2, 'property2': 3}},
+            'build': {'duration': 17, 'started_at': '2014-04-01T20:58:55',
+            'property1': 2, 'property2': 3}},
             {'stage': {'duration': 10,
               'finished_at': '2014-04-01T20:59:12',
               'name': 'stage3',
               'started_at': '2014-04-01T20:59:02'},
-            'build': {'duration': 17, 'property1': 2, 'property2': 3}},
+            'build': {'duration': 17, 'started_at': '2014-04-01T20:58:55',
+            'property1': 2, 'property2': 3}},
             ],
             self.build.stages_to_list())
 

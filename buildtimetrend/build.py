@@ -77,6 +77,8 @@ class Build(object):
 
         # add total duration
         data["duration"] = self.stages.total_duration()
+        if self.stages.started_at is not None:
+            data["started_at"] = self.stages.started_at
 
         return data
 
