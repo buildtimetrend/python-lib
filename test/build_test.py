@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.build import Build
+from buildtimetrend.stages import Stages
 from lxml import etree
 import unittest
 
@@ -59,6 +60,28 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(0, len(self.build.stages.stages))
 
         self.build = Build('')
+        self.assertEquals(0, len(self.build.stages.stages))
+
+    def test_add_stages(self):
+        self.build.add_stages(None)
+        self.assertEquals(0, len(self.build.stages.stages))
+
+        self.build.add_stages("string")
+        self.assertEquals(0, len(self.build.stages.stages))
+
+        stages = Stages()
+        stages.read_csv(TEST_SAMPLE_FILE)
+        self.build.add_stages(stages)
+        self.assertEquals(3, len(self.build.stages.stages))
+
+        # stages should not change when submitting an invalid object
+        self.build.add_stages(None)
+        self.assertEquals(3, len(self.build.stages.stages))
+
+        self.build.add_stages("string")
+        self.assertEquals(3, len(self.build.stages.stages))
+
+        self.build.add_stages(Stages())
         self.assertEquals(0, len(self.build.stages.stages))
 
     def test_add_property(self):
