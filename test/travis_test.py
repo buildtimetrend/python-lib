@@ -26,7 +26,7 @@ import unittest
 TEST_REPO = 'ruleant/buildtime-trend'
 TEST_BUILD = '158'
 
-class TestTrend(unittest.TestCase):
+class TestTravisData(unittest.TestCase):
     def setUp(self):
         self.travis_data = TravisData(TEST_REPO, TEST_BUILD)
 
