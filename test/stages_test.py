@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 #
-# Unit tests for Trend class
+# Unit tests for Stages class
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -27,7 +27,7 @@ import unittest
 TEST_SAMPLE_FILE = 'test/testsample_timestamps.csv'
 
 
-class TestTimestamps(unittest.TestCase):
+class TestStages(unittest.TestCase):
     def setUp(self):
         self.stages = Stages()
 
