@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import csv
 import os
+from datetime import datetime
 from lxml import etree
 
 
@@ -65,6 +66,10 @@ class Stages(object):
                     # add stage duration to stages dict
                     self.stages.append({
                         "name": event_name,
+                        "started_at":
+                        datetime.fromtimestamp(int(row[1])).isoformat(),
+                        "finished_at":
+                        datetime.fromtimestamp(previous_timestamp).isoformat(),
                         "duration": duration})
                 event_name = row[0]
                 previous_timestamp = int(row[1])
