@@ -58,6 +58,16 @@ class Build(object):
         '''
         self.properties[name] = value
 
+    def get_property(self, name):
+        '''
+        Add a build property
+
+        Parameters :
+        - name : Property name
+        '''
+        if name in self.properties:
+            return self.properties[name]
+
     def get_properties(self):
         '''
         Return build properties

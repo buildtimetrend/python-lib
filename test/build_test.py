@@ -74,6 +74,22 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(2, len(self.build.properties))
         self.assertDictEqual({'property1': 2, 'property2': 4}, self.build.properties)
 
+    def test_get_property(self):
+        self.build.add_property('property1', 2)
+        self.assertEquals(2, self.build.get_property('property1'))
+
+        self.build.add_property('property1', None)
+        self.assertEquals(None, self.build.get_property('property1'))
+
+        self.build.add_property('property2', 3)
+        self.assertEquals(3, self.build.get_property('property2'))
+
+        self.build.add_property('property2', 4)
+        self.assertEquals(4, self.build.get_property('property2'))
+
+    def test_get_property_does_not_exist(self):
+        self.assertEquals(None, self.build.get_property('no_property'))
+
     def test_get_properties(self):
         self.build.add_property('property1', 2)
         self.assertDictEqual(
