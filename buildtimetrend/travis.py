@@ -42,7 +42,7 @@ class TravisData(object):
         Retrieve Travis CI build data using the API.
         '''
         import urllib2
-        import simplejson
+        import json
 
         req = urllib2.Request(
             'https://api.travis-ci.org/repos/' + self.repo
@@ -56,7 +56,7 @@ class TravisData(object):
         opener = urllib2.build_opener()
         result = opener.open(req)
 
-        self.build_data = simplejson.load(result)
+        self.build_data = json.load(result)
 
     def get_started_at(self):
         '''
