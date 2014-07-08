@@ -30,6 +30,8 @@ TEST_SAMPLE_FILE = 'test/testsample_timestamps.csv'
 class TestStages(unittest.TestCase):
     def setUp(self):
         self.stages = Stages()
+        # show full diff in case of assert mismatch
+        self.maxDiff = None
 
     def test_novalue(self):
         # number of stages should be zero
