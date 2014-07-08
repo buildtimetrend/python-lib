@@ -33,6 +33,7 @@ class TestTrend(unittest.TestCase):
     def test_novalue(self):
          # data should be empty
         self.assertEquals(0, len(self.travis_data.build_data))
+        self.assertEquals(None, self.travis_data.get_started_at())
 
     def test_gather_data(self):
         # retrieve data from Travis API
