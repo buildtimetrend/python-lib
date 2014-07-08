@@ -61,7 +61,8 @@ class Stages(object):
             for row in timestamps:
                 timestamp = int(row[1])
                 if self.started_at is None:
-                    self.started_at = datetime.fromtimestamp(timestamp).isoformat()
+                    started_datetime = datetime.fromtimestamp(timestamp)
+                    self.started_at = started_datetime.isoformat()
                 if event_name is not None:
                     if event_name == 'end':
                         break
