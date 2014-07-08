@@ -22,6 +22,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+
 class TravisData(object):
     '''
     Gather data from Travis CI using the API
@@ -46,11 +47,11 @@ class TravisData(object):
 
         req = urllib2.Request(
             'https://api.travis-ci.org/repos/' + self.repo
-                + '/builds?number=' + self.build_id,
+            + '/builds?number=' + self.build_id,
             None,
             {
-                'user-agent':'buildtime-trend/0.1-dev',
-                'accept':'application/vnd.travis-ci.2+json'
+                'user-agent': 'buildtime-trend/0.1-dev',
+                'accept': 'application/vnd.travis-ci.2+json'
             }
         )
         opener = urllib2.build_opener()
