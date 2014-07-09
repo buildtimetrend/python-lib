@@ -57,26 +57,7 @@ class Stages(object):
         # read timestamps, calculate stage duration
         with open(csv_filename, 'rb') as csv_data:
             timestamps = csv.reader(csv_data, delimiter=',', quotechar='"')
-            previous_timestamp = 0
-            event_name = None
-            for row in timestamps:
-                timestamp = int(row[1])
-                if self.started_at is None:
-                    self.started_at = format_timestamp(timestamp)
-                if event_name is not None:
-                    if event_name == 'end':
-                        self.finished_at = format_timestamp(previous_timestamp)
-                        break
-                    duration = timestamp - previous_timestamp
-                    print 'Duration {0} : {1}s'.format(event_name, duration)
-                    # add stage duration to stages dict
-                    self.stages.append({
-                        "name": event_name,
-                        "started_at": format_timestamp(previous_timestamp),
-                        "finished_at": format_timestamp(timestamp),
-                        "duration": duration})
-                event_name = row[0]
-                previous_timestamp = timestamp
+            self.parse_timestamps(timestamps)
 
         return True
 
@@ -103,3 +84,26 @@ class Stages(object):
     def to_xml_string(self):
         '''Generates xml string from stages dictionary'''
         return etree.tostring(self.to_xml(), pretty_print=True)
+
+    def parse_timestamps(self, timestamps):
+        '''Parse timestamps and calculate stage durations'''
+        previous_timestamp = 0
+        event_name = None
+        for row in timestamps:
+            timestamp = int(row[1])
+            if self.started_at is None:
+                self.started_at = format_timestamp(timestamp)
+            if event_name is not None:
+                if event_name == 'end':
+                    self.finished_at = format_timestamp(previous_timestamp)
+                    break
+                duration = timestamp - previous_timestamp
+                print 'Duration {0} : {1}s'.format(event_name, duration)
+                # add stage duration to stages dict
+                self.stages.append({
+                    "name": event_name,
+                    "started_at": format_timestamp(previous_timestamp),
+                    "finished_at": format_timestamp(timestamp),
+                    "duration": duration})
+            event_name = row[0]
+            previous_timestamp = timestamp
