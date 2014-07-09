@@ -39,6 +39,7 @@ class Stages(object):
     def __init__(self):
         self.stages = []
         self.started_at = None
+        self.finished_at = None
 
     def read_csv(self, csv_filename):
         '''
@@ -65,6 +66,8 @@ class Stages(object):
                     self.started_at = started_datetime.isoformat()
                 if event_name is not None:
                     if event_name == 'end':
+                        end_datetime = datetime.utcfromtimestamp(previous_timestamp)
+                        self.finished_at = end_datetime.isoformat()
                         break
                     duration = timestamp - previous_timestamp
                     print 'Duration {0} : {1}s'.format(event_name, duration)

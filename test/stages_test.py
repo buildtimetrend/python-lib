@@ -38,8 +38,9 @@ class TestStages(unittest.TestCase):
         self.assertEquals(0, len(self.stages.stages))
         # test total duration
         self.assertEqual(0, self.stages.total_duration())
-        # test started_at
+        # test started_at and finished_at
         self.assertEqual(None, self.stages.started_at)
+        self.assertEqual(None, self.stages.finished_at)
         # xml shouldn't contain items
         self.assertEquals("<stages/>", etree.tostring(self.stages.to_xml()))
         self.assertEquals("<stages/>\n", self.stages.to_xml_string())
@@ -61,6 +62,9 @@ class TestStages(unittest.TestCase):
 
         # test started_at
         self.assertEqual('2014-04-01T18:58:55', self.stages.started_at)
+
+        # test finished_at
+        self.assertEqual('2014-04-01T18:59:12', self.stages.finished_at)
 
         # test stages (names + duration)
         self.assertListEqual(
