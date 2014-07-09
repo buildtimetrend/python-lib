@@ -62,22 +62,18 @@ class Stages(object):
             for row in timestamps:
                 timestamp = int(row[1])
                 if self.started_at is None:
-                    started_datetime = datetime.utcfromtimestamp(timestamp)
-                    self.started_at = started_datetime.isoformat()
+                    self.started_at = format_timestamp(timestamp)
                 if event_name is not None:
                     if event_name == 'end':
-                        end_datetime = datetime.utcfromtimestamp(previous_timestamp)
-                        self.finished_at = end_datetime.isoformat()
+                        self.finished_at = format_timestamp(previous_timestamp)
                         break
                     duration = timestamp - previous_timestamp
                     print 'Duration {0} : {1}s'.format(event_name, duration)
                     # add stage duration to stages dict
                     self.stages.append({
                         "name": event_name,
-                        "started_at":
-                        datetime.utcfromtimestamp(previous_timestamp).isoformat(),
-                        "finished_at":
-                        datetime.utcfromtimestamp(timestamp).isoformat(),
+                        "started_at": format_timestamp(previous_timestamp),
+                        "finished_at": format_timestamp(timestamp),
                         "duration": duration})
                 event_name = row[0]
                 previous_timestamp = timestamp
@@ -107,3 +103,13 @@ class Stages(object):
     def to_xml_string(self):
         '''Generates xml string from stages dictionary'''
         return etree.tostring(self.to_xml(), pretty_print=True)
+
+def format_timestamp(timestamp):
+    '''
+    Format a timestamp to datetime in ISO format (YYYY-MM-DDTHH:MM:SS)
+
+    Parameters :
+    - timestamp : timestamp, seconds since epoch
+    '''
+    timestamp_datetime = datetime.utcfromtimestamp(timestamp)
+    return timestamp_datetime.isoformat()
