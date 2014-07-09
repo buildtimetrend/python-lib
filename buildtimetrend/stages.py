@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import csv
 import os
-from datetime import datetime
+from buildtimetrend.tools import format_timestamp
 from lxml import etree
 
 
@@ -103,13 +103,3 @@ class Stages(object):
     def to_xml_string(self):
         '''Generates xml string from stages dictionary'''
         return etree.tostring(self.to_xml(), pretty_print=True)
-
-def format_timestamp(timestamp):
-    '''
-    Format a timestamp to datetime in ISO format (YYYY-MM-DDTHH:MM:SS)
-
-    Parameters :
-    - timestamp : timestamp, seconds since epoch
-    '''
-    timestamp_datetime = datetime.utcfromtimestamp(timestamp)
-    return timestamp_datetime.isoformat()
