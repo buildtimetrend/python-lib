@@ -77,10 +77,16 @@ class Build(object):
 
         # add total duration
         data["duration"] = self.stages.total_duration()
+
         # add started_at of first stage if it is defined
         # and if it is not set in properties
         if self.stages.started_at is not None and "started_at" not in data:
             data["started_at"] = self.stages.started_at
+
+        # add finished_at of last stage if it is defined
+        # and if it is not set in properties
+        if self.stages.finished_at is not None and "finished_at" not in data:
+            data["finished_at"] = self.stages.finished_at
 
         return data
 

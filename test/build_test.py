@@ -137,7 +137,9 @@ class TestBuild(unittest.TestCase):
 
         # test dict
         self.assertDictEqual(
-            {'duration': 17, 'started_at': '2014-04-01T18:58:55',
+            {'duration': 17,
+            'started_at': '2014-04-01T18:58:55',
+            'finished_at': '2014-04-01T18:59:12',
             'stages':
             [{'duration': 2,
               'finished_at': '2014-04-01T18:58:57',
@@ -159,9 +161,13 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property2', 3)
         # started_at property should override default value
         self.build.add_property('started_at', '2014-04-01T18:55:00')
+        # finished_at property should override default value
+        self.build.add_property('finished_at', '2014-04-01T19:01:11')
         # test dict
         self.assertDictEqual(
-            {'duration': 17, 'started_at': '2014-04-01T18:55:00',
+            {'duration': 17,
+            'started_at': '2014-04-01T18:55:00',
+            'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3,
             'stages':
             [{'duration': 2,
@@ -189,17 +195,23 @@ class TestBuild(unittest.TestCase):
               'finished_at': '2014-04-01T18:58:57',
               'name': 'stage1',
               'started_at': '2014-04-01T18:58:55'},
-            'build': {'duration': 17, 'started_at': '2014-04-01T18:58:55'}},
+            'build': {'duration': 17,
+            'started_at': '2014-04-01T18:58:55',
+            'finished_at': '2014-04-01T18:59:12'}},
             {'stage': {'duration': 5,
               'finished_at': '2014-04-01T18:59:02',
               'name': 'stage2',
               'started_at': '2014-04-01T18:58:57'},
-            'build': {'duration': 17, 'started_at': '2014-04-01T18:58:55'}},
+            'build': {'duration': 17,
+            'started_at': '2014-04-01T18:58:55',
+            'finished_at': '2014-04-01T18:59:12'}},
             {'stage': {'duration': 10,
               'finished_at': '2014-04-01T18:59:12',
               'name': 'stage3',
               'started_at': '2014-04-01T18:59:02'},
-            'build': {'duration': 17, 'started_at': '2014-04-01T18:58:55'}},
+            'build': {'duration': 17,
+            'started_at': '2014-04-01T18:58:55',
+            'finished_at': '2014-04-01T18:59:12'}},
             ],
             self.build.stages_to_list())
 
@@ -208,6 +220,8 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property2', 3)
         # started_at property should override default value
         self.build.add_property('started_at', '2014-04-01T18:55:00')
+        # finished_at property should override default value
+        self.build.add_property('finished_at', '2014-04-01T19:01:11')
         # test dict
         self.assertListEqual(
             [{'stage': {'duration': 2,
@@ -215,18 +229,21 @@ class TestBuild(unittest.TestCase):
               'name': 'stage1',
               'started_at': '2014-04-01T18:58:55'},
             'build': {'duration': 17, 'started_at': '2014-04-01T18:55:00',
+            'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3}},
             {'stage': {'duration': 5,
               'finished_at': '2014-04-01T18:59:02',
               'name': 'stage2',
               'started_at': '2014-04-01T18:58:57'},
             'build': {'duration': 17, 'started_at': '2014-04-01T18:55:00',
+            'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3}},
             {'stage': {'duration': 10,
               'finished_at': '2014-04-01T18:59:12',
               'name': 'stage3',
               'started_at': '2014-04-01T18:59:02'},
             'build': {'duration': 17, 'started_at': '2014-04-01T18:55:00',
+            'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3}},
             ],
             self.build.stages_to_list())
