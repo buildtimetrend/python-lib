@@ -23,7 +23,7 @@
 
 # check if init.sh was run
 if [ ! "$BUILD_TREND_INIT" == "1" ]; then
-     echo "Buildtime-trend not initialised, first run 'source init.sh'"
+     echo "Buildtime-trend is not initialised, first run 'source init.sh'."
      exit 1
 fi
 

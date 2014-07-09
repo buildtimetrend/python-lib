@@ -41,5 +41,5 @@ if [ "$BUILD_TREND_INIT" == "1" ]; then
 	analyse.py
     fi
 else
-    echo "Buildtime-trend not initialised, run 'source init.sh'"
+    echo "Buildtime-trend is not initialised, first run 'source init.sh'."
 fi
