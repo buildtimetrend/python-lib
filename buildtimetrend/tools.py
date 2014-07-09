@@ -22,6 +22,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import copy
 from datetime import datetime
 
 
@@ -34,3 +35,22 @@ def format_timestamp(timestamp):
     '''
     timestamp_datetime = datetime.utcfromtimestamp(timestamp)
     return timestamp_datetime.isoformat()
+
+
+def add_project_data(payload, schema_version=1):
+    '''
+    Adds project data to a dict payload
+    Param payload: dictonary payload
+    Param schema_version: version of schema used
+    '''
+    if payload is not None and type(payload) is dict:
+        payload_as_dict = copy.deepcopy(payload)
+    else:
+        payload_as_dict = {}
+
+    payload_as_dict["buildtime_trend"] = {
+        "version": "0.1",
+        "schema_version": str(schema_version)
+    }
+
+    return payload_as_dict
