@@ -43,10 +43,10 @@ def add_project_info(payload, schema_version=1):
     Param payload: dictonary payload
     Param schema_version: version of schema used
     '''
-    if payload is not None and type(payload) is dict:
-        payload_as_dict = copy.deepcopy(payload)
-    else:
-        payload_as_dict = {}
+    if payload is None and type(payload) is not dict:
+        raise TypeError("param payload should be a dictionary")
+
+    payload_as_dict = copy.deepcopy(payload)
 
     payload_as_dict["buildtime_trend"] = {
         "version": "0.1",
