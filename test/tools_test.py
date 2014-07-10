@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.tools import format_timestamp
+from buildtimetrend.tools import add_project_info
 import unittest
 
 
@@ -34,3 +35,41 @@ class TestTools(unittest.TestCase):
 
         # test timestamp
         self.assertEquals("2014-07-09T12:38:33", format_timestamp(1404909513))
+
+    def test_add_project_info(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, add_project_info)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, add_project_info, None)
+        self.assertRaises(TypeError, add_project_info, "string")
+
+        # add empty parameters
+        self.assertDictEqual(
+            {"buildtime_trend": {"version": "0.1", "schema_version": "1"}},
+            add_project_info({})
+        )
+
+        # add different version for schema
+        self.assertDictEqual(
+            {"buildtime_trend": {"version": "0.1", "schema_version": "2"}},
+            add_project_info({}, 2)
+        )
+
+        # add different version string for schema
+        self.assertDictEqual(
+            {"buildtime_trend": {"version": "0.1", "schema_version": "stage_v2"}},
+            add_project_info({}, "stage_v2")
+        )
+
+        # set dict to add to
+        self.assertDictEqual(
+            {"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}},
+            add_project_info({"test": "value"})
+        )
+
+        # set dict to add to and a different schema version
+        self.assertDictEqual(
+            {"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "stage_v2"}},
+            add_project_info({"test": "value"}, "stage_v2")
+        )
