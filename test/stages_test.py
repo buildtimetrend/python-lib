@@ -50,7 +50,7 @@ class TestStages(unittest.TestCase):
         self.assertFalse(self.stages.read_csv('nofile.csv'))
         self.assertFalse(self.stages.read_csv(''))
 
-        # function should thrown an error  when no filename is set
+        # function should throw an error when no filename is set
         self.assertRaises(TypeError, self.stages.read_csv)
 
     def test_read_csv(self):

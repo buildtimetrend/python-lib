@@ -39,7 +39,7 @@ class TestTrend(unittest.TestCase):
         self.assertFalse(self.trend.gather_data('nofile.xml'))
         self.assertFalse(self.trend.gather_data(''))
 
-        # function should thrown an error  when no filename is set
+        # function should throw an error when no filename is set
         self.assertRaises(TypeError, self.trend.gather_data)
 
     def test_gather_data(self):
