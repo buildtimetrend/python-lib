@@ -37,9 +37,9 @@ def format_timestamp(timestamp):
     return timestamp_datetime.isoformat()
 
 
-def add_project_data(payload, schema_version=1):
+def add_project_info(payload, schema_version=1):
     '''
-    Adds project data to a dict payload
+    Adds project info to a dictonary
     Param payload: dictonary payload
     Param schema_version: version of schema used
     '''
