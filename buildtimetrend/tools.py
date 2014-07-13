@@ -48,6 +48,7 @@ def add_project_info(payload, schema_version=1):
 
     payload_as_dict = copy.deepcopy(payload)
 
+    # TODO get version and schema_version from Config
     payload_as_dict["buildtime_trend"] = {
         "version": "0.1",
         "schema_version": str(schema_version)
