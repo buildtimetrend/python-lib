@@ -22,6 +22,7 @@
 
 from buildtimetrend.tools import format_timestamp
 from buildtimetrend.tools import add_project_info_dict
+from buildtimetrend.tools import get_project_info
 import unittest
 
 
@@ -55,3 +56,8 @@ class TestTools(unittest.TestCase):
             {"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}},
             add_project_info_dict({"test": "value"})
         )
+
+    def test_get_project_info(self):
+        self.assertDictEqual(
+            {"version": "0.1", "schema_version": "1"},
+            get_project_info())
