@@ -36,25 +36,30 @@ def format_timestamp(timestamp):
     timestamp_datetime = datetime.utcfromtimestamp(timestamp)
     return timestamp_datetime.isoformat()
 
+def get_project_info():
+    '''
+    Get project info as a dictonary
+    '''
+    # TODO get version and schema_version from Config
+    version = "0.1";
+    schema_version = "1";
+
+    return {
+        "version": version,
+        "schema_version": schema_version
+    }
+
 
 def add_project_info_dict(payload):
     '''
     Adds project info to a dictonary
     Param payload: dictonary payload
-    Param schema_version: version of schema used
     '''
     if payload is None and type(payload) is not dict:
         raise TypeError("param payload should be a dictionary")
 
-    # TODO get version and schema_version from Config
-    version = "0.1";
-    schema_version = "1";
-
     payload_as_dict = copy.deepcopy(payload)
 
-    payload_as_dict["buildtime_trend"] = {
-        "version": version,
-        "schema_version": schema_version
-    }
+    payload_as_dict["buildtime_trend"] = get_project_info()
 
     return payload_as_dict
