@@ -50,26 +50,8 @@ class TestTools(unittest.TestCase):
             add_project_info({})
         )
 
-        # add different version for schema
-        self.assertDictEqual(
-            {"buildtime_trend": {"version": "0.1", "schema_version": "2"}},
-            add_project_info({}, 2)
-        )
-
-        # add different version string for schema
-        self.assertDictEqual(
-            {"buildtime_trend": {"version": "0.1", "schema_version": "stage_v2"}},
-            add_project_info({}, "stage_v2")
-        )
-
         # set dict to add to
         self.assertDictEqual(
             {"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}},
             add_project_info({"test": "value"})
-        )
-
-        # set dict to add to and a different schema version
-        self.assertDictEqual(
-            {"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "stage_v2"}},
-            add_project_info({"test": "value"}, "stage_v2")
         )

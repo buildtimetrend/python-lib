@@ -37,7 +37,7 @@ def format_timestamp(timestamp):
     return timestamp_datetime.isoformat()
 
 
-def add_project_info(payload, schema_version=1):
+def add_project_info(payload):
     '''
     Adds project info to a dictonary
     Param payload: dictonary payload
@@ -46,12 +46,15 @@ def add_project_info(payload, schema_version=1):
     if payload is None and type(payload) is not dict:
         raise TypeError("param payload should be a dictionary")
 
+    # TODO get version and schema_version from Config
+    version = "0.1";
+    schema_version = "1";
+
     payload_as_dict = copy.deepcopy(payload)
 
-    # TODO get version and schema_version from Config
     payload_as_dict["buildtime_trend"] = {
-        "version": "0.1",
-        "schema_version": str(schema_version)
+        "version": version,
+        "schema_version": schema_version
     }
 
     return payload_as_dict
