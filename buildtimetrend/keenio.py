@@ -72,9 +72,10 @@ def keen_add_event(event_collection, payload):
     Param event_collection : collection event data is submitted to
     Param payload : data that is submitted
     '''
-
+    # add project info to this event
     payload = add_project_info_dict(payload)
 
+    # submit list of events to Keen.io
     keen.add_event(event_collection, payload)
 
 
