@@ -21,7 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.tools import format_timestamp
-from buildtimetrend.tools import add_project_info
+from buildtimetrend.tools import add_project_info_dict
 import unittest
 
 
@@ -36,22 +36,22 @@ class TestTools(unittest.TestCase):
         # test timestamp
         self.assertEquals("2014-07-09T12:38:33", format_timestamp(1404909513))
 
-    def test_add_project_info(self):
+    def test_add_project_info_dict(self):
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, add_project_info)
+        self.assertRaises(TypeError, add_project_info_dict)
 
         # error is thrown when called with an invalid parameter
-        self.assertRaises(TypeError, add_project_info, None)
-        self.assertRaises(TypeError, add_project_info, "string")
+        self.assertRaises(TypeError, add_project_info_dict, None)
+        self.assertRaises(TypeError, add_project_info_dict, "string")
 
         # add empty parameters
         self.assertDictEqual(
             {"buildtime_trend": {"version": "0.1", "schema_version": "1"}},
-            add_project_info({})
+            add_project_info_dict({})
         )
 
         # set dict to add to
         self.assertDictEqual(
             {"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}},
-            add_project_info({"test": "value"})
+            add_project_info_dict({"test": "value"})
         )

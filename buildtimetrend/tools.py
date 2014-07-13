@@ -37,7 +37,7 @@ def format_timestamp(timestamp):
     return timestamp_datetime.isoformat()
 
 
-def add_project_info(payload):
+def add_project_info_dict(payload):
     '''
     Adds project info to a dictonary
     Param payload: dictonary payload
