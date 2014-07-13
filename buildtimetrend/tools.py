@@ -63,3 +63,19 @@ def add_project_info_dict(payload):
     payload_as_dict["buildtime_trend"] = get_project_info()
 
     return payload_as_dict
+
+def add_project_info_list(payload):
+    '''
+    Adds project info to a list of dictionaries
+    Param payload: list of dictionaries
+    '''
+    if payload is None and type(payload) is not list:
+        raise TypeError("param payload should be a list")
+
+    payload_as_list = []
+
+    # loop over dicts in payload and add project info to each one
+    for event_dict in payload:
+        payload_as_list.append(add_project_info_dict(event_dict))
+
+    return payload_as_list

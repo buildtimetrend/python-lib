@@ -22,6 +22,7 @@
 
 from buildtimetrend.tools import format_timestamp
 from buildtimetrend.tools import add_project_info_dict
+from buildtimetrend.tools import add_project_info_list
 from buildtimetrend.tools import get_project_info
 import unittest
 
@@ -55,6 +56,39 @@ class TestTools(unittest.TestCase):
         self.assertDictEqual(
             {"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}},
             add_project_info_dict({"test": "value"})
+        )
+
+    def test_add_project_info_list(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, add_project_info_list)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, add_project_info_list, None)
+
+        # list should only have a dict as element
+        self.assertRaises(TypeError, add_project_info_list, ["string"])
+
+        # use empty list
+        self.assertListEqual([], add_project_info_list([]))
+
+        # use list with empty dict as single element
+        self.assertListEqual(
+            [{"buildtime_trend": {"version": "0.1", "schema_version": "1"}}],
+            add_project_info_list([{}])
+        )
+
+        # list with one dict as element
+        self.assertListEqual(
+            [{"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}}],
+            add_project_info_list([{"test": "value"}])
+        )
+
+        # list with two dict as element
+        self.assertListEqual(
+            [{"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}},
+            {"test2": "value2", "buildtime_trend": {"version": "0.1", "schema_version": "1"}}],
+            add_project_info_list([{"test": "value"},
+                {"test2": "value2"}])
         )
 
     def test_get_project_info(self):
