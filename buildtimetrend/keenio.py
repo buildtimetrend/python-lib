@@ -24,6 +24,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 from keen import scoped_keys
+from keen import add_event
+from buildtimetrend.tools import add_project_info_dict
 
 
 def keen_io_writable():
@@ -62,6 +64,18 @@ def keen_io_generate_read_key(repo):
 
         return scoped_keys.encrypt(master_key, privileges)
     return None
+
+
+def keen_add_event(event_collection, payload):
+    '''
+    Wrapper for keen.add_event(), adds project info
+    Param event_collection : collection event data is submitted to
+    Param payload : data that is submitted
+    '''
+
+    payload = add_project_info_dict(payload)
+
+    keen.add_event(event_collection, payload)
 
 
 def generate_overview_config_file(repo):
