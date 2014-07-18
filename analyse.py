@@ -33,10 +33,11 @@ import os
 import sys
 import getopt
 from lxml import etree
-import keen
 from buildtimetrend.build import Build
 from buildtimetrend.travis import TravisData
 from buildtimetrend.keenio import keen_io_writable
+from buildtimetrend.keenio import keen_add_event
+from buildtimetrend.keenio import keen_add_events
 
 # use parameter for timestamps file and check if file exists
 TIMESTAMP_FILE = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
@@ -109,8 +110,8 @@ def analyse(argv):
     # send build data to keen.io
     if keen_io_writable():
         print "Sending data to Keen.io"
-        keen.add_event("builds", {"build": build.to_dict()})
-        keen.add_events({"build_stages": build.stages_to_list()})
+        keen_add_event("builds", {"build": build.to_dict()})
+        keen_add_events("build_stages", build.stages_to_list())
 
 if __name__ == "__main__":
     analyse(sys.argv[1:])
