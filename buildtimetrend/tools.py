@@ -36,6 +36,7 @@ def format_timestamp(timestamp):
     timestamp_datetime = datetime.utcfromtimestamp(timestamp)
     return timestamp_datetime.isoformat()
 
+
 def get_project_info():
     '''
     Get project info as a dictonary
@@ -63,6 +64,7 @@ def add_project_info_dict(payload):
     payload_as_dict["buildtime_trend"] = get_project_info()
 
     return payload_as_dict
+
 
 def add_project_info_list(payload):
     '''
