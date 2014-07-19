@@ -23,7 +23,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import os
-import keen
+from keen import scoped_keys
+from keen import add_event
+from keen import add_events
 from buildtimetrend.tools import add_project_info_dict
 from buildtimetrend.tools import add_project_info_list
 
@@ -62,7 +64,7 @@ def keen_io_generate_read_key(repo):
             "allowed_operations": ["read"]
         }
 
-        return keen.scoped_keys.encrypt(master_key, privileges)
+        return scoped_keys.encrypt(master_key, privileges)
     return None
 
 
