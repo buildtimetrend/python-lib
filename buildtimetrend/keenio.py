@@ -62,7 +62,7 @@ def keen_io_generate_read_key(repo):
             "allowed_operations": ["read"]
         }
 
-        return scoped_keys.encrypt(master_key, privileges)
+        return keen.scoped_keys.encrypt(master_key, privileges)
     return None
 
 
@@ -76,7 +76,7 @@ def keen_add_event(event_collection, payload):
     payload = add_project_info_dict(payload)
 
     # submit list of events to Keen.io
-    add_event(event_collection, payload)
+    keen.add_event(event_collection, payload)
 
 
 def keen_add_events(event_collection, payload):
@@ -89,7 +89,7 @@ def keen_add_events(event_collection, payload):
     payload = add_project_info_list(payload)
 
     # submit list of events to Keen.io
-    add_events({event_collection: payload})
+    keen.add_events({event_collection: payload})
 
 
 def generate_overview_config_file(repo):
