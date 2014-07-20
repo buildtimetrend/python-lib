@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import keen
+from keen import scoped_keys
 from buildtimetrend.tools import add_project_info_dict
 from buildtimetrend.tools import add_project_info_list
 
