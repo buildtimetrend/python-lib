@@ -87,6 +87,12 @@ def analyse(argv):
         travis_data.get_build_data()
         build.add_property("started_at", travis_data.get_started_at())
 
+    # log data
+    log_build_native(build)
+    log_build_keen(build)
+
+def log_build_native(build):
+    '''Store build data in xml format'''
     # load previous buildtimes file, or create a new xml root
     if os.path.isfile(RESULT_FILE):
         try:
@@ -107,7 +113,8 @@ def analyse(argv):
             root_xml, xml_declaration=True,
             encoding='utf-8', pretty_print=True))
 
-    # send build data to keen.io
+def log_build_keen(build):
+    '''Send build data to keen.io'''
     if keen_io_writable():
         print "Sending data to Keen.io"
         keen_add_event("builds", {"build": build.to_dict()})
