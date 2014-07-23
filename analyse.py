@@ -10,6 +10,7 @@
 #    --repo=<repo_slug>
 #    --ci=<ci_platform> : fe. travis, jenkins, shippable, local, ...
 #    --result=<build_result> : fe. passed, failed, errored, ...
+#    --mode=<storage_mode> : fe. native, keen (default)
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -47,17 +48,21 @@ if not os.path.isfile(TIMESTAMP_FILE):
 
 
 def analyse(argv):
+    mode_native = False
+    mode_keen = True
+
     # read build data from timestamp CSV file
     build = Build(TIMESTAMP_FILE)
 
     # process arguments
     usage_string = 'analyse.py -h --build=<buildID>' \
         ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
-        ' --ci=<ci_platform> --result=<build_result>'
+        ' --ci=<ci_platform> --result=<build_result> --mode=<storage_mode>'
     try:
         opts, args = getopt.getopt(
             argv, "h",
-            ["build=", "job=", "branch=", "repo=", "ci=", "result=", "help"])
+            ["build=", "job=", "branch=", "repo=",
+            "ci=", "result=", "mode=", "help"])
     except getopt.GetoptError:
         print usage_string
         sys.exit(2)
@@ -77,6 +82,9 @@ def analyse(argv):
             build.add_property("ci_platform", arg)
         elif opt == "--result":
             build.add_property("result", arg)
+        elif opt == "--mode":
+            if arg == "native":
+                mode_native = True
 
     # retrieve data from Travis CI API
     if build.get_property("ci_platform") == "travis":
@@ -88,8 +96,10 @@ def analyse(argv):
         build.add_property("started_at", travis_data.get_started_at())
 
     # log data
-    log_build_native(build)
-    log_build_keen(build)
+    if mode_native == True:
+        log_build_native(build)
+    if mode_keen == True:
+        log_build_keen(build)
 
 def log_build_native(build):
     '''Store build data in xml format'''
