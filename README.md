@@ -16,8 +16,8 @@ Dependencies
 ------------
 
 - keen (client for storing build time data as events in keen.io)
-- lxml (python wrapper for libxml2 and libxslt)
-- matplotlib v1.2.0 or higher (for drawing the native trend graph, can be omitted when only using keen.io to generate charts. Stackplot requires version v1.2.0)
+- lxml (python wrapper for libxml2 and libxslt, required for storage type `native`)
+- matplotlib v1.2.0 or higher (for drawing the `native` trend graph, can be omitted when only using keen.io to generate charts. Stackplot requires version v1.2.0)
 
 ### Dependency installation
 
