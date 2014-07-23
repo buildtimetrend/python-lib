@@ -71,6 +71,7 @@ It will calculate the duration between the timestamps and add them to
 a file with the analysed data of previous builds.
 When Keen.io is enabled, the data will be sent to your Keen.io project for analysis.
 When run on Travis CI, it will automatically add build/job related info.
+Parameter `--mode=native` will store data in xml format. It is recommended to use Keen.io to store data, see below for details.
 
 To generate a graph from previous builds, run
 
