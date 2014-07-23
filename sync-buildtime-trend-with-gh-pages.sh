@@ -65,7 +65,7 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   export BUILD_TREND_SAMPLE_CONFIGFILE=$BUILD_TREND_TRENDS_DIR/config_sample.js
 
   # perform analysis
-  analyse.sh
+  analyse.sh --mode=native
   # generate trend
   generate_trend.py
   # update trends overview HTML and JavaScript file
