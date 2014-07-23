@@ -25,7 +25,7 @@ Dependencies
 
 `pip install -r requirements.txt`
 
-- if you want to generate charts using `--trend=native` mode :
+- if you want to store data in `native` mode or generate charts using `--trend=native` mode :
 
 `pip install -r requirements-native.txt`
 
