@@ -36,7 +36,7 @@ if [ "$BUILD_TREND_INIT" == "1" ]; then
             test_result="errored"
             ;;
         esac
-        analyse.py --ci="travis" --branch=$TRAVIS_BRANCH --build=$TRAVIS_BUILD_NUMBER --job=$TRAVIS_JOB_NUMBER --repo=$TRAVIS_REPO_SLUG --result=$test_result
+        analyse.py --ci="travis" --branch="$TRAVIS_BRANCH" --build="$TRAVIS_BUILD_NUMBER" --job="$TRAVIS_JOB_NUMBER" --repo="$TRAVIS_REPO_SLUG" --result="$test_result"
     else
 	analyse.py
     fi
