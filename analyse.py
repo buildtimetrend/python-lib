@@ -62,7 +62,7 @@ def analyse(argv):
         opts, args = getopt.getopt(
             argv, "h",
             ["build=", "job=", "branch=", "repo=",
-            "ci=", "result=", "mode=", "help"])
+                "ci=", "result=", "mode=", "help"])
     except getopt.GetoptError:
         print usage_string
         sys.exit(2)
