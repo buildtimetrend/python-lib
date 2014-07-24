@@ -96,9 +96,9 @@ def analyse(argv):
         build.add_property("started_at", travis_data.get_started_at())
 
     # log data
-    if mode_native == True:
+    if mode_native is True:
         log_build_native(build)
-    if mode_keen == True:
+    if mode_keen is True:
         log_build_keen(build)
 
 
