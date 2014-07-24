@@ -31,7 +31,6 @@ VERBOSE=1
 
 # parse command line options
 while getopts ":qh" option; do
-#  echo $option
   case $option in
     q) VERBOSE=0 ;;
     h) echo "usage: $0 [-h] [-q] name"; exit ;;
