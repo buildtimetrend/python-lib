@@ -101,6 +101,7 @@ def analyse(argv):
     if mode_keen == True:
         log_build_keen(build)
 
+
 def log_build_native(build):
     '''Store build data in xml format'''
     # load previous buildtimes file, or create a new xml root
@@ -122,6 +123,7 @@ def log_build_native(build):
         xmlfile.write(etree.tostring(
             root_xml, xml_declaration=True,
             encoding='utf-8', pretty_print=True))
+
 
 def log_build_keen(build):
     '''Send build data to keen.io'''
