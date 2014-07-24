@@ -60,9 +60,10 @@ def analyse(argv):
         ' --ci=<ci_platform> --result=<build_result> --mode=<storage_mode>'
     try:
         opts, args = getopt.getopt(
-            argv, "h",
-            ["build=", "job=", "branch=", "repo=",
-                    "ci=", "result=", "mode=", "help"])
+            argv, "h", [
+                "build=", "job=", "branch=", "repo=",
+                "ci=", "result=", "mode=", "help"]
+        )
     except getopt.GetoptError:
         print usage_string
         sys.exit(2)
