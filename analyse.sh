@@ -22,12 +22,12 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # set default mode
-MODE=keen
+mode=keen
 
 # parse command line options
 while getopts ":m:h" option; do
   case $option in
-    m) MODE=$OPTARG ;;
+    m) mode=$OPTARG ;;
     h) echo "usage: $0 [-h] [-m native,keen]"; exit ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -55,9 +55,9 @@ if [ "$BUILD_TREND_INIT" == "1" ]; then
             test_result="errored"
             ;;
         esac
-        analyse.py --mode="$MODE" --ci="travis" --branch="$TRAVIS_BRANCH" --build="$TRAVIS_BUILD_NUMBER" --job="$TRAVIS_JOB_NUMBER" --repo="$TRAVIS_REPO_SLUG" --result="$test_result"
+        analyse.py --mode="$mode" --ci="travis" --branch="$TRAVIS_BRANCH" --build="$TRAVIS_BUILD_NUMBER" --job="$TRAVIS_JOB_NUMBER" --repo="$TRAVIS_REPO_SLUG" --result="$test_result"
     else
-	analyse.py --mode="$MODE"
+	analyse.py --mode="$mode"
     fi
 else
     echo "Buildtime-trend is not initialised, first run 'source init.sh'."

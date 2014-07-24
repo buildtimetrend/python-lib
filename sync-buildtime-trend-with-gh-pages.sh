@@ -28,12 +28,12 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # set default mode
-MODE=keen
+mode=keen
 
 # parse command line options
 while getopts ":m:h" option; do
   case $option in
-    m) MODE=$OPTARG ;;
+    m) mode=$OPTARG ;;
     h) echo "usage: $0 [-h] [-m native,keen]"; exit ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -90,9 +90,9 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   export BUILD_TREND_SAMPLE_CONFIGFILE=$BUILD_TREND_TRENDS_DIR/config_sample.js
 
   # perform analysis
-  analyse.sh --mode="$MODE"
+  analyse.sh --mode="$mode"
   # generate trend
-  generate_trend.py --trend="$MODE"
+  generate_trend.py --trend="$mode"
   # update trends overview HTML and JavaScript file
   cp "$BUILD_TREND_ORIGIN_OVERVIEWFILE" "$BUILD_TREND_OVERVIEWFILE"
   cp "$BUILD_TREND_ORIGIN_JSFILE" "$BUILD_TREND_JSFILE"
