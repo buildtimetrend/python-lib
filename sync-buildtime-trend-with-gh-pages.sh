@@ -59,12 +59,12 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   GH_PAGES=$HOME/gh-pages
 
   # clone or update gh-pages dir
-  if [ -d $GH_PAGES ]; then
-    cd $GH_PAGES
+  if [ -d "$GH_PAGES" ]; then
+    cd "$GH_PAGES"
     git pull --rebase
   else
-    git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG} $GH_PAGES > /dev/null
-    cd $GH_PAGES
+    git clone --quiet --branch=gh-pages https://"$GH_TOKEN"@github.com/"$TRAVIS_REPO_SLUG" "$GH_PAGES" > /dev/null
+    cd "$GH_PAGES"
   fi
 
   # set git user in gh-pages repo
@@ -74,8 +74,8 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   GH_PAGES_BUILD_TREND_DIR=$GH_PAGES/buildtime-trend
 
   # create data dir if it doesn't exist
-  if [ ! -d $GH_PAGES_BUILD_TREND_DIR ]; then
-    mkdir -p $GH_PAGES_BUILD_TREND_DIR
+  if [ ! -d "$GH_PAGES_BUILD_TREND_DIR" ]; then
+    mkdir -p "$GH_PAGES_BUILD_TREND_DIR"
   fi
 
   # set enviroment variable for the analysis result file
@@ -90,12 +90,12 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   export BUILD_TREND_SAMPLE_CONFIGFILE=$BUILD_TREND_TRENDS_DIR/config_sample.js
 
   # perform analysis
-  analyse.sh --mode=$MODE
+  analyse.sh --mode="$MODE"
   # generate trend
-  generate_trend.py --trend=$MODE
+  generate_trend.py --trend="$MODE"
   # update trends overview HTML and JavaScript file
-  cp $BUILD_TREND_ORIGIN_OVERVIEWFILE $BUILD_TREND_OVERVIEWFILE
-  cp $BUILD_TREND_ORIGIN_JSFILE $BUILD_TREND_JSFILE
+  cp "$BUILD_TREND_ORIGIN_OVERVIEWFILE" "$BUILD_TREND_OVERVIEWFILE"
+  cp "$BUILD_TREND_ORIGIN_JSFILE" "$BUILD_TREND_JSFILE"
 
   # print trend location
   REPO_OWNER=${TRAVIS_REPO_SLUG%/*}
@@ -103,7 +103,7 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   echo "Trend located at : http://${REPO_OWNER}.github.io/${REPO_NAME}/buildtime-trend/index.html"
 
   # update buildtime trend data on gh-pages
-  cd $GH_PAGES
+  cd "$GH_PAGES"
   git add -f .
   git commit -m "buildtime-trend of build $TRAVIS_JOB_NUMBER synchronised with gh-pages"
   git push -fq origin gh-pages > /dev/null
