@@ -33,7 +33,6 @@
 import os
 import sys
 import getopt
-from lxml import etree
 from buildtimetrend.build import Build
 from buildtimetrend.travis import TravisData
 from buildtimetrend.keenio import keen_io_writable
@@ -105,6 +104,9 @@ def analyse(argv):
 
 def log_build_native(build):
     '''Store build data in xml format'''
+    # import dependency
+    from lxml import etree
+
     # load previous buildtimes file, or create a new xml root
     if os.path.isfile(RESULT_FILE):
         try:
