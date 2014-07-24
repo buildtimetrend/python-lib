@@ -1,7 +1,7 @@
 #!/bin/bash
 # Analyses the timestamps in the logfile
 #
-# usage : ./analyse.sh
+# usage : ./analyse.sh -m native,keen
 #
 # Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -21,6 +21,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# set default mode
+MODE=keen
+
+# parse command line options
+while getopts ":m:h" option; do
+  case $option in
+    m) MODE=$OPTARG ;;
+    h) echo "usage: $0 [-h] [-m native,keen]"; exit ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
 if [ "$BUILD_TREND_INIT" == "1" ]; then
     timestamp.sh -q end
     if [[ "$TRAVIS" == "true" ]]; then
@@ -36,9 +55,9 @@ if [ "$BUILD_TREND_INIT" == "1" ]; then
             test_result="errored"
             ;;
         esac
-        analyse.py --ci="travis" --branch="$TRAVIS_BRANCH" --build="$TRAVIS_BUILD_NUMBER" --job="$TRAVIS_JOB_NUMBER" --repo="$TRAVIS_REPO_SLUG" --result="$test_result"
+        analyse.py --mode="$MODE" --ci="travis" --branch="$TRAVIS_BRANCH" --build="$TRAVIS_BUILD_NUMBER" --job="$TRAVIS_JOB_NUMBER" --repo="$TRAVIS_REPO_SLUG" --result="$test_result"
     else
-	analyse.py
+	analyse.py --mode="$MODE"
     fi
 else
     echo "Buildtime-trend is not initialised, first run 'source init.sh'."
