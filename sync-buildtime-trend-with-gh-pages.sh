@@ -3,6 +3,8 @@
 # Script to sync result of buildtimes analysis to a folder on Github pages (gh-pages).
 # It is called by Travis CI, after each build.
 #
+# Usage ./sync-buildtime-trend-with-gh-pages.sh [-h] [-m native,keen]
+#
 # Based on a script originally written by maxiaohao in the aws-mock GitHub project,
 # to update generated javadoc on the Github pages (gh-pages) of a project :
 # https://github.com/treelogic-swe/aws-mock/blob/04746419b409e1689632da53a7ea6063dbe33ef8/.utility/push-javadoc-to-gh-pages.sh
@@ -24,6 +26,29 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# set default mode
+MODE=keen
+
+# parse command line options
+while getopts ":m:h" option; do
+  case $option in
+    m) MODE=$OPTARG ;;
+    h) echo "usage: $0 [-h] [-m native,keen]"; exit ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+# remove the options from the positional parameters
+shift $(( OPTIND - 1 ))
+
 
 # only run this script on Travis CI
 # and if the initialise script (`source init.sh`) was run first
@@ -65,9 +90,9 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   export BUILD_TREND_SAMPLE_CONFIGFILE=$BUILD_TREND_TRENDS_DIR/config_sample.js
 
   # perform analysis
-  analyse.sh --mode=native
+  analyse.sh --mode=$MODE
   # generate trend
-  generate_trend.py
+  generate_trend.py --trend=$MODE
   # update trends overview HTML and JavaScript file
   cp $BUILD_TREND_ORIGIN_OVERVIEWFILE $BUILD_TREND_OVERVIEWFILE
   cp $BUILD_TREND_ORIGIN_JSFILE $BUILD_TREND_JSFILE
