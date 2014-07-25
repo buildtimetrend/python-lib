@@ -92,7 +92,7 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   # perform analysis
   analyse.sh -m "$mode"
   # generate trend
-  generate_trend.py --trend="$mode"
+  generate_trend.py --mode="$mode"
   # update trends overview HTML and JavaScript file
   cp "$BUILD_TREND_ORIGIN_OVERVIEWFILE" "$BUILD_TREND_OVERVIEWFILE"
   cp "$BUILD_TREND_ORIGIN_JSFILE" "$BUILD_TREND_JSFILE"
