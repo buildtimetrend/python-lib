@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import copy
+import os
 from datetime import datetime
 
 
@@ -35,6 +36,18 @@ def format_timestamp(timestamp):
     '''
     timestamp_datetime = datetime.utcfromtimestamp(timestamp)
     return timestamp_datetime.isoformat()
+
+
+def get_project_name():
+    '''
+    Get project name
+    '''
+
+    # use Travis repo slug as project name
+    if 'TRAVIS_REPO_SLUG' in os.environ:
+        return os.getenv('TRAVIS_REPO_SLUG')
+
+    return "None"
 
 
 def get_project_info():
