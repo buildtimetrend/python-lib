@@ -93,5 +93,6 @@ class TestTools(unittest.TestCase):
 
     def test_get_project_info(self):
         self.assertDictEqual(
-            {"version": "0.1", "schema_version": "1"},
+            {"version": "0.1", "schema_version": "1",
+            "project_name": "ruleant/buildtime_trend"},
             get_project_info())

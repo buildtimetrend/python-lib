@@ -57,10 +57,12 @@ def get_project_info():
     # TODO get version and schema_version from Config
     version = "0.1"
     schema_version = "1"
+    project_name = str(get_project_name())
 
     return {
         "version": version,
-        "schema_version": schema_version
+        "schema_version": schema_version,
+        "project_name": project_name
     }
 
 
