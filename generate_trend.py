@@ -67,10 +67,9 @@ def trend_native():
 
 def trend_keen():
     from buildtimetrend.keenio import generate_overview_config_file
+    from buildtimetrend.tools import get_project_name
 
-    # TODO use generic repo value (create general config object)
-    if 'TRAVIS_REPO_SLUG' in os.environ:
-        generate_overview_config_file(os.getenv('TRAVIS_REPO_SLUG'))
+    generate_overview_config_file(get_project_name())
 
 if __name__ == "__main__":
     generate_trend(sys.argv[1:])
