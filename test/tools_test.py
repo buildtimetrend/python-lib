@@ -24,13 +24,18 @@ from buildtimetrend.tools import format_timestamp
 from buildtimetrend.tools import add_project_info_dict
 from buildtimetrend.tools import add_project_info_list
 from buildtimetrend.tools import get_project_info
+import os
 import unittest
 
 
 class TestTools(unittest.TestCase):
     def setUp(self):
+        project_name = "None"
+        if 'TRAVIS' in os.environ and os.getenv('TRAVIS'):
+            project_name = os.getenv('TRAVIS_REPO_SLUG')
+
         self.project_info = {"version": "0.1", "schema_version": "1",
-            "project_name": "ruleant/buildtime-trend"}
+            "project_name": project_name}
 
     def test_format_timestamp(self):
         # test 0 timestamp (epoch)
