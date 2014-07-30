@@ -29,7 +29,8 @@ import unittest
 
 class TestTools(unittest.TestCase):
     def setUp(self):
-        pass
+        self.project_info = {"version": "0.1", "schema_version": "1",
+            "project_name": "ruleant/buildtime-trend"}
 
     def test_format_timestamp(self):
         # test 0 timestamp (epoch)
@@ -48,13 +49,13 @@ class TestTools(unittest.TestCase):
 
         # add empty parameters
         self.assertDictEqual(
-            {"buildtime_trend": {"version": "0.1", "schema_version": "1"}},
+            {"buildtime_trend": self.project_info},
             add_project_info_dict({})
         )
 
         # set dict to add to
         self.assertDictEqual(
-            {"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}},
+            {"test": "value", "buildtime_trend": self.project_info},
             add_project_info_dict({"test": "value"})
         )
 
@@ -73,26 +74,23 @@ class TestTools(unittest.TestCase):
 
         # use list with empty dict as single element
         self.assertListEqual(
-            [{"buildtime_trend": {"version": "0.1", "schema_version": "1"}}],
+            [{"buildtime_trend": self.project_info}],
             add_project_info_list([{}])
         )
 
         # list with one dict as element
         self.assertListEqual(
-            [{"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}}],
+            [{"test": "value", "buildtime_trend": self.project_info}],
             add_project_info_list([{"test": "value"}])
         )
 
         # list with two dict as element
         self.assertListEqual(
-            [{"test": "value", "buildtime_trend": {"version": "0.1", "schema_version": "1"}},
-            {"test2": "value2", "buildtime_trend": {"version": "0.1", "schema_version": "1"}}],
+            [{"test": "value", "buildtime_trend": self.project_info},
+            {"test2": "value2", "buildtime_trend": self.project_info}],
             add_project_info_list([{"test": "value"},
                 {"test2": "value2"}])
         )
 
     def test_get_project_info(self):
-        self.assertDictEqual(
-            {"version": "0.1", "schema_version": "1",
-            "project_name": "ruleant/buildtime_trend"},
-            get_project_info())
+        self.assertDictEqual(self.project_info, get_project_info())
