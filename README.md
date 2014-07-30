@@ -194,7 +194,7 @@ Contact
 
 Website : http://ruleant.github.io/buildtime-trend
 
-Follow us on [Twitter](https://twitter.com/buildtime_trend), [Github](https://github.com/ruleant/buildtime-trend) and [Ohloh](https://www.ohloh.net/p/buildtime-trend).
+Follow us on [Twitter](https://twitter.com/buildtime_trend), [Github](https://github.com/ruleant/buildtime-trend) and [OpenHub](https://www.openhub.net/p/buildtime-trend).
 
 
 Credits
