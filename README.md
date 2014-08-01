@@ -157,7 +157,11 @@ Example `.travis.yml` file :
         - secure: # your secure KEEN_MASTER_KEY goes here (required to generate a scoped read key to generate graphs using the Keen.io API)
     before_install:
       # install and initialise build-trend scripts
-      - if [[ -d $HOME/buildtime-trend/.git ]]; then cd $HOME/buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend; fi
+      # uncomment one of two options below (stable or development)
+      # download latest stable release
+      - curl https://codeload.github.com/ruleant/buildtime-trend/tar.gz/0.1-preview | tar -xz --transform s/buildtime-trend-0\.1-preview/buildtime-trend/g
+      # use latest development version (clone git repo)
+      # - if [[ -d $HOME/buildtime-trend/.git ]]; then cd $HOME/buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend; fi
       # initialise buildtime-trend scripts
       - source $HOME/buildtime-trend/init.sh
     install:
