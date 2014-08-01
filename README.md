@@ -144,7 +144,7 @@ To enable integration with Keen.io, `KEEN_PROJECT_ID` and `KEEN_WRITE_KEY` shoul
 Another option is to export the API master key, generate a scoped key using the Keen.io [Python SDK](https://github.com/keenlabs/KeenClient-Python#create-scoped-keys) and use those keys for write and read access.
  
 The generated trend graph and build-data will be put in folder `buildtime-trend` on your `gh-pages` branch.
-The trend is available on http://{username}.github.io/{repo_name}/buildtime-trend/trend.png
+The trend is available on http://{username}.github.io/{repo_name}/buildtime-trend/index.html
 
 Example `.travis.yml` file :
 
