@@ -42,8 +42,8 @@ echo
 echo "timestamps"
 cat $BUILD_TREND_LOGFILE
 echo "analyse timestamps"
-analyse.sh
+analyse.sh -m native
 cat $BUILD_TREND_OUTPUTFILE
 echo "generate trend"
-generate_trend.py
+generate_trend.py --mode=native
 
