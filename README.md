@@ -94,6 +94,8 @@ To analyse timestamps and store the analysed data :
 
 `analyse.sh -m native`
 
+See wiki for [data schema of the xml file](https://github.com/ruleant/buildtime-trend/wiki/Structure#data-file-in-native-mode).
+
 To generate a chart from the data stored in the xml file :
 
 `generate_trend.py --mode=native`
@@ -115,6 +117,8 @@ Follow these steps to enable using Keen.io :
 - `export KEEN_MASTER_KEY=<Master Key>`
 
 If these environment variables are set, the scripts will detect this and use Keen.io to store data, do analysis and generate graphs.
+
+See wiki for [data schema of data sent to Keen.io](https://github.com/ruleant/buildtime-trend/wiki/Structure#data-structures-in-keen-mode).
 
 Integrate with Travis CI
 ------------------------
