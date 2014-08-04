@@ -145,6 +145,21 @@ If these environment variables are set, the scripts will detect this and use Kee
 
 See wiki for [data schema of data sent to Keen.io](https://github.com/ruleant/buildtime-trend/wiki/Structure#data-structures-in-keen-mode).
 
+Visualise the trends
+--------------------
+
+Folder `trends` contains all files necessary to display the generated trends.
+- Copy folder `trends` to the desired location
+- Rename (or copy) `config_sample.js` to `config.js`
+- Edit `config.js` :
+  - add `keen_project_id` (see Keen.io section above)
+  - add `keen_read_key` (see Keen.io section above, or generate a scoped read key with `get_read_key.py project_name` (`project_name` should be the same as the project_name used to store the data, this is usually the git-repo name, fe. `ruleant/buildtime-trend`)
+  - add `project_name` : repo name is a good default, but it can be custom project name as well, this is only used as title on the webpage. It is not used to collect data.
+- Browse to `trends/index.html`, this should display the trends
+
+If you are building a Github repo on Travis CI, and you have `gh-pages` branch, you can use the script mentioned below to automatically add the right files and create the config file.
+
+
 Integrate with Travis CI
 ------------------------
 
