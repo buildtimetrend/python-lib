@@ -12,6 +12,20 @@ Buildtime trend
 
 Gather data, analyse and visualise trends of build processes on Continuous Integration platforms
 
+Features
+--------
+
+- Get timing data from each stage in a build process
+- Store, analyse and create trends of the build process data
+  - keen mode : send timing data to Keen.io and use the Keen.io API for analysis and visualisation
+  - native mode : store data in xml format and use matplotlib to generate a chart (limited)
+- Current charts and trends
+  - number of builds, succesful and failed
+  - average build duration
+  - chart with build stage durations
+  - builds per branch
+  - different time period can be selected
+
 Dependencies
 ------------
 
