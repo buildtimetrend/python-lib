@@ -15,9 +15,9 @@ Gather data, analyse and visualise trends of build processes on Continuous Integ
 Dependencies
 ------------
 
-- keen (client for storing build time data as events in keen.io)
+- keen (client for storing build time data as events in Keen.io)
 - lxml (python wrapper for libxml2 and libxslt)
-- matplotlib v1.2.0 or higher (for drawing the `native` trend graph, can be omitted when only using keen.io to generate charts. Stackplot requires version v1.2.0)
+- matplotlib v1.2.0 or higher (for drawing the `native` trend graph, can be omitted when only using Keen.io to generate charts. Stackplot requires version v1.2.0)
 
 ### Dependency installation
 
@@ -110,7 +110,7 @@ Next to storing your build time data in xml, it can be sent to Keen.io for stora
 Follow these steps to enable using Keen.io :
 
 1. [Create a Keen.io account](https://keen.io/signup), if you haven't already done so.
-2. [Create a project](https://keen.io/add-project) in you keen.io account.
+2. [Create a project](https://keen.io/add-project) in your Keen.io account.
 3. Look up the `project ID`, `Write Key` and `Master key` and assign them to environment variables :
 - `export KEEN_PROJECT_ID=<Project ID>`
 - `export KEEN_WRITE_KEY=<Write Key>`
