@@ -50,7 +50,8 @@ class TravisData(object):
             + '/builds?number=' + self.build_id,
             None,
             {
-                'user-agent': 'buildtime-trend/0.1',
+                # get version from Config class
+                'user-agent': 'buildtime-trend/0.2-dev',
                 'accept': 'application/vnd.travis-ci.2+json'
             }
         )

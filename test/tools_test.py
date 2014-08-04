@@ -34,7 +34,7 @@ class TestTools(unittest.TestCase):
         if 'TRAVIS' in os.environ and os.getenv('TRAVIS'):
             project_name = os.getenv('TRAVIS_REPO_SLUG')
 
-        self.project_info = {"version": "0.1", "schema_version": "1",
+        self.project_info = {"version": "0.2-dev", "schema_version": "1",
             "project_name": project_name}
 
     def test_format_timestamp(self):

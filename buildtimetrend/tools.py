@@ -55,7 +55,7 @@ def get_project_info():
     Get project info as a dictonary
     '''
     # TODO get version and schema_version from Config
-    version = "0.1"
+    version = "0.2-dev"
     schema_version = "1"
     project_name = str(get_project_name())
 
