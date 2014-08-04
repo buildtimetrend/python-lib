@@ -26,6 +26,17 @@ Features
   - builds per branch
   - different time period can be selected
 
+How to get it?
+--------------
+
+The [latest version](https://github.com/ruleant/buildtime-trend/releases) is available for download as zip and tarball on GitHub. Unzip and copy to the desired directory.
+
+If you prefer to use git, several options are available :
+
+- development version : `git clone https://github.com/ruleant/buildtime-trend.git`
+- latest release : `git clone https://github.com/ruleant/buildtime-trend.git --branch release`
+- a specific release : `git clone https://github.com/ruleant/buildtime-trend.git --branch v0.1`
+
 Dependencies
 ------------
 
