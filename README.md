@@ -204,7 +204,7 @@ Example `.travis.yml` file :
       # install and initialise build-trend scripts
       # uncomment one of two options below (stable or development)
       # download latest stable release
-      - curl https://codeload.github.com/ruleant/buildtime-trend/tar.gz/v0.1 | tar -xz --transform s/buildtime-trend-v0\.1/buildtime-trend/g
+      - curl https://codeload.github.com/ruleant/buildtime-trend/tar.gz/v0.1 | tar -xz --transform s/buildtime-trend[0-9a-Z\.\-]*/buildtime-trend/g
       # use latest development version (clone git repo)
       # - if [[ -d $HOME/buildtime-trend/.git ]]; then cd $HOME/buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend; fi
       # initialise buildtime-trend scripts
