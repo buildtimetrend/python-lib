@@ -1,5 +1,8 @@
 v0.2 (not yet released)
 
+v0.1.1 (released on 5Aug2014)
+- improve Travis CI example : fix issue extracting the github tarball
+
 v0.1 (released on 4Aug2014)
 - Get timing data from each stage in a build process
 - Store, analyse and create trends of the build process data
