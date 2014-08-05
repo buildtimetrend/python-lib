@@ -2,7 +2,7 @@ Buildtime trend
 ===============
 
 
-[![Buildtime trend](http://img.shields.io/badge/release-v0.1-blue.svg)](https://github.com/ruleant/buildtime-trend/releases/tag/v0.1)
+[![Buildtime trend](http://img.shields.io/badge/release-v0.1.1-blue.svg)](https://github.com/ruleant/buildtime-trend/releases/tag/v0.1.1)
 [![Buildtime trend](http://img.shields.io/badge/dev-0.1--dev-blue.svg)](https://github.com/ruleant/buildtime-trend/zipball/master)
 [![Build Status](https://travis-ci.org/ruleant/buildtime-trend.svg)](https://travis-ci.org/ruleant/buildtime-trend)
 [![Coverage Status](https://coveralls.io/repos/ruleant/buildtime-trend/badge.png?branch=master)](https://coveralls.io/r/ruleant/buildtime-trend?branch=master)
@@ -36,7 +36,7 @@ If you prefer to use git, several options are available :
 
 - development version : `git clone https://github.com/ruleant/buildtime-trend.git`
 - latest release : `git clone https://github.com/ruleant/buildtime-trend.git --branch release`
-- a specific release : `git clone https://github.com/ruleant/buildtime-trend.git --branch v0.1`
+- a specific release : `git clone https://github.com/ruleant/buildtime-trend.git --branch v0.1.1`
 
 Dependencies
 ------------
@@ -204,7 +204,7 @@ Example `.travis.yml` file :
       # install and initialise build-trend scripts
       # uncomment one of two options below (stable or development)
       # download latest stable release
-      - curl https://codeload.github.com/ruleant/buildtime-trend/tar.gz/v0.1 | tar -xz --transform s/buildtime-trend[0-9a-Z\.\-]*/buildtime-trend/g
+      - curl https://codeload.github.com/ruleant/buildtime-trend/tar.gz/v0.1.1 | tar -xz --transform s/buildtime-trend[0-9a-Z\.\-]*/buildtime-trend/g
       # use latest development version (clone git repo)
       # - if [[ -d $HOME/buildtime-trend/.git ]]; then cd $HOME/buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend; fi
       # initialise buildtime-trend scripts
