@@ -2,7 +2,7 @@ Buildtime trend
 ===============
 
 
-[![Buildtime trend](http://img.shields.io/badge/release-v0.1-blue.svg)](https://github.com/ruleant/buildtime-trend/releases/tag/v0.1)
+[![Buildtime trend](http://img.shields.io/badge/release-v0.1.1-blue.svg)](https://github.com/ruleant/buildtime-trend/releases/latest)
 [![Buildtime trend](http://img.shields.io/badge/dev-0.2--dev-blue.svg)](https://github.com/ruleant/buildtime-trend/zipball/master)
 [![Build Status](https://travis-ci.org/ruleant/buildtime-trend.svg)](https://travis-ci.org/ruleant/buildtime-trend)
 [![Coverage Status](https://coveralls.io/repos/ruleant/buildtime-trend/badge.png?branch=master)](https://coveralls.io/r/ruleant/buildtime-trend?branch=master)
