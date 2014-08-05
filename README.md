@@ -30,13 +30,13 @@ Features
 How to get it?
 --------------
 
-The [latest version](https://github.com/ruleant/buildtime-trend/releases) is available for download as zip and tarball on GitHub. Unzip and copy to the desired directory.
+The [latest version](https://github.com/ruleant/buildtime-trend/releases/latest) is available for download as zip and tarball on GitHub. Unzip and copy to the desired directory.
 
 If you prefer to use git, several options are available :
 
 - development version : `git clone https://github.com/ruleant/buildtime-trend.git`
 - latest release : `git clone https://github.com/ruleant/buildtime-trend.git --branch release`
-- a specific release : `git clone https://github.com/ruleant/buildtime-trend.git --branch v0.1`
+- a specific release : `git clone https://github.com/ruleant/buildtime-trend.git --branch v0.1.1`
 
 Dependencies
 ------------
@@ -204,7 +204,7 @@ Example `.travis.yml` file :
       # install and initialise build-trend scripts
       # uncomment one of two options below (stable or development)
       # download latest stable release
-      - curl https://codeload.github.com/ruleant/buildtime-trend/tar.gz/v0.1 | tar -xz --transform s/buildtime-trend[0-9a-Z\.\-]*/buildtime-trend/g
+      - curl https://codeload.github.com/ruleant/buildtime-trend/tar.gz/v0.1.1 | tar -xz --transform s/buildtime-trend[0-9a-Z\.\-]*/buildtime-trend/g
       # use latest development version (clone git repo)
       # - if [[ -d $HOME/buildtime-trend/.git ]]; then cd $HOME/buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend; fi
       # initialise buildtime-trend scripts
