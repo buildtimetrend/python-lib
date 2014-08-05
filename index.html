@@ -31,7 +31,10 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h2>
+        <p><a href="https://github.com/ruleant/buildtime-trend/releases/latest"><img src="http://img.shields.io/badge/release-v0.1.1-blue.svg" alt="Buildtime trend"></a>
+<a href="https://github.com/ruleant/buildtime-trend/tarball/master"><img src="http://img.shields.io/badge/dev-0.2--dev-blue.svg" alt="Buildtime trend"></a></p>
+
+<h2>
 <a name="example-of-build-stages-trend" class="anchor" href="#example-of-build-stages-trend"><span class="octicon octicon-link"></span></a>Example of build stages trend</h2>
 
 <p><a href="http://ruleant.github.io/buildtime-trend/buildtime-trend/"><img src="http://ruleant.github.io/buildtime-trend/images/screenshot_buildtimetrend.png" alt="Graphs generated with Keen.io API"></a>
@@ -62,7 +65,7 @@ Click the image for recently generated trends.</p>
 </ul><h2>
 <a name="how-to-get-it" class="anchor" href="#how-to-get-it"><span class="octicon octicon-link"></span></a>How to get it?</h2>
 
-<p>The <a href="https://github.com/ruleant/buildtime-trend/releases">latest version</a> is available for download as zip and tarball on GitHub. Unzip and copy to the desired directory.</p>
+<p>The <a href="https://github.com/ruleant/buildtime-trend/releases/latest">latest version</a> is available for download as zip and tarball on GitHub. Unzip and copy to the desired directory.</p>
 
 <p>If you prefer to use git, several options are available :</p>
 
@@ -71,7 +74,7 @@ Click the image for recently generated trends.</p>
 </li>
 <li>latest release : <code>git clone https://github.com/ruleant/buildtime-trend.git --branch release</code>
 </li>
-<li>a specific release : <code>git clone https://github.com/ruleant/buildtime-trend.git --branch v0.1</code>
+<li>a specific release : <code>git clone https://github.com/ruleant/buildtime-trend.git --branch v0.1.1</code>
 </li>
 </ul><h2>
 <a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h2>
@@ -251,7 +254,7 @@ before_install:
   # install and initialise build-trend scripts
   # uncomment one of two options below (stable or development)
   # download latest stable release
-  - curl https://codeload.github.com/ruleant/buildtime-trend/tar.gz/v0.1 | tar -xz --transform s/buildtime-trend-v0\.1/buildtime-trend/g
+  - curl https://codeload.github.com/ruleant/buildtime-trend/tar.gz/v0.1.1 | tar -xz --transform s/buildtime-trend[0-9a-Z\.\-]*/buildtime-trend/g
   # use latest development version (clone git repo)
   # - if [[ -d $HOME/buildtime-trend/.git ]]; then cd $HOME/buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git $HOME/buildtime-trend; fi
   # initialise buildtime-trend scripts
