@@ -21,11 +21,11 @@ Features
   - keen mode : send timing data to Keen.io and use the Keen.io API for analysis and visualisation
   - native mode : store data in xml format and use matplotlib to generate a chart (limited)
 - Current charts and trends
-  - number of builds, succesful and failed
+  - number of builds, successful and failed
   - average build duration
   - chart with build stage durations
   - builds per branch
-  - different time period can be selected
+  - different time periods can be selected
 
 How to get it?
 --------------
