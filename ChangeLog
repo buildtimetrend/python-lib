@@ -1,5 +1,8 @@
 v0.2 (not yet released)
 
+v0.1.2 (not yet released)
+- improve Travis CI example : pull released version from git
+
 v0.1.1 (released on 5Aug2014)
 - improve Travis CI example : fix issue extracting the github tarball
 
