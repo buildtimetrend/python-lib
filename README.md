@@ -170,18 +170,18 @@ You can integrate Buildtime Trend with your build process on Travis CI :
 install and initialise the buildtime trend scripts, add timestamp labels, generate the trend
 and synchronise it with your gh-pages branch.
 
-All you need is a github repo, a travis account for your repo and a gh-pages branch to publish the results.
+All you need is a github repo, a Travis CI account for your repo and a gh-pages branch to publish the results.
 
 You also need to create an encrypted GH_TOKEN to get write access to your repo (publish results on gh-pages branch) :
 - [create](https://github.com/settings/applications) the access token for your github repo, `repo` scope is sufficient
-- encrypt the environment variable using the [travis tool](http://docs.travis-ci.com/user/encryption-keys/) :
+- encrypt the environment variable using the [Travis CI command line tool](http://docs.travis-ci.com/user/encryption-keys/) :
 `travis encrypt GH_TOKEN=github_access_token`
 - add the encrypted token to your .travis.yml file (see below)
 
 To enable integration with Keen.io, `KEEN_PROJECT_ID` and `KEEN_WRITE_KEY` should be set (see above):
 
 1. Follow the steps above to create a Keen.io account and project and look up the Project ID
-2. Encrypt the project ID using the [travis tool](http://docs.travis-ci.com/user/encryption-keys/) :
+2. Encrypt the project ID using the [Travis CI command line tool](http://docs.travis-ci.com/user/encryption-keys/) :
 `travis encrypt KEEN_PROJECT_ID=<Project ID>` and add it to .travis.yml (see below)
 3. For the Write key, the master key of your Keen.io project should be used, because the Write key is too long to encrypt using the Travis encryption tool :
 `travis encrypt KEEN_WRITE_KEY=<Master Key>`
