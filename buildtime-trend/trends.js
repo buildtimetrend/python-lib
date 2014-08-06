@@ -129,7 +129,7 @@ function updateCharts(period) {
     // draw chart
     client.draw(queryAverageBuildTime, document.getElementById("metric_average_build_time"),
       {
-        title: "Average build job time",
+        title: "Average job duration",
         width: "250px",
         chartOptions: {
           suffix: "s"
@@ -179,7 +179,7 @@ function updateCharts(period) {
 
     // draw chart
     client.draw(queryStageFraction, document.getElementById("chart_stage_fraction"),
-      { title: "Build stage fraction" });
+      { title: "Build stage fraction of total build duration" });
 
     // display div inline (show it next to the previous chart)
     document.getElementById("chart_stage_fraction").style.display = "inline-block";
