@@ -146,8 +146,10 @@ If these environment variables are set, the scripts will detect this and use Kee
 
 See wiki for [data schema of data sent to Keen.io](https://github.com/ruleant/buildtime-trend/wiki/Structure#data-structures-in-keen-mode).
 
-Visualise the trends
---------------------
+Visualise the trends (powered by Keen.io)
+-----------------------------------------
+
+Multiple trends are available when data was stored in `keen` mode :
 
 Folder `trends` contains all files necessary to display the generated trends.
 - Copy folder `trends` to the desired location
