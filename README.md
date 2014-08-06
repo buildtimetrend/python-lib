@@ -231,7 +231,8 @@ Example `.travis.yml` file :
       # synchronise buildtime-trend result with gh-pages
       - sync-buildtime-trend-with-gh-pages.sh
 
-`sync-buildtime-trend-with-gh-pages.sh` has to run in both `after_failure` and `after_success` to report the gathered timestamps.
+`sync-buildtime-trend-with-gh-pages.sh` has to run in both `after_failure` and `after_success` to report the gathered timestamps with the result of the build in `$TRAVIS_TEST_RESULT`, which isn't available earlier in the build process.
+
 To enable `native` mode, add `-m native` when calling `sync-buildtime-trend-with-gh-pages.sh`
 
 Bugs and feature requests
