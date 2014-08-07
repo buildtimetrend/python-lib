@@ -139,7 +139,7 @@ Follow these steps to enable using Keen.io :
 2. [Create a project](https://keen.io/add-project) in your Keen.io account.
 3. Look up the `project ID`, `Write Key` and `Master key` and assign them to environment variables :
 - `export KEEN_PROJECT_ID=<Project ID>`
-- `export KEEN_WRITE_KEY=<Write Key>`
+- `export KEEN_WRITE_KEY=<Write Key>` (when running on Travis CI, use <Master Key>, see below)
 - `export KEEN_MASTER_KEY=<Master Key>`
 
 If these environment variables are set, the scripts will detect this and use Keen.io to store data, do analysis and generate graphs.
@@ -180,16 +180,14 @@ You also need to create an encrypted GH_TOKEN to get write access to your repo (
 
 To enable integration with Keen.io, `KEEN_PROJECT_ID` and `KEEN_WRITE_KEY` should be set (see above):
 
-1. Follow the steps above to create a Keen.io account and project and look up the Project ID
-2. Encrypt the project ID using the [Travis CI command line tool](http://docs.travis-ci.com/user/encryption-keys/) :
-`travis encrypt KEEN_PROJECT_ID=<Project ID>` and add it to .travis.yml (see below)
-3. For the Write key, the master key of your Keen.io project should be used, because the Write key is too long to encrypt using the Travis encryption tool :
-`travis encrypt KEEN_WRITE_KEY=<Master Key>`
-4. The master key of your Keen.io project is used to generate a scoped read key:
-`travis encrypt KEEN_MASTER_KEY=<Master Key>`
+1. Follow the steps above to create a Keen.io account and project and look up the `Project ID` and `Master Key`
+2. Assign the `Project ID` and `Master Key` to the corresponding environment variables and encrypt them using the [Travis CI command line tool](http://docs.travis-ci.com/user/encryption-keys/) and add it them to `.travis.yml` (see below) :
+- `travis encrypt KEEN_PROJECT_ID=<Project ID>`
+- `travis encrypt KEEN_WRITE_KEY=<Master Key>`
+**Remark :** Use the `Master Key` instead of the `Write Key` of your Keen.io project, because the `Write Key` is too long to encrypt using the Travis CI encryption tool
+- `travis encrypt KEEN_MASTER_KEY=<Master Key>`
+The `Master Key` of your Keen.io project is used to generate a scoped read key
 
-Another option is to export the API master key, generate a scoped key using the Keen.io [Python SDK](https://github.com/keenlabs/KeenClient-Python#create-scoped-keys) and use those keys for write and read access.
- 
 The generated trend graph and build-data will be put in folder `buildtime-trend` on your `gh-pages` branch.
 The trend is available on http://{username}.github.io/{repo_name}/buildtime-trend/index.html
 

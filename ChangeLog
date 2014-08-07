@@ -1,5 +1,6 @@
 v0.2 (not yet released)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script
+- issue #28 : improve documentation on asiging Keen.io access keys
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git
