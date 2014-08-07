@@ -88,17 +88,16 @@ when logging a timestamp :
 This will log the current timestamp to a file and display it on STDOUT.
 Repeat this step as much as needed.
 
-When finished, run
+When all build stages are finished, run
 
-`timestamp.sh end`
+`timestamp.sh end` (optional, `analyse.sh` adds it automatically)
 
-or
+followed by
 
 `analyse.sh`
 
-which will add an `end` timestamp automatically and will analyse the logfile with timestamps and print out the results.
-It will calculate the duration between the timestamps and add those to
-a file with the analysed data of previous builds.
+which will analyse the logfile with timestamps and print out the results.
+The `analyse.sh` script will calculate the duration between the timestamps and add those to a file with the analysed data of previous builds.
 When the analysis script encounters the `end` timestamp, it will stop analysing the timestamp file.
 
 When Keen.io is enabled, the data will be sent to your Keen.io project for analysis.
