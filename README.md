@@ -183,7 +183,7 @@ You also need to create an encrypted GH_TOKEN to get write access to your repo (
 - [create](https://github.com/settings/applications) the access token for your github repo, `repo` scope is sufficient
 - encrypt the environment variable using the [Travis CI command line tool](http://docs.travis-ci.com/user/encryption-keys/) :
 `travis encrypt GH_TOKEN=github_access_token`
-- add the encrypted token to your .travis.yml file (see below)
+- add the encrypted token to your `.travis.yml` file (see below)
 
 To enable integration with Keen.io, `KEEN_PROJECT_ID` and `KEEN_WRITE_KEY` should be set (see above):
 
@@ -230,7 +230,7 @@ Example `.travis.yml` file :
       # synchronise buildtime-trend result with gh-pages
       - sync-buildtime-trend-with-gh-pages.sh
 
-Run `sync-buildtime-trend-with-gh-pages.sh` in `after_script` to report the gathered timestamps with the result of the build in `$TRAVIS_TEST_RESULT`, which comes available `after_{succes|failure}`. `after_script` is executed regardless of the build result, so after both `after_success` and `after_failure`.
+Run `sync-buildtime-trend-with-gh-pages.sh` in `after_script` to report the gathered timestamps with the result of the build in `$TRAVIS_TEST_RESULT`, which comes available in `after_{success|failure}`. `after_script` is executed regardless of the build result, so after both `after_success` and `after_failure`.
 
 To enable `native` mode, add `-m native` when calling `sync-buildtime-trend-with-gh-pages.sh`
 
