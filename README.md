@@ -221,17 +221,11 @@ Example `.travis.yml` file :
       # generate timestamp with label 'tests'
       - timestamp.sh tests
       # run your tests
-    after_success:
-      # generate timestamp with label 'after_success'
-      - timestamp.sh after_success
-      # after_success scripts
-      # synchronise buildtime-trend result with gh-pages
-      - sync-buildtime-trend-with-gh-pages.sh
-    after_failure:
+    after_script:
       # synchronise buildtime-trend result with gh-pages
       - sync-buildtime-trend-with-gh-pages.sh
 
-`sync-buildtime-trend-with-gh-pages.sh` has to run in both `after_failure` and `after_success` to report the gathered timestamps with the result of the build in `$TRAVIS_TEST_RESULT`, which isn't available earlier in the build process.
+Run `sync-buildtime-trend-with-gh-pages.sh` in `after_script` to report the gathered timestamps with the result of the build in `$TRAVIS_TEST_RESULT`, which comes available `after_{succes|failure}`. `after_script` is executed regardless of the build result, so after both `after_success` and `after_failure`.
 
 To enable `native` mode, add `-m native` when calling `sync-buildtime-trend-with-gh-pages.sh`
 
