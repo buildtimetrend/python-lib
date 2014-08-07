@@ -83,19 +83,26 @@ Executing the init script with `source` is required to export environment variab
 Because the script dir is added to PATH, no path needs to be added
 when logging a timestamp :
 
-`timestamp.sh eventname`
+`timestamp.sh event_name`
 
 This will log the current timestamp to a file and display it on STDOUT.
 Repeat this step as much as needed.
 
-When finished, run 
+When finished, run
+
+`timestamp.sh end`
+
+or
 
 `analyse.sh`
 
-to analyse the logfile with timestamps and print out the results.
-It will calculate the duration between the timestamps and add them to
+which will add an `end` timestamp automatically and will analyse the logfile with timestamps and print out the results.
+It will calculate the duration between the timestamps and add those to
 a file with the analysed data of previous builds.
+When the analysis script encounters the `end` timestamp, it will stop analysing the timestamp file.
+
 When Keen.io is enabled, the data will be sent to your Keen.io project for analysis.
+
 When run on Travis CI, it will automatically add build/job related info.
 Parameter `-m native` will store data in xml format. It is recommended to use Keen.io to store data, see below for details.
 
