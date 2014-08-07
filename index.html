@@ -22,8 +22,8 @@
           <h2 id="project_tagline">Gather data, analyse and visualise trends of build processes on Continuous Integration platforms</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/ruleant/buildtime-trend/archive/v0.1.2.zip">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/ruleant/buildtime-trend/archive/v0.1.2.tar.gz">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/ruleant/buildtime-trend/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ruleant/buildtime-trend/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -32,7 +32,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <p><a href="https://github.com/ruleant/buildtime-trend/releases/latest"><img src="http://img.shields.io/badge/release-v0.1.2-blue.svg" alt="Buildtime trend"></a>
-<a href="https://github.com/ruleant/buildtime-trend/tarball/master"><img src="http://img.shields.io/badge/dev-0.2--dev-blue.svg" alt="Buildtime trend"></a></p>
+<a href="https://github.com/ruleant/buildtime-trend/tarball/master"><img src="http://img.shields.io/badge/dev-v0.2--dev-blue.svg" alt="Buildtime trend"></a></p>
 
 <h2>
 <a name="example-of-build-stages-trend" class="anchor" href="#example-of-build-stages-trend"><span class="octicon octicon-link"></span></a>Example of build stages trend</h2>
@@ -121,20 +121,27 @@ Executing the init script with <code>source</code> is required to export environ
 <p>Because the script dir is added to PATH, no path needs to be added
 when logging a timestamp :</p>
 
-<p><code>timestamp.sh eventname</code></p>
+<p><code>timestamp.sh event_name</code></p>
 
 <p>This will log the current timestamp to a file and display it on STDOUT.
 Repeat this step as much as needed.</p>
 
-<p>When finished, run </p>
+<p>When finished, run</p>
+
+<p><code>timestamp.sh end</code></p>
+
+<p>or</p>
 
 <p><code>analyse.sh</code></p>
 
-<p>to analyse the logfile with timestamps and print out the results.
-It will calculate the duration between the timestamps and add them to
+<p>which will add an <code>end</code> timestamp automatically and will analyse the logfile with timestamps and print out the results.
+It will calculate the duration between the timestamps and add those to
 a file with the analysed data of previous builds.
-When Keen.io is enabled, the data will be sent to your Keen.io project for analysis.
-When run on Travis CI, it will automatically add build/job related info.
+When the analysis script encounters the <code>end</code> timestamp, it will stop analysing the timestamp file.</p>
+
+<p>When Keen.io is enabled, the data will be sent to your Keen.io project for analysis.</p>
+
+<p>When run on Travis CI, it will automatically add build/job related info.
 Parameter <code>-m native</code> will store data in xml format. It is recommended to use Keen.io to store data, see below for details.</p>
 
 <p>To generate a graph from previous builds, run</p>
@@ -180,7 +187,8 @@ If Keen.io is enabled, <code>generate_trend.py</code> can be run without paramet
 <a href="https://keen.io/add-project">Create a project</a> in your Keen.io account.</li>
 <li>Look up the <code>project ID</code>, <code>Write Key</code> and <code>Master key</code> and assign them to environment variables :</li>
 <li><code>export KEEN_PROJECT_ID=&lt;Project ID&gt;</code></li>
-<li><code>export KEEN_WRITE_KEY=&lt;Write Key&gt;</code></li>
+<li>
+<code>export KEEN_WRITE_KEY=&lt;Write Key&gt;</code> (when running on Travis CI, use , see below)</li>
 <li><code>export KEEN_MASTER_KEY=&lt;Master Key&gt;</code></li>
 </ol><p>If these environment variables are set, the scripts will detect this and use Keen.io to store data, do analysis and generate graphs.</p>
 
@@ -215,32 +223,31 @@ If Keen.io is enabled, <code>generate_trend.py</code> can be run without paramet
 install and initialise the buildtime trend scripts, add timestamp labels, generate the trend
 and synchronise it with your gh-pages branch.</p>
 
-<p>All you need is a github repo, a travis account for your repo and a gh-pages branch to publish the results.</p>
+<p>All you need is a github repo, a Travis CI account for your repo and a gh-pages branch to publish the results.</p>
 
 <p>You also need to create an encrypted GH_TOKEN to get write access to your repo (publish results on gh-pages branch) :</p>
 
 <ul>
 <li>
 <a href="https://github.com/settings/applications">create</a> the access token for your github repo, <code>repo</code> scope is sufficient</li>
-<li>encrypt the environment variable using the <a href="http://docs.travis-ci.com/user/encryption-keys/">travis tool</a> :
+<li>encrypt the environment variable using the <a href="http://docs.travis-ci.com/user/encryption-keys/">Travis CI command line tool</a> :
 <code>travis encrypt GH_TOKEN=github_access_token</code>
 </li>
-<li>add the encrypted token to your .travis.yml file (see below)</li>
+<li>add the encrypted token to your <code>.travis.yml</code> file (see below)</li>
 </ul><p>To enable integration with Keen.io, <code>KEEN_PROJECT_ID</code> and <code>KEEN_WRITE_KEY</code> should be set (see above):</p>
 
 <ol>
-<li>Follow the steps above to create a Keen.io account and project and look up the Project ID</li>
-<li>Encrypt the project ID using the <a href="http://docs.travis-ci.com/user/encryption-keys/">travis tool</a> :
-<code>travis encrypt KEEN_PROJECT_ID=&lt;Project ID&gt;</code> and add it to .travis.yml (see below)</li>
-<li>For the Write key, the master key of your Keen.io project should be used, because the Write key is too long to encrypt using the Travis encryption tool :
+<li>Follow the steps above to create a Keen.io account and project and look up the <code>Project ID</code> and <code>Master Key</code>
+</li>
+<li>Assign the <code>Project ID</code> and <code>Master Key</code> to the corresponding environment variables and encrypt them using the <a href="http://docs.travis-ci.com/user/encryption-keys/">Travis CI command line tool</a> and add it them to <code>.travis.yml</code> (see below) :</li>
+<li><code>travis encrypt KEEN_PROJECT_ID=&lt;Project ID&gt;</code></li>
+<li>
 <code>travis encrypt KEEN_WRITE_KEY=&lt;Master Key&gt;</code>
-</li>
-<li>The master key of your Keen.io project is used to generate a scoped read key:
+<strong>Remark :</strong> Use the <code>Master Key</code> instead of the <code>Write Key</code> of your Keen.io project, because the <code>Write Key</code> is too long to encrypt using the Travis CI encryption tool</li>
+<li>
 <code>travis encrypt KEEN_MASTER_KEY=&lt;Master Key&gt;</code>
-</li>
-</ol><p>Another option is to export the API master key, generate a scoped key using the Keen.io <a href="https://github.com/keenlabs/KeenClient-Python#create-scoped-keys">Python SDK</a> and use those keys for write and read access.</p>
-
-<p>The generated trend graph and build-data will be put in folder <code>buildtime-trend</code> on your <code>gh-pages</code> branch.
+The <code>Master Key</code> of your Keen.io project is used to generate a scoped read key</li>
+</ol><p>The generated trend graph and build-data will be put in folder <code>buildtime-trend</code> on your <code>gh-pages</code> branch.
 The trend is available on http://{username}.github.io/{repo_name}/buildtime-trend/index.html</p>
 
 <p>Example <code>.travis.yml</code> file :</p>
@@ -271,19 +278,14 @@ script:
   # generate timestamp with label 'tests'
   - timestamp.sh tests
   # run your tests
-after_success:
-  # generate timestamp with label 'after_success'
-  - timestamp.sh after_success
-  # after_success scripts
-  # synchronise buildtime-trend result with gh-pages
-  - sync-buildtime-trend-with-gh-pages.sh
-after_failure:
+after_script:
   # synchronise buildtime-trend result with gh-pages
   - sync-buildtime-trend-with-gh-pages.sh
 </code></pre>
 
-<p><code>sync-buildtime-trend-with-gh-pages.sh</code> has to run in both <code>after_failure</code> and <code>after_success</code> to report the gathered timestamps.
-To enable <code>native</code> mode, add <code>-m native</code> when calling <code>sync-buildtime-trend-with-gh-pages.sh</code></p>
+<p>Run <code>sync-buildtime-trend-with-gh-pages.sh</code> in <code>after_script</code> to report the gathered timestamps with the result of the build in <code>$TRAVIS_TEST_RESULT</code>, which comes available in <code>after_{success|failure}</code>. <code>after_script</code> is executed regardless of the build result, so after both <code>after_success</code> and <code>after_failure</code>.</p>
+
+<p>To enable <code>native</code> mode, add <code>-m native</code> when calling <code>sync-buildtime-trend-with-gh-pages.sh</code></p>
 
 <h2>
 <a name="bugs-and-feature-requests" class="anchor" href="#bugs-and-feature-requests"><span class="octicon octicon-link"></span></a>Bugs and feature requests</h2>
