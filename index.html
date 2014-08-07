@@ -22,8 +22,8 @@
           <h2 id="project_tagline">Gather data, analyse and visualise trends of build processes on Continuous Integration platforms</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/ruleant/buildtime-trend/archive/v0.1.2.zip">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/ruleant/buildtime-trend/archive/v0.1.2.tar.gz">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/ruleant/buildtime-trend/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ruleant/buildtime-trend/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -126,17 +126,16 @@ when logging a timestamp :</p>
 <p>This will log the current timestamp to a file and display it on STDOUT.
 Repeat this step as much as needed.</p>
 
-<p>When finished, run</p>
+<p>When all build stages are finished, run</p>
 
-<p><code>timestamp.sh end</code></p>
+<p><code>timestamp.sh end</code> (optional, <code>analyse.sh</code> adds it automatically)</p>
 
-<p>or</p>
+<p>followed by</p>
 
 <p><code>analyse.sh</code></p>
 
-<p>which will add an <code>end</code> timestamp automatically and will analyse the logfile with timestamps and print out the results.
-It will calculate the duration between the timestamps and add those to
-a file with the analysed data of previous builds.
+<p>which will analyse the logfile with timestamps and print out the results.
+The <code>analyse.sh</code> script will calculate the duration between the timestamps and add those to a file with the analysed data of previous builds.
 When the analysis script encounters the <code>end</code> timestamp, it will stop analysing the timestamp file.</p>
 
 <p>When Keen.io is enabled, the data will be sent to your Keen.io project for analysis.</p>
