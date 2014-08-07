@@ -18,11 +18,8 @@ install:
 script:
   - timestamp.sh tests
   - nosetests --with-coverage --cover-package=buildtimetrend
-after_success:
+after_script:
   - timestamp.sh coveralls
   - coveralls
-  # synchronise buildtime-trend result with gh-pages
-  - sync-buildtime-trend-with-gh-pages.sh -m native
-after_failure:
   # synchronise buildtime-trend result with gh-pages
   - sync-buildtime-trend-with-gh-pages.sh -m native
