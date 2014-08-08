@@ -86,24 +86,46 @@ class Stages(object):
         return etree.tostring(self.to_xml(), pretty_print=True)
 
     def parse_timestamps(self, timestamps):
-        '''Parse timestamps and calculate stage durations'''
+        '''
+        Parse timestamps and calculate stage durations
+        
+        The timestamp of each stage is used as both the start point of it's stage
+        and the endpoint of the previous stage.
+        On parsing each timestamp, the previous timestamp and previous event name
+        are used to calculate the duration of the previous stage.
+        For this reason, parsing the first timestamp, doesn't produce a duration.
+        The parsing ends when an event with the name 'end' is encountered.
+        '''
         previous_timestamp = 0
         event_name = None
+        # iterate over all timestamps
         for row in timestamps:
             timestamp = int(row[1])
+            
+            # assign start timestamp of first stage to started_at of the build job
             if self.started_at is None:
                 self.started_at = format_timestamp(timestamp)
+            
+            # skip calculating the duration of the first stage,
+            # the next timestamp is needed    
             if event_name is not None:
+                # finish parsing when an end timestamp is encountered
                 if event_name == 'end':
                     self.finished_at = format_timestamp(previous_timestamp)
                     break
+                
+                # calculate duration from current and previous timestamp
                 duration = timestamp - previous_timestamp
                 print 'Duration {0} : {1}s'.format(event_name, duration)
+                
                 # add stage duration to stages dict
                 self.stages.append({
                     "name": event_name,
                     "started_at": format_timestamp(previous_timestamp),
                     "finished_at": format_timestamp(timestamp),
                     "duration": duration})
+            
+            # event name of the timestamp is used in the next iteration
+            # the timestamp of the next stage is used as the end timestamp of this stage
             event_name = row[0]
             previous_timestamp = timestamp
