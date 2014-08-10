@@ -24,7 +24,7 @@ from buildtimetrend.stages import Stages
 from lxml import etree
 import unittest
 
-TEST_SAMPLE_FILE = 'test/testsample_timestamps_done.csv'
+TEST_SAMPLE_FILE = 'test/testsample_timestamps.csv'
 STAGES_RESULT = [{'duration': 17,
              'finished_at': '2014-04-01T18:59:12',
              'name': 'stage1',
