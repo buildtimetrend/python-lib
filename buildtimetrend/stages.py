@@ -103,6 +103,9 @@ class Stages(object):
         for row in timestamps:
             timestamp = int(row[1])
 
+            # list of possible end tags
+            end_tags = ['end', 'done', 'finished', 'completed']
+
             # assign starting timestamp of first stage
             # to started_at of the build job
             if self.started_at is None:
@@ -112,7 +115,7 @@ class Stages(object):
             # the next timestamp is needed
             if event_name is not None:
                 # finish parsing when an end timestamp is encountered
-                if event_name == 'end':
+                if event_name.lower() in end_tags:
                     self.finished_at = format_timestamp(previous_timestamp)
                     break
 
