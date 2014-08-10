@@ -25,6 +25,10 @@ from lxml import etree
 import unittest
 
 TEST_SAMPLE_FILE = 'test/testsample_timestamps_done.csv'
+STAGES_RESULT = [{'duration': 17,
+             'finished_at': '2014-04-01T18:59:12',
+             'name': 'stage1',
+             'started_at': '2014-04-01T18:58:55'}]
 
 
 class TestStages(unittest.TestCase):
@@ -81,6 +85,51 @@ class TestStages(unittest.TestCase):
              'name': 'stage3',
              'started_at': '2014-04-01T18:59:02'}],
             self.stages.stages)
+
+    def test_parse_timestamps_end(self):
+        # use 'end' to end timestamp parsing
+        self.stages.parse_timestamps([["stage1","1396378735"],["end","1396378752"], ["end","1396378755"]])
+
+        self.assertListEqual(STAGES_RESULT, self.stages.stages)
+
+    def test_parse_timestamps_caps(self):
+        # use 'End' to end timestamp parsing
+        self.stages.parse_timestamps([["stage1","1396378735"],["End","1396378752"], ["end","1396378755"]])
+
+        self.assertListEqual(STAGES_RESULT, self.stages.stages)
+
+    def test_parse_timestamps_end_no_match(self):
+        # use 'end_tag' as stage name, this shouldn't end time parsing
+        self.stages.parse_timestamps([["stage1","1396378735"],["end_tag","1396378752"], ["end","1396378755"]])
+
+        self.assertListEqual(
+           [{'duration': 17,
+             'finished_at': '2014-04-01T18:59:12',
+             'name': 'stage1',
+             'started_at': '2014-04-01T18:58:55'},
+            {'duration': 3,
+             'finished_at': '2014-04-01T18:59:15',
+             'name': 'end_tag',
+             'started_at': '2014-04-01T18:59:12'}],
+            self.stages.stages)
+
+    def test_parse_timestamps_done(self):
+        # use 'done' as end stage name
+        self.stages.parse_timestamps([["stage1","1396378735"],["done","1396378752"], ["end","1396378755"]])
+
+        self.assertListEqual(STAGES_RESULT, self.stages.stages)
+
+    def test_parse_timestamps_finished(self):
+        # use 'done' as end stage name
+        self.stages.parse_timestamps([["stage1","1396378735"],["finished","1396378752"], ["end","1396378755"]])
+
+        self.assertListEqual(STAGES_RESULT, self.stages.stages)
+
+    def test_parse_timestamps_completed(self):
+        # use 'done' as end stage name
+        self.stages.parse_timestamps([["stage1","1396378735"],["completed","1396378752"], ["end","1396378755"]])
+
+        self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
     def test_total_duration(self):
         # read and parse sample file
