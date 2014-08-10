@@ -57,6 +57,7 @@ class Stages(object):
         # read timestamps, calculate stage duration
         with open(csv_filename, 'rb') as csv_data:
             timestamps = csv.reader(csv_data, delimiter=',', quotechar='"')
+            print timestamps
             self.parse_timestamps(timestamps)
 
         return True
