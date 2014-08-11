@@ -2,6 +2,7 @@ v0.2 (not yet released)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script
 - issue #28 : improve documentation on asiging Keen.io access keys
 - issue #30 : add a few timestamp event names that cause analysis to end
+- issue #19 : update Keen.io charts using query request refresh function
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git

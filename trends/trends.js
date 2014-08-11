@@ -28,10 +28,37 @@ function getUpdatePeriod(period) {
     keenInterval: keenInterval
   };
 }
-  
+
+// arrays with queries and query request to update
+var queriesInterval = [];
+var queriesTimeframe = [];
+var queryRequests = [];
+
 function updateCharts(periodName) {
   // get Update Period settings
   var updatePeriod = getUpdatePeriod(periodName);
+
+  var i;
+
+  // update all interval based queries
+  for (i = 0; i < queriesInterval.length; i++) {
+    queriesInterval[i].set({interval: updatePeriod.keenInterval});
+  }
+
+  // update all timeframe based queries
+  for (i = 0; i < queriesTimeframe.length; i++) {
+    queriesTimeframe[i].set({timeframe: updatePeriod.keenTimeframe});
+  }
+
+  // refresh all updated query requests
+  for (i = 0; i < queryRequests.length; i++) {
+    queryRequests[i].refresh();
+  }
+}
+
+function initCharts() {
+  // get Update Period settings
+  var updatePeriod = getUpdatePeriod();
 
   var keenTimeframe = updatePeriod.keenTimeframe;
   var keenInterval = updatePeriod.keenInterval;
@@ -50,6 +77,7 @@ function updateCharts(periodName) {
       eventCollection: "builds",
       timeframe: keenTimeframe,
     });
+    queriesTimeframe.push(queryTotalBuilds);
 
     // draw chart
     var requestTotalBuilds = client.run(queryTotalBuilds, function() {
@@ -57,7 +85,7 @@ function updateCharts(periodName) {
         title: "Total build jobs", width: "200px"
       });
     });
-
+    queryRequests.push(requestTotalBuilds);
 
     // display div inline (show it next to the next chart)
     document.getElementById("metric_total_builds").style.display = "inline-block";
@@ -69,6 +97,7 @@ function updateCharts(periodName) {
       timeframe: keenTimeframe,
       filters: [{"property_name":"build.result","operator":"eq","property_value":"passed"}]
     });
+    queriesTimeframe.push(queryTotalBuildsPassed);
 
     // combine queries for conditional coloring of TotalBuildspassed
     var colorBuildsPassed = client.run([queryTotalBuilds, queryTotalBuildsPassed], function(result){
@@ -95,6 +124,7 @@ function updateCharts(periodName) {
         }
       );
     });
+    queryRequests.push(colorBuildsPassed);
 
     // display div inline (show it next to the next chart)
     document.getElementById("metric_total_builds_passed").style.display = "inline-block";
@@ -106,6 +136,7 @@ function updateCharts(periodName) {
       timeframe: keenTimeframe,
       filters: [{"property_name":"build.result","operator":"in","property_value":["failed","errored"]}]
     });
+    queriesTimeframe.push(queryTotalBuildsFailed);
 
     // combine queries for conditional coloring of TotalBuildsfailed
     var colorBuildsFailed = client.run([queryTotalBuilds, queryTotalBuildsFailed], function(result){
@@ -132,6 +163,7 @@ function updateCharts(periodName) {
         }
       );
     });
+    queryRequests.push(colorBuildsFailed);
 
     // display div inline (show it next to the previous chart)
     document.getElementById("metric_total_builds_failed").style.display = "inline-block";
@@ -143,6 +175,7 @@ function updateCharts(periodName) {
       timeframe: keenTimeframe,
       targetProperty: "build.duration"
     });
+    queriesTimeframe.push(queryAverageBuildTime);
 
     // draw chart
     var requestAverageBuildTime = client.run(queryAverageBuildTime, function() {
@@ -154,6 +187,7 @@ function updateCharts(periodName) {
         }
       });
     });
+    queryRequests.push(requestAverageBuildTime);
 
     // display div inline (show it next to the previous chart)
     document.getElementById("metric_average_build_time").style.display = "inline-block";
@@ -168,6 +202,8 @@ function updateCharts(periodName) {
       groupBy: "stage.name",
       filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
     });
+    queriesTimeframe.push(queryStageDuration);
+    queriesInterval.push(queryStageDuration);
 
     // draw chart
     var requestStageDuration = client.run(queryStageDuration, function() {
@@ -181,6 +217,7 @@ function updateCharts(periodName) {
         }
       });
     });
+    queryRequests.push(requestStageDuration);
 
     // display div inline (show it next to the next chart)
     document.getElementById("chart_stage_duration").style.display = "inline-block";
@@ -194,6 +231,7 @@ function updateCharts(periodName) {
       groupBy: "stage.name",
       filters: [{"property_name":"stage.name","operator":"exists","property_value":true}]
     });
+    queriesTimeframe.push(queryStageFraction);
 
     // draw chart
     var requestStageFraction = client.run(queryStageFraction, function() {
@@ -201,6 +239,7 @@ function updateCharts(periodName) {
         title: "Build stage fraction of total build duration"
       });
     });
+    queryRequests.push(requestStageFraction);
 
     // display div inline (show it next to the previous chart)
     document.getElementById("chart_stage_fraction").style.display = "inline-block";
@@ -214,6 +253,8 @@ function updateCharts(periodName) {
       targetProperty: "build.build",
       groupBy: "build.branch"
     });
+    queriesTimeframe.push(queryBuilds);
+    queriesInterval.push(queryBuilds);
 
     // draw chart
     var requestBuilds = client.run(queryBuilds, function() {
@@ -227,6 +268,7 @@ function updateCharts(periodName) {
         }
       });
     });
+    queryRequests.push(requestBuilds);
 
     // display div inline (show it next to the next chart)
     document.getElementById("chart_builds").style.display = "inline-block";
@@ -239,6 +281,7 @@ function updateCharts(periodName) {
       targetProperty: "build.build",
       groupBy: "build.branch"
     });
+    queriesTimeframe.push(queryTotalBuildsBranch);
 
     // draw chart
     var requestTotalBuildsBranch = client.run(queryTotalBuildsBranch, function() {
@@ -246,6 +289,7 @@ function updateCharts(periodName) {
         title: "Builds per branch (%)"
       });
     });
+    queryRequests.push(requestTotalBuildsBranch);
 
     // display div inline (show it next to the previous chart)
     document.getElementById("chart_total_builds_branch").style.display = "inline-block";
@@ -271,5 +315,5 @@ function htmlEntities(str) {
 // initialize page
 function initPage() {
   updateTitle();
-  updateCharts();
+  initCharts();
 }
