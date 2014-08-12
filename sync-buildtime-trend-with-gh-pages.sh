@@ -100,7 +100,7 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   # print trend location
   REPO_OWNER=${TRAVIS_REPO_SLUG%/*}
   REPO_NAME=${TRAVIS_REPO_SLUG#*/}
-  echo "Trend located at : http://${REPO_OWNER}.github.io/${REPO_NAME}/buildtime-trend/index.html"
+  echo "Trend located at : https://${REPO_OWNER}.github.io/${REPO_NAME}/buildtime-trend/index.html"
 
   # update buildtime trend data on gh-pages
   cd "$GH_PAGES"
