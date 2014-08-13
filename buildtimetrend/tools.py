@@ -38,6 +38,28 @@ def format_timestamp(timestamp):
     return timestamp_datetime.isoformat()
 
 
+def split_isotimestamp(isotimestamp):
+    '''
+    Split a timestamp in isoformat in all seperate components :
+    year, month, day of month, day of week, hour (12 and 24 hour), minute, second
+    '''
+    timestamp_datetime = datetime.strptime(isotimestamp, "%Y-%m-%dT%H:%M:%S")
+
+    timestamp_dict = {}
+    timestamp_dict["timestamp"] = timestamp_datetime.isoformat()
+    timestamp_dict["year"] = timestamp_datetime.strftime("%Y")
+    timestamp_dict["month"] = timestamp_datetime.strftime("%m")
+    timestamp_dict["day_of_month"] = timestamp_datetime.strftime("%d")
+    timestamp_dict["day_of_week"] = timestamp_datetime.strftime("%w")
+    timestamp_dict["hour_12"] = timestamp_datetime.strftime("%I")
+    timestamp_dict["hour_ampm"] = timestamp_datetime.strftime("%p")
+    timestamp_dict["hour_24"] = timestamp_datetime.strftime("%H")
+    timestamp_dict["minute"] = timestamp_datetime.strftime("%M")
+    timestamp_dict["second"] = timestamp_datetime.strftime("%S")
+
+    return timestamp_dict
+
+
 def get_project_name():
     '''
     Get project name
