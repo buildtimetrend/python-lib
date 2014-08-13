@@ -41,7 +41,8 @@ def format_timestamp(timestamp):
 def split_isotimestamp(isotimestamp):
     '''
     Split a timestamp in isoformat in all seperate components :
-    year, month, day of month, day of week, hour (12 and 24 hour), minute, second
+      year, month, day of month, day of week,
+      hour (12 and 24 hour), minute, second
     '''
     timestamp_datetime = datetime.strptime(isotimestamp, "%Y-%m-%dT%H:%M:%S")
 
