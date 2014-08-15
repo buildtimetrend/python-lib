@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import copy
 import os
 from datetime import datetime
+from dateutil.parser import parse
 
 
 def format_timestamp(timestamp):
@@ -59,7 +60,8 @@ def split_isotimestamp(isotimestamp):
     Parameters :
     - isotimestamp : timestamp in isoformat YYYY-MM-DDTHH:MM:SS
     '''
-    return split_datetime(datetime.strptime(isotimestamp, "%Y-%m-%dT%H:%M:%S"))
+    # use dateutil.parser.parse to pare the timestamp
+    return split_datetime(parse(isotimestamp))
 
 
 def split_datetime(timestamp_datetime):
