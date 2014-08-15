@@ -93,7 +93,7 @@ def analyse(argv):
             build.get_property("build"),
         )
         travis_data.get_build_data()
-        build.add_property("started_at", travis_data.get_started_at())
+        build.set_started_at(travis_data.get_started_at())
 
     # log data
     if mode_native is True:
