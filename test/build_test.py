@@ -159,13 +159,13 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property1', 2)
         self.build.add_property('property2', 3)
         # started_at property should override default value
-        self.build.add_property('started_at', '2014-04-01T18:55:00')
+        self.build.set_started_at('2014-04-01T18:55:00')
         # finished_at property should override default value
         self.build.add_property('finished_at', '2014-04-01T19:01:11')
         # test dict
         self.assertDictEqual(
             {'duration': 17,
-            'started_at': '2014-04-01T18:55:00',
+            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
             'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3,
             'stages':
@@ -218,7 +218,7 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property1', 2)
         self.build.add_property('property2', 3)
         # started_at property should override default value
-        self.build.add_property('started_at', '2014-04-01T18:55:00')
+        self.build.set_started_at('2014-04-01T18:55:00')
         # finished_at property should override default value
         self.build.add_property('finished_at', '2014-04-01T19:01:11')
         # test dict
@@ -227,21 +227,24 @@ class TestBuild(unittest.TestCase):
               'finished_at': constants.SPLIT_TIMESTAMP2,
               'name': 'stage1',
               'started_at': constants.SPLIT_TIMESTAMP1},
-            'build': {'duration': 17, 'started_at': '2014-04-01T18:55:00',
+            'build': {'duration': 17,
+            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
             'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3}},
             {'stage': {'duration': 5,
               'finished_at': constants.SPLIT_TIMESTAMP3,
               'name': 'stage2',
               'started_at': constants.SPLIT_TIMESTAMP2},
-            'build': {'duration': 17, 'started_at': '2014-04-01T18:55:00',
+            'build': {'duration': 17,
+            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
             'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3}},
             {'stage': {'duration': 10,
               'finished_at': constants.SPLIT_TIMESTAMP4,
               'name': 'stage3',
               'started_at': constants.SPLIT_TIMESTAMP3},
-            'build': {'duration': 17, 'started_at': '2014-04-01T18:55:00',
+            'build': {'duration': 17,
+            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
             'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3}},
             ],

@@ -21,6 +21,20 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 TEST_SAMPLE_FILE = 'test/testsample_timestamps.csv'
+SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
+    'day_of_week': '2',
+    'day_of_week_full_en': 'Tuesday',
+    'day_of_week_short_en': 'Tue',
+    'hour_12': '06',
+    'hour_24': '18',
+    'hour_ampm': 'PM',
+    'minute': '55',
+    'month': '04',
+    'month_full_en': 'April',
+    'month_short_en': 'Apr',
+    'second': '00',
+    'timestamp': '2014-04-01T18:55:00',
+    'year': '2014'}
 SPLIT_TIMESTAMP1 = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',

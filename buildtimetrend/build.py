@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import copy
 from lxml import etree
 from buildtimetrend.stages import Stages
+from buildtimetrend.tools import split_isotimestamp
 
 
 class Build(object):
@@ -89,6 +90,15 @@ class Build(object):
             data["finished_at"] = self.stages.finished_at
 
         return data
+
+    def set_started_at(self, isotimestamp):
+        '''
+        Set timestamp when build started.
+
+        Parameters :
+        - isotimestamp : timestamp in iso format when build started
+        '''
+        self.add_property("started_at", split_isotimestamp(isotimestamp))
 
     def to_dict(self):
         '''
