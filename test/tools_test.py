@@ -22,6 +22,7 @@
 
 from buildtimetrend.tools import format_timestamp
 from buildtimetrend.tools import split_isotimestamp
+from buildtimetrend.tools import split_timestamp
 from buildtimetrend.tools import add_project_info_dict
 from buildtimetrend.tools import add_project_info_list
 from buildtimetrend.tools import get_project_info
@@ -78,6 +79,14 @@ class TestTools(unittest.TestCase):
 
         # test timestamp
         self.assertEquals("2014-07-09T12:38:33", format_timestamp(1404909513))
+
+    def test_split_timestamp(self):
+        # test 0 timestamp (epoch)
+        self.assertDictEqual(TIMESTAMP_SPLIT_EPOCH, split_timestamp(0))
+
+        # test timestamp
+        self.assertDictEqual(TIMESTAMP_SPLIT_TESTDATE,
+            split_timestamp(1404913113))
 
     def test_split_isotimestamp(self):
         # test 0 timestamp (epoch)
