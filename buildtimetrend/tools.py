@@ -38,6 +38,15 @@ def format_timestamp(timestamp):
     return timestamp_datetime.isoformat()
 
 
+def split_timestamp(timestamp):
+    '''
+    Split a timestamp in seconds since epoch in all seperate components :
+      year, month, day of month, day of week,
+      hour (12 and 24 hour), minute, second
+    '''
+    return split_datetime(datetime.utcfromtimestamp(timestamp))
+
+
 def split_isotimestamp(isotimestamp):
     '''
     Split a timestamp in isoformat in all seperate components :
