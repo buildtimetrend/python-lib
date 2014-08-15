@@ -25,7 +25,6 @@ import constants
 from lxml import etree
 import unittest
 
-TEST_SAMPLE_FILE = 'test/testsample_timestamps.csv'
 STAGES_RESULT = [{'duration': 17,
              'finished_at': constants.SPLIT_TIMESTAMP4,
              'name': 'stage1',
@@ -60,7 +59,7 @@ class TestStages(unittest.TestCase):
 
     def test_read_csv(self):
         # read and parse sample file
-        self.assertTrue(self.stages.read_csv(TEST_SAMPLE_FILE))
+        self.assertTrue(self.stages.read_csv(constants.TEST_SAMPLE_FILE))
 
         # test number of stages
         self.assertEquals(3, len(self.stages.stages))
@@ -134,14 +133,14 @@ class TestStages(unittest.TestCase):
 
     def test_total_duration(self):
         # read and parse sample file
-        self.assertTrue(self.stages.read_csv(TEST_SAMPLE_FILE))
+        self.assertTrue(self.stages.read_csv(constants.TEST_SAMPLE_FILE))
 
         # test total duration
         self.assertEqual(17, self.stages.total_duration())
 
     def test_to_xml(self):
         # read and parse sample file
-        self.stages.read_csv(TEST_SAMPLE_FILE)
+        self.stages.read_csv(constants.TEST_SAMPLE_FILE)
 
         # test xml output
         self.assertEquals(
@@ -152,7 +151,7 @@ class TestStages(unittest.TestCase):
 
     def test_to_xml_string(self):
         # read and parse sample file
-        self.stages.read_csv(TEST_SAMPLE_FILE)
+        self.stages.read_csv(constants.TEST_SAMPLE_FILE)
 
         # test xml string output
         self.assertEquals(
