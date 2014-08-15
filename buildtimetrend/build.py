@@ -100,6 +100,15 @@ class Build(object):
         '''
         self.add_property("started_at", split_isotimestamp(isotimestamp))
 
+    def set_finished_at(self, isotimestamp):
+        '''
+        Set timestamp when build finished.
+
+        Parameters :
+        - isotimestamp : timestamp in iso format when build started
+        '''
+        self.add_property("finished_at", split_isotimestamp(isotimestamp))
+
     def to_dict(self):
         '''
         Return object as dictionary

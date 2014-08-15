@@ -161,12 +161,12 @@ class TestBuild(unittest.TestCase):
         # started_at property should override default value
         self.build.set_started_at('2014-04-01T18:55:00')
         # finished_at property should override default value
-        self.build.add_property('finished_at', '2014-04-01T19:01:11')
+        self.build.set_finished_at('2014-04-01T19:01:11')
         # test dict
         self.assertDictEqual(
             {'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': '2014-04-01T19:01:11',
+            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
             'property1': 2, 'property2': 3,
             'stages':
             [{'duration': 2,
@@ -220,7 +220,7 @@ class TestBuild(unittest.TestCase):
         # started_at property should override default value
         self.build.set_started_at('2014-04-01T18:55:00')
         # finished_at property should override default value
-        self.build.add_property('finished_at', '2014-04-01T19:01:11')
+        self.build.set_finished_at('2014-04-01T19:01:11')
         # test dict
         self.assertListEqual(
             [{'stage': {'duration': 2,
@@ -229,7 +229,7 @@ class TestBuild(unittest.TestCase):
               'started_at': constants.SPLIT_TIMESTAMP1},
             'build': {'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': '2014-04-01T19:01:11',
+            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
             'property1': 2, 'property2': 3}},
             {'stage': {'duration': 5,
               'finished_at': constants.SPLIT_TIMESTAMP3,
@@ -237,7 +237,7 @@ class TestBuild(unittest.TestCase):
               'started_at': constants.SPLIT_TIMESTAMP2},
             'build': {'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': '2014-04-01T19:01:11',
+            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
             'property1': 2, 'property2': 3}},
             {'stage': {'duration': 10,
               'finished_at': constants.SPLIT_TIMESTAMP4,
@@ -245,7 +245,7 @@ class TestBuild(unittest.TestCase):
               'started_at': constants.SPLIT_TIMESTAMP3},
             'build': {'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': '2014-04-01T19:01:11',
+            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
             'property1': 2, 'property2': 3}},
             ],
             self.build.stages_to_list())
