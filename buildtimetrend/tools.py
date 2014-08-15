@@ -43,6 +43,9 @@ def split_timestamp(timestamp):
     Split a timestamp in seconds since epoch in all seperate components :
       year, month, day of month, day of week,
       hour (12 and 24 hour), minute, second
+
+    Parameters :
+    - timestamp : timestamp, seconds since epoch
     '''
     return split_datetime(datetime.utcfromtimestamp(timestamp))
 
@@ -52,6 +55,9 @@ def split_isotimestamp(isotimestamp):
     Split a timestamp in isoformat in all seperate components :
       year, month, day of month, day of week,
       hour (12 and 24 hour), minute, second
+
+    Parameters :
+    - isotimestamp : timestamp in isoformat YYYY-MM-DDTHH:MM:SS
     '''
     return split_datetime(datetime.strptime(isotimestamp, "%Y-%m-%dT%H:%M:%S"))
 
@@ -61,6 +67,9 @@ def split_datetime(timestamp_datetime):
     Split a timestamp in datetime format in all seperate components :
       year, month, day of month, day of week,
       hour (12 and 24 hour), minute, second
+
+    Parameters :
+    - timestamp_datetime : timestamp in datetime class format
     '''
     timestamp_dict = {}
     timestamp_dict["timestamp"] = timestamp_datetime.isoformat()
