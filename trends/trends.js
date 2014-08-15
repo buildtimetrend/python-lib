@@ -293,6 +293,28 @@ function initCharts() {
 
     // display div inline (show it next to the previous chart)
     document.getElementById("chart_total_builds_branch").style.display = "inline-block";
+
+    /* Average buildtime per time of day */
+    // create query
+    var queryAvgBuildtimeHour = new Keen.Query("average", {
+      eventCollection: "builds",
+      timeframe: keenTimeframe,
+      targetProperty: "build.duration",
+      groupBy: "build.started_at.hour_24",
+      filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
+    });
+    queriesTimeframe.push(queryAvgBuildtimeHour);
+
+    // draw chart
+    var requestAvgBuildtimeHour = client.run(queryAvgBuildtimeHour, function() {
+      this.draw(document.getElementById("chart_avg_buildtime_hour"), {
+        title: "Average buildtime per time of day"
+      });
+    });
+    queryRequests.push(requestAvgBuildtimeHour);
+
+    // display div inline (show it next to the previous chart)
+    document.getElementById("chart_avg_buildtime_hour").style.display = "inline-block";
   });
 }
 
