@@ -28,6 +28,40 @@ from buildtimetrend.tools import get_project_info
 import os
 import unittest
 
+TIMESTAMP_SPLIT_EPOCH = {
+    "timestamp": "1970-01-01T00:00:00",
+    "year": "1970",
+    "month": "01",
+    "month_short_en": "Jan",
+    "month_full_en": "January",
+    "day_of_month": "01",
+    "day_of_week": "4",
+    "day_of_week_short_en": "Thu",
+    "day_of_week_full_en": "Thursday",
+    "hour_12": "12",
+    "hour_ampm": "AM",
+    "hour_24": "00",
+    "minute": "00",
+    "second": "00"
+}
+
+TIMESTAMP_SPLIT_TESTDATE = {
+    "timestamp": "2014-07-09T13:38:33",
+    "year": "2014",
+    "month": "07",
+    "month_short_en": "Jul",
+    "month_full_en": "July",
+    "day_of_month": "09",
+    "day_of_week": "3",
+    "day_of_week_short_en": "Wed",
+    "day_of_week_full_en": "Wednesday",
+    "hour_12": "01",
+    "hour_ampm": "PM",
+    "hour_24": "13",
+    "minute": "38",
+    "second": "33"
+}
+
 
 class TestTools(unittest.TestCase):
     def setUp(self):
@@ -47,46 +81,12 @@ class TestTools(unittest.TestCase):
 
     def test_split_isotimestamp(self):
         # test 0 timestamp (epoch)
-        self.assertDictEqual(
-            {
-                "timestamp": "1970-01-01T00:00:00",
-                "year": "1970",
-                "month": "01",
-                "month_short_en": "Jan",
-                "month_full_en": "January",
-                "day_of_month": "01",
-                "day_of_week": "4",
-                "day_of_week_short_en": "Thu",
-                "day_of_week_full_en": "Thursday",
-                "hour_12": "12",
-                "hour_ampm": "AM",
-                "hour_24": "00",
-                "minute": "00",
-                "second": "00",
-            },
-            split_isotimestamp("1970-01-01T00:00:00")
-        )
+        self.assertDictEqual(TIMESTAMP_SPLIT_EPOCH,
+            split_isotimestamp("1970-01-01T00:00:00"))
 
         # test timestamp
-        self.assertDictEqual(
-             {
-                "timestamp": "2014-07-09T13:38:33",
-                "year": "2014",
-                "month": "07",
-                "month_short_en": "Jul",
-                "month_full_en": "July",
-                "day_of_month": "09",
-                "day_of_week": "3",
-                "day_of_week_short_en": "Wed",
-                "day_of_week_full_en": "Wednesday",
-                "hour_12": "01",
-                "hour_ampm": "PM",
-                "hour_24": "13",
-                "minute": "38",
-                "second": "33",
-           },
-           split_isotimestamp("2014-07-09T13:38:33")
-        )
+        self.assertDictEqual(TIMESTAMP_SPLIT_TESTDATE,
+            split_isotimestamp("2014-07-09T13:38:33"))
 
     def test_add_project_info_dict(self):
         # error is thrown when called without parameters
