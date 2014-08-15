@@ -44,8 +44,15 @@ def split_isotimestamp(isotimestamp):
       year, month, day of month, day of week,
       hour (12 and 24 hour), minute, second
     '''
-    timestamp_datetime = datetime.strptime(isotimestamp, "%Y-%m-%dT%H:%M:%S")
+    return split_datetime(datetime.strptime(isotimestamp, "%Y-%m-%dT%H:%M:%S"))
 
+
+def split_datetime(timestamp_datetime):
+    '''
+    Split a timestamp in datetime format in all seperate components :
+      year, month, day of month, day of week,
+      hour (12 and 24 hour), minute, second
+    '''
     timestamp_dict = {}
     timestamp_dict["timestamp"] = timestamp_datetime.isoformat()
     timestamp_dict["year"] = timestamp_datetime.strftime("%Y")
