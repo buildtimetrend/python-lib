@@ -54,6 +54,8 @@ def split_isotimestamp(isotimestamp):
     timestamp_dict["month_full_en"] = timestamp_datetime.strftime("%B")
     timestamp_dict["day_of_month"] = timestamp_datetime.strftime("%d")
     timestamp_dict["day_of_week"] = timestamp_datetime.strftime("%w")
+    timestamp_dict["day_of_week_short_en"] = timestamp_datetime.strftime("%a")
+    timestamp_dict["day_of_week_full_en"] = timestamp_datetime.strftime("%A")
     timestamp_dict["hour_12"] = timestamp_datetime.strftime("%I")
     timestamp_dict["hour_ampm"] = timestamp_datetime.strftime("%p")
     timestamp_dict["hour_24"] = timestamp_datetime.strftime("%H")
