@@ -26,6 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import csv
 import os
 from buildtimetrend.tools import format_timestamp
+from buildtimetrend.tools import split_timestamp
 from lxml import etree
 
 
@@ -109,14 +110,14 @@ class Stages(object):
             # assign starting timestamp of first stage
             # to started_at of the build job
             if self.started_at is None:
-                self.started_at = format_timestamp(timestamp)
+                self.started_at = split_timestamp(timestamp)
 
             # skip calculating the duration of the first stage,
             # the next timestamp is needed
             if event_name is not None:
                 # finish parsing when an end timestamp is encountered
                 if event_name.lower() in end_tags:
-                    self.finished_at = format_timestamp(previous_timestamp)
+                    self.finished_at = split_timestamp(previous_timestamp)
                     break
 
                 # calculate duration from current and previous timestamp
@@ -126,8 +127,8 @@ class Stages(object):
                 # add stage duration to stages dict
                 self.stages.append({
                     "name": event_name,
-                    "started_at": format_timestamp(previous_timestamp),
-                    "finished_at": format_timestamp(timestamp),
+                    "started_at": split_timestamp(previous_timestamp),
+                    "finished_at": split_timestamp(timestamp),
                     "duration": duration})
 
             # event name of the timestamp is used in the next iteration

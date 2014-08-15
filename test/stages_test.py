@@ -21,14 +21,15 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.stages import Stages
+import constants
 from lxml import etree
 import unittest
 
 TEST_SAMPLE_FILE = 'test/testsample_timestamps.csv'
 STAGES_RESULT = [{'duration': 17,
-             'finished_at': '2014-04-01T18:59:12',
+             'finished_at': constants.SPLIT_TIMESTAMP4,
              'name': 'stage1',
-             'started_at': '2014-04-01T18:58:55'}]
+             'started_at': constants.SPLIT_TIMESTAMP1}]
 
 
 class TestStages(unittest.TestCase):
@@ -65,25 +66,25 @@ class TestStages(unittest.TestCase):
         self.assertEquals(3, len(self.stages.stages))
 
         # test started_at
-        self.assertEqual('2014-04-01T18:58:55', self.stages.started_at)
+        self.assertEqual(constants.SPLIT_TIMESTAMP1, self.stages.started_at)
 
         # test finished_at
-        self.assertEqual('2014-04-01T18:59:12', self.stages.finished_at)
+        self.assertEqual(constants.SPLIT_TIMESTAMP4, self.stages.finished_at)
 
         # test stages (names + duration)
         self.assertListEqual(
            [{'duration': 2,
-             'finished_at': '2014-04-01T18:58:57',
+             'finished_at': constants.SPLIT_TIMESTAMP2,
              'name': 'stage1',
-             'started_at': '2014-04-01T18:58:55'},
+             'started_at': constants.SPLIT_TIMESTAMP1},
             {'duration': 5,
-             'finished_at': '2014-04-01T18:59:02',
+             'finished_at': constants.SPLIT_TIMESTAMP3,
              'name': 'stage2',
-             'started_at': '2014-04-01T18:58:57'},
+             'started_at': constants.SPLIT_TIMESTAMP2},
             {'duration': 10,
-             'finished_at': '2014-04-01T18:59:12',
+             'finished_at': constants.SPLIT_TIMESTAMP4,
              'name': 'stage3',
-             'started_at': '2014-04-01T18:59:02'}],
+             'started_at': constants.SPLIT_TIMESTAMP3}],
             self.stages.stages)
 
     def test_parse_timestamps_end(self):
@@ -104,13 +105,13 @@ class TestStages(unittest.TestCase):
 
         self.assertListEqual(
            [{'duration': 17,
-             'finished_at': '2014-04-01T18:59:12',
+             'finished_at': constants.SPLIT_TIMESTAMP4,
              'name': 'stage1',
-             'started_at': '2014-04-01T18:58:55'},
+             'started_at': constants.SPLIT_TIMESTAMP1},
             {'duration': 3,
-             'finished_at': '2014-04-01T18:59:15',
+             'finished_at': constants.SPLIT_TIMESTAMP_ENDTAG,
              'name': 'end_tag',
-             'started_at': '2014-04-01T18:59:12'}],
+             'started_at': constants.SPLIT_TIMESTAMP4}],
             self.stages.stages)
 
     def test_parse_timestamps_done(self):

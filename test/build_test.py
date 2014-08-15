@@ -22,6 +22,7 @@
 
 from buildtimetrend.build import Build
 from buildtimetrend.stages import Stages
+import constants
 from lxml import etree
 import unittest
 
@@ -138,21 +139,21 @@ class TestBuild(unittest.TestCase):
         # test dict
         self.assertDictEqual(
             {'duration': 17,
-            'started_at': '2014-04-01T18:58:55',
-            'finished_at': '2014-04-01T18:59:12',
+            'started_at': constants.SPLIT_TIMESTAMP1,
+            'finished_at': constants.SPLIT_TIMESTAMP4,
             'stages':
             [{'duration': 2,
-              'finished_at': '2014-04-01T18:58:57',
+              'finished_at': constants.SPLIT_TIMESTAMP2,
               'name': 'stage1',
-              'started_at': '2014-04-01T18:58:55'},
+              'started_at': constants.SPLIT_TIMESTAMP1},
              {'duration': 5,
-              'finished_at': '2014-04-01T18:59:02',
+              'finished_at': constants.SPLIT_TIMESTAMP3,
               'name': 'stage2',
-              'started_at': '2014-04-01T18:58:57'},
+              'started_at': constants.SPLIT_TIMESTAMP2},
              {'duration': 10,
-              'finished_at': '2014-04-01T18:59:12',
+              'finished_at': constants.SPLIT_TIMESTAMP4,
               'name': 'stage3',
-              'started_at': '2014-04-01T18:59:02'}]
+              'started_at': constants.SPLIT_TIMESTAMP3}]
             },
             self.build.to_dict())
 
@@ -171,17 +172,17 @@ class TestBuild(unittest.TestCase):
             'property1': 2, 'property2': 3,
             'stages':
             [{'duration': 2,
-              'finished_at': '2014-04-01T18:58:57',
+              'finished_at': constants.SPLIT_TIMESTAMP2,
               'name': 'stage1',
-              'started_at': '2014-04-01T18:58:55'},
+              'started_at': constants.SPLIT_TIMESTAMP1},
              {'duration': 5,
-              'finished_at': '2014-04-01T18:59:02',
+              'finished_at': constants.SPLIT_TIMESTAMP3,
               'name': 'stage2',
-              'started_at': '2014-04-01T18:58:57'},
+              'started_at': constants.SPLIT_TIMESTAMP2},
              {'duration': 10,
-              'finished_at': '2014-04-01T18:59:12',
+              'finished_at': constants.SPLIT_TIMESTAMP4,
               'name': 'stage3',
-              'started_at': '2014-04-01T18:59:02'}]
+              'started_at': constants.SPLIT_TIMESTAMP3}]
             },
             self.build.to_dict())
 
@@ -192,26 +193,26 @@ class TestBuild(unittest.TestCase):
         # test list
         self.assertListEqual(
             [{'stage': {'duration': 2,
-              'finished_at': '2014-04-01T18:58:57',
+              'finished_at': constants.SPLIT_TIMESTAMP2,
               'name': 'stage1',
-              'started_at': '2014-04-01T18:58:55'},
+              'started_at': constants.SPLIT_TIMESTAMP1},
             'build': {'duration': 17,
-            'started_at': '2014-04-01T18:58:55',
-            'finished_at': '2014-04-01T18:59:12'}},
+            'started_at': constants.SPLIT_TIMESTAMP1,
+            'finished_at': constants.SPLIT_TIMESTAMP4}},
             {'stage': {'duration': 5,
-              'finished_at': '2014-04-01T18:59:02',
+              'finished_at': constants.SPLIT_TIMESTAMP3,
               'name': 'stage2',
-              'started_at': '2014-04-01T18:58:57'},
+              'started_at': constants.SPLIT_TIMESTAMP2},
             'build': {'duration': 17,
-            'started_at': '2014-04-01T18:58:55',
-            'finished_at': '2014-04-01T18:59:12'}},
+            'started_at': constants.SPLIT_TIMESTAMP1,
+            'finished_at': constants.SPLIT_TIMESTAMP4}},
             {'stage': {'duration': 10,
-              'finished_at': '2014-04-01T18:59:12',
+              'finished_at': constants.SPLIT_TIMESTAMP4,
               'name': 'stage3',
-              'started_at': '2014-04-01T18:59:02'},
+              'started_at': constants.SPLIT_TIMESTAMP3},
             'build': {'duration': 17,
-            'started_at': '2014-04-01T18:58:55',
-            'finished_at': '2014-04-01T18:59:12'}},
+            'started_at': constants.SPLIT_TIMESTAMP1,
+            'finished_at': constants.SPLIT_TIMESTAMP4}},
             ],
             self.build.stages_to_list())
 
@@ -225,23 +226,23 @@ class TestBuild(unittest.TestCase):
         # test dict
         self.assertListEqual(
             [{'stage': {'duration': 2,
-              'finished_at': '2014-04-01T18:58:57',
+              'finished_at': constants.SPLIT_TIMESTAMP2,
               'name': 'stage1',
-              'started_at': '2014-04-01T18:58:55'},
+              'started_at': constants.SPLIT_TIMESTAMP1},
             'build': {'duration': 17, 'started_at': '2014-04-01T18:55:00',
             'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3}},
             {'stage': {'duration': 5,
-              'finished_at': '2014-04-01T18:59:02',
+              'finished_at': constants.SPLIT_TIMESTAMP3,
               'name': 'stage2',
-              'started_at': '2014-04-01T18:58:57'},
+              'started_at': constants.SPLIT_TIMESTAMP2},
             'build': {'duration': 17, 'started_at': '2014-04-01T18:55:00',
             'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3}},
             {'stage': {'duration': 10,
-              'finished_at': '2014-04-01T18:59:12',
+              'finished_at': constants.SPLIT_TIMESTAMP4,
               'name': 'stage3',
-              'started_at': '2014-04-01T18:59:02'},
+              'started_at': constants.SPLIT_TIMESTAMP3},
             'build': {'duration': 17, 'started_at': '2014-04-01T18:55:00',
             'finished_at': '2014-04-01T19:01:11',
             'property1': 2, 'property2': 3}},
