@@ -309,7 +309,10 @@ function initCharts() {
     var requestAvgBuildtimeHour = client.run(queryAvgBuildtimeHour, function() {
       this.draw(document.getElementById("chart_avg_buildtime_hour"), {
         chartType: "columnchart",
-        title: "Average buildtime per time of day"
+        title: "Average buildtime per time of day",
+        chartOptions: {
+          legend: { position: "none" }
+        }
       });
     });
     queryRequests.push(requestAvgBuildtimeHour);
@@ -332,7 +335,10 @@ function initCharts() {
     var requestAvgBuildtimeWeekDay = client.run(queryAvgBuildtimeWeekDay, function() {
       this.draw(document.getElementById("chart_avg_buildtime_weekday"), {
         chartType: "columnchart",
-        title: "Average buildtime per day of week"
+        title: "Average buildtime per day of week",
+        chartOptions: {
+          legend: { position: "none" }
+        }
       });
     });
     queryRequests.push(requestAvgBuildtimeWeekDay);
