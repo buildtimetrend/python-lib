@@ -308,6 +308,7 @@ function initCharts() {
     // draw chart
     var requestAvgBuildtimeHour = client.run(queryAvgBuildtimeHour, function() {
       this.draw(document.getElementById("chart_avg_buildtime_hour"), {
+        chartType: "columnchart",
         title: "Average buildtime per time of day"
       });
     });
