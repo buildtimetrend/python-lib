@@ -311,7 +311,9 @@ function initCharts() {
         chartType: "columnchart",
         title: "Average buildtime per time of day",
         chartOptions: {
-          legend: { position: "none" }
+          legend: { position: "none" },
+          vAxis: { title: "duration [s]" },
+          hAxis: { title: "Time of day [24-hour format, UTC]" }
         }
       });
     });
@@ -337,7 +339,9 @@ function initCharts() {
         chartType: "columnchart",
         title: "Average buildtime per day of week",
         chartOptions: {
-          legend: { position: "none" }
+          legend: { position: "none" },
+          vAxis: { title: "duration [s]" },
+          hAxis: { title: "Day of week" }
         }
       });
     });
