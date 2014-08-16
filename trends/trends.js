@@ -316,6 +316,29 @@ function initCharts() {
 
     // display div inline (show it next to the previous chart)
     document.getElementById("chart_avg_buildtime_hour").style.display = "inline-block";
+
+    /* Average buildtime per day of week */
+    // create query
+    var queryAvgBuildtimeWeekDay = new Keen.Query("average", {
+      eventCollection: "builds",
+      timeframe: keenTimeframe,
+      targetProperty: "build.duration",
+      groupBy: "build.started_at.day_of_week_short_en",
+      filters: [{"property_name":"build.started_at.day_of_week_short_en","operator":"exists","property_value":true}]
+    });
+    queriesTimeframe.push(queryAvgBuildtimeWeekDay);
+
+    // draw chart
+    var requestAvgBuildtimeWeekDay = client.run(queryAvgBuildtimeWeekDay, function() {
+      this.draw(document.getElementById("chart_avg_buildtime_weekday"), {
+        chartType: "columnchart",
+        title: "Average buildtime per day of week"
+      });
+    });
+    queryRequests.push(requestAvgBuildtimeWeekDay);
+
+    // display div inline (show it next to the previous chart)
+    document.getElementById("chart_avg_buildtime_weekday").style.display = "inline-block";
   });
 }
 
