@@ -21,6 +21,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
+import urllib2
+import json
 
 
 class TravisData(object):
@@ -42,9 +44,6 @@ class TravisData(object):
         '''
         Retrieve Travis CI build data using the API.
         '''
-        import urllib2
-        import json
-
         req = urllib2.Request(
             'https://api.travis-ci.org/repos/' + self.repo
             + '/builds?number=' + self.build_id,
