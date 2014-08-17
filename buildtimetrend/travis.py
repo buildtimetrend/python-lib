@@ -43,11 +43,17 @@ class TravisData(object):
 
     def get_build_data(self):
         '''
-        Retrieve Travis CI build data using the API.
+        Retrieve Travis CI build data.
+        '''
+        self.build_data = self.json_request('repos/' + self.repo
+            + '/builds?number=' + self.build_id)
+
+    def json_request(self, json_request):
+        '''
+        Retrieve Travis CI data using API.
         '''
         req = urllib2.Request(
-            TRAVIS_API_URL + 'repos/' + self.repo
-            + '/builds?number=' + self.build_id,
+            TRAVIS_API_URL + json_request,
             None,
             {
                 # get version from Config class
@@ -58,7 +64,7 @@ class TravisData(object):
         opener = urllib2.build_opener()
         result = opener.open(req)
 
-        self.build_data = json.load(result)
+        return json.load(result)
 
     def get_started_at(self):
         '''
