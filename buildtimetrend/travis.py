@@ -49,11 +49,19 @@ class TravisData(object):
         self.build_data = self.json_request('repos/' + self.repo
             + '/builds?number=' + self.build_id)
 
+    def get_build_jobs(self):
+        '''
+        Retrieve Travis CI build job data.
+        '''
+        if len(self.build_data) > 0 and len(self.build_data['builds'][0]['job_ids']) > 0:
+            for job_id in self.build_data['builds'][0]['job_ids']:
+                self.get_job_data(job_id)
+
     def get_job_data(self, job_id):
         '''
         Retrieve Travis CI job data.
         '''
-        self.jobs_data[job_id] = self.json_request('jobs/' + job_id)
+        self.jobs_data[str(job_id)] = self.json_request('jobs/' + str(job_id))
 
     def json_request(self, json_request):
         '''
