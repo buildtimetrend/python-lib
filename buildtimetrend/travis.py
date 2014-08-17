@@ -38,6 +38,7 @@ class TravisData(object):
         Param build_id : Travis CI build id (fe. 158)
         '''
         self.build_data = {}
+        self.jobs_data = {}
         self.repo = repo
         self.build_id = str(build_id)
 
@@ -47,6 +48,12 @@ class TravisData(object):
         '''
         self.build_data = self.json_request('repos/' + self.repo
             + '/builds?number=' + self.build_id)
+
+    def get_job_data(self, job_id):
+        '''
+        Retrieve Travis CI job data.
+        '''
+        self.jobs_data[job_id] = self.json_request('jobs/' + job_id)
 
     def json_request(self, json_request):
         '''
