@@ -63,6 +63,12 @@ class TravisData(object):
         '''
         self.jobs_data[str(job_id)] = self.json_request('jobs/' + str(job_id))
 
+    def get_job_log(self, job_id):
+        '''
+        Retrieve Travis CI job log.
+        '''
+        return urllib2.urlopen(TRAVIS_API_URL + 'jobs/' + str(job_id) + '/log')
+
     def json_request(self, json_request):
         '''
         Retrieve Travis CI data using API.
