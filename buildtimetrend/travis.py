@@ -73,6 +73,31 @@ class TravisData(object):
         print "Request build job log : " + request_url
         return urllib2.urlopen(request_url)
 
+    def parse_job_log(self, job_id):
+        '''
+        Parse Travis CI job log.
+        '''
+        import re
+        for line in self.get_job_log(job_id):
+            if 'travis_' in line:
+                print line.replace('\x0d', ' ').replace('\x1b', 'ESC')
+
+                # parse end time tag
+                result = re.search('travis_time:end:(.*):start=(\d+),finish=(\d+),duration=(\d+)\x0d\x1b', line)
+                if result:
+                    print 'hash : ' + result.group(1)
+                    print 'start : ' + result.group(2)
+                    print 'finish : ' + result.group(3)
+                    print 'duration : ' + result.group(4)
+
+                # parse start time tag
+                result = re.search('travis_fold:start:(.*)\x0d\x1b\[0Ktravis_time:start:(.*)\x0d\x1b\[0K\$\ (.*)', line)
+                if result:
+                    print
+                    print 'tag : ' + result.group(1)
+                    print 'hash : ' + result.group(2)
+                    print 'command : ' + result.group(3)
+
     def json_request(self, json_request):
         '''
         Retrieve Travis CI data using API.
