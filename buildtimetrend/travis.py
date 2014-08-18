@@ -53,7 +53,7 @@ class TravisData(object):
         '''
         Retrieve Travis CI build job data.
         '''
-        if len(self.build_data) > 0 and len(self.build_data['builds'][0]['job_ids']) > 0:
+        if len(self.build_data) > 0:
             for job_id in self.build_data['builds'][0]['job_ids']:
                 self.get_job_data(job_id)
 
