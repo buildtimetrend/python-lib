@@ -24,7 +24,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import urllib2
 import json
 
-TRAVIS_API_URL = 'https://api.travis-ci.org/'
+TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
+
 
 class TravisData(object):
     '''
@@ -40,6 +41,7 @@ class TravisData(object):
         self.build_data = {}
         self.jobs_data = {}
         self.repo = repo
+        self.api_url = TRAVIS_ORG_API_URL
         self.build_id = str(build_id)
 
     def get_build_data(self):
@@ -67,7 +69,7 @@ class TravisData(object):
         '''
         Retrieve Travis CI job log.
         '''
-        request_url = TRAVIS_API_URL + 'jobs/' + str(job_id) + '/log'
+        request_url = self.api_url + 'jobs/' + str(job_id) + '/log'
         print "Request build job log : " + request_url
         return urllib2.urlopen(request_url)
 
@@ -76,7 +78,7 @@ class TravisData(object):
         Retrieve Travis CI data using API.
         '''
         req = urllib2.Request(
-            TRAVIS_API_URL + json_request,
+            self.api_url + json_request,
             None,
             {
                 # get version from Config class
