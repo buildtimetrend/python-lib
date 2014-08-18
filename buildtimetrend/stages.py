@@ -25,7 +25,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import csv
 import os
-from buildtimetrend.tools import format_timestamp
 from buildtimetrend.tools import split_timestamp
 from lxml import etree
 
