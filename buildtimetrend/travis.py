@@ -46,8 +46,8 @@ class TravisData(object):
         '''
         Retrieve Travis CI build data.
         '''
-        self.build_data = self.json_request('repos/' + self.repo
-            + '/builds?number=' + self.build_id)
+        request = 'repos/' + self.repo + '/builds?number=' + self.build_id
+        self.build_data = self.json_request(request)
 
     def get_build_jobs(self):
         '''
