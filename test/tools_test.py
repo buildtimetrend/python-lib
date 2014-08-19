@@ -20,13 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from buildtimetrend.tools import format_timestamp
-from buildtimetrend.tools import split_isotimestamp
-from buildtimetrend.tools import split_timestamp
-from buildtimetrend.tools import add_project_info_dict
-from buildtimetrend.tools import add_project_info_list
-from buildtimetrend.tools import get_project_info
-from buildtimetrend.tools import check_file
+from buildtimetrend.tools import *
 import os
 import unittest
 import constants
