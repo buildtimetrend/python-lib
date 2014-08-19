@@ -77,8 +77,14 @@ class TravisData(object):
         '''
         Parse Travis CI job log.
         '''
+        self.parse_job_log_stream(self.get_job_log(job_id))
+
+    def parse_job_log_stream(self, stream):
+        '''
+        Parse Travis CI job log stream.
+        '''
         import re
-        for line in self.get_job_log(job_id):
+        for line in stream:
             if 'travis_' in line:
                 print line.replace('\x0d', ' ').replace('\x1b', 'ESC')
 
