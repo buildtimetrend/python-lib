@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 import urllib2
 import json
+from buildtimetrend.tools import check_file
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
@@ -78,6 +79,24 @@ class TravisData(object):
         Parse Travis CI job log.
         '''
         self.parse_job_log_stream(self.get_job_log(job_id))
+
+    def parse_job_log_file(self, filename):
+        '''
+        Open a Travis CI log file and parse it.
+
+        Parameters :
+        - filename : filename of Travis CI log
+        Returns false if file doesn't exist, true if it was read successfully.
+        '''
+        # load timestamps file
+        if not check_file(filename):
+            return False
+
+        # read timestamps, calculate stage duration
+        with open(filename, 'rb') as file_stream:
+            self.parse_job_log_stream(file_stream)
+
+        return True
 
     def parse_job_log_stream(self, stream):
         '''
