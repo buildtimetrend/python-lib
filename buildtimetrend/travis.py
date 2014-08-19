@@ -108,7 +108,7 @@ class TravisData(object):
                 print line.replace('\x0d', ' ').replace('\x1b', 'ESC')
 
                 # parse end time tag
-                result = re.search('travis_time:end:(.*):start=(\d+),finish=(\d+),duration=(\d+)\x0d\x1b', line)
+                result = re.search(r'travis_time:end:(.*):start=(\d+),finish=(\d+),duration=(\d+)\x0d\x1b', line)
                 if result:
                     print 'hash : ' + result.group(1)
                     print 'start : ' + result.group(2)
@@ -116,7 +116,7 @@ class TravisData(object):
                     print 'duration : ' + result.group(4)
 
                 # parse start time tag
-                result = re.search('travis_fold:start:(.*)\x0d\x1b\[0Ktravis_time:start:(.*)\x0d\x1b\[0K\$\ (.*)', line)
+                result = re.search(r'travis_fold:start:(.*)\x0d\x1b\[0Ktravis_time:start:(.*)\x0d\x1b\[0K\$\ (.*)', line)
                 if result:
                     print
                     print 'tag : ' + result.group(1)
