@@ -24,8 +24,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import csv
-import os
 from buildtimetrend.tools import split_timestamp
+from buildtimetrend.tools import check_file
 from lxml import etree
 
 
@@ -50,8 +50,7 @@ class Stages(object):
         Returns false if file doesn't exist, true if it was read successfully.
         '''
         # load timestamps file
-        if not os.path.isfile(csv_filename):
-            print 'File doesn\'t exist : {0}'.format(csv_filename)
+        if not check_file(csv_filename):
             return False
 
         # read timestamps, calculate stage duration

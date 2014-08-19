@@ -150,3 +150,18 @@ def add_project_info_list(payload):
         payload_as_list.append(add_project_info_dict(event_dict))
 
     return payload_as_list
+
+def check_file(filename):
+    '''
+    Checks if a file exists.
+
+    Parameters :
+    - filename : file to be checked
+    Returns false if file doesn't exist, true if it exists.
+    '''
+    # load timestamps file
+    if not os.path.isfile(filename):
+        print 'File doesn\'t exist : {0}'.format(filename)
+        return False
+
+    return True

@@ -26,8 +26,10 @@ from buildtimetrend.tools import split_timestamp
 from buildtimetrend.tools import add_project_info_dict
 from buildtimetrend.tools import add_project_info_list
 from buildtimetrend.tools import get_project_info
+from buildtimetrend.tools import check_file
 import os
 import unittest
+import constants
 
 TIMESTAMP_SPLIT_EPOCH = {
     "timestamp": "1970-01-01T00:00:00",
@@ -152,3 +154,14 @@ class TestTools(unittest.TestCase):
 
     def test_get_project_info(self):
         self.assertDictEqual(self.project_info, get_project_info())
+
+    def test_check_file(self):
+        # function should return false when file doesn't exist
+        self.assertFalse(check_file('nofile.csv'))
+        self.assertFalse(check_file(''))
+
+        # function should throw an error when no filename is set
+        self.assertRaises(TypeError, check_file)
+
+        # function should return true if file exists
+        self.assertTrue(check_file(constants.TEST_SAMPLE_FILE))
