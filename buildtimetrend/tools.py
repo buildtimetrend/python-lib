@@ -151,6 +151,7 @@ def add_project_info_list(payload):
 
     return payload_as_list
 
+
 def check_file(filename):
     '''
     Checks if a file exists.
