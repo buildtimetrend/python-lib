@@ -25,7 +25,10 @@ from buildtimetrend.keenio import keen_io_generate_read_key
 import sys
 
 
-if __name__ == "__main__":
+def get_read_key():
+    '''
+    Generate a read key for the project and print that key
+    '''
     # define projectname
     # fe. project_name = "ruleant/buildtime-trend"
     project_name = "projectname"
@@ -36,3 +39,6 @@ if __name__ == "__main__":
 
     # generate a read key
     print keen_io_generate_read_key(project_name)
+
+if __name__ == "__main__":
+    get_read_key()
