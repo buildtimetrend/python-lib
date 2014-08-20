@@ -1,6 +1,5 @@
+# vim: set expandtab sw=4 ts=4:
 '''
-vim: set expandtab sw=4 ts=4:
-
 Gathers build related data.
 
 Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>

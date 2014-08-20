@@ -1,6 +1,5 @@
+# vim: set expandtab sw=4 ts=4:
 '''
-vim: set expandtab sw=4 ts=4:
-
 Collection of tool functions
 
 Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>

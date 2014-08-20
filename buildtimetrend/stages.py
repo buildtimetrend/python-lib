@@ -1,6 +1,5 @@
+# vim: set expandtab sw=4 ts=4:
 '''
-vim: set expandtab sw=4 ts=4:
-
 Reads timestamps.csv, calculates stage duration and saves the result
 to an xml file
 
