@@ -1,4 +1,4 @@
-#vim: set expandtab sw=4 ts=4:
+# vim: set expandtab sw=4 ts=4:
 '''
 Interface to Travis CI API.
 
