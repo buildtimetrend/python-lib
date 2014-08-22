@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.tools import *
+from buildtimetrend.settings import get_project_info
 import os
 import unittest
 import constants
@@ -62,12 +63,7 @@ TIMESTAMP_SPLIT_TESTDATE = {
 
 class TestTools(unittest.TestCase):
     def setUp(self):
-        project_name = "None"
-        if 'TRAVIS' in os.environ and os.getenv('TRAVIS'):
-            project_name = os.getenv('TRAVIS_REPO_SLUG')
-
-        self.project_info = {"version": "0.2-dev", "schema_version": "1",
-            "project_name": project_name}
+        self.project_info = get_project_info()
 
     def test_format_timestamp(self):
         # test 0 timestamp (epoch)
@@ -145,9 +141,6 @@ class TestTools(unittest.TestCase):
             add_project_info_list([{"test": "value"},
                 {"test2": "value2"}])
         )
-
-    def test_get_project_info(self):
-        self.assertDictEqual(self.project_info, get_project_info())
 
     def test_check_file(self):
         # function should return false when file doesn't exist

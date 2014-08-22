@@ -25,6 +25,7 @@ import copy
 import os
 from datetime import datetime
 from dateutil.parser import parse
+from buildtimetrend.settings import get_project_info
 
 
 def format_timestamp(timestamp):
@@ -89,34 +90,6 @@ def split_datetime(timestamp_datetime):
     timestamp_dict["second"] = timestamp_datetime.strftime("%S")
 
     return timestamp_dict
-
-
-def get_project_name():
-    '''
-    Get project name
-    '''
-
-    # use Travis repo slug as project name
-    if 'TRAVIS_REPO_SLUG' in os.environ:
-        return os.getenv('TRAVIS_REPO_SLUG')
-
-    return "None"
-
-
-def get_project_info():
-    '''
-    Get project info as a dictonary
-    '''
-    # TODO get version and schema_version from Config
-    version = "0.2-dev"
-    schema_version = "1"
-    project_name = str(get_project_name())
-
-    return {
-        "version": version,
-        "schema_version": schema_version,
-        "project_name": project_name
-    }
 
 
 def add_project_info_dict(payload):
