@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 
 VERSION = "0.2-dev"
-SCHEMA_VERSION = "1"
+SCHEMA_VERSION = "2"
 
 def get_project_name():
     '''
