@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import urllib2
 import json
 from buildtimetrend.tools import check_file
+from buildtimetrend.settings import VERSION
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
@@ -144,8 +145,7 @@ class TravisData(object):
             self.api_url + json_request,
             None,
             {
-                # get version from Config class
-                'user-agent': 'buildtime-trend/0.2-dev',
+                'user-agent': 'buildtime-trend/' + VERSION,
                 'accept': 'application/vnd.travis-ci.2+json'
             }
         )
