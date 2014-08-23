@@ -30,11 +30,20 @@ from matplotlib import pyplot as plt
 
 
 class Trend(object):
+    '''
+    Trend class, generates a chart from gathered buildtime data
+    '''
     def __init__(self):
         self.stages = {}
         self.builds = []
 
     def gather_data(self, result_file):
+        '''
+        Get buildtime data from an xml file
+
+        Parameters
+        - result_file : xml file containing the buildtime data
+        '''
         # load buildtimes file
         if os.path.isfile(result_file):
             root_xml = etree.parse(result_file).getroot()
@@ -90,6 +99,12 @@ class Trend(object):
         return True
 
     def generate(self, trend_file):
+        '''
+        Generates the trend chart and saves it as a PNG image using matplotlib
+
+        Parameters
+        - trend_file : file name to save chart image to
+        '''
         fig, axes = plt.subplots()
 
         # add data
