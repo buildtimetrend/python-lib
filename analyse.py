@@ -41,12 +41,11 @@ from buildtimetrend.travis import TravisData
 from buildtimetrend.keenio import keen_io_writable
 from buildtimetrend.keenio import keen_add_event
 from buildtimetrend.keenio import keen_add_events
+from buildtimetrend.tools import check_file
 
 # use parameter for timestamps file and check if file exists
 TIMESTAMP_FILE = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
 RESULT_FILE = os.getenv('BUILD_TREND_OUTPUTFILE', 'buildtimes.xml')
-if not os.path.isfile(TIMESTAMP_FILE):
-    quit()
 
 
 def analyse(argv):
@@ -142,4 +141,6 @@ def log_build_keen(build):
         keen_add_events("build_stages", build.stages_to_list())
 
 if __name__ == "__main__":
-    analyse(sys.argv[1:])
+    # only run analysis if timestampfile is not present
+    if check_file(TIMESTAMP_FILE):
+        analyse(sys.argv[1:])
