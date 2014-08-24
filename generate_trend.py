@@ -30,6 +30,9 @@ import getopt
 
 
 def generate_trend(argv):
+    '''
+    Generate trends from analised buildtime data
+    '''
     # process arguments
     usage_string = 'generate_trend.py -h --mode=native,keen'
     try:
@@ -53,6 +56,9 @@ def generate_trend(argv):
 
 
 def trend_native():
+    '''
+    Generate native trend with matplotlib : chart in PNG format
+    '''
     from buildtimetrend.trend import Trend
     # use parameter for timestamps file and check if file exists
     result_file = os.getenv('BUILD_TREND_OUTPUTFILE', 'trends/buildtimes.xml')
@@ -67,6 +73,9 @@ def trend_native():
 
 
 def trend_keen():
+    '''
+    Setup trends using Keen.io API
+    '''
     from buildtimetrend.keenio import generate_overview_config_file
     from buildtimetrend.tools import get_project_name
 

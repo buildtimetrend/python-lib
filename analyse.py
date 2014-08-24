@@ -50,6 +50,9 @@ if not os.path.isfile(TIMESTAMP_FILE):
 
 
 def analyse(argv):
+    '''
+    Analyse timestamp file
+    '''
     mode_native = False
     mode_keen = True
 
