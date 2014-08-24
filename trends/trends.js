@@ -307,8 +307,23 @@ function initCharts() {
 
     // draw chart
     var requestAvgBuildtimeHour = client.run(queryAvgBuildtimeHour, function() {
-      this.draw(document.getElementById("chart_avg_buildtime_hour"), {
-        chartType: "columnchart",
+      chart_data = []
+      // populate array with an entry per hour
+      for (i = 0; i < 24; i++) {
+        chart_data[i]={
+          index: i,
+          result: 0
+        }
+      }
+      // copy real data into the created array
+      for (i=0; i < this.data.result.length; i++) {
+        chart_data[this.data.result[i]["build.started_at.hour_24"]]["result"] = this.data.result[i]["result"];
+      }
+
+      window.chart = new Keen.Visualization(
+	{result: chart_data},
+	document.getElementById("chart_avg_buildtime_hour"),
+	{chartType: "columnchart",
         title: "Average buildtime per time of day",
         chartOptions: {
           legend: { position: "none" },
