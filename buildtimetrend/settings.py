@@ -26,6 +26,7 @@ import os
 VERSION = "0.2-dev"
 SCHEMA_VERSION = "2"
 
+
 def get_project_name():
     '''
     Get project name
