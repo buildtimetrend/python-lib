@@ -43,8 +43,6 @@ def get_project_info():
     '''
     Get project info as a dictonary
     '''
-    project_name = str(get_project_name())
-
     return {
         "version": VERSION,
         "schema_version": SCHEMA_VERSION,
