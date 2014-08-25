@@ -311,11 +311,11 @@ function initCharts() {
       // populate array with an entry per hour
       for (i = 0; i < 24; i++) {
         chart_data[i]={
-          index: i,
+          caption: i + ":00",
           result: 0
         }
       }
-      // copy real data into the created array
+      // copy query data into the populated array
       for (i=0; i < this.data.result.length; i++) {
         chart_data[this.data.result[i]["build.started_at.hour_24"]]["result"] = this.data.result[i]["result"];
       }
@@ -328,7 +328,11 @@ function initCharts() {
         chartOptions: {
           legend: { position: "none" },
           vAxis: { title: "duration [s]" },
-          hAxis: { title: "Time of day [24-hour format, UTC]" }
+          hAxis: {
+		    title: "Time of day [24-hour format, UTC]",
+		    slantedText: "true",
+			slantedTextAngle: "90"
+		  }
         }
       });
     });
