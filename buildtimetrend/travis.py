@@ -145,7 +145,7 @@ class TravisData(object):
             self.api_url + json_request,
             None,
             {
-                'user-agent': 'buildtime-trend/' + buildtimetrend.VERSION,
+                'user-agent': buildtimetrend.USER_AGENT,
                 'accept': 'application/vnd.travis-ci.2+json'
             }
         )
