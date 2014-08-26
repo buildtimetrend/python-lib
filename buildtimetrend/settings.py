@@ -22,9 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import os
-
-VERSION = "0.2-dev"
-SCHEMA_VERSION = "2"
+import buildtimetrend
 
 
 def get_project_name():
@@ -44,7 +42,7 @@ def get_project_info():
     Get project info as a dictonary
     '''
     return {
-        "version": VERSION,
-        "schema_version": SCHEMA_VERSION,
+        "version": buildtimetrend.VERSION,
+        "schema_version": buildtimetrend.SCHEMA_VERSION,
         "project_name": str(get_project_name())
     }

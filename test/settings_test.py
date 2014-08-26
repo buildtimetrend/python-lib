@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.settings import *
+import buildtimetrend
 import os
 import unittest
 
@@ -31,7 +32,9 @@ class TestTools(unittest.TestCase):
         if 'TRAVIS' in os.environ and os.getenv('TRAVIS'):
             project_name = os.getenv('TRAVIS_REPO_SLUG')
 
-        self.project_info = {"version": VERSION, "schema_version": SCHEMA_VERSION,
+        self.project_info = {
+            "version": buildtimetrend.VERSION,
+            "schema_version": buildtimetrend.SCHEMA_VERSION,
             "project_name": project_name}
 
     def test_get_project_info(self):
