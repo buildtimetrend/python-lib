@@ -42,6 +42,7 @@ Dependencies
 ------------
 
 - keen (client for storing build time data as events in Keen.io)
+- python-dateutil (for formatting datetime objects)
 - lxml (python wrapper for libxml2 and libxslt)
 - matplotlib v1.2.0 or higher (for drawing the `native` trend graph, can be omitted when only using Keen.io to generate charts. Stackplot requires version v1.2.0)
 
@@ -59,15 +60,16 @@ Dependencies
 
 ```
 pip install keen
+pip install python-dateutil
 pip install lxml
 pip install 'matplotlib>=1.2.0'
 ```
 
 - install as a Debian package :
 
-`apt-get install python-lxml`
+`apt-get install python-lxml python-dateutil`
 
-Keen.io client is not available as a Debian package, so look at the `pip` instructions above
+Keen.io client and the required matplotlib version are not available as Debian packages, so look at the `pip` instructions above
 
 Usage
 -----
