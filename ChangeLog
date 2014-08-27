@@ -3,6 +3,7 @@ v0.2 (not yet released)
 - issue #28 : improve documentation on assigning Keen.io access keys
 - issue #30 : add timestamp event names that cause analysis to end
 - issue #19 : update Keen.io charts using query request refresh function
+- issue #26 : add chart displaying builds per time of day or day of week
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git
