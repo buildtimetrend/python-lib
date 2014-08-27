@@ -20,12 +20,12 @@ Features
 - Store, analyse and create trends of the build process data
   - keen mode : send timing data to Keen.io and use the Keen.io API for analysis and visualisation
   - native mode : store data in xml format and use matplotlib to generate a chart (limited)
-- Current charts and trends
+- Charts and trends for a selectable time period :
   - number of builds, successful and failed
   - average build duration
   - chart with build stage durations
   - builds per branch
-  - different time periods can be selected
+  - builds per time of day/day of week
 
 How to get it?
 --------------
