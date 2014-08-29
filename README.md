@@ -147,7 +147,7 @@ Follow these steps to enable using Keen.io :
 2. [Create a project](https://keen.io/add-project) in your Keen.io account.
 3. Look up the `project ID`, `Write Key` and `Master key` and assign them to environment variables :
 - `export KEEN_PROJECT_ID=<Project ID>`
-- `export KEEN_WRITE_KEY=<Write Key>` (when running on Travis CI, use <Master Key>, see below)
+- `export KEEN_WRITE_KEY=<Write Key>` (when running on Travis CI, use `Master Key`, see below)
 - `export KEEN_MASTER_KEY=<Master Key>`
 
 If these environment variables are set, the scripts will detect this and use Keen.io to store data, do analysis and generate graphs.
