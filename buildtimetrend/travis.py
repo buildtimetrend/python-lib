@@ -148,3 +148,103 @@ class TravisData(object):
             return self.build_data['builds'][0]['started_at']
         else:
             return None
+
+
+class TravisSubStage(object):
+    '''
+    Travis CI substage object, is constructed by feeding parsed tags
+    from Travis CI logfile
+    '''
+
+    def __init__(self):
+        '''
+        Initialise Travis CI Substage object
+        '''
+        self.name = ""
+        self.substage_hash = ""
+        self.command = ""
+        self.start_timestamp = 0
+        self.finish_timestamp = 0
+        self.duration = 0
+
+    def process_parsed_tags(self, tags_dict):
+        '''
+        Processes parsed tags and calls the corresponding handler method
+        Parameters:
+        - tags_dict : dictionary with parsed tags
+        '''
+        if tags_dict is None and type(tags_dict) is not dict:
+            raise TypeError("param tags_dict should be a dictionary")
+
+        if 'start_stage' in tags_dict:
+            self.process_start_stage(tags_dict)
+        elif 'start_hash' in tags_dict:
+            self.process_start_time(tags_dict)
+        elif 'command' in tags_dict:
+            self.process_command(tags_dict)
+        elif 'end_hash' in tags_dict:
+            self.process_end_time(tags_dict)
+        elif 'end_stage' in tags_dict:
+            self.process_end_stage(tags_dict)
+
+    def process_start_stage(self, tags_dict):
+        '''
+        Processes parsed start_stage tags
+        Parameters:
+        - tags_dict : dictionary with parsed tags
+        '''
+        if tags_dict is None and type(tags_dict) is not dict:
+            raise TypeError("param tags_dict should be a dictionary")
+
+        print "Start stage : %s" % tags_dict
+
+    def process_start_time(self, tags_dict):
+        '''
+        Processes parsed start_time tags
+        Parameters:
+        - tags_dict : dictionary with parsed tags
+        '''
+        if tags_dict is None and type(tags_dict) is not dict:
+            raise TypeError("param tags_dict should be a dictionary")
+
+        print "Start time : %s" % tags_dict
+
+    def process_command(self, tags_dict):
+        '''
+        Processes parsed command tag
+        Parameters:
+        - tags_dict : dictionary with parsed tags
+        '''
+        if tags_dict is None and type(tags_dict) is not dict:
+            raise TypeError("param tags_dict should be a dictionary")
+
+        print "Command : %s" % tags_dict
+
+    def process_end_time(self, tags_dict):
+        '''
+        Processes parsed end_time tags
+        Parameters:
+        - tags_dict : dictionary with parsed tags
+        '''
+        if tags_dict is None and type(tags_dict) is not dict:
+            raise TypeError("param tags_dict should be a dictionary")
+
+        print "End time : %s" % tags_dict
+
+    def process_end_stage(self, tags_dict):
+        '''
+        Processes parsed end_stage tags
+        Parameters:
+        - tags_dict : dictionary with parsed tags
+        '''
+        if tags_dict is None and type(tags_dict) is not dict:
+            raise TypeError("param tags_dict should be a dictionary")
+
+        print "End stage : %s" % tags_dict
+
+    def has_finished(self):
+        '''
+        Checks if substage has finished
+        Returns true if substage has finished
+        '''
+        return False
