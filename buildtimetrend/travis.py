@@ -108,34 +108,34 @@ class TravisData(object):
                 print 'line : ' + line.replace('\x0d', '*').replace('\x1b', 'ESC')
 
                 # parse end time tag
-                result = re.search(r'travis_time:end:(.*):start=(\d+),finish=(\d+),duration=(\d+)\x0d\x1b', line)
+                result = re.search(r'travis_time:end:(?P<end_hash>.*):start=(?P<start_timestamp>\d+),finish=(?P<finish_timestamp>\d+),duration=(?P<duration>\d+)\x0d\x1b', line)
                 if result:
-                    print 'end_hash : ' + result.group(1)
-                    print 'start : ' + result.group(2)
-                    print 'finish : ' + result.group(3)
-                    print 'duration : ' + result.group(4)
+                    print 'end_hash : ' + result.group("end_hash")
+                    print 'start : ' + result.group("start_timestamp")
+                    print 'finish : ' + result.group("finish_timestamp")
+                    print 'duration : ' + result.group("duration")
 
                 # parse end fold tag
-                result = re.search(r'travis_fold:end:(\w+)\.(\d+)\x0d\x1b', line)
+                result = re.search(r'travis_fold:end:(?P<end_stage>\w+)\.(?P<end_substage>\d+)\x0d\x1b', line)
                 if result:
-                    print 'end_tag : ' + result.group(1) + '.' + result.group(2)
+                    print 'end_tag : ' + result.group('end_stage') + '.' + result.group('end_substage')
 
                 # parse start fold tag
-                result = re.search(r'travis_fold:start:(\w+)\.(\d+)\x0d\x1b', line)
+                result = re.search(r'travis_fold:start:(?P<start_stage>\w+)\.(?P<start_substage>\d+)\x0d\x1b', line)
                 if result:
                     print
-                    print 'start_tag : ' + result.group(1) + '.' + result.group(2)
+                    print 'start_tag : ' + result.group('start_stage') + '.' + result.group('start_substage')
 
                 # parse start time tag
-                result = re.search(r'travis_time:start:(.*)\x0d\x1b\[0K', line)
+                result = re.search(r'travis_time:start:(?P<start_hash>.*)\x0d\x1b\[0K', line)
                 if result:
                     print
-                    print 'start_hash : ' + result.group(1)
+                    print 'start_hash : ' + result.group("start_hash")
 
                 # parse command
-                result = re.search(r'\$\ (.*)', line)
+                result = re.search(r'\$\ (?P<command>.*)', line)
                 if result:
-                    print 'command : ' + result.group(1)
+                    print 'command : ' + result.group("command")
 
     def json_request(self, json_request):
         '''
