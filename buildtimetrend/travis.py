@@ -115,32 +115,11 @@ class TravisData(object):
             if 'travis_' in line:
                 print 'line : ' + line.replace('\x0d', '*').replace('\x1b', 'ESC')
 
-                # parse end time tag
-                result = re.search(TRAVIS_LOG_PARSE_STRINGS[0], line)
-                if result:
-                    print result.groupdict()
-
-                # parse end fold tag
-                result = re.search(TRAVIS_LOG_PARSE_STRINGS[1], line)
-                if result:
-                    print result.groupdict()
-
-                # parse start fold tag
-                result = re.search(TRAVIS_LOG_PARSE_STRINGS[2], line)
-                if result:
-                    print
-                    print result.groupdict()
-
-                # parse start time tag
-                result = re.search(TRAVIS_LOG_PARSE_STRINGS[3], line)
-                if result:
-                    print
-                    print result.groupdict()
-
-                # parse command
-                result = re.search(TRAVIS_LOG_PARSE_STRINGS[4], line)
-                if result:
-                    print result.groupdict()
+                # parse Travis CI timing tags
+                for parse_string in TRAVIS_LOG_PARSE_STRINGS:
+                    result = re.search(parse_string, line)
+                    if result:
+                        print result.groupdict()
 
     def json_request(self, json_request):
         '''
