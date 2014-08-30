@@ -30,12 +30,14 @@ TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
 # strings to parse timestamps in Travis CI log file
 TRAVIS_LOG_PARSE_STRINGS = [
-    r'travis_time:end:(?P<end_hash>.*):start=(?P<start_timestamp>\d+),finish=(?P<finish_timestamp>\d+),duration=(?P<duration>\d+)\x0d\x1b',
+    r'travis_time:end:(?P<end_hash>.*):start=(?P<start_timestamp>\d+),' \
+    r'finish=(?P<finish_timestamp>\d+),duration=(?P<duration>\d+)\x0d\x1b',
     r'travis_fold:end:(?P<end_stage>\w+)\.(?P<end_substage>\d+)\x0d\x1b',
     r'travis_fold:start:(?P<start_stage>\w+)\.(?P<start_substage>\d+)\x0d\x1b',
     r'travis_time:start:(?P<start_hash>.*)\x0d\x1b\[0K',
     r'\$\ (?P<command>.*)\r',
 ]
+
 
 class TravisData(object):
     '''
