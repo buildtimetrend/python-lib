@@ -107,6 +107,19 @@ class TravisData(object):
             if 'travis_' in line:
                 print 'line : ' + line.replace('\x0d', '*').replace('\x1b', 'ESC')
 
+                # parse end time tag
+                result = re.search(r'travis_time:end:(.*):start=(\d+),finish=(\d+),duration=(\d+)\x0d\x1b', line)
+                if result:
+                    print 'end_hash : ' + result.group(1)
+                    print 'start : ' + result.group(2)
+                    print 'finish : ' + result.group(3)
+                    print 'duration : ' + result.group(4)
+
+                # parse end fold tag
+                result = re.search(r'travis_fold:end:(\w+)\.(\d+)\x0d\x1b', line)
+                if result:
+                    print 'end_tag : ' + result.group(1) + '.' + result.group(2)
+
                 # parse start fold tag
                 result = re.search(r'travis_fold:start:(\w+)\.(\d+)\x0d\x1b', line)
                 if result:
@@ -123,19 +136,6 @@ class TravisData(object):
                 result = re.search(r'\$\ (.*)', line)
                 if result:
                     print 'command : ' + result.group(1)
-
-                # parse end time tag
-                result = re.search(r'travis_time:end:(.*):start=(\d+),finish=(\d+),duration=(\d+)\x0d\x1b', line)
-                if result:
-                    print 'end_hash : ' + result.group(1)
-                    print 'start : ' + result.group(2)
-                    print 'finish : ' + result.group(3)
-                    print 'duration : ' + result.group(4)
-
-                # parse end fold tag
-                result = re.search(r'travis_fold:end:(\w+)\.(\d+)\x0d\x1b', line)
-                if result:
-                    print 'end_tag : ' + result.group(1) + '.' + result.group(2)
 
     def json_request(self, json_request):
         '''
