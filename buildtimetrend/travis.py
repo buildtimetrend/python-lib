@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 import urllib2
 import json
+import re
 from buildtimetrend.tools import check_file
 import buildtimetrend
 
@@ -110,7 +111,6 @@ class TravisData(object):
         '''
         Parse Travis CI job log stream.
         '''
-        import re
         for line in stream:
             if 'travis_' in line:
                 print 'line : ' + line.replace('\x0d', '*').replace('\x1b', 'ESC')
