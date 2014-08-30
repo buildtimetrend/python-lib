@@ -110,32 +110,29 @@ class TravisData(object):
                 # parse end time tag
                 result = re.search(r'travis_time:end:(?P<end_hash>.*):start=(?P<start_timestamp>\d+),finish=(?P<finish_timestamp>\d+),duration=(?P<duration>\d+)\x0d\x1b', line)
                 if result:
-                    print 'end_hash : ' + result.group("end_hash")
-                    print 'start : ' + result.group("start_timestamp")
-                    print 'finish : ' + result.group("finish_timestamp")
-                    print 'duration : ' + result.group("duration")
+                    print result.groupdict()
 
                 # parse end fold tag
                 result = re.search(r'travis_fold:end:(?P<end_stage>\w+)\.(?P<end_substage>\d+)\x0d\x1b', line)
                 if result:
-                    print 'end_tag : ' + result.group('end_stage') + '.' + result.group('end_substage')
+                    print result.groupdict()
 
                 # parse start fold tag
                 result = re.search(r'travis_fold:start:(?P<start_stage>\w+)\.(?P<start_substage>\d+)\x0d\x1b', line)
                 if result:
                     print
-                    print 'start_tag : ' + result.group('start_stage') + '.' + result.group('start_substage')
+                    print result.groupdict()
 
                 # parse start time tag
                 result = re.search(r'travis_time:start:(?P<start_hash>.*)\x0d\x1b\[0K', line)
                 if result:
                     print
-                    print 'start_hash : ' + result.group("start_hash")
+                    print result.groupdict()
 
                 # parse command
                 result = re.search(r'\$\ (?P<command>.*)', line)
                 if result:
-                    print 'command : ' + result.group("command")
+                    print result.groupdict()
 
     def json_request(self, json_request):
         '''
