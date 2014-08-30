@@ -130,7 +130,7 @@ class TravisData(object):
                     print result.groupdict()
 
                 # parse command
-                result = re.search(r'\$\ (?P<command>.*)', line)
+                result = re.search(r'\$\ (?P<command>.*)\r', line)
                 if result:
                     print result.groupdict()
 
