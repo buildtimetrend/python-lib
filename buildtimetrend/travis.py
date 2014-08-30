@@ -27,6 +27,14 @@ import buildtimetrend
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
+# strings to parse timestamps in Travis CI log file
+TRAVIS_LOG_PARSE_STRINGS = [
+    r'travis_time:end:(?P<end_hash>.*):start=(?P<start_timestamp>\d+),finish=(?P<finish_timestamp>\d+),duration=(?P<duration>\d+)\x0d\x1b',
+    r'travis_fold:end:(?P<end_stage>\w+)\.(?P<end_substage>\d+)\x0d\x1b',
+    r'travis_fold:start:(?P<start_stage>\w+)\.(?P<start_substage>\d+)\x0d\x1b',
+    r'travis_time:start:(?P<start_hash>.*)\x0d\x1b\[0K',
+    r'\$\ (?P<command>.*)\r',
+]
 
 class TravisData(object):
     '''
@@ -108,29 +116,29 @@ class TravisData(object):
                 print 'line : ' + line.replace('\x0d', '*').replace('\x1b', 'ESC')
 
                 # parse end time tag
-                result = re.search(r'travis_time:end:(?P<end_hash>.*):start=(?P<start_timestamp>\d+),finish=(?P<finish_timestamp>\d+),duration=(?P<duration>\d+)\x0d\x1b', line)
+                result = re.search(TRAVIS_LOG_PARSE_STRINGS[0], line)
                 if result:
                     print result.groupdict()
 
                 # parse end fold tag
-                result = re.search(r'travis_fold:end:(?P<end_stage>\w+)\.(?P<end_substage>\d+)\x0d\x1b', line)
+                result = re.search(TRAVIS_LOG_PARSE_STRINGS[1], line)
                 if result:
                     print result.groupdict()
 
                 # parse start fold tag
-                result = re.search(r'travis_fold:start:(?P<start_stage>\w+)\.(?P<start_substage>\d+)\x0d\x1b', line)
+                result = re.search(TRAVIS_LOG_PARSE_STRINGS[2], line)
                 if result:
                     print
                     print result.groupdict()
 
                 # parse start time tag
-                result = re.search(r'travis_time:start:(?P<start_hash>.*)\x0d\x1b\[0K', line)
+                result = re.search(TRAVIS_LOG_PARSE_STRINGS[3], line)
                 if result:
                     print
                     print result.groupdict()
 
                 # parse command
-                result = re.search(r'\$\ (?P<command>.*)\r', line)
+                result = re.search(TRAVIS_LOG_PARSE_STRINGS[4], line)
                 if result:
                     print result.groupdict()
 
