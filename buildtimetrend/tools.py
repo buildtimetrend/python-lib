@@ -139,6 +139,7 @@ def check_file(filename):
 
     return True
 
+
 def check_dict(param_dict, name):
     '''
     Checks if a parameter is a dictionary
@@ -150,6 +151,7 @@ def check_dict(param_dict, name):
         raise TypeError("param %s should be a dictionary" % name)
 
     return True
+
 
 def check_list(param_list, name):
     '''
