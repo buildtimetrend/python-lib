@@ -152,3 +152,19 @@ class TestTools(unittest.TestCase):
 
         # function should return true if file exists
         self.assertTrue(check_file(constants.TEST_SAMPLE_FILE))
+
+    def test_check_dict(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, check_dict)
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            check_dict(None, "name")
+        self.assertEqual("param name should be a dictionary", str(cm.exception))
+
+        with self.assertRaises(TypeError) as cm:
+            check_dict("string", "string_name")
+        self.assertEqual("param string_name should be a dictionary", str(cm.exception))
+
+        # should return true if parameter is a dictionary
+        self.assertTrue(check_dict({"string": "test"}, "name"))

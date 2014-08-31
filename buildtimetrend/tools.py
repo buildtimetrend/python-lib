@@ -138,3 +138,15 @@ def check_file(filename):
         return False
 
     return True
+
+def check_dict(param_dict, name):
+    '''
+    Checks if a parameter is a dictionary
+    Param param_dict: parameter that should be a dictonary
+    Param name: name of the parameter
+    Returns true if parameter is a dictionary, throws error when it isn't
+    '''
+    if param_dict is None or type(param_dict) is not dict:
+        raise TypeError("param %s should be a dictionary" % name)
+
+    return True
