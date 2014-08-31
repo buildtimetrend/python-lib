@@ -113,7 +113,7 @@ class TravisData(object):
         '''
         Parse Travis CI job log stream.
         '''
-        sub_stage = TravisSubStage()
+        substage = TravisSubstage()
 
         for line in stream:
             if 'travis_' in line:
@@ -123,7 +123,7 @@ class TravisData(object):
                 for parse_string in TRAVIS_LOG_PARSE_STRINGS:
                     result = re.search(parse_string, line)
                     if result:
-                        sub_stage.process_parsed_tags(result.groupdict())
+                        substage.process_parsed_tags(result.groupdict())
 
     def json_request(self, json_request):
         '''
@@ -152,7 +152,7 @@ class TravisData(object):
             return None
 
 
-class TravisSubStage(object):
+class TravisSubstage(object):
     '''
     Travis CI substage object, is constructed by feeding parsed tags
     from Travis CI logfile
