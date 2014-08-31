@@ -168,3 +168,19 @@ class TestTools(unittest.TestCase):
 
         # should return true if parameter is a dictionary
         self.assertTrue(check_dict({"string": "test"}, "name"))
+
+    def test_check_list(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, check_list)
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            check_list(None, "name")
+        self.assertEqual("param name should be a list", str(cm.exception))
+
+        with self.assertRaises(TypeError) as cm:
+            check_list("string", "string_name")
+        self.assertEqual("param string_name should be a list", str(cm.exception))
+
+        # should return true if parameter is a list
+        self.assertTrue(check_list(["string", "test"], "name"))

@@ -150,3 +150,15 @@ def check_dict(param_dict, name):
         raise TypeError("param %s should be a dictionary" % name)
 
     return True
+
+def check_list(param_list, name):
+    '''
+    Checks if a parameter is a list
+    Param param_list: parameter that should be a list
+    Param name: name of the parameter
+    Returns true if parameter is a list, throws error when it isn't
+    '''
+    if param_list is None or type(param_list) is not list:
+        raise TypeError("param %s should be a list" % name)
+
+    return True
