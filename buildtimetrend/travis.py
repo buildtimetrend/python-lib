@@ -198,7 +198,8 @@ class TravisSubstage(object):
         - tags_dict : dictionary with parsed tags
         '''
         if (check_dict(tags_dict, "tags_dict") and
-            'start_stage' in tags_dict and 'start_substage' in tags_dict):
+                'start_stage' in tags_dict and
+                'start_substage' in tags_dict):
             print "Start stage : %s" % tags_dict
 
             if self.has_started():
@@ -255,7 +256,8 @@ class TravisSubstage(object):
         Returns true if substage has started
         '''
         return ((self.name is not None and len(self.name) > 0) or
-            (self.substage_hash is not None and len(self.substage_hash) > 0))
+                (self.substage_hash is not None and
+                    len(self.substage_hash) > 0))
 
     def has_finished(self):
         '''
