@@ -197,8 +197,21 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if check_dict(tags_dict, "tags_dict"):
+        if (check_dict(tags_dict, "tags_dict") and
+            'start_stage' in tags_dict and 'start_substage' in tags_dict):
             print "Start stage : %s" % tags_dict
+
+            if self.has_started():
+                print "Substage already started"
+                return False
+
+            self.name = "%s.%s" % (
+                tags_dict['start_stage'], tags_dict['start_substage']
+            )
+            print "Set name : %s" % self.name
+
+            return True
+        return False
 
     def process_start_time(self, tags_dict):
         '''

@@ -85,6 +85,28 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertRaises(TypeError, self.substage.process_end_time, "string")
         self.assertRaises(TypeError, self.substage.process_end_stage, "string")
 
+    def test_process_start_stage(self):
+        # dict shouldn't be processed if it doesn't contain the required tags
+        self.assertFalse(self.substage.process_start_stage({'invalid': 'param'}))
+        self.assertFalse(self.substage.process_start_stage({'start_stage': 'stage'}))
+        self.assertFalse(self.substage.process_start_stage({'start_substage': 'substage'}))
+
+        # pass a valid start tag
+        self.assertTrue(self.substage.process_start_stage({
+            'start_stage': 'stage1', 'start_substage': 'substage1'
+        }))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals("stage1.substage1", self.substage.name)
+        self.assertFalse(self.substage.has_finished())
+
+        # passing a valid start tag when it was started already, should fail
+        self.assertFalse(self.substage.process_start_stage({
+            'start_stage': 'stage1', 'start_substage': 'substage2'
+        }))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals("stage1.substage1", self.substage.name)
+        self.assertFalse(self.substage.has_finished())
+
     def test_has_started_name(self):
         ''' has_started() should return true if name is set'''
         # set name
