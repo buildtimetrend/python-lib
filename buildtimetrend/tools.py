@@ -112,8 +112,8 @@ def add_project_info_list(payload):
     Adds project info to a list of dictionaries
     Param payload: list of dictionaries
     '''
-    if payload is None and type(payload) is not list:
-        raise TypeError("param payload should be a list")
+    if not check_list(payload, "payload"):
+        return None
 
     payload_as_list = []
 
