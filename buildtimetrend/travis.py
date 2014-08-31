@@ -178,7 +178,7 @@ class TravisSubstage(object):
         - tags_dict : dictionary with parsed tags
         '''
         if not check_dict(tags_dict, "tags_dict"):
-            return false
+            return False
 
         if 'start_stage' in tags_dict:
             self.process_start_stage(tags_dict)
