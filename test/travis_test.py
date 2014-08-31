@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from buildtimetrend.travis import TravisData
+from buildtimetrend.travis import *
 import unittest
 
 TEST_REPO = 'ruleant/buildtime-trend'
@@ -44,3 +44,18 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(
             '2014-07-08T11:18:13Z',
             self.travis_data.get_started_at())
+
+
+class TestTravisSubstage(unittest.TestCase):
+    def setUp(self):
+        self.substage = TravisSubstage()
+
+    def test_novalue(self):
+         # data should be empty
+        self.assertFalse(self.substage.has_finished())
+        self.assertEquals("", self.substage.name)
+        self.assertEquals("", self.substage.substage_hash)
+        self.assertEquals("", self.substage.command)
+        self.assertEquals(0, self.substage.start_timestamp)
+        self.assertEquals(0, self.substage.finish_timestamp)
+        self.assertEquals(0, self.substage.duration)
