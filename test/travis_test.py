@@ -52,6 +52,7 @@ class TestTravisSubstage(unittest.TestCase):
 
     def test_novalue(self):
          # data should be empty
+        self.assertFalse(self.substage.has_started())
         self.assertFalse(self.substage.has_finished())
         self.assertEquals("", self.substage.name)
         self.assertEquals("", self.substage.substage_hash)
@@ -59,3 +60,23 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals(0, self.substage.start_timestamp)
         self.assertEquals(0, self.substage.finish_timestamp)
         self.assertEquals(0, self.substage.duration)
+
+    def test_has_started_name(self):
+        ''' has_started() should return true if name is set'''
+        # set name
+        self.substage.name = "stage.1"
+        self.assertTrue(self.substage.has_started())
+
+    def test_has_started_hash(self):
+        ''' has_started() should return true if substage_hash is set'''
+        # set substage hash
+        self.substage.substage_hash = "1234abcd"
+        self.assertTrue(self.substage.has_started())
+
+    def test_has_started_both(self):
+        ''' has_started() should return true if name or hash is set'''
+        # set name
+        self.substage.name = "stage.1"
+        # set substage hash
+        self.substage.substage_hash = "1234abcd"
+        self.assertTrue(self.substage.has_started())

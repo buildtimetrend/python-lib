@@ -244,6 +244,14 @@ class TravisSubstage(object):
 
         print "End stage : %s" % tags_dict
 
+    def has_started(self):
+        '''
+        Checks if substage has started
+        Returns true if substage has started
+        '''
+        return ((self.name is not None and len(self.name) > 0) or
+            (self.substage_hash is not None and len(self.substage_hash) > 0))
+
     def has_finished(self):
         '''
         Checks if substage has finished
