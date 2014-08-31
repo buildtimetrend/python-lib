@@ -61,6 +61,30 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals(0, self.substage.finish_timestamp)
         self.assertEquals(0, self.substage.duration)
 
+    def test_param_is_not_dict(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, self.substage.process_parsed_tags)
+        self.assertRaises(TypeError, self.substage.process_start_stage)
+        self.assertRaises(TypeError, self.substage.process_start_time)
+        self.assertRaises(TypeError, self.substage.process_command)
+        self.assertRaises(TypeError, self.substage.process_end_time)
+        self.assertRaises(TypeError, self.substage.process_end_stage)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, self.substage.process_parsed_tags, None)
+        self.assertRaises(TypeError, self.substage.process_start_stage, None)
+        self.assertRaises(TypeError, self.substage.process_start_time, None)
+        self.assertRaises(TypeError, self.substage.process_command, None)
+        self.assertRaises(TypeError, self.substage.process_end_time, None)
+        self.assertRaises(TypeError, self.substage.process_end_stage, None)
+
+        self.assertRaises(TypeError, self.substage.process_parsed_tags, "string")
+        self.assertRaises(TypeError, self.substage.process_start_stage, "string")
+        self.assertRaises(TypeError, self.substage.process_start_time, "string")
+        self.assertRaises(TypeError, self.substage.process_command, "string")
+        self.assertRaises(TypeError, self.substage.process_end_time, "string")
+        self.assertRaises(TypeError, self.substage.process_end_stage, "string")
+
     def test_has_started_name(self):
         ''' has_started() should return true if name is set'''
         # set name
