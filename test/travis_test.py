@@ -80,3 +80,26 @@ class TestTravisSubstage(unittest.TestCase):
         # set substage hash
         self.substage.substage_hash = "1234abcd"
         self.assertTrue(self.substage.has_started())
+
+    def test_has_finished_timestamp(self):
+        ''' has_finished() should return true if finished timestamp is set'''
+        # set finish_timestamp
+        self.substage.finish_timestamp = 12345678
+        self.assertTrue(self.substage.has_finished())
+
+    def test_has_finished_incomplete(self):
+        ''' has_finished() should return true if finished_incomplete is set'''
+        # set finished_incomplete
+        self.substage.finished_incomplete = True
+        self.assertTrue(self.substage.has_finished())
+
+    def test_has_finished(self):
+        '''
+        has_finished() should return true if finished timestamp is set
+        or if finished_incomplete is set
+        '''
+        # set finish_timestamp
+        self.substage.finish_timestamp = 12345678
+        # set finished_incomplete
+        self.substage.finished_incomplete = True
+        self.assertTrue(self.substage.has_finished())

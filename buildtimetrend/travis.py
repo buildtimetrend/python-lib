@@ -168,6 +168,7 @@ class TravisSubstage(object):
         self.start_timestamp = 0
         self.finish_timestamp = 0
         self.duration = 0
+        self.finished_incomplete = False
 
     def process_parsed_tags(self, tags_dict):
         '''
@@ -254,7 +255,10 @@ class TravisSubstage(object):
 
     def has_finished(self):
         '''
-        Checks if substage has finished
+        Checks if substage has finished.
+        A substage is finished, if either the finished_timestamp is set,
+        or if finished is (because of an error in parsing the tags).
+
         Returns true if substage has finished
         '''
-        return False
+        return self.finished_incomplete or self.finish_timestamp > 0
