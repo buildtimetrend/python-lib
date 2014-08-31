@@ -1,4 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
+# disable pylint message about unused variable 'fig'
+# pylint: disable=unused-variable
 '''
 Generates a trend (graph) from the buildtimes in buildtimes.xml
 
