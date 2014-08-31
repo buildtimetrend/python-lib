@@ -24,6 +24,7 @@ import urllib2
 import json
 import re
 from buildtimetrend.tools import check_file
+from buildtimetrend.tools import check_dict
 import buildtimetrend
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
@@ -176,8 +177,8 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if tags_dict is None and type(tags_dict) is not dict:
-            raise TypeError("param tags_dict should be a dictionary")
+        if not check_dict(tags_dict, "tags_dict"):
+            return false
 
         if 'start_stage' in tags_dict:
             self.process_start_stage(tags_dict)
@@ -196,10 +197,8 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if tags_dict is None and type(tags_dict) is not dict:
-            raise TypeError("param tags_dict should be a dictionary")
-
-        print "Start stage : %s" % tags_dict
+        if check_dict(tags_dict, "tags_dict"):
+            print "Start stage : %s" % tags_dict
 
     def process_start_time(self, tags_dict):
         '''
@@ -207,10 +206,8 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if tags_dict is None and type(tags_dict) is not dict:
-            raise TypeError("param tags_dict should be a dictionary")
-
-        print "Start time : %s" % tags_dict
+        if check_dict(tags_dict, "tags_dict"):
+            print "Start time : %s" % tags_dict
 
     def process_command(self, tags_dict):
         '''
@@ -218,10 +215,8 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if tags_dict is None and type(tags_dict) is not dict:
-            raise TypeError("param tags_dict should be a dictionary")
-
-        print "Command : %s" % tags_dict
+        if check_dict(tags_dict, "tags_dict"):
+            print "Command : %s" % tags_dict
 
     def process_end_time(self, tags_dict):
         '''
@@ -229,10 +224,8 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if tags_dict is None and type(tags_dict) is not dict:
-            raise TypeError("param tags_dict should be a dictionary")
-
-        print "End time : %s" % tags_dict
+        if check_dict(tags_dict, "tags_dict"):
+            print "End time : %s" % tags_dict
 
     def process_end_stage(self, tags_dict):
         '''
@@ -240,10 +233,8 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if tags_dict is None and type(tags_dict) is not dict:
-            raise TypeError("param tags_dict should be a dictionary")
-
-        print "End stage : %s" % tags_dict
+        if check_dict(tags_dict, "tags_dict"):
+            print "End stage : %s" % tags_dict
 
     def has_started(self):
         '''
