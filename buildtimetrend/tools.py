@@ -97,7 +97,7 @@ def add_project_info_dict(payload):
     Adds project info to a dictonary
     Param payload: dictonary payload
     '''
-    if payload is None and type(payload) is not dict:
+    if payload is None or type(payload) is not dict:
         raise TypeError("param payload should be a dictionary")
 
     payload_as_dict = copy.deepcopy(payload)
