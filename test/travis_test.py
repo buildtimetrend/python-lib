@@ -126,6 +126,22 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals(VALID_HASH1, self.substage.substage_hash)
         self.assertFalse(self.substage.has_finished())
 
+    def test_process_command(self):
+        # dict shouldn't be processed if it doesn't contain the required tags
+        self.assertFalse(self.substage.process_command({'invalid': 'param'}))
+
+        # pass a valid start tag
+        self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
+        #self.assertTrue(self.substage.has_started())
+        self.assertEquals('command1.sh', self.substage.command)
+        self.assertFalse(self.substage.has_finished())
+
+        # passing a valid start tag when it was started already, should fail
+        self.assertFalse(self.substage.process_command({'command': 'command2.sh'}))
+        #self.assertTrue(self.substage.has_started())
+        self.assertEquals('command1.sh', self.substage.command)
+        self.assertFalse(self.substage.has_finished())
+
     def test_has_started_name(self):
         ''' has_started() should return true if name is set'''
         # set name

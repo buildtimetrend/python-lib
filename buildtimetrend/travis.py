@@ -247,8 +247,24 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if check_dict(tags_dict, "tags_dict"):
-            print "Command : %s" % tags_dict
+        # check if parameter tags_dict is a dictionary and
+        # if it contains all required tags
+        if not (check_dict(tags_dict, "tags_dict") and
+                'command' in tags_dict):
+            return False
+
+        print "Command : %s" % tags_dict
+
+        # TODO assign command to self.name if it was not set
+
+        if self.command is not None and len(self.command) > 0:
+            print "Command is already set"
+            return False
+
+        self.command = tags_dict['command']
+        print "Set command : %s" % self.command
+
+        return True
 
     def process_end_time(self, tags_dict):
         '''
