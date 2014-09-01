@@ -23,12 +23,12 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import os
 from lxml import etree
 import matplotlib
 # Force matplotlib to not use any Xwindow backend.
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
+from buildtimetrend.tools import check_file
 
 
 class Trend(object):
@@ -47,10 +47,9 @@ class Trend(object):
         - result_file : xml file containing the buildtime data
         '''
         # load buildtimes file
-        if os.path.isfile(result_file):
+        if check_file(result_file):
             root_xml = etree.parse(result_file).getroot()
         else:
-            print 'File doesn\'t exist : {}'.format(result_file)
             return False
 
         index = 0

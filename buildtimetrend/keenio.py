@@ -26,6 +26,7 @@ import keen
 from keen import scoped_keys
 from buildtimetrend.tools import add_project_info_dict
 from buildtimetrend.tools import add_project_info_list
+from buildtimetrend.tools import check_file
 
 
 def keen_io_writable():
@@ -106,8 +107,7 @@ def generate_overview_config_file(repo):
         read_key = keen_io_generate_read_key(repo)
 
         # check if sample config file exists
-        if not os.path.isfile(sample_filename):
-            print 'File doesn\'t exist : {0}'.format(sample_filename)
+        if not check_file(sample_filename):
             return
 
         # list of string pairs to be replaced (search string : new string)

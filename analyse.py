@@ -113,7 +113,7 @@ def log_build_native(build):
     from lxml import etree
 
     # load previous buildtimes file, or create a new xml root
-    if os.path.isfile(RESULT_FILE):
+    if check_file(RESULT_FILE):
         try:
             root_xml = etree.parse(RESULT_FILE).getroot()
         except etree.XMLSyntaxError:
