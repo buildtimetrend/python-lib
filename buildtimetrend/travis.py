@@ -221,8 +221,20 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if check_dict(tags_dict, "tags_dict"):
-            print "Start time : %s" % tags_dict
+        if not (check_dict(tags_dict, "tags_dict") and
+                'start_hash' in tags_dict):
+            return False
+
+        print "Start time : %s" % tags_dict
+
+        if self.substage_hash is not None and len(self.substage_hash) > 0:
+            print "Substage timing already set"
+            return False
+
+        self.substage_hash = tags_dict['start_hash']
+        print "Set timing hash : %s" % self.substage_hash
+
+        return True
 
     def process_command(self, tags_dict):
         '''

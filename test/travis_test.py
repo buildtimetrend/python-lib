@@ -25,6 +25,9 @@ import unittest
 
 TEST_REPO = 'ruleant/buildtime-trend'
 TEST_BUILD = '158'
+VALID_HASH1 = '1234abcd'
+VALID_HASH2 = '1234abce'
+INVALID_HASH = 'abcd1234'
 
 class TestTravisData(unittest.TestCase):
     def setUp(self):
@@ -105,6 +108,22 @@ class TestTravisSubstage(unittest.TestCase):
         }))
         self.assertTrue(self.substage.has_started())
         self.assertEquals("stage1.substage1", self.substage.name)
+        self.assertFalse(self.substage.has_finished())
+
+    def test_process_start_time(self):
+        # dict shouldn't be processed if it doesn't contain the required tags
+        self.assertFalse(self.substage.process_start_time({'invalid': 'param'}))
+
+        # pass a valid start tag
+        self.assertTrue(self.substage.process_start_time({'start_hash': VALID_HASH1}))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals(VALID_HASH1, self.substage.substage_hash)
+        self.assertFalse(self.substage.has_finished())
+
+        # passing a valid start tag when it was started already, should fail
+        self.assertFalse(self.substage.process_start_time({'start_hash': VALID_HASH2}))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals(VALID_HASH1, self.substage.substage_hash)
         self.assertFalse(self.substage.has_finished())
 
     def test_has_started_name(self):
