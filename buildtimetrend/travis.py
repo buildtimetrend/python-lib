@@ -177,6 +177,7 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
+        # check if parameter tags_dict is a dictionary
         if not check_dict(tags_dict, "tags_dict"):
             return False
 
@@ -197,6 +198,8 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
+        # check if parameter tags_dict is a dictionary and
+        # if it contains all required tags
         if not (check_dict(tags_dict, "tags_dict") and
                 'start_stage' in tags_dict and
                 'start_substage' in tags_dict):
@@ -221,6 +224,8 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
+        # check if parameter tags_dict is a dictionary and
+        # if it contains all required tags
         if not (check_dict(tags_dict, "tags_dict") and
                 'start_hash' in tags_dict):
             return False
