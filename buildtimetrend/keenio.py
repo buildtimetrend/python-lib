@@ -102,6 +102,7 @@ def generate_overview_config_file(repo):
             and "BUILD_TREND_CONFIGFILE" in os.environ
             and "KEEN_PROJECT_ID" in os.environ):
         print "Trends overview config file was not created"
+        return
 
     sample_filename = os.getenv("BUILD_TREND_SAMPLE_CONFIGFILE")
     config_file = os.getenv("BUILD_TREND_CONFIGFILE")
