@@ -134,14 +134,36 @@ class TestTravisSubstage(unittest.TestCase):
 
         # pass a valid start tag
         self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
-        #self.assertTrue(self.substage.has_started())
+        self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
+        self.assertEquals('command1.sh', self.substage.name)
         self.assertFalse(self.substage.has_finished())
 
         # passing a valid start tag when it was started already, should fail
         self.assertFalse(self.substage.process_command({'command': 'command2.sh'}))
-        #self.assertTrue(self.substage.has_started())
+        self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
+        self.assertEquals('command1.sh', self.substage.name)
+        self.assertFalse(self.substage.has_finished())
+
+    def test_process_command_has_name(self):
+        # assign substage name
+        self.substage.process_start_stage({
+            'start_stage': 'stage1', 'start_substage': 'substage1'
+        })
+
+        # pass a valid start tag
+        self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals('command1.sh', self.substage.command)
+        self.assertEquals("stage1.substage1", self.substage.name)
+        self.assertFalse(self.substage.has_finished())
+
+        # passing a valid start tag when it was started already, should fail
+        self.assertFalse(self.substage.process_command({'command': 'command2.sh'}))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals('command1.sh', self.substage.command)
+        self.assertEquals("stage1.substage1", self.substage.name)
         self.assertFalse(self.substage.has_finished())
 
     def test_has_name(self):

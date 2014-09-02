@@ -255,14 +255,16 @@ class TravisSubstage(object):
 
         print "Command : %s" % tags_dict
 
-        # TODO assign command to self.name if it was not set
-
         if self.command is not None and len(self.command) > 0:
             print "Command is already set"
             return False
 
         self.command = tags_dict['command']
         print "Set command : %s" % self.command
+
+        # use command as substage name if name is not set
+        if not self.has_name():
+            self.name = self.command
 
         return True
 
