@@ -153,7 +153,7 @@ class TestTravisSubstage(unittest.TestCase):
     def test_has_timing_hash(self):
         ''' has_started() should return true if timing_hash is set'''
         # set substage timing hash
-        self.substage.timing_hash = "1234abcd"
+        self.substage.timing_hash = VALID_HASH1
         self.assertTrue(self.substage.has_timing_hash())
 
     def test_has_started_name(self):
@@ -165,7 +165,7 @@ class TestTravisSubstage(unittest.TestCase):
     def test_has_started_hash(self):
         ''' has_started() should return true if timing_hash is set'''
         # set substage hash
-        self.substage.timing_hash = "1234abcd"
+        self.substage.timing_hash = VALID_HASH1
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_both(self):
@@ -173,7 +173,7 @@ class TestTravisSubstage(unittest.TestCase):
         # set name
         self.substage.name = "stage.1"
         # set timing hash
-        self.substage.timing_hash = "1234abcd"
+        self.substage.timing_hash = VALID_HASH1
         self.assertTrue(self.substage.has_started())
 
     def test_has_finished_timestamp(self):
