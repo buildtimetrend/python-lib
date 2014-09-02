@@ -153,6 +153,25 @@ def check_dict(param_dict, name):
     return True
 
 
+def keys_in_dict(param_dict, key_list):
+    '''
+    Checks if a list of keys exist in a dictionary
+    Param param_dict: dictonary that should contain the keys
+    Param key_list: key or list of keys that should be present in the dict
+    Returns true if all keys were found in the dictionary
+    '''
+    if type(key_list) is str or type(key_list) is int:
+        return key_list in param_dict
+    elif not check_list(key_list, "key_list"):
+        return False
+
+    for key in key_list:
+        if not key in param_dict:
+            return False
+
+    return True
+
+
 def check_list(param_list, name):
     '''
     Checks if a parameter is a list

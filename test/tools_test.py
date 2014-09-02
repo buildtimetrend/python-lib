@@ -169,6 +169,28 @@ class TestTools(unittest.TestCase):
         # should return true if parameter is a dictionary
         self.assertTrue(check_dict({"string": "test"}, "name"))
 
+    def test_keys_in_dict(self):
+        # empty dict and empty key_list should return true
+        self.assertTrue(keys_in_dict({}, []))
+        self.assertTrue(keys_in_dict({"string": "test"}, []))
+
+        # find 1 key in dict
+        self.assertTrue(keys_in_dict({"string": "test"}, "string"))
+        self.assertTrue(keys_in_dict({"string": "test", 7: "test"}, "string"))
+        self.assertTrue(keys_in_dict({7: "test"}, 7))
+        self.assertTrue(keys_in_dict({"string": "test", 7: "test"}, 7))
+
+        # find multiple keys in dict
+        self.assertTrue(keys_in_dict(
+            {"string": "test", 7: "test"},
+            list({7, "string"})
+        ))
+
+        # missing keys
+        self.assertFalse(keys_in_dict({"string": "test"}, 7))
+        self.assertFalse(keys_in_dict({7: "test"}, "string"))
+        self.assertFalse(keys_in_dict({"string": "test"}, list({7, "string"})))
+
     def test_check_list(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, check_list)
