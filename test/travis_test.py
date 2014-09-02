@@ -55,6 +55,7 @@ class TestTravisSubstage(unittest.TestCase):
 
     def test_novalue(self):
          # data should be empty
+        self.assertFalse(self.substage.has_name())
         self.assertFalse(self.substage.has_started())
         self.assertFalse(self.substage.has_finished())
         self.assertEquals("", self.substage.name)
@@ -141,6 +142,12 @@ class TestTravisSubstage(unittest.TestCase):
         #self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
         self.assertFalse(self.substage.has_finished())
+
+    def test_has_name(self):
+        ''' has_name() should return true if name is set'''
+        # set name
+        self.substage.name = "stage.1"
+        self.assertTrue(self.substage.has_name())
 
     def test_has_started_name(self):
         ''' has_started() should return true if name is set'''
