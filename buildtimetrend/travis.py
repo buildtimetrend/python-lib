@@ -164,7 +164,7 @@ class TravisSubstage(object):
         Initialise Travis CI Substage object
         '''
         self.name = ""
-        self.substage_hash = ""
+        self.timing_hash = ""
         self.command = ""
         self.start_timestamp = 0
         self.finish_timestamp = 0
@@ -232,12 +232,12 @@ class TravisSubstage(object):
 
         print "Start time : %s" % tags_dict
 
-        if self.substage_hash is not None and len(self.substage_hash) > 0:
+        if self.timing_hash is not None and len(self.timing_hash) > 0:
             print "Substage timing already set"
             return False
 
-        self.substage_hash = tags_dict['start_hash']
-        print "Set timing hash : %s" % self.substage_hash
+        self.timing_hash = tags_dict['start_hash']
+        print "Set timing hash : %s" % self.timing_hash
 
         return True
 
@@ -297,8 +297,8 @@ class TravisSubstage(object):
         Returns true if substage has started
         '''
         return (self.has_name() or
-                (self.substage_hash is not None and
-                    len(self.substage_hash) > 0))
+                (self.timing_hash is not None and
+                    len(self.timing_hash) > 0))
 
     def has_finished(self):
         '''

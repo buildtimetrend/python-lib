@@ -59,7 +59,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.has_started())
         self.assertFalse(self.substage.has_finished())
         self.assertEquals("", self.substage.name)
-        self.assertEquals("", self.substage.substage_hash)
+        self.assertEquals("", self.substage.timing_hash)
         self.assertEquals("", self.substage.command)
         self.assertEquals(0, self.substage.start_timestamp)
         self.assertEquals(0, self.substage.finish_timestamp)
@@ -118,13 +118,13 @@ class TestTravisSubstage(unittest.TestCase):
         # pass a valid start tag
         self.assertTrue(self.substage.process_start_time({'start_hash': VALID_HASH1}))
         self.assertTrue(self.substage.has_started())
-        self.assertEquals(VALID_HASH1, self.substage.substage_hash)
+        self.assertEquals(VALID_HASH1, self.substage.timing_hash)
         self.assertFalse(self.substage.has_finished())
 
         # passing a valid start tag when it was started already, should fail
         self.assertFalse(self.substage.process_start_time({'start_hash': VALID_HASH2}))
         self.assertTrue(self.substage.has_started())
-        self.assertEquals(VALID_HASH1, self.substage.substage_hash)
+        self.assertEquals(VALID_HASH1, self.substage.timing_hash)
         self.assertFalse(self.substage.has_finished())
 
     def test_process_command(self):
@@ -156,17 +156,17 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_hash(self):
-        ''' has_started() should return true if substage_hash is set'''
+        ''' has_started() should return true if timing_hash is set'''
         # set substage hash
-        self.substage.substage_hash = "1234abcd"
+        self.substage.timing_hash = "1234abcd"
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_both(self):
         ''' has_started() should return true if name or hash is set'''
         # set name
         self.substage.name = "stage.1"
-        # set substage hash
-        self.substage.substage_hash = "1234abcd"
+        # set timing hash
+        self.substage.timing_hash = "1234abcd"
         self.assertTrue(self.substage.has_started())
 
     def test_has_finished_timestamp(self):
