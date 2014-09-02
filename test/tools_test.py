@@ -169,6 +169,16 @@ class TestTools(unittest.TestCase):
         # should return true if parameter is a dictionary
         self.assertTrue(check_dict({"string": "test"}, "name"))
 
+        # should return true if key is found in dictionary
+        self.assertTrue(check_dict({"string": "test"}, "string"))
+        self.assertTrue(check_dict(
+            {"string": "test", 7: "test"},
+            list({7, "string"})
+        ))
+
+        # should return false if key is not found in dictionary
+        self.assertTrue(check_dict({"string": "test"}, "name"))
+
     def test_keys_in_dict(self):
         # empty dict and empty key_list should return true
         self.assertTrue(keys_in_dict({}, []))

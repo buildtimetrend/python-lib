@@ -140,17 +140,24 @@ def check_file(filename):
     return True
 
 
-def check_dict(param_dict, name):
+def check_dict(param_dict, name, key_list=None):
     '''
     Checks if a parameter is a dictionary
     Param param_dict: parameter that should be a dictonary
     Param name: name of the parameter
+    Param key_list: list of keys that should be present in the dict
     Returns true if parameter is a dictionary, throws error when it isn't
     '''
     if param_dict is None or type(param_dict) is not dict:
         raise TypeError("param %s should be a dictionary" % name)
 
-    return True
+    # check if key_list is defined
+    if key_list is None:
+        # key_list is not defined, no need to check keys
+        return True
+    else:
+        # check if dictionary contains all keys in key_list
+        return keys_in_dict(param_dict, key_list)
 
 
 def keys_in_dict(param_dict, key_list):
