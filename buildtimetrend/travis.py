@@ -232,7 +232,7 @@ class TravisSubstage(object):
 
         print "Start time : %s" % tags_dict
 
-        if self.timing_hash is not None and len(self.timing_hash) > 0:
+        if self.has_timing_hash():
             print "Substage timing already set"
             return False
 
@@ -303,9 +303,7 @@ class TravisSubstage(object):
         Checks if substage has started
         Returns true if substage has started
         '''
-        return (self.has_name() or
-                (self.timing_hash is not None and
-                    len(self.timing_hash) > 0))
+        return self.has_name() or self.has_timing_hash()
 
     def has_finished(self):
         '''
