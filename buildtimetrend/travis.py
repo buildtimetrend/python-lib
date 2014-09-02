@@ -296,7 +296,7 @@ class TravisSubstage(object):
         Checks if substage has started
         Returns true if substage has started
         '''
-        return ((self.name is not None and len(self.name) > 0) or
+        return (self.has_name() or
                 (self.substage_hash is not None and
                     len(self.substage_hash) > 0))
 
