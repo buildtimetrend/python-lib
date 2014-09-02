@@ -56,6 +56,7 @@ class TestTravisSubstage(unittest.TestCase):
     def test_novalue(self):
          # data should be empty
         self.assertFalse(self.substage.has_name())
+        self.assertFalse(self.substage.has_timing_hash())
         self.assertFalse(self.substage.has_started())
         self.assertFalse(self.substage.has_finished())
         self.assertEquals("", self.substage.name)
@@ -148,6 +149,12 @@ class TestTravisSubstage(unittest.TestCase):
         # set name
         self.substage.name = "stage.1"
         self.assertTrue(self.substage.has_name())
+
+    def test_has_timing_hash(self):
+        ''' has_started() should return true if timing_hash is set'''
+        # set substage timing hash
+        self.substage.timing_hash = "1234abcd"
+        self.assertTrue(self.substage.has_timing_hash())
 
     def test_has_started_name(self):
         ''' has_started() should return true if name is set'''

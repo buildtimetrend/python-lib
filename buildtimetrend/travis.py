@@ -291,6 +291,13 @@ class TravisSubstage(object):
         '''
         return self.name is not None and len(self.name) > 0
 
+    def has_timing_hash(self):
+        '''
+        Checks if substage has a timing hash
+        Returns true if substage has a timing hash
+        '''
+        return self.timing_hash is not None and len(self.timing_hash) > 0
+
     def has_started(self):
         '''
         Checks if substage has started
