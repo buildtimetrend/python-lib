@@ -200,9 +200,8 @@ class TravisSubstage(object):
         '''
         # check if parameter tags_dict is a dictionary and
         # if it contains all required tags
-        if not (check_dict(tags_dict, "tags_dict") and
-                'start_stage' in tags_dict and
-                'start_substage' in tags_dict):
+        tag_list = list({'start_stage', 'start_substage'})
+        if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
         print "Start stage : %s" % tags_dict
@@ -226,8 +225,7 @@ class TravisSubstage(object):
         '''
         # check if parameter tags_dict is a dictionary and
         # if it contains all required tags
-        if not (check_dict(tags_dict, "tags_dict") and
-                'start_hash' in tags_dict):
+        if not check_dict(tags_dict, "tags_dict", 'start_hash'):
             return False
 
         print "Start time : %s" % tags_dict
@@ -249,8 +247,7 @@ class TravisSubstage(object):
         '''
         # check if parameter tags_dict is a dictionary and
         # if it contains all required tags
-        if not (check_dict(tags_dict, "tags_dict") and
-                'command' in tags_dict):
+        if not check_dict(tags_dict, "tags_dict", 'command'):
             return False
 
         print "Command : %s" % tags_dict
