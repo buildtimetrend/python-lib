@@ -160,6 +160,22 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals(expected_command, self.substage.name)
         self.assertFalse(self.substage.has_finished())
 
+    def test_process_end_time(self):
+        # dict shouldn't be processed if it doesn't contain the required tags
+        self.assertFalse(self.substage.process_end_time({'invalid': 'param'}))
+        self.assertFalse(self.substage.process_end_time({'end_hash': VALID_HASH1}))
+        self.assertFalse(self.substage.process_end_time({'start_timestamp': 12345678}))
+        self.assertFalse(self.substage.process_end_time({'finish_timestamp': 12345689}))
+        self.assertFalse(self.substage.process_end_time({'duration': 11}))
+
+        # pass a valid start tag
+        self.assertTrue(self.substage.process_end_time({
+            'end_hash': VALID_HASH1,
+            'start_timestamp': 12345678,
+            'finish_timestamp': 12345689,
+            'duration': 11
+        }))
+
     def test_has_name(self):
         ''' has_name() should return true if name is set'''
         # set name

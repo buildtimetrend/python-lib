@@ -271,8 +271,17 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if check_dict(tags_dict, "tags_dict"):
-            print "End time : %s" % tags_dict
+        tag_list = list({
+            'end_hash',
+            'start_timestamp',
+            'finish_timestamp',
+            'duration'
+        })
+        if not check_dict(tags_dict, "tags_dict", tag_list):
+            return False
+
+        print "End time : %s" % tags_dict
+        return True
 
     def process_end_stage(self, tags_dict):
         '''
