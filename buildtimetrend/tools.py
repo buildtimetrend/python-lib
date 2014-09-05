@@ -173,7 +173,7 @@ def keys_in_dict(param_dict, key_list):
         return False
 
     for key in key_list:
-        if not key in param_dict:
+        if key not in param_dict:
             return False
 
     return True
