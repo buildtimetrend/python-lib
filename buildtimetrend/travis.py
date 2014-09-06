@@ -281,6 +281,19 @@ class TravisSubstage(object):
             return False
 
         print "End time : %s" % tags_dict
+
+        # check if timing was started
+        # and if hash matches
+        if (not self.has_timing_hash() or
+                self.timing_hash is not tags_dict['end_hash']):
+            print "Substage timing was not started or hash doesn't match"
+            self.finished_incomplete = True
+            return False
+
+        self.start_timestamp = tags_dict['start_timestamp']
+        self.finish_timestamp = tags_dict['finish_timestamp']
+        self.duration = tags_dict['duration']
+
         return True
 
     def process_end_stage(self, tags_dict):
