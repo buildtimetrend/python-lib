@@ -271,6 +271,8 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
+        # check if parameter tags_dict is a dictionary and
+        # if it contains all required tags
         tag_list = list({
             'end_hash',
             'start_timestamp',
