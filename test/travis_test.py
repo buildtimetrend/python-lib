@@ -210,6 +210,17 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals(12345689, self.substage.finish_timestamp)
         self.assertEquals(11, self.substage.duration)
 
+    def test_process_end_stage_tags(self):
+        # dict shouldn't be processed if it doesn't contain the required tags
+        self.assertFalse(self.substage.process_end_stage({'invalid': 'param'}))
+        self.assertFalse(self.substage.process_end_stage({'end_stage': 'stage1'}))
+        self.assertFalse(self.substage.process_end_stage({'end_substage': 'substage1'}))
+
+        # pass a valid start tag
+        self.assertTrue(self.substage.process_end_stage({
+            'end_stage': 'stage1', 'end_substage': 'substage1'
+        }))
+
     def test_has_name(self):
         ''' has_name() should return true if name is set'''
         # set name

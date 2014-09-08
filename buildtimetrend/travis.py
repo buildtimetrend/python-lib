@@ -302,8 +302,14 @@ class TravisSubstage(object):
         Parameters:
         - tags_dict : dictionary with parsed tags
         '''
-        if check_dict(tags_dict, "tags_dict"):
-            print "End stage : %s" % tags_dict
+        # check if parameter tags_dict is a dictionary and
+        # if it contains all required tags
+        tag_list = list({'end_stage', 'end_substage'})
+        if not check_dict(tags_dict, "tags_dict", tag_list):
+            return False
+
+        print "End stage : %s" % tags_dict
+        return True
 
     def has_name(self):
         '''
