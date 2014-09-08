@@ -60,6 +60,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.has_started())
         self.assertFalse(self.substage.has_finished())
         self.assertFalse(self.substage.finished_incomplete)
+        self.assertEquals("", self.substage.get_name())
         self.assertEquals("", self.substage.name)
         self.assertEquals("", self.substage.timing_hash)
         self.assertEquals("", self.substage.command)
@@ -151,14 +152,14 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
-        self.assertEquals(expected_command, self.substage.name)
+        self.assertEquals(expected_command, self.substage.get_name())
         self.assertFalse(self.substage.has_finished())
 
         # passing a valid start tag when it was started already, should fail
         self.assertFalse(self.substage.process_command({'command': 'command2.sh'}))
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
-        self.assertEquals(expected_command, self.substage.name)
+        self.assertEquals(expected_command, self.substage.get_name())
         self.assertFalse(self.substage.has_finished())
 
     def test_process_end_time_tags(self):

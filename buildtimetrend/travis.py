@@ -259,10 +259,6 @@ class TravisSubstage(object):
         self.command = tags_dict['command']
         print "Set command : %s" % self.command
 
-        # use command as substage name if name is not set
-        if not self.has_name():
-            self.name = self.command
-
         return True
 
     def process_end_time(self, tags_dict):
@@ -313,6 +309,17 @@ class TravisSubstage(object):
         print "End stage : %s" % tags_dict
         return True
 
+    def get_name(self):
+        '''
+        Return substage name, if it is not set, return the command
+        '''
+        if self.has_name():
+            return self.name
+        elif self.command is not None and len(self.command) > 0:
+            return self.command
+        else:
+            return ""
+
     def has_name(self):
         '''
         Checks if substage has a name
@@ -332,7 +339,8 @@ class TravisSubstage(object):
         Checks if substage has started
         Returns true if substage has started
         '''
-        return self.has_name() or self.has_timing_hash()
+        return (self.has_name() or self.has_timing_hash() or
+                self.command is not None and len(self.command) > 0)
 
     def has_finished(self):
         '''
