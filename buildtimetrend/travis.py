@@ -285,7 +285,7 @@ class TravisSubstage(object):
         # check if timing was started
         # and if hash matches
         if (not self.has_timing_hash() or
-                self.timing_hash is not tags_dict['end_hash']):
+                self.timing_hash != tags_dict['end_hash']):
             print "Substage timing was not started or hash doesn't match"
             self.finished_incomplete = True
             return False
