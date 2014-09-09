@@ -223,6 +223,22 @@ class TestTravisSubstage(unittest.TestCase):
             'end_stage': 'stage1', 'end_substage': 'substage1'
         }))
 
+    def test_get_name(self):
+        ''' get_name() returns the name, or the command if name is not set'''
+        # set name
+        self.substage.name = "stage.1"
+        self.assertEquals("stage.1", self.substage.get_name())
+
+        # set command, should have no influence, nam is already set
+        self.substage.command = "command1.sh"
+        self.assertEquals("stage.1", self.substage.get_name())
+
+    def test_get_namei_command(self):
+        ''' get_name() returns the name, or the command if name is not set'''
+        # set command
+        self.substage.command = "command1.sh"
+        self.assertEquals("command1.sh", self.substage.get_name())
+
     def test_has_name(self):
         ''' has_name() should return true if name is set'''
         # set name
