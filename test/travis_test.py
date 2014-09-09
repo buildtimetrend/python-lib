@@ -218,10 +218,37 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.process_end_stage({'end_stage': 'stage1'}))
         self.assertFalse(self.substage.process_end_stage({'end_substage': 'substage1'}))
 
-        # pass a valid start tag
+    def test_process_end_stage_not_started(self):
+        # pass a valid end tag but, stage wasn't started
+        self.assertFalse(self.substage.process_end_stage({
+            'end_stage': 'stage1', 'end_substage': 'substage1'
+        }))
+        self.assertTrue(self.substage.finished_incomplete)
+        self.assertTrue(self.substage.has_finished())
+
+    def test_process_end_time_invalid_name(self):
+        # stage was started, but name doesn't match
+        self.substage.process_start_stage({
+            'start_stage': 'stage1', 'start_substage': 'substage1'
+        })
+
+        self.assertFalse(self.substage.process_end_stage({
+            'end_stage': 'stage1', 'end_substage': 'substage2'
+        }))
+        self.assertTrue(self.substage.finished_incomplete)
+        self.assertTrue(self.substage.has_finished())
+
+    def test_process_end_time_valid_name(self):
+        # stage was started, name matches
+        self.substage.process_start_stage({
+            'start_stage': 'stage1', 'start_substage': 'substage1'
+        })
+
         self.assertTrue(self.substage.process_end_stage({
             'end_stage': 'stage1', 'end_substage': 'substage1'
         }))
+        self.assertFalse(self.substage.finished_incomplete)
+        self.assertTrue(self.substage.has_finished())
 
     def test_get_name(self):
         ''' get_name() returns the name, or the command if name is not set'''

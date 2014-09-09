@@ -170,6 +170,7 @@ class TravisSubstage(object):
         self.finish_timestamp = 0
         self.duration = 0
         self.finished_incomplete = False
+        self.finished = False
 
     def process_parsed_tags(self, tags_dict):
         '''
@@ -307,6 +308,22 @@ class TravisSubstage(object):
             return False
 
         print "End stage : %s" % tags_dict
+
+        # construct substage name
+        end_stagename = "%s.%s" % (
+            tags_dict['end_stage'], tags_dict['end_substage']
+        )
+
+        # check if stage was started
+        # and if substage name matches
+        if not self.has_name() or self.name != end_stagename:
+            print "Substage was not started or name doesn't match"
+            self.finished_incomplete = True
+            return False
+
+        # stage finished successfully
+        self.finished = True
+
         return True
 
     def get_name(self):
@@ -356,4 +373,5 @@ class TravisSubstage(object):
 
         Returns true if substage has finished
         '''
-        return self.finished_incomplete or self.finish_timestamp > 0
+        return (self.finished_incomplete or self.finished or
+                self.finish_timestamp > 0)
