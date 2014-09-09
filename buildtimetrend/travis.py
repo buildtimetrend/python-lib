@@ -252,7 +252,7 @@ class TravisSubstage(object):
 
         print "Command : %s" % tags_dict
 
-        if self.command is not None and len(self.command) > 0:
+        if self.has_command():
             print "Command is already set"
             return False
 
@@ -315,7 +315,7 @@ class TravisSubstage(object):
         '''
         if self.has_name():
             return self.name
-        elif self.command is not None and len(self.command) > 0:
+        elif self.has_command():
             return self.command
         else:
             return ""
@@ -346,8 +346,7 @@ class TravisSubstage(object):
         Checks if substage has started
         Returns true if substage has started
         '''
-        return (self.has_name() or self.has_timing_hash() or
-                self.command is not None and len(self.command) > 0)
+        return self.has_name() or self.has_timing_hash() or self.has_command()
 
     def has_finished(self):
         '''
