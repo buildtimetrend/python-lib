@@ -334,6 +334,13 @@ class TravisSubstage(object):
         '''
         return self.timing_hash is not None and len(self.timing_hash) > 0
 
+    def has_command(self):
+        '''
+        Checks if a command is set for substage
+        Returns true if a command is set
+        '''
+        return self.command is not None and len(self.command) > 0
+
     def has_started(self):
         '''
         Checks if substage has started

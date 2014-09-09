@@ -57,6 +57,7 @@ class TestTravisSubstage(unittest.TestCase):
          # data should be empty
         self.assertFalse(self.substage.has_name())
         self.assertFalse(self.substage.has_timing_hash())
+        self.assertFalse(self.substage.has_command())
         self.assertFalse(self.substage.has_started())
         self.assertFalse(self.substage.has_finished())
         self.assertFalse(self.substage.finished_incomplete)
@@ -233,6 +234,12 @@ class TestTravisSubstage(unittest.TestCase):
         # set substage timing hash
         self.substage.timing_hash = VALID_HASH1
         self.assertTrue(self.substage.has_timing_hash())
+
+    def test_has_command(self):
+        ''' has_command() should return true if command is set'''
+        # set command
+        self.substage.command = "command1.sh"
+        self.assertTrue(self.substage.has_command())
 
     def test_has_started_name(self):
         ''' has_started() should return true if name is set'''
