@@ -100,12 +100,12 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.has_finished())
 
         # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(self.substage.process_start_stage({'start_stage': 'stage'}))
+        self.assertFalse(self.substage.process_parsed_tags({'start_stage': 'stage'}))
         self.assertFalse(self.substage.has_started())
         self.assertFalse(self.substage.has_finished())
 
         # pass a valid start tag
-        self.assertTrue(self.substage.process_start_stage({
+        self.assertTrue(self.substage.process_parsed_tags({
             'start_stage': 'stage1', 'start_substage': 'substage1'
         }))
         self.assertTrue(self.substage.has_started())
@@ -113,19 +113,19 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.has_finished())
 
         # pass a valid timing hash
-        self.assertTrue(self.substage.process_start_time({'start_hash': VALID_HASH1}))
+        self.assertTrue(self.substage.process_parsed_tags({'start_hash': VALID_HASH1}))
         self.assertTrue(self.substage.has_started())
         self.assertEquals(VALID_HASH1, self.substage.timing_hash)
         self.assertFalse(self.substage.has_finished())
 
         # pass a valid command name
-        self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
+        self.assertTrue(self.substage.process_parsed_tags({'command': 'command1.sh'}))
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
         self.assertFalse(self.substage.has_finished())
 
         # pass valid timing data
-        self.assertTrue(self.substage.process_end_time({
+        self.assertTrue(self.substage.process_parsed_tags({
             'end_hash': VALID_HASH1,
             'start_timestamp': 12345678,
             'finish_timestamp': 12345689,
@@ -137,7 +137,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals(11, self.substage.duration)
 
         # pass valid end tag
-        self.assertTrue(self.substage.process_end_stage({
+        self.assertTrue(self.substage.process_parsed_tags({
             'end_stage': 'stage1', 'end_substage': 'substage1'
         }))
         self.assertFalse(self.substage.finished_incomplete)
