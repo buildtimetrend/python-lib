@@ -324,6 +324,7 @@ class TravisSubstage(object):
 
         # stage finished successfully
         self.finished = True
+        print "Stage %s finished successfully" % self.get_name()
 
         return True
 
