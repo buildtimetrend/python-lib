@@ -93,6 +93,56 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertRaises(TypeError, self.substage.process_end_time, "string")
         self.assertRaises(TypeError, self.substage.process_end_stage, "string")
 
+    def test_process_parsed_tags(self):
+        # dict shouldn't be processed if it doesn't contain the required tags
+        self.assertFalse(self.substage.process_parsed_tags({'invalid': 'param'}))
+        self.assertFalse(self.substage.has_started())
+        self.assertFalse(self.substage.has_finished())
+
+        # dict shouldn't be processed if it doesn't contain the required tags
+        self.assertFalse(self.substage.process_start_stage({'start_stage': 'stage'}))
+        self.assertFalse(self.substage.has_started())
+        self.assertFalse(self.substage.has_finished())
+
+        # pass a valid start tag
+        self.assertTrue(self.substage.process_start_stage({
+            'start_stage': 'stage1', 'start_substage': 'substage1'
+        }))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals("stage1.substage1", self.substage.name)
+        self.assertFalse(self.substage.has_finished())
+
+        # pass a valid timing hash
+        self.assertTrue(self.substage.process_start_time({'start_hash': VALID_HASH1}))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals(VALID_HASH1, self.substage.timing_hash)
+        self.assertFalse(self.substage.has_finished())
+
+        # pass a valid command name
+        self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals('command1.sh', self.substage.command)
+        self.assertFalse(self.substage.has_finished())
+
+        # pass valid timing data
+        self.assertTrue(self.substage.process_end_time({
+            'end_hash': VALID_HASH1,
+            'start_timestamp': 12345678,
+            'finish_timestamp': 12345689,
+            'duration': 11
+        }))
+        self.assertTrue(self.substage.has_finished())
+        self.assertEquals(12345678, self.substage.start_timestamp)
+        self.assertEquals(12345689, self.substage.finish_timestamp)
+        self.assertEquals(11, self.substage.duration)
+
+        # pass valid end tag
+        self.assertTrue(self.substage.process_end_stage({
+            'end_stage': 'stage1', 'end_substage': 'substage1'
+        }))
+        self.assertFalse(self.substage.finished_incomplete)
+        self.assertTrue(self.substage.has_finished())
+
     def test_process_start_stage(self):
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(self.substage.process_start_stage({'invalid': 'param'}))
@@ -119,7 +169,7 @@ class TestTravisSubstage(unittest.TestCase):
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(self.substage.process_start_time({'invalid': 'param'}))
 
-        # pass a valid start tag
+        # pass a valid timing hash
         self.assertTrue(self.substage.process_start_time({'start_hash': VALID_HASH1}))
         self.assertTrue(self.substage.has_started())
         self.assertEquals(VALID_HASH1, self.substage.timing_hash)
@@ -149,14 +199,14 @@ class TestTravisSubstage(unittest.TestCase):
 
     def check_process_command(self, expected_command):
         '''similar test for test_process_command*'''
-        # pass a valid start tag
+        # pass a valid command name
         self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
         self.assertEquals(expected_command, self.substage.get_name())
         self.assertFalse(self.substage.has_finished())
 
-        # passing a valid start tag when it was started already, should fail
+        # passing a valid command when it was started already, should fail
         self.assertFalse(self.substage.process_command({'command': 'command2.sh'}))
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
