@@ -292,6 +292,7 @@ class TravisSubstage(object):
         self.start_timestamp = tags_dict['start_timestamp']
         self.finish_timestamp = tags_dict['finish_timestamp']
         self.duration = tags_dict['duration']
+        print "Stage duration : %sns" % self.duration
 
         return True
 
