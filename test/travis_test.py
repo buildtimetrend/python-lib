@@ -93,7 +93,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertRaises(TypeError, self.substage.process_end_time, "string")
         self.assertRaises(TypeError, self.substage.process_end_stage, "string")
 
-    def test_process_parsed_tags(self):
+    def test_process_parsed_tags_full(self):
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(self.substage.process_parsed_tags({'invalid': 'param'}))
         self.assertFalse(self.substage.has_started())
@@ -135,6 +135,50 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals(12345678, self.substage.start_timestamp)
         self.assertEquals(12345689, self.substage.finish_timestamp)
         self.assertEquals(11, self.substage.duration)
+
+        # pass valid end tag
+        self.assertTrue(self.substage.process_parsed_tags({
+            'end_stage': 'stage1', 'end_substage': 'substage1'
+        }))
+        self.assertFalse(self.substage.finished_incomplete)
+        self.assertTrue(self.substage.has_finished())
+
+    def test_process_parsed_tags_no_starttag(self):
+        # pass a valid timing hash
+        self.assertTrue(self.substage.process_parsed_tags({'start_hash': VALID_HASH1}))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals(VALID_HASH1, self.substage.timing_hash)
+        self.assertFalse(self.substage.has_finished())
+
+        # pass a valid command name
+        self.assertTrue(self.substage.process_parsed_tags({'command': 'command1.sh'}))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals('command1.sh', self.substage.command)
+        self.assertFalse(self.substage.has_finished())
+
+        # pass valid timing data
+        self.assertTrue(self.substage.process_parsed_tags({
+            'end_hash': VALID_HASH1,
+            'start_timestamp': 12345678,
+            'finish_timestamp': 12345689,
+            'duration': 11
+        }))
+        self.assertTrue(self.substage.has_finished())
+
+    def test_process_parsed_tags_no_timing(self):
+        # pass a valid start tag
+        self.assertTrue(self.substage.process_parsed_tags({
+            'start_stage': 'stage1', 'start_substage': 'substage1'
+        }))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals("stage1.substage1", self.substage.name)
+        self.assertFalse(self.substage.has_finished())
+
+        # pass a valid command name
+        self.assertTrue(self.substage.process_parsed_tags({'command': 'command1.sh'}))
+        self.assertTrue(self.substage.has_started())
+        self.assertEquals('command1.sh', self.substage.command)
+        self.assertFalse(self.substage.has_finished())
 
         # pass valid end tag
         self.assertTrue(self.substage.process_parsed_tags({
