@@ -131,7 +131,7 @@ class TestTravisSubstage(unittest.TestCase):
             'finish_timestamp': 12345689,
             'duration': 11
         }))
-        self.assertTrue(self.substage.has_finished())
+        self.assertFalse(self.substage.has_finished())
         self.assertEquals(12345678, self.substage.start_timestamp)
         self.assertEquals(12345689, self.substage.finish_timestamp)
         self.assertEquals(11, self.substage.duration)
@@ -204,14 +204,12 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
         self.assertEquals(expected_command, self.substage.get_name())
-        self.assertFalse(self.substage.has_finished())
 
         # passing a valid command when it was started already, should fail
         self.assertFalse(self.substage.process_command({'command': 'command2.sh'}))
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.command)
         self.assertEquals(expected_command, self.substage.get_name())
-        self.assertFalse(self.substage.has_finished())
 
     def test_process_end_time_tags(self):
         # dict shouldn't be processed if it doesn't contain the required tags
@@ -360,10 +358,32 @@ class TestTravisSubstage(unittest.TestCase):
         self.substage.timing_hash = VALID_HASH1
         self.assertTrue(self.substage.has_started())
 
+    def test_has_finished_stage_name(self):
+        ''' has_finished() should return true if stagename was closed'''
+        self.substage.process_start_stage({
+            'start_stage': 'stage1', 'start_substage': 'substage1'
+        })
+
+        self.assertTrue(self.substage.process_end_stage({
+            'end_stage': 'stage1', 'end_substage': 'substage1'
+        }))
+        self.assertTrue(self.substage.has_finished())
+
     def test_has_finished_timestamp(self):
         ''' has_finished() should return true if finished timestamp is set'''
-        # set finish_timestamp
-        self.substage.finish_timestamp = 12345678
+        self.substage.process_start_time({'start_hash': VALID_HASH1})
+
+        self.assertTrue(self.substage.process_end_time({
+            'end_hash': VALID_HASH1,
+            'start_timestamp': 12345678,
+            'finish_timestamp': 12345689,
+            'duration': 11
+        }))
+        self.assertTrue(self.substage.has_finished())
+
+    def test_has_finished_stage_name(self):
+        ''' has_finished() should return true if command is set'''
+        self.substage.process_command({'command': 'command1.sh'})
         self.assertTrue(self.substage.has_finished())
 
     def test_has_finished_incomplete(self):
