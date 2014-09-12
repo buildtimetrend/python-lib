@@ -382,6 +382,6 @@ class TravisSubstage(object):
         return (self.finished_incomplete or
                 (self.has_name() and self.finished) or
                 (not self.has_name() and self.has_timing_hash() and
-                self.finish_timestamp > 0) or
+                        self.finish_timestamp > 0) or
                 (not self.has_name() and not self.has_timing_hash() and
-                self.has_command()))
+                        self.has_command()))
