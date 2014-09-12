@@ -182,18 +182,20 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict"):
             return False
 
-        if 'start_stage' in tags_dict:
-            return self.process_start_stage(tags_dict)
-        elif 'start_hash' in tags_dict:
-            return self.process_start_time(tags_dict)
-        elif 'command' in tags_dict:
-            return self.process_command(tags_dict)
-        elif 'end_hash' in tags_dict:
-            return self.process_end_time(tags_dict)
-        elif 'end_stage' in tags_dict:
-            return self.process_end_stage(tags_dict)
+        result = False
 
-        return False
+        if 'start_stage' in tags_dict:
+            result = self.process_start_stage(tags_dict)
+        elif 'start_hash' in tags_dict:
+            result = self.process_start_time(tags_dict)
+        elif 'command' in tags_dict:
+            result = self.process_command(tags_dict)
+        elif 'end_hash' in tags_dict:
+            result = self.process_end_time(tags_dict)
+        elif 'end_stage' in tags_dict:
+            result = self.process_end_stage(tags_dict)
+
+        return result
 
     def process_start_stage(self, tags_dict):
         '''
