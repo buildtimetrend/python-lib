@@ -55,19 +55,15 @@ class Trend(object):
         index = 0
         # print content of buildtimes file
         for build_xml in root_xml:
-            build_id = "#%d" % (index + 1)
-            build_summary = "Build ID : "
-            if build_xml.get('build') is None:
-                build_summary += "unknown"
-            else:
-                build_summary += build_xml.get('build')
-                build_summary += ", Job : "
-                if build_xml.get('job') is None:
-                    build_id = build_xml.get('build')
-                    build_summary += "unknown"
-                else:
-                    build_summary += build_xml.get('job')
-                    build_id = build_xml.get('job')
+            build_id = build_xml.get('build')
+            job_id = build_xml.get('job')
+
+            if job_id is None and build_id is None:
+                build_id = "#%d" % (index + 1)
+            elif job_id is not None:
+                build_id = job_id
+
+            build_summary = "Build ID : %s, Job : %s" % (build_id, job_id)
 
             self.builds.append(build_id)
 
