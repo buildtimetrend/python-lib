@@ -65,8 +65,6 @@ class Trend(object):
             else:
                 build_name = build_id
 
-            build_summary = "Build ID : %s, Job : %s" % (build_id, job_id)
-
             self.builds.append(build_name)
 
             # add 0 to each existing stage, to make sure that
@@ -79,7 +77,7 @@ class Trend(object):
             # add duration of each stage to stages list
             for build_child in build_xml:
                 if build_child.tag == 'stages':
-                    build_summary += ", stages : " + str(len(build_child))
+                    stage_count = len(build_child)
                     for stage in build_child:
                         if (stage.tag == 'stage' and
                                 stage.get('name') is not None and
@@ -93,7 +91,8 @@ class Trend(object):
                                 temp_dict = [0]*(index + 1)
                             temp_dict[index] = int(stage.get('duration'))
                             self.stages[stage.get('name')] = temp_dict
-            print build_summary
+            print "Build ID : %s, Job : %s, stages : %d" % \
+                (build_id, job_id, stage_count)
             index += 1
         return True
 
