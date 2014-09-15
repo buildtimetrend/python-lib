@@ -59,13 +59,15 @@ class Trend(object):
             job_id = build_xml.get('job')
 
             if job_id is None and build_id is None:
-                build_id = "#%d" % (index + 1)
+                build_name = "#%d" % (index + 1)
             elif job_id is not None:
-                build_id = job_id
+                build_name = job_id
+            else:
+                build_name = build_id
 
             build_summary = "Build ID : %s, Job : %s" % (build_id, job_id)
 
-            self.builds.append(build_id)
+            self.builds.append(build_name)
 
             # add 0 to each existing stage, to make sure that
             # the indexes of each value
