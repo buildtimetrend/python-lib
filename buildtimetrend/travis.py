@@ -118,7 +118,8 @@ class TravisData(object):
 
         for line in stream:
             if 'travis_' in line:
-                print 'line : ' + line.replace('\x0d', '*').replace('\x1b', 'ESC')
+                print 'line : %s' % \
+                    line.replace('\x0d', '*').replace('\x1b', 'ESC')
 
                 # parse Travis CI timing tags
                 for parse_string in TRAVIS_LOG_PARSE_STRINGS:
