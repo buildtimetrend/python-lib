@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.stages import Stages
+from buildtimetrend.stages import Stage
 import constants
 from lxml import etree
 import unittest
@@ -161,3 +162,29 @@ class TestStages(unittest.TestCase):
             '  <stage duration="10" name="stage3"/>\n'
             '</stages>\n',
             self.stages.to_xml_string())
+
+class TestStage(unittest.TestCase):
+    def setUp(self):
+        self.stage = Stage()
+
+    def test_novalue(self):
+        # number of stages should be zero
+        self.assertEquals(0, len(self.stage.data))
+        # test total duration
+        self.assertDictEqual({}, self.stage.to_dict())
+        # test started_at and finished_at
+        #self.assertEqual(None, self.stages.started_at)
+        #self.assertEqual(None, self.stages.finished_at)
+
+    def test_set_name(self):
+        # name should be a string
+        self.stage.set_name(None)
+        self.assertDictEqual({}, self.stage.to_dict())
+
+        # name can be an empty string
+        self.stage.set_name("")
+        self.assertDictEqual({"name": ""}, self.stage.to_dict())
+
+        # set name
+        self.stage.set_name("stage_name")
+        self.assertDictEqual({"name": "stage_name"}, self.stage.to_dict())

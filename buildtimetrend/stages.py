@@ -133,3 +133,21 @@ class Stages(object):
             # of this stage
             event_name = row[0]
             previous_timestamp = timestamp
+
+
+class Stage(object):
+    '''
+    Build stage object.
+    '''
+
+    def __init__(self):
+        self.data = {}
+
+    def set_name(self, name):
+        '''Set stage name'''
+        if name is not None:
+            self.data["name"] = str(name)
+
+    def to_dict(self):
+        '''return stages data as dictionary'''
+        return self.data
