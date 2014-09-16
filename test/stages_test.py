@@ -214,7 +214,7 @@ class TestStage(unittest.TestCase):
         self.assertTrue(self.stage.set_duration(0))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
-    def test_set_start_at(self):
+    def test_set_started_at(self):
         # timestamp should be valid
         self.assertFalse(self.stage.set_started_at(None))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
@@ -239,4 +239,31 @@ class TestStage(unittest.TestCase):
                 "name": "",
                 "duration": 0,
                 "started_at": constants.TIMESTAMP_SPLIT_TESTDATE},
+            self.stage.to_dict())
+
+    def test_set_finished_at(self):
+        # timestamp should be valid
+        self.assertFalse(self.stage.set_finished_at(None))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
+        self.assertFalse(self.stage.set_finished_at("text"))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
+
+        # test 0 timestamp (epoch)
+        self.assertTrue(self.stage.set_finished_at(0))
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH, self.stage.data["finished_at"])
+        self.assertDictEqual(
+            {
+                "name": "",
+                "duration": 0,
+                "finished_at": constants.TIMESTAMP_SPLIT_EPOCH},
+            self.stage.to_dict())
+
+        # test timestamp
+        self.assertTrue(self.stage.set_finished_at(1404913113))
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["finished_at"])
+        self.assertDictEqual(
+            {
+                "name": "",
+                "duration": 0,
+                "finished_at": constants.TIMESTAMP_SPLIT_TESTDATE},
             self.stage.to_dict())

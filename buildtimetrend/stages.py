@@ -157,6 +157,10 @@ class Stage(object):
         '''Set time when stage was started'''
         return self.set_timestamp("started_at", timestamp)
 
+    def set_finished_at(self, timestamp):
+        '''Set time when stage was finished'''
+        return self.set_timestamp("finished_at", timestamp)
+
     def set_timestamp(self, name, timestamp):
         '''Set timestamp'''
         if timestamp is not None and name is not None:
