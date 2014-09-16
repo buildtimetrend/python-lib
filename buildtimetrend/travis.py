@@ -25,6 +25,7 @@ import json
 import re
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
+from buildtimetrend.stages import Stage
 import buildtimetrend
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
@@ -164,7 +165,8 @@ class TravisSubstage(object):
         '''
         Initialise Travis CI Substage object
         '''
-        self.name = ""
+        self.stage = Stage()
+        # self.name = ""
         self.timing_hash = ""
         self.command = ""
         self.start_timestamp = 0
@@ -216,12 +218,14 @@ class TravisSubstage(object):
             print "Substage already started"
             return False
 
-        self.name = "%s.%s" % (
+        name = "%s.%s" % (
             tags_dict['start_stage'], tags_dict['start_substage']
         )
-        print "Set name : %s" % self.name
+        if self.stage.set_name(name):
+            print "Set name : %s" % name
+            return True
 
-        return True
+        return False
 
     def process_start_time(self, tags_dict):
         '''
@@ -322,7 +326,7 @@ class TravisSubstage(object):
 
         # check if stage was started
         # and if substage name matches
-        if not self.has_name() or self.name != end_stagename:
+        if not self.has_name() or self.stage.data["name"] != end_stagename:
             print "Substage was not started or name doesn't match"
             self.finished_incomplete = True
             return False
@@ -338,7 +342,7 @@ class TravisSubstage(object):
         Return substage name, if it is not set, return the command
         '''
         if self.has_name():
-            return self.name
+            return self.stage.data["name"]
         elif self.has_command():
             return self.command
         else:
@@ -349,7 +353,8 @@ class TravisSubstage(object):
         Checks if substage has a name
         Returns true if substage has a name
         '''
-        return self.name is not None and len(self.name) > 0
+        return self.stage.data["name"] is not None and \
+            len(self.stage.data["name"]) > 0
 
     def has_timing_hash(self):
         '''
