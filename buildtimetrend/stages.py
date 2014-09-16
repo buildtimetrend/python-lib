@@ -155,9 +155,13 @@ class Stage(object):
 
     def set_started_at(self, timestamp):
         '''Set time when stage was started'''
-        if timestamp is not None:
+        return self.set_timestamp("started_at", timestamp)
+
+    def set_timestamp(self, name, timestamp):
+        '''Set timestamp'''
+        if timestamp is not None and name is not None:
             try:
-                self.data["started_at"] = split_timestamp(timestamp)
+                self.data[name] = split_timestamp(timestamp)
                 return True
             except TypeError:
                 return False
