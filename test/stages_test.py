@@ -178,17 +178,17 @@ class TestStage(unittest.TestCase):
 
     def test_set_name(self):
         # name should be a string
-        self.stage.set_name(None)
+        self.assertFalse(self.stage.set_name(None))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
         # set name
-        self.stage.set_name("stage_name")
+        self.assertTrue(self.stage.set_name("stage_name"))
         self.assertDictEqual(
             {"name": "stage_name", "duration": 0},
             self.stage.to_dict())
 
         # name can be an empty string
-        self.stage.set_name("")
+        self.assertTrue(self.stage.set_name(""))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
     def test_set_duration(self):

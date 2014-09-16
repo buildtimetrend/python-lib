@@ -149,6 +149,9 @@ class Stage(object):
         '''Set stage name'''
         if name is not None:
             self.data["name"] = str(name)
+            return True
+
+        return False
 
     def set_duration(self, duration):
         '''Set stage duration in seconds'''
