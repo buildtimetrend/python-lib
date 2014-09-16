@@ -142,6 +142,8 @@ class Stage(object):
 
     def __init__(self):
         self.data = {}
+        self.set_name("")
+        self.set_duration(0)
 
     def set_name(self, name):
         '''Set stage name'''

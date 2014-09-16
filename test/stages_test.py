@@ -169,9 +169,9 @@ class TestStage(unittest.TestCase):
 
     def test_novalue(self):
         # number of stages should be zero
-        self.assertEquals(0, len(self.stage.data))
+        self.assertEquals(2, len(self.stage.data))
         # test total duration
-        self.assertDictEqual({}, self.stage.to_dict())
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
         # test started_at and finished_at
         #self.assertEqual(None, self.stages.started_at)
         #self.assertEqual(None, self.stages.finished_at)
@@ -179,33 +179,37 @@ class TestStage(unittest.TestCase):
     def test_set_name(self):
         # name should be a string
         self.stage.set_name(None)
-        self.assertDictEqual({}, self.stage.to_dict())
-
-        # name can be an empty string
-        self.stage.set_name("")
-        self.assertDictEqual({"name": ""}, self.stage.to_dict())
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
         # set name
         self.stage.set_name("stage_name")
-        self.assertDictEqual({"name": "stage_name"}, self.stage.to_dict())
+        self.assertDictEqual(
+            {"name": "stage_name", "duration": 0},
+            self.stage.to_dict())
+
+        # name can be an empty string
+        self.stage.set_name("")
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
     def test_set_duration(self):
         # duration should be a number
         self.assertFalse(self.stage.set_duration(None))
-        self.assertDictEqual({}, self.stage.to_dict())
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
         self.assertFalse(self.stage.set_duration("text"))
-        self.assertDictEqual({}, self.stage.to_dict())
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
         # duration can't be a negative value
         self.assertFalse(self.stage.set_duration(-1))
-        self.assertDictEqual({}, self.stage.to_dict())
-
-        # duration can be zero
-        self.assertTrue(self.stage.set_duration(0))
-        self.assertDictEqual({"duration": 0}, self.stage.to_dict())
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
         # set duration
         self.assertTrue(self.stage.set_duration(123))
-        self.assertDictEqual({"duration": 123}, self.stage.to_dict())
+        self.assertDictEqual({"name": "", "duration": 123}, self.stage.to_dict())
         self.assertTrue(self.stage.set_duration(123.456))
-        self.assertDictEqual({"duration": 123.456}, self.stage.to_dict())
+        self.assertDictEqual(
+            {"name": "", "duration": 123.456},
+            self.stage.to_dict())
+
+        # duration can be zero
+        self.assertTrue(self.stage.set_duration(0))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
