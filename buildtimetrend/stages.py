@@ -153,6 +153,17 @@ class Stage(object):
 
         return False
 
+    def set_started_at(self, timestamp):
+        '''Set time when stage was started'''
+        if timestamp is not None:
+            try:
+                self.data["started_at"] = split_timestamp(timestamp)
+                return True
+            except TypeError:
+                return False
+
+        return False
+
     def set_duration(self, duration):
         '''Set stage duration in seconds'''
         try:
