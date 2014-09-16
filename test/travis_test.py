@@ -230,7 +230,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.process_command({'invalid': 'param'}))
 
         # call similar tests with a parameter
-        self.check_process_command('command1.sh')
+        self.__check_process_command('command1.sh')
 
     def test_process_command_has_name(self):
         # assign substage name
@@ -239,9 +239,9 @@ class TestTravisSubstage(unittest.TestCase):
         })
 
         # call similar tests with a parameter
-        self.check_process_command('stage1.substage1')
+        self.__check_process_command('stage1.substage1')
 
-    def check_process_command(self, expected_command):
+    def __check_process_command(self, expected_command):
         '''similar test for test_process_command*'''
         # pass a valid command name
         self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
