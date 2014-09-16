@@ -157,7 +157,7 @@ class Stage(object):
         '''Set stage duration in seconds'''
         try:
             duration = float(duration)
-            if duration >= 0 :
+            if duration >= 0:
                 self.data["duration"] = duration
                 return True
             return False
