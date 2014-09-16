@@ -188,3 +188,24 @@ class TestStage(unittest.TestCase):
         # set name
         self.stage.set_name("stage_name")
         self.assertDictEqual({"name": "stage_name"}, self.stage.to_dict())
+
+    def test_set_duration(self):
+        # duration should be a number
+        self.assertFalse(self.stage.set_duration(None))
+        self.assertDictEqual({}, self.stage.to_dict())
+        self.assertFalse(self.stage.set_duration("text"))
+        self.assertDictEqual({}, self.stage.to_dict())
+
+        # duration can't be a negative value
+        self.assertFalse(self.stage.set_duration(-1))
+        self.assertDictEqual({}, self.stage.to_dict())
+
+        # duration can be zero
+        self.assertTrue(self.stage.set_duration(0))
+        self.assertDictEqual({"duration": 0}, self.stage.to_dict())
+
+        # set duration
+        self.assertTrue(self.stage.set_duration(123))
+        self.assertDictEqual({"duration": 123}, self.stage.to_dict())
+        self.assertTrue(self.stage.set_duration(123.456))
+        self.assertDictEqual({"duration": 123.456}, self.stage.to_dict())

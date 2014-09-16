@@ -148,6 +148,17 @@ class Stage(object):
         if name is not None:
             self.data["name"] = str(name)
 
+    def set_duration(self, duration):
+        '''Set stage duration in seconds'''
+        try:
+            duration = float(duration)
+            if duration >= 0 :
+                self.data["duration"] = duration
+                return True
+            return False
+        except (ValueError, TypeError):
+            return False
+
     def to_dict(self):
         '''return stages data as dictionary'''
         return self.data
