@@ -147,11 +147,11 @@ class Stage(object):
 
     def set_name(self, name):
         '''Set stage name'''
-        if name is not None:
-            self.data["name"] = str(name)
-            return True
+        if name is None:
+            return False
 
-        return False
+        self.data["name"] = str(name)
+        return True
 
     def set_started_at(self, timestamp):
         '''Set time when stage was started'''
