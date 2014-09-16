@@ -191,6 +191,23 @@ class TestStage(unittest.TestCase):
         self.assertTrue(self.stage.set_name(""))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
+    def test_set_command(self):
+        # command should be a string
+        self.assertFalse(self.stage.set_command(None))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
+
+        # set command
+        self.assertTrue(self.stage.set_command("command1.sh"))
+        self.assertDictEqual(
+            {"name": "", "duration": 0, "command": "command1.sh"},
+            self.stage.to_dict())
+
+        # command can be an empty string
+        self.assertTrue(self.stage.set_command(""))
+        self.assertDictEqual(
+            {"name": "", "duration": 0, "command": ""},
+            self.stage.to_dict())
+
     def test_set_duration(self):
         # duration should be a number
         self.assertFalse(self.stage.set_duration(None))

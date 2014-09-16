@@ -153,6 +153,14 @@ class Stage(object):
         self.data["name"] = str(name)
         return True
 
+    def set_command(self, command):
+        '''Set stage command'''
+        if command is None:
+            return False
+
+        self.data["command"] = str(command)
+        return True
+
     def set_started_at(self, timestamp):
         '''Set time when stage was started'''
         return self.set_timestamp("started_at", timestamp)
