@@ -296,28 +296,44 @@ function initCharts() {
 
     /* Average buildtime per time of day */
     // create query
-    var queryAvgBuildtimeHour = new Keen.Query("average", {
+    var queryAvgBuildtimeHourLastWeek = new Keen.Query("average", {
       eventCollection: "builds",
-      timeframe: keenTimeframe,
+      timeframe: "this_7_days",
       targetProperty: "build.duration",
       groupBy: "build.started_at.hour_24",
       filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
     });
-    queriesTimeframe.push(queryAvgBuildtimeHour);
+	var queryAvgBuildtimeHourLastMonth = new Keen.Query("average", {
+      eventCollection: "builds",
+      timeframe: "this_30_days",
+      targetProperty: "build.duration",
+      groupBy: "build.started_at.hour_24",
+      filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
+    });
 
     // draw chart
-    var requestAvgBuildtimeHour = client.run(queryAvgBuildtimeHour, function() {
+    var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth], function() {
+	  week_result = this.data[0].result
+	  month_result = this.data[1].result
       chart_data = []
       // populate array with an entry per hour
       for (i = 0; i < 24; i++) {
         chart_data[i]={
           caption: i + ":00",
-          result: 0
+	      last_week : 0,
+		  last_month: 0
         }
       }
       // copy query data into the populated array
-      for (i=0; i < this.data.result.length; i++) {
-        chart_data[this.data.result[i]["build.started_at.hour_24"]]["result"] = this.data.result[i]["result"];
+	  // data of last week
+      for (i=0; i < week_result.length; i++) {
+	    index = parseInt(week_result[i]["build.started_at.hour_24"])
+        chart_data[index]["last_week"] = week_result[i]["result"];
+      }
+	  // data of last month
+	  for (i=0; i < month_result.length; i++) {
+	    index = parseInt(month_result[i]["build.started_at.hour_24"])
+        chart_data[index]["last_month"] = month_result[i]["result"];
       }
 
       window.chart = new Keen.Visualization(
@@ -326,7 +342,6 @@ function initCharts() {
 	{chartType: "columnchart",
         title: "Average buildtime per time of day",
         chartOptions: {
-          legend: { position: "none" },
           vAxis: { title: "duration [s]" },
           hAxis: {
 		    title: "Time of day [24-hour format, UTC]",
