@@ -2,10 +2,6 @@ var TIMEFRAME_LAST_WEEK = "this_7_days";
 var TIMEFRAME_LAST_MONTH = "this_30_days";
 var TIMEFRAME_LAST_YEAR = "this_52_weeks";
 
-var CAPTION_LAST_WEEK = "Last week";
-var CAPTION_LAST_MONTH = "Last month";
-var CAPTION_LAST_YEAR = "Last year";
-
 function getUpdatePeriod(period) {
   var keenTimeframe, keenInterval;
 
@@ -328,26 +324,35 @@ function initCharts() {
 
     // draw chart
     var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth, queryAvgBuildtimeHourLastYear], function() {
-	  timeframe_captions = [CAPTION_LAST_WEEK, CAPTION_LAST_MONTH, CAPTION_LAST_YEAR];
-      chart_data = [];
+	  week_result = this.data[0].result
+	  month_result = this.data[1].result
+	  year_result = this.data[2].result
+      chart_data = []
       // populate array with an entry per hour
       for (i = 0; i < 24; i++) {
-        chart_data[i]={caption: i + ":00"};
-		// populate all series
-		for (j = 0; j < timeframe_captions.length; j++) {
-	      chart_data[i][timeframe_captions[j]] = 0;
+        chart_data[i]={
+          caption: i + ":00",
+	      last_week : 0,
+		  last_month: 0,
+		  last_year: 0
         }
       }
-      // loop over all query result set
-	  for (j = 0; j < this.data.length; j++) {
-	    timeframe_result = this.data[j].result;
-		timeframe_caption = timeframe_captions[j];
-		// copy query data into the populated array
-	    for (i = 0; i < timeframe_result.length; i++) {
-	      index = parseInt(timeframe_result[i]["build.started_at.hour_24"])
-          chart_data[index][timeframe_caption] = timeframe_result[i]["result"];
-        }
-	  }
+      // copy query data into the populated array
+	  // data of last week
+      for (i=0; i < week_result.length; i++) {
+	    index = parseInt(week_result[i]["build.started_at.hour_24"])
+        chart_data[index]["last_week"] = week_result[i]["result"];
+      }
+	  // data of last month
+	  for (i=0; i < month_result.length; i++) {
+	    index = parseInt(month_result[i]["build.started_at.hour_24"])
+        chart_data[index]["last_month"] = month_result[i]["result"];
+      }
+	  // data of last year
+	  for (i=0; i < year_result.length; i++) {
+	    index = parseInt(year_result[i]["build.started_at.hour_24"])
+        chart_data[index]["last_year"] = year_result[i]["result"];
+      }
 
       window.chart = new Keen.Visualization(
 	{result: chart_data},
