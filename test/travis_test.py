@@ -66,7 +66,6 @@ class TestTravisSubstage(unittest.TestCase):
             {"name": "", "duration": 0},
             self.substage.stage.to_dict())
         self.assertEquals("", self.substage.timing_hash)
-        self.assertEquals("", self.substage.command)
         self.assertEquals(0, self.substage.start_timestamp)
         self.assertEquals(0, self.substage.finish_timestamp)
         self.assertEquals(0, self.substage.duration)
@@ -123,7 +122,7 @@ class TestTravisSubstage(unittest.TestCase):
         # pass a valid command name
         self.assertTrue(self.substage.process_parsed_tags({'command': 'command1.sh'}))
         self.assertTrue(self.substage.has_started())
-        self.assertEquals('command1.sh', self.substage.command)
+        self.assertEquals('command1.sh', self.substage.stage.data["command"])
         self.assertFalse(self.substage.has_finished())
 
         # pass valid timing data
@@ -155,7 +154,7 @@ class TestTravisSubstage(unittest.TestCase):
         # pass a valid command name
         self.assertTrue(self.substage.process_parsed_tags({'command': 'command1.sh'}))
         self.assertTrue(self.substage.has_started())
-        self.assertEquals('command1.sh', self.substage.command)
+        self.assertEquals('command1.sh', self.substage.stage.data["command"])
         self.assertFalse(self.substage.has_finished())
 
         # pass valid timing data
@@ -179,7 +178,7 @@ class TestTravisSubstage(unittest.TestCase):
         # pass a valid command name
         self.assertTrue(self.substage.process_parsed_tags({'command': 'command1.sh'}))
         self.assertTrue(self.substage.has_started())
-        self.assertEquals('command1.sh', self.substage.command)
+        self.assertEquals('command1.sh', self.substage.stage.data["command"])
         self.assertFalse(self.substage.has_finished())
 
         # pass valid end tag
@@ -248,13 +247,13 @@ class TestTravisSubstage(unittest.TestCase):
         # pass a valid command name
         self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
         self.assertTrue(self.substage.has_started())
-        self.assertEquals('command1.sh', self.substage.command)
+        self.assertEquals('command1.sh', self.substage.stage.data["command"])
         self.assertEquals(expected_command, self.substage.get_name())
 
         # passing a valid command when it was started already, should fail
         self.assertFalse(self.substage.process_command({'command': 'command2.sh'}))
         self.assertTrue(self.substage.has_started())
-        self.assertEquals('command1.sh', self.substage.command)
+        self.assertEquals('command1.sh', self.substage.stage.data["command"])
         self.assertEquals(expected_command, self.substage.get_name())
 
     def test_process_end_time_tags(self):
@@ -357,7 +356,7 @@ class TestTravisSubstage(unittest.TestCase):
     def test_get_name_command(self):
         ''' get_name() returns the name, or the command if name is not set'''
         # set command
-        self.substage.command = "command1.sh"
+        self.substage.stage.set_command("command1.sh")
         self.assertEquals("command1.sh", self.substage.get_name())
 
     def test_has_name(self):
@@ -375,7 +374,7 @@ class TestTravisSubstage(unittest.TestCase):
     def test_has_command(self):
         ''' has_command() should return true if command is set'''
         # set command
-        self.substage.command = "command1.sh"
+        self.substage.stage.set_command("command1.sh")
         self.assertTrue(self.substage.has_command())
 
     def test_has_started_name(self):
@@ -393,7 +392,7 @@ class TestTravisSubstage(unittest.TestCase):
     def test_has_started_command(self):
         ''' has_started() should return true if command is set'''
         # set command
-        self.substage.command = "command1.sh"
+        self.substage.stage.set_command("command1.sh")
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_both(self):
