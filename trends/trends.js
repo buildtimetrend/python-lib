@@ -383,30 +383,67 @@ function initCharts() {
 
         /* Average buildtime per day of week */
         // create query
-        var queryAvgBuildtimeWeekDay = new Keen.Query("average", {
+        var queryAvgBuildtimeWeekDayLastWeek = new Keen.Query("average", {
             eventCollection: "builds",
-            timeframe: keenTimeframe,
+            timeframe: TIMEFRAME_LAST_WEEK,
             targetProperty: "build.duration",
-            groupBy: "build.started_at.day_of_week_short_en",
+            groupBy: "build.started_at.day_of_week",
             filters: [
                 {
-                    "property_name":"build.started_at.day_of_week_short_en",
+                    "property_name":"build.started_at.day_of_week",
                     "operator":"exists",
                     "property_value":true
                 }
             ]
         });
-        queriesTimeframe.push(queryAvgBuildtimeWeekDay);
+        var queryAvgBuildtimeWeekDayLastMonth = new Keen.Query("average", {
+            eventCollection: "builds",
+            timeframe: TIMEFRAME_LAST_MONTH,
+            targetProperty: "build.duration",
+            groupBy: "build.started_at.day_of_week",
+            filters: [
+                {
+                    "property_name":"build.started_at.day_of_week",
+                    "operator":"exists",
+                    "property_value":true
+                }
+            ]
+        });
+        var queryAvgBuildtimeWeekDayLastYear = new Keen.Query("average", {
+            eventCollection: "builds",
+            timeframe: TIMEFRAME_LAST_YEAR,
+            targetProperty: "build.duration",
+            groupBy: "build.started_at.day_of_week",
+            filters: [
+                {
+                    "property_name":"build.started_at.day_of_week",
+                    "operator":"exists",
+                    "property_value":true
+                }
+            ]
+        });
 
         // draw chart
-        var requestAvgBuildtimeWeekDay = client.run(queryAvgBuildtimeWeekDay, function() {
-            this.draw(document.getElementById("chart_avg_buildtime_weekday"), {
-                chartType: "columnchart",
-                title: "Average buildtime per day of week",
-                chartOptions: {
-                    legend: { position: "none" },
-                    vAxis: { title: "duration [s]" },
-                    hAxis: { title: "Day of week" }
+        var requestAvgBuildtimeWeekDay = client.run(
+            [queryAvgBuildtimeWeekDayLastWeek, queryAvgBuildtimeWeekDayLastMonth, queryAvgBuildtimeWeekDayLastYear],            function() {
+            timeframe_captions = [CAPTION_LAST_WEEK, CAPTION_LAST_MONTH, CAPTION_LAST_YEAR];
+            index_captions = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            chart_data = mergeSeries(
+                this.data,
+                index_captions,
+                "build.started_at.day_of_week",
+                timeframe_captions
+            );
+
+            window.chart = new Keen.Visualization(
+                {result: chart_data},
+                document.getElementById("chart_avg_buildtime_weekday"),
+                {
+                    chartType: "columnchart",
+                    title: "Average buildtime per day of week",
+                    chartOptions: {
+                        vAxis: { title: "duration [s]" },
+                        hAxis: { title: "Day of week" }
                 }
             });
         });
