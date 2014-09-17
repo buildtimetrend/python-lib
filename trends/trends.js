@@ -314,18 +314,27 @@ function initCharts() {
       groupBy: "build.started_at.hour_24",
       filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
     });
+    var queryAvgBuildtimeHourLastYear = new Keen.Query("average", {
+      eventCollection: "builds",
+      timeframe: TIMEFRAME_LAST_YEAR,
+      targetProperty: "build.duration",
+      groupBy: "build.started_at.hour_24",
+      filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
+    });
 
     // draw chart
-    var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth], function() {
+    var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth, queryAvgBuildtimeHourLastYear], function() {
 	  week_result = this.data[0].result
 	  month_result = this.data[1].result
+	  year_result = this.data[2].result
       chart_data = []
       // populate array with an entry per hour
       for (i = 0; i < 24; i++) {
         chart_data[i]={
           caption: i + ":00",
 	      last_week : 0,
-		  last_month: 0
+		  last_month: 0,
+		  last_year: 0
         }
       }
       // copy query data into the populated array
@@ -338,6 +347,11 @@ function initCharts() {
 	  for (i=0; i < month_result.length; i++) {
 	    index = parseInt(month_result[i]["build.started_at.hour_24"])
         chart_data[index]["last_month"] = month_result[i]["result"];
+      }
+	  // data of last year
+	  for (i=0; i < year_result.length; i++) {
+	    index = parseInt(year_result[i]["build.started_at.hour_24"])
+        chart_data[index]["last_year"] = year_result[i]["result"];
       }
 
       window.chart = new Keen.Visualization(
