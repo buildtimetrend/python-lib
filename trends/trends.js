@@ -324,7 +324,7 @@ function initCharts() {
 
     // draw chart
     var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth, queryAvgBuildtimeHourLastYear], function() {
-	  timeframe_captions = ["last_week", "last_month", "last_year"];
+	  timeframe_captions = ["Last week", "Last month", "Last year"];
       chart_data = [];
       // populate array with an entry per hour
       for (i = 0; i < 24; i++) {
