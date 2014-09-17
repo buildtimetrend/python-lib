@@ -328,11 +328,10 @@ function initCharts() {
       chart_data = [];
       // populate array with an entry per hour
       for (i = 0; i < 24; i++) {
-        chart_data[i]={
-          caption: i + ":00",
-	      last_week : 0,
-		  last_month: 0,
-		  last_year: 0
+        chart_data[i]={caption: i + ":00"};
+		// populate all series
+		for (j = 0;j < timeframe_captions.length; j++) {
+	      chart_data[i][timeframe_captions[j]] = 0;
         }
       }
       // loop over all query result set
