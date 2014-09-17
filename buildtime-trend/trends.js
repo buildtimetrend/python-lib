@@ -1,3 +1,7 @@
+var TIMEFRAME_LAST_WEEK = "this_7_days";
+var TIMEFRAME_LAST_MONTH = "this_30_days";
+var TIMEFRAME_LAST_YEAR = "this_52_weeks";
+
 function getUpdatePeriod(period) {
   var keenTimeframe, keenInterval;
 
@@ -9,15 +13,15 @@ function getUpdatePeriod(period) {
     default:
       period = "week";
     case "week":
-      keenTimeframe = "this_7_days";
+      keenTimeframe = TIMEFRAME_LAST_WEEK;
       keenInterval = "daily";
       break;
     case "month":
-      keenTimeframe = "this_30_days";
+      keenTimeframe = TIMEFRAME_LAST_MONTH;
       keenInterval = "daily";
       break;
     case "year":
-      keenTimeframe = "this_52_weeks";
+      keenTimeframe = TIMEFRAME_LAST_YEAR;
       keenInterval = "weekly";
       break;
   }
@@ -296,24 +300,72 @@ function initCharts() {
 
     /* Average buildtime per time of day */
     // create query
-    var queryAvgBuildtimeHour = new Keen.Query("average", {
+    var queryAvgBuildtimeHourLastWeek = new Keen.Query("average", {
       eventCollection: "builds",
-      timeframe: keenTimeframe,
+      timeframe: TIMEFRAME_LAST_WEEK,
       targetProperty: "build.duration",
       groupBy: "build.started_at.hour_24",
       filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
     });
-    queriesTimeframe.push(queryAvgBuildtimeHour);
+	var queryAvgBuildtimeHourLastMonth = new Keen.Query("average", {
+      eventCollection: "builds",
+      timeframe: TIMEFRAME_LAST_MONTH,
+      targetProperty: "build.duration",
+      groupBy: "build.started_at.hour_24",
+      filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
+    });
+    var queryAvgBuildtimeHourLastYear = new Keen.Query("average", {
+      eventCollection: "builds",
+      timeframe: TIMEFRAME_LAST_YEAR,
+      targetProperty: "build.duration",
+      groupBy: "build.started_at.hour_24",
+      filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
+    });
 
     // draw chart
-    var requestAvgBuildtimeHour = client.run(queryAvgBuildtimeHour, function() {
-      this.draw(document.getElementById("chart_avg_buildtime_hour"), {
-        chartType: "columnchart",
+    var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth, queryAvgBuildtimeHourLastYear], function() {
+	  week_result = this.data[0].result
+	  month_result = this.data[1].result
+	  year_result = this.data[2].result
+      chart_data = []
+      // populate array with an entry per hour
+      for (i = 0; i < 24; i++) {
+        chart_data[i]={
+          caption: i + ":00",
+	      last_week : 0,
+		  last_month: 0,
+		  last_year: 0
+        }
+      }
+      // copy query data into the populated array
+	  // data of last week
+      for (i=0; i < week_result.length; i++) {
+	    index = parseInt(week_result[i]["build.started_at.hour_24"])
+        chart_data[index]["last_week"] = week_result[i]["result"];
+      }
+	  // data of last month
+	  for (i=0; i < month_result.length; i++) {
+	    index = parseInt(month_result[i]["build.started_at.hour_24"])
+        chart_data[index]["last_month"] = month_result[i]["result"];
+      }
+	  // data of last year
+	  for (i=0; i < year_result.length; i++) {
+	    index = parseInt(year_result[i]["build.started_at.hour_24"])
+        chart_data[index]["last_year"] = year_result[i]["result"];
+      }
+
+      window.chart = new Keen.Visualization(
+	{result: chart_data},
+	document.getElementById("chart_avg_buildtime_hour"),
+	{chartType: "columnchart",
         title: "Average buildtime per time of day",
         chartOptions: {
-          legend: { position: "none" },
           vAxis: { title: "duration [s]" },
-          hAxis: { title: "Time of day [24-hour format, UTC]" }
+          hAxis: {
+		    title: "Time of day [24-hour format, UTC]",
+		    slantedText: "true",
+			slantedTextAngle: "90"
+		  }
         }
       });
     });
