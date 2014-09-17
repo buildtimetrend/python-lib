@@ -330,16 +330,16 @@ function initCharts() {
       for (i = 0; i < 24; i++) {
         chart_data[i]={caption: i + ":00"};
 		// populate all series
-		for (j = 0;j < timeframe_captions.length; j++) {
+		for (j = 0; j < timeframe_captions.length; j++) {
 	      chart_data[i][timeframe_captions[j]] = 0;
         }
       }
       // loop over all query result set
-	  for (j = 0;j < this.data.length; j++) {
+	  for (j = 0; j < this.data.length; j++) {
 	    timeframe_result = this.data[j].result;
 		timeframe_caption = timeframe_captions[j];
 		// copy query data into the populated array
-	    for (i=0; i < timeframe_result.length; i++) {
+	    for (i = 0; i < timeframe_result.length; i++) {
 	      index = parseInt(timeframe_result[i]["build.started_at.hour_24"])
           chart_data[index][timeframe_caption] = timeframe_result[i]["result"];
         }
