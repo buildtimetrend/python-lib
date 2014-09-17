@@ -2,6 +2,10 @@ var TIMEFRAME_LAST_WEEK = "this_7_days";
 var TIMEFRAME_LAST_MONTH = "this_30_days";
 var TIMEFRAME_LAST_YEAR = "this_52_weeks";
 
+var CAPTION_LAST_WEEK = "Last week";
+var CAPTION_LAST_MONTH = "Last month";
+var CAPTION_LAST_YEAR = "Last year";
+
 function getUpdatePeriod(period) {
   var keenTimeframe, keenInterval;
 
@@ -324,7 +328,7 @@ function initCharts() {
 
     // draw chart
     var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth, queryAvgBuildtimeHourLastYear], function() {
-	  timeframe_captions = ["Last week", "Last month", "Last year"];
+	  timeframe_captions = [CAPTION_LAST_WEEK, CAPTION_LAST_MONTH, CAPTION_LAST_YEAR];
       chart_data = [];
       // populate array with an entry per hour
       for (i = 0; i < 24; i++) {
