@@ -1,3 +1,7 @@
+var TIMEFRAME_LAST_WEEK = "this_7_days";
+var TIMEFRAME_LAST_MONTH = "this_30_days";
+var TIMEFRAME_LAST_YEAR = "this_52_weeks";
+
 function getUpdatePeriod(period) {
   var keenTimeframe, keenInterval;
 
@@ -9,15 +13,15 @@ function getUpdatePeriod(period) {
     default:
       period = "week";
     case "week":
-      keenTimeframe = "this_7_days";
+      keenTimeframe = TIMEFRAME_LAST_WEEK;
       keenInterval = "daily";
       break;
     case "month":
-      keenTimeframe = "this_30_days";
+      keenTimeframe = TIMEFRAME_LAST_MONTH;
       keenInterval = "daily";
       break;
     case "year":
-      keenTimeframe = "this_52_weeks";
+      keenTimeframe = TIMEFRAME_LAST_YEAR;
       keenInterval = "weekly";
       break;
   }
@@ -298,14 +302,14 @@ function initCharts() {
     // create query
     var queryAvgBuildtimeHourLastWeek = new Keen.Query("average", {
       eventCollection: "builds",
-      timeframe: "this_7_days",
+      timeframe: TIMEFRAME_LAST_WEEK,
       targetProperty: "build.duration",
       groupBy: "build.started_at.hour_24",
       filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
     });
 	var queryAvgBuildtimeHourLastMonth = new Keen.Query("average", {
       eventCollection: "builds",
-      timeframe: "this_30_days",
+      timeframe: TIMEFRAME_LAST_MONTH,
       targetProperty: "build.duration",
       groupBy: "build.started_at.hour_24",
       filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
