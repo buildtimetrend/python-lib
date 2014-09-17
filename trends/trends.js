@@ -352,25 +352,13 @@ function initCharts() {
         // draw chart
         var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth, queryAvgBuildtimeHourLastYear], function() {
             timeframe_captions = [CAPTION_LAST_WEEK, CAPTION_LAST_MONTH, CAPTION_LAST_YEAR];
-            chart_data = [];
+            index_captions = [];
             // populate array with an entry per hour
             for (i = 0; i < 24; i++) {
-                chart_data[i]={caption: i + ":00"};
-                // populate all series
-                for (j = 0; j < timeframe_captions.length; j++) {
-                    chart_data[i][timeframe_captions[j]] = 0;
-                }
+                index_captions[i]= String(i) + ":00";
             }
-            // loop over all query result set
-            for (j = 0; j < this.data.length; j++) {
-                timeframe_result = this.data[j].result;
-                timeframe_caption = timeframe_captions[j];
-                // copy query data into the populated array
-                for (i = 0; i < timeframe_result.length; i++) {
-                    index = parseInt(timeframe_result[i]["build.started_at.hour_24"])
-                    chart_data[index][timeframe_caption] = timeframe_result[i]["result"];
-                }
-            }
+
+            chart_data = mergeSeries(this.data, index_captions, "build.started_at.hour_24", timeframe_captions);
 
             window.chart = new Keen.Visualization(
                 {result: chart_data},
@@ -443,6 +431,33 @@ function updateTitle() {
 // inspired by http://css-tricks.com/snippets/javascript/htmlentities-for-javascript/
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+/**
+ * Merge data from several series, with identical X-axis labels
+ */
+function mergeSeries(data, index_captions, value_caption, series_captions) {
+    chart_data = [];
+    // populate array with an entry per hour
+    for (i = 0; i < index_captions.length; i++) {
+        chart_data[i]={caption: index_captions[i]};
+        // populate all series
+        for (j = 0; j < series_captions.length; j++) {
+            chart_data[i][series_captions[j]] = 0;
+        }
+    }
+    // loop over all query result sets
+    for (j = 0; j < data.length; j++) {
+        timeframe_result = data[j].result;
+        timeframe_caption = series_captions[j];
+        // copy query data into the populated array
+        for (i = 0; i < timeframe_result.length; i++) {
+            index = parseInt(timeframe_result[i][value_caption])
+            chart_data[index][timeframe_caption] = timeframe_result[i]["result"];
+        }
+    }
+
+    return chart_data;
 }
 
 // initialize page
