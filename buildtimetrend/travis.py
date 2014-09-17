@@ -352,7 +352,8 @@ class TravisSubstage(object):
         Checks if substage has a name
         Returns true if substage has a name
         '''
-        return self.stage.data["name"] is not None and \
+        return "name" in self.stage.data and \
+            self.stage.data["name"] is not None and \
             len(self.stage.data["name"]) > 0
 
     def has_timing_hash(self):
