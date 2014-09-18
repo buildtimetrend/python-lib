@@ -350,7 +350,12 @@ function initCharts() {
         });
 
         // generate chart
-        var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth, queryAvgBuildtimeHourLastYear], function() {
+        var requestAvgBuildtimeHour = client.run(
+                [queryAvgBuildtimeHourLastWeek,
+                    queryAvgBuildtimeHourLastMonth,
+                    queryAvgBuildtimeHourLastYear],
+                function()
+        {
             timeframe_captions = [CAPTION_LAST_WEEK, CAPTION_LAST_MONTH, CAPTION_LAST_YEAR];
             index_captions = [];
             // populate array with an entry per hour
@@ -358,7 +363,12 @@ function initCharts() {
                 index_captions[i]= String(i) + ":00";
             }
 
-            chart_data = mergeSeries(this.data, index_captions, "build.started_at.hour_24", timeframe_captions);
+            chart_data = mergeSeries(
+                this.data,
+                index_captions,
+                "build.started_at.hour_24",
+                timeframe_captions
+            );
 
             // draw chart
             window.chart = new Keen.Visualization(
@@ -380,7 +390,8 @@ function initCharts() {
         queryRequests.push(requestAvgBuildtimeHour);
 
         // display div inline (show it next to the previous chart)
-        document.getElementById("chart_avg_buildtime_hour").style.display = "inline-block";
+        document.getElementById("chart_avg_buildtime_hour").style.display
+            = "inline-block";
 
         /* Average buildtime per day of week */
         // create query
