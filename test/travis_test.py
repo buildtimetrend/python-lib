@@ -68,7 +68,6 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals("", self.substage.timing_hash)
         self.assertEquals(0, self.substage.start_timestamp)
         self.assertEquals(0, self.substage.finish_timestamp)
-        self.assertEquals(0, self.substage.duration)
 
     def test_param_is_not_dict(self):
         # error is thrown when called without parameters
@@ -135,7 +134,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.has_finished())
         self.assertEquals(12345678, self.substage.start_timestamp)
         self.assertEquals(12345689, self.substage.finish_timestamp)
-        self.assertEquals(11, self.substage.duration)
+        self.assertEquals(11, self.substage.stage.data["duration"])
 
         # pass valid end tag
         self.assertTrue(self.substage.process_parsed_tags({
@@ -303,7 +302,7 @@ class TestTravisSubstage(unittest.TestCase):
 
         self.assertEquals(12345678, self.substage.start_timestamp)
         self.assertEquals(12345689, self.substage.finish_timestamp)
-        self.assertEquals(11, self.substage.duration)
+        self.assertEquals(11, self.substage.stage.data["duration"])
 
     def test_process_end_stage_tags(self):
         # dict shouldn't be processed if it doesn't contain the required tags
