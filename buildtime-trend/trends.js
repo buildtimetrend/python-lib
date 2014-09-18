@@ -349,8 +349,13 @@ function initCharts() {
             filters: [{"property_name":"build.started_at.hour_24","operator":"exists","property_value":true}]
         });
 
-        // draw chart
-        var requestAvgBuildtimeHour = client.run([queryAvgBuildtimeHourLastWeek, queryAvgBuildtimeHourLastMonth, queryAvgBuildtimeHourLastYear], function() {
+        // generate chart
+        var requestAvgBuildtimeHour = client.run(
+                [queryAvgBuildtimeHourLastWeek,
+                    queryAvgBuildtimeHourLastMonth,
+                    queryAvgBuildtimeHourLastYear],
+                function()
+        {
             timeframe_captions = [CAPTION_LAST_WEEK, CAPTION_LAST_MONTH, CAPTION_LAST_YEAR];
             index_captions = [];
             // populate array with an entry per hour
@@ -358,8 +363,14 @@ function initCharts() {
                 index_captions[i]= String(i) + ":00";
             }
 
-            chart_data = mergeSeries(this.data, index_captions, "build.started_at.hour_24", timeframe_captions);
+            chart_data = mergeSeries(
+                this.data,
+                index_captions,
+                "build.started_at.hour_24",
+                timeframe_captions
+            );
 
+            // draw chart
             window.chart = new Keen.Visualization(
                 {result: chart_data},
                 document.getElementById("chart_avg_buildtime_hour"),
@@ -379,7 +390,8 @@ function initCharts() {
         queryRequests.push(requestAvgBuildtimeHour);
 
         // display div inline (show it next to the previous chart)
-        document.getElementById("chart_avg_buildtime_hour").style.display = "inline-block";
+        document.getElementById("chart_avg_buildtime_hour").style.display
+            = "inline-block";
 
         /* Average buildtime per day of week */
         // create query
@@ -423,9 +435,13 @@ function initCharts() {
             ]
         });
 
-        // draw chart
+        // generate chart
         var requestAvgBuildtimeWeekDay = client.run(
-            [queryAvgBuildtimeWeekDayLastWeek, queryAvgBuildtimeWeekDayLastMonth, queryAvgBuildtimeWeekDayLastYear],            function() {
+                [queryAvgBuildtimeWeekDayLastWeek,
+                    queryAvgBuildtimeWeekDayLastMonth,
+                    queryAvgBuildtimeWeekDayLastYear],
+                function()
+        {
             timeframe_captions = [CAPTION_LAST_WEEK, CAPTION_LAST_MONTH, CAPTION_LAST_YEAR];
             index_captions = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             chart_data = mergeSeries(
@@ -435,6 +451,7 @@ function initCharts() {
                 timeframe_captions
             );
 
+            // draw chart
             window.chart = new Keen.Visualization(
                 {result: chart_data},
                 document.getElementById("chart_avg_buildtime_weekday"),
@@ -475,7 +492,7 @@ function htmlEntities(str) {
  */
 function mergeSeries(data, index_captions, value_caption, series_captions) {
     chart_data = [];
-    // populate array with an entry per hour
+    // create and populate data array
     for (i = 0; i < index_captions.length; i++) {
         chart_data[i]={caption: index_captions[i]};
         // populate all series
