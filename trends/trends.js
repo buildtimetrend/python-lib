@@ -425,7 +425,11 @@ function initCharts() {
 
         // draw chart
         var requestAvgBuildtimeWeekDay = client.run(
-            [queryAvgBuildtimeWeekDayLastWeek, queryAvgBuildtimeWeekDayLastMonth, queryAvgBuildtimeWeekDayLastYear],            function() {
+                [queryAvgBuildtimeWeekDayLastWeek,
+                    queryAvgBuildtimeWeekDayLastMonth,
+                    queryAvgBuildtimeWeekDayLastYear],
+                function()
+        {
             timeframe_captions = [CAPTION_LAST_WEEK, CAPTION_LAST_MONTH, CAPTION_LAST_YEAR];
             index_captions = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             chart_data = mergeSeries(
