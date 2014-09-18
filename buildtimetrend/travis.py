@@ -166,9 +166,7 @@ class TravisSubstage(object):
         Initialise Travis CI Substage object
         '''
         self.stage = Stage()
-        # self.name = ""
         self.timing_hash = ""
-        self.command = ""
         self.start_timestamp = 0
         self.finish_timestamp = 0
         self.duration = 0
@@ -266,10 +264,11 @@ class TravisSubstage(object):
             print "Command is already set"
             return False
 
-        self.command = tags_dict['command']
-        print "Set command : %s" % self.command
+        if self.stage.set_command(tags_dict['command']):
+            print "Set command : %s" % tags_dict['command']
+            return True
 
-        return True
+        return False
 
     def process_end_time(self, tags_dict):
         '''
@@ -344,7 +343,7 @@ class TravisSubstage(object):
         if self.has_name():
             return self.stage.data["name"]
         elif self.has_command():
-            return self.command
+            return self.stage.data["command"]
         else:
             return ""
 
@@ -353,7 +352,8 @@ class TravisSubstage(object):
         Checks if substage has a name
         Returns true if substage has a name
         '''
-        return self.stage.data["name"] is not None and \
+        return "name" in self.stage.data and \
+            self.stage.data["name"] is not None and \
             len(self.stage.data["name"]) > 0
 
     def has_timing_hash(self):
@@ -368,7 +368,9 @@ class TravisSubstage(object):
         Checks if a command is set for substage
         Returns true if a command is set
         '''
-        return self.command is not None and len(self.command) > 0
+        return "command" in self.stage.data and \
+            self.stage.data["command"] is not None and \
+            len(self.stage.data["command"]) > 0
 
     def has_started(self):
         '''
@@ -388,6 +390,6 @@ class TravisSubstage(object):
         return self.finished_incomplete or \
             self.has_name() and self.finished or \
             not self.has_name() and self.has_timing_hash() and \
-                self.finish_timestamp > 0 or \
+            self.finish_timestamp > 0 or \
             not self.has_name() and not self.has_timing_hash() and \
-                self.has_command()
+            self.has_command()
