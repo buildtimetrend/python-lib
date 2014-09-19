@@ -62,6 +62,7 @@ TIMESTAMP_SPLIT_TESTDATE = {
     "microsecond": "456789"
 }
 
+TIMESTAMP_STARTED = 1396378500
 SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',

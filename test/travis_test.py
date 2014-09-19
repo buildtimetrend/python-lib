@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.travis import *
+import constants
 import unittest
 
 TEST_REPO = 'ruleant/buildtime-trend'
@@ -66,7 +67,6 @@ class TestTravisSubstage(unittest.TestCase):
             {"name": "", "duration": 0},
             self.substage.stage.to_dict())
         self.assertEquals("", self.substage.timing_hash)
-        self.assertEquals(0, self.substage.start_timestamp)
         self.assertEquals(0, self.substage.finish_timestamp)
 
     def test_param_is_not_dict(self):
@@ -127,12 +127,13 @@ class TestTravisSubstage(unittest.TestCase):
         # pass valid timing data
         self.assertTrue(self.substage.process_parsed_tags({
             'end_hash': VALID_HASH1,
-            'start_timestamp': 12345678,
+            'start_timestamp': constants.TIMESTAMP_STARTED,
             'finish_timestamp': 12345689,
             'duration': 11
         }))
         self.assertFalse(self.substage.has_finished())
-        self.assertEquals(12345678, self.substage.start_timestamp)
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_STARTED,
+            self.substage.stage.data["started_at"])
         self.assertEquals(12345689, self.substage.finish_timestamp)
         self.assertEquals(11, self.substage.stage.data["duration"])
 
@@ -280,7 +281,7 @@ class TestTravisSubstage(unittest.TestCase):
 
         self.assertFalse(self.substage.process_end_time({
             'end_hash': INVALID_HASH,
-            'start_timestamp': 12345678,
+            'start_timestamp': constants.TIMESTAMP_STARTED,
             'finish_timestamp': 12345689,
             'duration': 11
         }))
@@ -293,14 +294,15 @@ class TestTravisSubstage(unittest.TestCase):
 
         self.assertTrue(self.substage.process_end_time({
             'end_hash': VALID_HASH1,
-            'start_timestamp': 12345678,
+            'start_timestamp': constants.TIMESTAMP_STARTED,
             'finish_timestamp': 12345689,
             'duration': 11
         }))
         self.assertFalse(self.substage.finished_incomplete)
         self.assertTrue(self.substage.has_finished())
 
-        self.assertEquals(12345678, self.substage.start_timestamp)
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_STARTED,
+            self.substage.stage.data["started_at"])
         self.assertEquals(12345689, self.substage.finish_timestamp)
         self.assertEquals(11, self.substage.stage.data["duration"])
 
