@@ -77,7 +77,7 @@ def split_datetime(timestamp_datetime):
     timestamp_dict = {}
     timestamp_dict["isotimestamp"] = timestamp_datetime.isoformat()
     timestamp_dict["timestamp_seconds"] = \
-        (timestamp_datetime - datetime(1970,1,1)).total_seconds()
+        (timestamp_datetime - datetime(1970, 1, 1)).total_seconds()
     timestamp_dict["year"] = timestamp_datetime.strftime("%Y")
     timestamp_dict["month"] = timestamp_datetime.strftime("%m")
     timestamp_dict["month_short_en"] = timestamp_datetime.strftime("%b")
