@@ -91,6 +91,7 @@ def split_datetime(timestamp_datetime):
     timestamp_dict["hour_24"] = timestamp_datetime.strftime("%H")
     timestamp_dict["minute"] = timestamp_datetime.strftime("%M")
     timestamp_dict["second"] = timestamp_datetime.strftime("%S")
+    timestamp_dict["microsecond"] = timestamp_datetime.strftime("%f")
 
     return timestamp_dict
 

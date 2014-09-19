@@ -37,7 +37,8 @@ TIMESTAMP_SPLIT_EPOCH = {
     "hour_ampm": "AM",
     "hour_24": "00",
     "minute": "00",
-    "second": "00"
+    "second": "00",
+    "microsecond": "000000"
 }
 
 TIMESTAMP_SPLIT_TESTDATE = {
@@ -55,7 +56,8 @@ TIMESTAMP_SPLIT_TESTDATE = {
     "hour_ampm": "PM",
     "hour_24": "13",
     "minute": "38",
-    "second": "33"
+    "second": "33",
+    "microsecond": "000000"
 }
 
 SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
@@ -70,6 +72,7 @@ SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
     'month_full_en': 'April',
     'month_short_en': 'Apr',
     'second': '00',
+    'microsecond': '000000',
     'isotimestamp': '2014-04-01T18:55:00',
     'timestamp_seconds': 1396378500.0,
     'year': '2014'}
@@ -85,6 +88,7 @@ SPLIT_TIMESTAMP1 = {'day_of_month': '01',
     'month_full_en': 'April',
     'month_short_en': 'Apr',
     'second': '55',
+    'microsecond': '000000',
     'isotimestamp': '2014-04-01T18:58:55',
     'timestamp_seconds': 1396378735.0,
     'year': '2014'}
@@ -100,6 +104,7 @@ SPLIT_TIMESTAMP2 = {'day_of_month': '01',
     'month_full_en': 'April',
     'month_short_en': 'Apr',
     'second': '57',
+    'microsecond': '000000',
     'isotimestamp': '2014-04-01T18:58:57',
     'timestamp_seconds': 1396378737.0,
     'year': '2014'}
@@ -115,6 +120,7 @@ SPLIT_TIMESTAMP3 = {'day_of_month': '01',
     'month_full_en': 'April',
     'month_short_en': 'Apr',
     'second': '02',
+    'microsecond': '000000',
     'isotimestamp': '2014-04-01T18:59:02',
     'timestamp_seconds': 1396378742.0,
     'year': '2014'}
@@ -130,6 +136,7 @@ SPLIT_TIMESTAMP4 = {'day_of_month': '01',
     'month_full_en': 'April',
     'month_short_en': 'Apr',
     'second': '12',
+    'microsecond': '000000',
     'isotimestamp': '2014-04-01T18:59:12',
     'timestamp_seconds': 1396378752.0,
     'year': '2014'}
@@ -145,6 +152,7 @@ SPLIT_TIMESTAMP_ENDTAG = {'day_of_month': '01',
     'month_full_en': 'April',
     'month_short_en': 'Apr',
     'second': '15',
+    'microsecond': '000000',
     'isotimestamp': '2014-04-01T18:59:15',
     'timestamp_seconds': 1396378755.0,
     'year': '2014'}
@@ -160,6 +168,7 @@ SPLIT_TIMESTAMP_FINISHED = {'day_of_month': '01',
     'month_full_en': 'April',
     'month_short_en': 'Apr',
     'second': '11',
+    'microsecond': '000000',
     'isotimestamp': '2014-04-01T19:01:11',
     'timestamp_seconds': 1396378871.0,
     'year': '2014'}
