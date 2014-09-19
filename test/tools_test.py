@@ -29,6 +29,7 @@ import constants
 class TestTools(unittest.TestCase):
     def setUp(self):
         self.project_info = get_project_info()
+        self.maxDiff = None
 
     def test_format_timestamp(self):
         # test 0 timestamp (epoch)
@@ -43,7 +44,7 @@ class TestTools(unittest.TestCase):
 
         # test timestamp
         self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE,
-            split_timestamp(1404913113))
+            split_timestamp(constants.TIMESTAMP_TESTDATE))
 
     def test_split_isotimestamp(self):
         # test 0 timestamp (epoch)
@@ -52,7 +53,7 @@ class TestTools(unittest.TestCase):
 
         # test timestamp
         self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE,
-            split_isotimestamp("2014-07-09T13:38:33"))
+            split_isotimestamp(constants.ISOTIMESTAMP_TESTDATE))
 
     def test_add_project_info_dict(self):
         # error is thrown when called without parameters

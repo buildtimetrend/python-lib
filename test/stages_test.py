@@ -249,7 +249,7 @@ class TestStage(unittest.TestCase):
             self.stage.to_dict())
 
         # test timestamp
-        self.assertTrue(self.stage.set_started_at(1404913113))
+        self.assertTrue(self.stage.set_started_at(constants.TIMESTAMP_TESTDATE))
         self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["started_at"])
         self.assertDictEqual(
             {
@@ -276,7 +276,7 @@ class TestStage(unittest.TestCase):
             self.stage.to_dict())
 
         # test timestamp
-        self.assertTrue(self.stage.set_finished_at(1404913113))
+        self.assertTrue(self.stage.set_finished_at(constants.TIMESTAMP_TESTDATE))
         self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["finished_at"])
         self.assertDictEqual(
             {

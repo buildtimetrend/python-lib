@@ -41,9 +41,11 @@ TIMESTAMP_SPLIT_EPOCH = {
     "microsecond": "000000"
 }
 
+TIMESTAMP_TESTDATE = 1404913113.456789
+ISOTIMESTAMP_TESTDATE = "2014-07-09T13:38:33.456789"
 TIMESTAMP_SPLIT_TESTDATE = {
-    "isotimestamp": "2014-07-09T13:38:33",
-    "timestamp_seconds": 1404913113.0,
+    "isotimestamp": ISOTIMESTAMP_TESTDATE,
+    "timestamp_seconds": TIMESTAMP_TESTDATE,
     "year": "2014",
     "month": "07",
     "month_short_en": "Jul",
@@ -57,7 +59,7 @@ TIMESTAMP_SPLIT_TESTDATE = {
     "hour_24": "13",
     "minute": "38",
     "second": "33",
-    "microsecond": "000000"
+    "microsecond": "456789"
 }
 
 SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
