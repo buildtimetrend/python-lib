@@ -71,10 +71,13 @@ def split_datetime(timestamp_datetime):
       hour (12 and 24 hour), minute, second
 
     Parameters :
+
     - timestamp_datetime : timestamp in datetime class format
     '''
     timestamp_dict = {}
     timestamp_dict["timestamp"] = timestamp_datetime.isoformat()
+    timestamp_dict["timestamp_seconds"] = \
+        (timestamp_datetime - datetime(1970,1,1)).total_seconds()
     timestamp_dict["year"] = timestamp_datetime.strftime("%Y")
     timestamp_dict["month"] = timestamp_datetime.strftime("%m")
     timestamp_dict["month_short_en"] = timestamp_datetime.strftime("%b")
