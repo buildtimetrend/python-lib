@@ -75,7 +75,7 @@ def split_datetime(timestamp_datetime):
     - timestamp_datetime : timestamp in datetime class format
     '''
     timestamp_dict = {}
-    timestamp_dict["timestamp"] = timestamp_datetime.isoformat()
+    timestamp_dict["isotimestamp"] = timestamp_datetime.isoformat()
     timestamp_dict["timestamp_seconds"] = \
         (timestamp_datetime - datetime(1970,1,1)).total_seconds()
     timestamp_dict["year"] = timestamp_datetime.strftime("%Y")
