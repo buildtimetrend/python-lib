@@ -167,7 +167,6 @@ class TravisSubstage(object):
         '''
         self.stage = Stage()
         self.timing_hash = ""
-        self.finish_timestamp = 0
         self.finished_incomplete = False
         self.finished = False
 
@@ -295,9 +294,9 @@ class TravisSubstage(object):
             self.finished_incomplete = True
             return False
 
-        self.finish_timestamp = tags_dict['finish_timestamp']
         if self.stage.set_started_at(tags_dict['start_timestamp']) and \
-            self.stage.set_duration(tags_dict['duration']):
+                self.stage.set_finished_at(tags_dict['finish_timestamp']) and \
+                self.stage.set_duration(tags_dict['duration']):
             print "Stage duration : %sns" % tags_dict['duration']
             return True
 
@@ -389,6 +388,6 @@ class TravisSubstage(object):
         return self.finished_incomplete or \
             self.has_name() and self.finished or \
             not self.has_name() and self.has_timing_hash() and \
-            self.finish_timestamp > 0 or \
+            "finished_at" in self.stage.data or \
             not self.has_name() and not self.has_timing_hash() and \
             self.has_command()

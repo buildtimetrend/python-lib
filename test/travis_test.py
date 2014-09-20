@@ -67,7 +67,6 @@ class TestTravisSubstage(unittest.TestCase):
             {"name": "", "duration": 0},
             self.substage.stage.to_dict())
         self.assertEquals("", self.substage.timing_hash)
-        self.assertEquals(0, self.substage.finish_timestamp)
 
     def test_param_is_not_dict(self):
         # error is thrown when called without parameters
@@ -128,13 +127,14 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.process_parsed_tags({
             'end_hash': VALID_HASH1,
             'start_timestamp': constants.TIMESTAMP_STARTED,
-            'finish_timestamp': 12345689,
+            'finish_timestamp': constants.TIMESTAMP_FINISHED,
             'duration': 11
         }))
         self.assertFalse(self.substage.has_finished())
         self.assertDictEqual(constants.SPLIT_TIMESTAMP_STARTED,
             self.substage.stage.data["started_at"])
-        self.assertEquals(12345689, self.substage.finish_timestamp)
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_FINISHED,
+            self.substage.stage.data["finished_at"])
         self.assertEquals(11, self.substage.stage.data["duration"])
 
         # pass valid end tag
@@ -282,7 +282,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.process_end_time({
             'end_hash': INVALID_HASH,
             'start_timestamp': constants.TIMESTAMP_STARTED,
-            'finish_timestamp': 12345689,
+            'finish_timestamp': constants.TIMESTAMP_FINISHED,
             'duration': 11
         }))
         self.assertTrue(self.substage.finished_incomplete)
@@ -295,7 +295,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.process_end_time({
             'end_hash': VALID_HASH1,
             'start_timestamp': constants.TIMESTAMP_STARTED,
-            'finish_timestamp': 12345689,
+            'finish_timestamp': constants.TIMESTAMP_FINISHED,
             'duration': 11
         }))
         self.assertFalse(self.substage.finished_incomplete)
@@ -303,7 +303,8 @@ class TestTravisSubstage(unittest.TestCase):
 
         self.assertDictEqual(constants.SPLIT_TIMESTAMP_STARTED,
             self.substage.stage.data["started_at"])
-        self.assertEquals(12345689, self.substage.finish_timestamp)
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_FINISHED,
+            self.substage.stage.data["finished_at"])
         self.assertEquals(11, self.substage.stage.data["duration"])
 
     def test_process_end_stage_tags(self):
@@ -422,7 +423,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.process_end_time({
             'end_hash': VALID_HASH1,
             'start_timestamp': 12345678,
-            'finish_timestamp': 12345689,
+            'finish_timestamp': constants.TIMESTAMP_FINISHED,
             'duration': 11
         }))
         self.assertTrue(self.substage.has_finished())
@@ -444,7 +445,7 @@ class TestTravisSubstage(unittest.TestCase):
         or if finished_incomplete is set
         '''
         # set finish_timestamp
-        self.substage.finish_timestamp = 12345678
+        self.substage.stage.set_finished_at = constants.TIMESTAMP_FINISHED
         # set finished_incomplete
         self.substage.finished_incomplete = True
         self.assertTrue(self.substage.has_finished())

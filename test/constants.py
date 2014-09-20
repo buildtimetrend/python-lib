@@ -159,6 +159,8 @@ SPLIT_TIMESTAMP_ENDTAG = {'day_of_month': '01',
     'isotimestamp': '2014-04-01T18:59:15',
     'timestamp_seconds': 1396378755.0,
     'year': '2014'}
+
+TIMESTAMP_FINISHED = 1396378871.0
 SPLIT_TIMESTAMP_FINISHED = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
