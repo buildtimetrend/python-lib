@@ -198,7 +198,7 @@ class Stage(object):
         Param name timestamp name
         Param timestamp nanoseconds since epoch
         '''
-        return self.set_timestamp(name, timestamp / float(1000000000))
+        return self.set_timestamp(name, float(timestamp) / float(1000000000))
 
     def set_duration(self, duration):
         '''Set stage duration in seconds'''
