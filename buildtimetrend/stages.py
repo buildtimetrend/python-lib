@@ -184,6 +184,14 @@ class Stage(object):
 
         return False
 
+    def set_timestamp_nano(self, name, timestamp):
+        '''
+        Set timestamp in nanoseconds
+        Param name timestamp name
+        Param timestamp nanoseconds since epoch
+        '''
+        return self.set_timestamp(name, timestamp / float(1000000000))
+
     def set_duration(self, duration):
         '''Set stage duration in seconds'''
         try:

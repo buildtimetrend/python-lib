@@ -165,6 +165,7 @@ class TestStages(unittest.TestCase):
 
 class TestStage(unittest.TestCase):
     def setUp(self):
+        self.maxDiff = None
         self.stage = Stage()
 
     def test_novalue(self):
@@ -247,6 +248,27 @@ class TestStage(unittest.TestCase):
 
         # test timestamp
         self.assertTrue(self.stage.set_timestamp("event1", constants.TIMESTAMP_TESTDATE))
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["event1"])
+        self.assertDictEqual(
+            {
+                "name": "",
+                "duration": 0,
+                "event1": constants.TIMESTAMP_SPLIT_TESTDATE},
+            self.stage.to_dict())
+
+    def test_set_timestamp_nano(self):
+        # test 0 timestamp (epoch)
+        self.assertTrue(self.stage.set_timestamp_nano("event1", 0))
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH, self.stage.data["event1"])
+        self.assertDictEqual(
+            {
+                "name": "",
+                "duration": 0,
+                "event1": constants.TIMESTAMP_SPLIT_EPOCH},
+            self.stage.to_dict())
+
+        # test timestamp
+        self.assertTrue(self.stage.set_timestamp_nano("event1", constants.TIMESTAMP_NANO_TESTDATE))
         self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["event1"])
         self.assertDictEqual(
             {
