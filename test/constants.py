@@ -63,6 +63,7 @@ TIMESTAMP_SPLIT_TESTDATE = {
 }
 
 TIMESTAMP_STARTED = 1396378500
+ISOTIMESTAMP_STARTED = '2014-04-01T18:55:00'
 SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
@@ -76,7 +77,7 @@ SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
     'month_short_en': 'Apr',
     'second': '00',
     'microsecond': '000000',
-    'isotimestamp': '2014-04-01T18:55:00',
+    'isotimestamp': ISOTIMESTAMP_STARTED,
     'timestamp_seconds': 1396378500.0,
     'year': '2014'}
 SPLIT_TIMESTAMP1 = {'day_of_month': '01',
@@ -176,7 +177,7 @@ SPLIT_TIMESTAMP_FINISHED = {'day_of_month': '01',
     'second': '11',
     'microsecond': '234000',
     'isotimestamp': '2014-04-01T19:01:11.234000',
-    'timestamp_seconds': 1396378871.234,
+    'timestamp_seconds': TIMESTAMP_FINISHED,
     'year': '2014'}
 STAGES_RESULT = [{'duration': 17,
              'finished_at': SPLIT_TIMESTAMP4,

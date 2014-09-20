@@ -159,7 +159,7 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property1', 2)
         self.build.add_property('property2', 3)
         # started_at property should override default value
-        self.build.set_started_at('2014-04-01T18:55:00')
+        self.build.set_started_at(constants.ISOTIMESTAMP_STARTED)
         # finished_at property should override default value
         self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
         # test dict
@@ -218,7 +218,7 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property1', 2)
         self.build.add_property('property2', 3)
         # started_at property should override default value
-        self.build.set_started_at('2014-04-01T18:55:00')
+        self.build.set_started_at(constants.ISOTIMESTAMP_STARTED)
         # finished_at property should override default value
         self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
         # test dict
