@@ -281,3 +281,21 @@ class TestStage(unittest.TestCase):
                 "duration": 0,
                 "finished_at": constants.TIMESTAMP_SPLIT_TESTDATE},
             self.stage.to_dict())
+
+    def test_todict(self):
+        self.assertTrue(self.stage.set_name("stage.1"))
+        self.assertTrue(self.stage.set_duration(11.2345))
+        self.assertTrue(self.stage.set_command("command1.sh"))
+        self.assertTrue(self.stage.set_started_at(constants.TIMESTAMP_STARTED))
+        self.assertTrue(self.stage.set_finished_at(constants.TIMESTAMP_FINISHED))
+        # test dictionary
+        self.assertDictEqual(
+            {
+                "name": "stage.1",
+                "duration": 11.2345,
+                "command": "command1.sh",
+                "started_at": constants.SPLIT_TIMESTAMP_STARTED,
+                "finished_at": constants.SPLIT_TIMESTAMP_FINISHED
+            },
+            self.stage.to_dict()
+        )
