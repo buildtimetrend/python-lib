@@ -228,6 +228,33 @@ class TestStage(unittest.TestCase):
         self.assertTrue(self.stage.set_duration(0))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
+    def test_set_timestamp(self):
+        # timestamp should be valid
+        self.assertFalse(self.stage.set_timestamp("event1", None))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
+        self.assertFalse(self.stage.set_timestamp("event1", "text"))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
+
+        # test 0 timestamp (epoch)
+        self.assertTrue(self.stage.set_timestamp("event1", 0))
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH, self.stage.data["event1"])
+        self.assertDictEqual(
+            {
+                "name": "",
+                "duration": 0,
+                "event1": constants.TIMESTAMP_SPLIT_EPOCH},
+            self.stage.to_dict())
+
+        # test timestamp
+        self.assertTrue(self.stage.set_timestamp("event1", constants.TIMESTAMP_TESTDATE))
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["event1"])
+        self.assertDictEqual(
+            {
+                "name": "",
+                "duration": 0,
+                "event1": constants.TIMESTAMP_SPLIT_TESTDATE},
+            self.stage.to_dict())
+
     def test_set_started_at(self):
         # timestamp should be valid
         self.assertFalse(self.stage.set_started_at(None))
