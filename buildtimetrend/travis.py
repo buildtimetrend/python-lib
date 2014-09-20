@@ -297,6 +297,10 @@ class TravisSubstage(object):
         if self.stage.set_started_at_nano(tags_dict['start_timestamp']) and \
                 self.stage.set_finished_at_nano(tags_dict['finish_timestamp']) and \
                 self.stage.set_duration(tags_dict['duration']):
+            print "Stage started at %s" % \
+                self.stage.data["started_at"]["isotimestamp"]
+            print "Stage finished at %s" % \
+                self.stage.data["finished_at"]["isotimestamp"]
             print "Stage duration : %sns" % tags_dict['duration']
             return True
 
