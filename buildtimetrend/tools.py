@@ -60,7 +60,7 @@ def split_isotimestamp(isotimestamp):
     Parameters :
     - isotimestamp : timestamp in isoformat YYYY-MM-DDTHH:MM:SS
     '''
-    # use dateutil.parser.parse to pare the timestamp
+    # use dateutil.parser.parse to parse the timestamp
     return split_datetime(parse(isotimestamp))
 
 
