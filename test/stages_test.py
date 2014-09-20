@@ -172,9 +172,6 @@ class TestStage(unittest.TestCase):
         self.assertEquals(2, len(self.stage.data))
         # test total duration
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
-        # test started_at and finished_at
-        #self.assertEqual(None, self.stages.started_at)
-        #self.assertEqual(None, self.stages.finished_at)
 
     def test_set_name(self):
         # name should be a string
