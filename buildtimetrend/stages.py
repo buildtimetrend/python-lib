@@ -170,7 +170,11 @@ class Stage(object):
         return self.set_timestamp("finished_at", timestamp)
 
     def set_timestamp(self, name, timestamp):
-        '''Set timestamp'''
+        '''
+        Set timestamp
+        Param name timestamp name
+        Param timestamp seconds since epoch
+        '''
         if timestamp is not None and name is not None:
             try:
                 self.data[name] = split_timestamp(timestamp)
