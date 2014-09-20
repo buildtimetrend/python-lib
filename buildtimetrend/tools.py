@@ -25,6 +25,7 @@ import copy
 import os
 from datetime import datetime
 from dateutil.parser import parse
+from dateutil.tz import tzutc
 from buildtimetrend.settings import get_project_info
 
 
@@ -48,7 +49,8 @@ def split_timestamp(timestamp):
     Parameters :
     - timestamp : timestamp, seconds since epoch
     '''
-    return split_datetime(datetime.utcfromtimestamp(timestamp))
+    dt_utc = datetime.utcfromtimestamp(timestamp).replace(tzinfo=tzutc())
+    return split_datetime(dt_utc)
 
 
 def split_isotimestamp(isotimestamp):
@@ -61,7 +63,7 @@ def split_isotimestamp(isotimestamp):
     - isotimestamp : timestamp in isoformat YYYY-MM-DDTHH:MM:SS
     '''
     # use dateutil.parser.parse to parse the timestamp
-    return split_datetime(parse(isotimestamp))
+    return split_datetime(parse(isotimestamp, tzinfos={"UTC": +0}))
 
 
 def split_datetime(timestamp_datetime):
@@ -100,6 +102,8 @@ def split_datetime(timestamp_datetime):
     timestamp_dict["minute"] = timestamp_datetime.strftime("%M")
     timestamp_dict["second"] = timestamp_datetime.strftime("%S")
     timestamp_dict["microsecond"] = timestamp_datetime.strftime("%f")
+    timestamp_dict["timezone"] = timestamp_datetime.strftime("%Z")
+    timestamp_dict["timezone_offset"] = timestamp_datetime.strftime("%z")
 
     return timestamp_dict
 

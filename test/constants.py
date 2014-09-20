@@ -23,7 +23,7 @@
 TEST_SAMPLE_FILE = 'test/testsample_timestamps.csv'
 
 TIMESTAMP_SPLIT_EPOCH = {
-    "isotimestamp": "1970-01-01T00:00:00",
+    "isotimestamp": "1970-01-01T00:00:00+00:00",
     "timestamp_seconds": 0.0,
     "year": "1970",
     "month": "01",
@@ -38,13 +38,15 @@ TIMESTAMP_SPLIT_EPOCH = {
     "hour_24": "00",
     "minute": "00",
     "second": "00",
-    "microsecond": "000000"
+    "microsecond": "000000",
+    "timezone": "UTC",
+    "timezone_offset": "+0000"
 }
 
 TIMESTAMP_TESTDATE = 1404913113.456789
-ISOTIMESTAMP_TESTDATE = "2014-07-09T13:38:33.456789"
+ISOTIMESTAMP_TESTDATE = "2014-07-09T13:38:33.456789Z"
 TIMESTAMP_SPLIT_TESTDATE = {
-    "isotimestamp": ISOTIMESTAMP_TESTDATE,
+    "isotimestamp": "2014-07-09T13:38:33.456789+00:00",
     "timestamp_seconds": TIMESTAMP_TESTDATE,
     "year": "2014",
     "month": "07",
@@ -59,11 +61,13 @@ TIMESTAMP_SPLIT_TESTDATE = {
     "hour_24": "13",
     "minute": "38",
     "second": "33",
-    "microsecond": "456789"
+    "microsecond": "456789",
+    "timezone": "UTC",
+    "timezone_offset": "+0000"
 }
 
 TIMESTAMP_STARTED = 1396378500
-ISOTIMESTAMP_STARTED = '2014-04-01T18:55:00'
+ISOTIMESTAMP_STARTED = '2014-04-01T18:55:00+00:00'
 SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
@@ -79,7 +83,10 @@ SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
     'microsecond': '000000',
     'isotimestamp': ISOTIMESTAMP_STARTED,
     'timestamp_seconds': 1396378500.0,
-    'year': '2014'}
+    'year': '2014',
+    'timezone': 'UTC',
+    'timezone_offset': '+0000'
+}
 SPLIT_TIMESTAMP1 = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
@@ -93,9 +100,12 @@ SPLIT_TIMESTAMP1 = {'day_of_month': '01',
     'month_short_en': 'Apr',
     'second': '55',
     'microsecond': '000000',
-    'isotimestamp': '2014-04-01T18:58:55',
+    'isotimestamp': '2014-04-01T18:58:55+00:00',
     'timestamp_seconds': 1396378735.0,
-    'year': '2014'}
+    'year': '2014',
+    'timezone': 'UTC',
+    'timezone_offset': '+0000'
+}
 SPLIT_TIMESTAMP2 = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
@@ -109,9 +119,12 @@ SPLIT_TIMESTAMP2 = {'day_of_month': '01',
     'month_short_en': 'Apr',
     'second': '57',
     'microsecond': '000000',
-    'isotimestamp': '2014-04-01T18:58:57',
+    'isotimestamp': '2014-04-01T18:58:57+00:00',
     'timestamp_seconds': 1396378737.0,
-    'year': '2014'}
+    'year': '2014',
+    'timezone': 'UTC',
+    'timezone_offset': '+0000'
+}
 SPLIT_TIMESTAMP3 = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
@@ -125,9 +138,12 @@ SPLIT_TIMESTAMP3 = {'day_of_month': '01',
     'month_short_en': 'Apr',
     'second': '02',
     'microsecond': '000000',
-    'isotimestamp': '2014-04-01T18:59:02',
+    'isotimestamp': '2014-04-01T18:59:02+00:00',
     'timestamp_seconds': 1396378742.0,
-    'year': '2014'}
+    'year': '2014',
+    'timezone': 'UTC',
+    'timezone_offset': '+0000'
+}
 SPLIT_TIMESTAMP4 = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
@@ -141,9 +157,12 @@ SPLIT_TIMESTAMP4 = {'day_of_month': '01',
     'month_short_en': 'Apr',
     'second': '12',
     'microsecond': '000000',
-    'isotimestamp': '2014-04-01T18:59:12',
+    'isotimestamp': '2014-04-01T18:59:12+00:00',
     'timestamp_seconds': 1396378752.0,
-    'year': '2014'}
+    'year': '2014',
+    'timezone': 'UTC',
+    'timezone_offset': '+0000'
+}
 SPLIT_TIMESTAMP_ENDTAG = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
@@ -157,12 +176,15 @@ SPLIT_TIMESTAMP_ENDTAG = {'day_of_month': '01',
     'month_short_en': 'Apr',
     'second': '15',
     'microsecond': '000000',
-    'isotimestamp': '2014-04-01T18:59:15',
+    'isotimestamp': '2014-04-01T18:59:15+00:00',
     'timestamp_seconds': 1396378755.0,
-    'year': '2014'}
+    'year': '2014',
+    'timezone': 'UTC',
+    'timezone_offset': '+0000'
+}
 
 TIMESTAMP_FINISHED = 1396378871.234
-ISOTIMESTAMP_FINISHED = '2014-04-01T19:01:11.234'
+ISOTIMESTAMP_FINISHED = '2014-04-01T19:01:11.234Z'
 SPLIT_TIMESTAMP_FINISHED = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
@@ -176,9 +198,12 @@ SPLIT_TIMESTAMP_FINISHED = {'day_of_month': '01',
     'month_short_en': 'Apr',
     'second': '11',
     'microsecond': '234000',
-    'isotimestamp': '2014-04-01T19:01:11.234000',
+    'isotimestamp': '2014-04-01T19:01:11.234000+00:00',
     'timestamp_seconds': TIMESTAMP_FINISHED,
-    'year': '2014'}
+    'year': '2014',
+    'timezone': 'UTC',
+    'timezone_offset': '+0000'
+}
 STAGES_RESULT = [{'duration': 17,
              'finished_at': SPLIT_TIMESTAMP4,
              'name': 'stage1',
