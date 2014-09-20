@@ -294,8 +294,8 @@ class TravisSubstage(object):
             self.finished_incomplete = True
             return False
 
-        if self.stage.set_started_at(tags_dict['start_timestamp']) and \
-                self.stage.set_finished_at(tags_dict['finish_timestamp']) and \
+        if self.stage.set_started_at_nano(tags_dict['start_timestamp']) and \
+                self.stage.set_finished_at_nano(tags_dict['finish_timestamp']) and \
                 self.stage.set_duration(tags_dict['duration']):
             print "Stage duration : %sns" % tags_dict['duration']
             return True

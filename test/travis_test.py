@@ -127,8 +127,8 @@ class TestTravisSubstage(unittest.TestCase):
         # pass valid timing data
         self.assertTrue(self.substage.process_parsed_tags({
             'end_hash': VALID_HASH1,
-            'start_timestamp': constants.TIMESTAMP_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_FINISHED,
+            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
+            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
             'duration': 11
         }))
         self.assertFalse(self.substage.has_finished())
@@ -173,8 +173,8 @@ class TestTravisSubstage(unittest.TestCase):
         # pass valid timing data
         self.assertTrue(self.substage.process_parsed_tags({
             'end_hash': VALID_HASH1,
-            'start_timestamp': constants.TIMESTAMP_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_FINISHED,
+            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
+            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
             'duration': 11
         }))
         self.assertTrue(self.substage.has_finished())
@@ -296,16 +296,16 @@ class TestTravisSubstage(unittest.TestCase):
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(self.substage.process_end_time({'invalid': 'param'}))
         self.assertFalse(self.substage.process_end_time({'end_hash': VALID_HASH1}))
-        self.assertFalse(self.substage.process_end_time({'start_timestamp': constants.TIMESTAMP_STARTED}))
-        self.assertFalse(self.substage.process_end_time({'finish_timestamp': constants.TIMESTAMP_FINISHED}))
+        self.assertFalse(self.substage.process_end_time({'start_timestamp': constants.TIMESTAMP_NANO_STARTED}))
+        self.assertFalse(self.substage.process_end_time({'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED}))
         self.assertFalse(self.substage.process_end_time({'duration': 11}))
 
     def test_process_end_time_not_started(self):
         # pass a valid start tag but, timing hasn't started
         self.assertFalse(self.substage.process_end_time({
             'end_hash': VALID_HASH1,
-            'start_timestamp': constants.TIMESTAMP_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_FINISHED,
+            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
+            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
             'duration': 11
         }))
         self.assertTrue(self.substage.finished_incomplete)
@@ -317,8 +317,8 @@ class TestTravisSubstage(unittest.TestCase):
 
         self.assertFalse(self.substage.process_end_time({
             'end_hash': INVALID_HASH,
-            'start_timestamp': constants.TIMESTAMP_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_FINISHED,
+            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
+            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
             'duration': 11
         }))
         self.assertTrue(self.substage.finished_incomplete)
@@ -330,8 +330,8 @@ class TestTravisSubstage(unittest.TestCase):
 
         self.assertTrue(self.substage.process_end_time({
             'end_hash': VALID_HASH1,
-            'start_timestamp': constants.TIMESTAMP_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_FINISHED,
+            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
+            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
             'duration': 11
         }))
         self.assertFalse(self.substage.finished_incomplete)
