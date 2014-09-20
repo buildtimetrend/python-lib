@@ -165,9 +165,17 @@ class Stage(object):
         '''Set time when stage was started'''
         return self.set_timestamp("started_at", timestamp)
 
+    def set_started_at_nano(self, timestamp):
+        '''Set time when stage was started in nanoseconds'''
+        return self.set_timestamp_nano("started_at", timestamp)
+
     def set_finished_at(self, timestamp):
         '''Set time when stage was finished'''
         return self.set_timestamp("finished_at", timestamp)
+
+    def set_finished_at_nano(self, timestamp):
+        '''Set time when stage was finished in nanoseconds'''
+        return self.set_timestamp_nano("finished_at", timestamp)
 
     def set_timestamp(self, name, timestamp):
         '''
