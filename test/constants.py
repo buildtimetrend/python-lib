@@ -160,7 +160,8 @@ SPLIT_TIMESTAMP_ENDTAG = {'day_of_month': '01',
     'timestamp_seconds': 1396378755.0,
     'year': '2014'}
 
-TIMESTAMP_FINISHED = 1396378871.0
+TIMESTAMP_FINISHED = 1396378871.234
+ISOTIMESTAMP_FINISHED = '2014-04-01T19:01:11.234'
 SPLIT_TIMESTAMP_FINISHED = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
@@ -173,9 +174,9 @@ SPLIT_TIMESTAMP_FINISHED = {'day_of_month': '01',
     'month_full_en': 'April',
     'month_short_en': 'Apr',
     'second': '11',
-    'microsecond': '000000',
-    'isotimestamp': '2014-04-01T19:01:11',
-    'timestamp_seconds': 1396378871.0,
+    'microsecond': '234000',
+    'isotimestamp': '2014-04-01T19:01:11.234000',
+    'timestamp_seconds': 1396378871.234,
     'year': '2014'}
 STAGES_RESULT = [{'duration': 17,
              'finished_at': SPLIT_TIMESTAMP4,

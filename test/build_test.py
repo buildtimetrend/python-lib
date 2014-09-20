@@ -161,7 +161,7 @@ class TestBuild(unittest.TestCase):
         # started_at property should override default value
         self.build.set_started_at('2014-04-01T18:55:00')
         # finished_at property should override default value
-        self.build.set_finished_at('2014-04-01T19:01:11')
+        self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
         # test dict
         self.assertDictEqual(
             {'duration': 17,
@@ -220,7 +220,7 @@ class TestBuild(unittest.TestCase):
         # started_at property should override default value
         self.build.set_started_at('2014-04-01T18:55:00')
         # finished_at property should override default value
-        self.build.set_finished_at('2014-04-01T19:01:11')
+        self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
         # test dict
         self.assertListEqual(
             [{'stage': {'duration': 2,
