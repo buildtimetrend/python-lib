@@ -43,6 +43,27 @@ TIMESTAMP_SPLIT_EPOCH = {
     "timezone_offset": "+0000"
 }
 
+TIMESTAMP_SPLIT_EPOCH_NOTZ = {
+    "isotimestamp": "1970-01-01T00:00:00",
+    "timestamp_seconds": 0.0,
+    "year": "1970",
+    "month": "01",
+    "month_short_en": "Jan",
+    "month_full_en": "January",
+    "day_of_month": "01",
+    "day_of_week": "4",
+    "day_of_week_short_en": "Thu",
+    "day_of_week_full_en": "Thursday",
+    "hour_12": "12",
+    "hour_ampm": "AM",
+    "hour_24": "00",
+    "minute": "00",
+    "second": "00",
+    "microsecond": "000000",
+    "timezone": "",
+    "timezone_offset": ""
+}
+
 TIMESTAMP_TESTDATE = 1404913113.456789
 ISOTIMESTAMP_TESTDATE = "2014-07-09T13:38:33.456789Z"
 TIMESTAMP_SPLIT_TESTDATE = {

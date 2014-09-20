@@ -47,8 +47,12 @@ class TestTools(unittest.TestCase):
             split_timestamp(constants.TIMESTAMP_TESTDATE))
 
     def test_split_isotimestamp(self):
-        # test 0 timestamp (epoch)
+        # test 0 timestamp (epoch) in UTC
         self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH,
+            split_isotimestamp("1970-01-01T00:00:00Z"))
+
+        # test 0 timestamp (epoch), without timezone
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH_NOTZ,
             split_isotimestamp("1970-01-01T00:00:00"))
 
         # test timestamp
