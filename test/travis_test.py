@@ -52,6 +52,7 @@ class TestTravisData(unittest.TestCase):
 
 class TestTravisSubstage(unittest.TestCase):
     def setUp(self):
+        self.maxDiff = None
         self.substage = TravisSubstage()
 
     def test_novalue(self):
@@ -144,6 +145,18 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.finished_incomplete)
         self.assertTrue(self.substage.has_finished())
 
+        # test stage
+        self.assertDictEqual(
+            {
+                "name": "stage1.substage1",
+                "duration": 11,
+                "command": "command1.sh",
+                "started_at": constants.SPLIT_TIMESTAMP_STARTED,
+                "finished_at": constants.SPLIT_TIMESTAMP_FINISHED
+            },
+            self.substage.stage.to_dict()
+        )
+
     def test_process_parsed_tags_no_starttag(self):
         # pass a valid timing hash
         self.assertTrue(self.substage.process_parsed_tags({'start_hash': VALID_HASH1}))
@@ -166,6 +179,19 @@ class TestTravisSubstage(unittest.TestCase):
         }))
         self.assertTrue(self.substage.has_finished())
 
+        # test stage
+        self.assertDictEqual(
+            {
+                # TODO assign substage name
+                "name": "",
+                "duration": 11,
+                "command": "command1.sh",
+                "started_at": constants.SPLIT_TIMESTAMP_STARTED,
+                "finished_at": constants.SPLIT_TIMESTAMP_FINISHED
+            },
+            self.substage.stage.to_dict()
+        )
+
     def test_process_parsed_tags_no_timing(self):
         # pass a valid start tag
         self.assertTrue(self.substage.process_parsed_tags({
@@ -187,6 +213,16 @@ class TestTravisSubstage(unittest.TestCase):
         }))
         self.assertFalse(self.substage.finished_incomplete)
         self.assertTrue(self.substage.has_finished())
+
+        # test stage
+        self.assertDictEqual(
+            {
+                "name": "stage1.substage1",
+                "duration": 0,
+                "command": "command1.sh",
+            },
+            self.substage.stage.to_dict()
+        )
 
     def test_process_start_stage(self):
         # dict shouldn't be processed if it doesn't contain the required tags
