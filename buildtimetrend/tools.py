@@ -90,11 +90,8 @@ def split_datetime(timestamp_datetime):
         epoch = datetime.utcfromtimestamp(0).replace(tzinfo=tzutc())
 
     # seconds since epoch
-    try:
-        timestamp_dict["timestamp_seconds"] = \
+    timestamp_dict["timestamp_seconds"] = \
             (timestamp_datetime - epoch).total_seconds()
-    except TypeError:
-        print "timestamp has no timezone info"
 
     timestamp_dict["year"] = timestamp_datetime.strftime("%Y")
     timestamp_dict["month"] = timestamp_datetime.strftime("%m")
