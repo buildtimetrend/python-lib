@@ -29,6 +29,8 @@ TEST_BUILD = '158'
 VALID_HASH1 = '1234abcd'
 VALID_HASH2 = '1234abce'
 INVALID_HASH = 'abcd1234'
+DURATION_NANO = 11000000000
+DURATION_SEC = 11.0
 
 class TestTravisData(unittest.TestCase):
     def setUp(self):
@@ -129,14 +131,14 @@ class TestTravisSubstage(unittest.TestCase):
             'end_hash': VALID_HASH1,
             'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
             'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': 11
+            'duration': DURATION_NANO
         }))
         self.assertFalse(self.substage.has_finished())
         self.assertDictEqual(constants.SPLIT_TIMESTAMP_STARTED,
             self.substage.stage.data["started_at"])
         self.assertDictEqual(constants.SPLIT_TIMESTAMP_FINISHED,
             self.substage.stage.data["finished_at"])
-        self.assertEquals(11, self.substage.stage.data["duration"])
+        self.assertEquals(DURATION_SEC, self.substage.stage.data["duration"])
 
         # pass valid end tag
         self.assertTrue(self.substage.process_parsed_tags({
@@ -149,7 +151,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertDictEqual(
             {
                 "name": "stage1.substage1",
-                "duration": 11,
+                "duration": DURATION_SEC,
                 "command": "command1.sh",
                 "started_at": constants.SPLIT_TIMESTAMP_STARTED,
                 "finished_at": constants.SPLIT_TIMESTAMP_FINISHED
@@ -175,7 +177,7 @@ class TestTravisSubstage(unittest.TestCase):
             'end_hash': VALID_HASH1,
             'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
             'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': 11
+            'duration': DURATION_NANO
         }))
         self.assertTrue(self.substage.has_finished())
 
@@ -184,7 +186,7 @@ class TestTravisSubstage(unittest.TestCase):
             {
                 # TODO assign substage name
                 "name": "",
-                "duration": 11,
+                "duration": DURATION_SEC,
                 "command": "command1.sh",
                 "started_at": constants.SPLIT_TIMESTAMP_STARTED,
                 "finished_at": constants.SPLIT_TIMESTAMP_FINISHED
@@ -218,7 +220,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertDictEqual(
             {
                 "name": "stage1.substage1",
-                "duration": 0,
+                "duration": 0.0,
                 "command": "command1.sh",
             },
             self.substage.stage.to_dict()
@@ -298,7 +300,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.process_end_time({'end_hash': VALID_HASH1}))
         self.assertFalse(self.substage.process_end_time({'start_timestamp': constants.TIMESTAMP_NANO_STARTED}))
         self.assertFalse(self.substage.process_end_time({'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED}))
-        self.assertFalse(self.substage.process_end_time({'duration': 11}))
+        self.assertFalse(self.substage.process_end_time({'duration': DURATION_NANO}))
 
     def test_process_end_time_not_started(self):
         # pass a valid start tag but, timing hasn't started
@@ -306,7 +308,7 @@ class TestTravisSubstage(unittest.TestCase):
             'end_hash': VALID_HASH1,
             'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
             'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': 11
+            'duration': DURATION_SEC
         }))
         self.assertTrue(self.substage.finished_incomplete)
         self.assertTrue(self.substage.has_finished())
@@ -319,7 +321,7 @@ class TestTravisSubstage(unittest.TestCase):
             'end_hash': INVALID_HASH,
             'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
             'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': 11
+            'duration': DURATION_NANO
         }))
         self.assertTrue(self.substage.finished_incomplete)
         self.assertTrue(self.substage.has_finished())
@@ -332,7 +334,7 @@ class TestTravisSubstage(unittest.TestCase):
             'end_hash': VALID_HASH1,
             'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
             'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': 11
+            'duration': DURATION_NANO
         }))
         self.assertFalse(self.substage.finished_incomplete)
         self.assertTrue(self.substage.has_finished())
@@ -341,7 +343,7 @@ class TestTravisSubstage(unittest.TestCase):
             self.substage.stage.data["started_at"])
         self.assertDictEqual(constants.SPLIT_TIMESTAMP_FINISHED,
             self.substage.stage.data["finished_at"])
-        self.assertEquals(11, self.substage.stage.data["duration"])
+        self.assertEquals(DURATION_SEC, self.substage.stage.data["duration"])
 
     def test_process_end_stage_tags(self):
         # dict shouldn't be processed if it doesn't contain the required tags
@@ -460,7 +462,7 @@ class TestTravisSubstage(unittest.TestCase):
             'end_hash': VALID_HASH1,
             'start_timestamp': constants.TIMESTAMP_STARTED,
             'finish_timestamp': constants.TIMESTAMP_FINISHED,
-            'duration': 11
+            'duration': DURATION_NANO
         }))
         self.assertTrue(self.substage.has_finished())
 
