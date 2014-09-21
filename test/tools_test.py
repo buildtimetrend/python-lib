@@ -59,6 +59,29 @@ class TestTools(unittest.TestCase):
         self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE,
             split_isotimestamp(constants.ISOTIMESTAMP_TESTDATE))
 
+    def test_split_datetime(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, split_datetime)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, split_datetime, None)
+        self.assertRaises(TypeError, split_datetime, "string")
+
+        # test 0 timestamp (epoch) in UTC
+        epoch_utc_dt = datetime.utcfromtimestamp(0).replace(tzinfo=tzutc())
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH,
+            split_datetime(epoch_utc_dt))
+
+        # test 0 timestamp (epoch), without timezone
+        epoch_dt = datetime.utcfromtimestamp(0)
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH_NOTZ,
+            split_datetime(epoch_dt))
+
+        # test timestamp
+        timestamp_dt = datetime.utcfromtimestamp(constants.TIMESTAMP_TESTDATE).replace(tzinfo=tzutc())
+        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE,
+            split_datetime(timestamp_dt))
+
     def test_nano2sec(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, nano2sec)
