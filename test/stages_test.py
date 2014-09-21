@@ -121,13 +121,13 @@ class TestStages(unittest.TestCase):
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
     def test_parse_timestamps_finished(self):
-        # use 'done' as end stage name
+        # use 'end' as end stage name
         self.stages.parse_timestamps([["stage1","1396378735"],["finished","1396378752"], ["end","1396378755"]])
 
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
     def test_parse_timestamps_completed(self):
-        # use 'done' as end stage name
+        # use 'completed' as end stage name
         self.stages.parse_timestamps([["stage1","1396378735"],["completed","1396378752"], ["end","1396378755"]])
 
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
