@@ -163,6 +163,70 @@ class TestStages(unittest.TestCase):
             '</stages>\n',
             self.stages.to_xml_string())
 
+    def test_add_stage(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, self.stages.add_stage)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, self.stages.add_stage, None)
+        self.assertRaises(TypeError, self.stages.add_stage, "string")
+
+        # add a stage
+        stage = Stage()
+        stage.set_name("stage1")
+        stage.set_started_at(constants.TIMESTAMP_STARTED)
+        stage.set_finished_at(constants.TIMESTAMP1)
+        stage.set_duration(235)
+
+        self.stages.add_stage(stage)
+
+        # test number of stages
+        self.assertEquals(1, len(self.stages.stages))
+
+        # test started_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP_STARTED, self.stages.started_at)
+
+        # test finished_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP1, self.stages.finished_at)
+
+        # test stages (names + duration)
+        self.assertListEqual(
+           [{'duration': 235,
+             'finished_at': constants.SPLIT_TIMESTAMP1,
+             'name': 'stage1',
+             'started_at': constants.SPLIT_TIMESTAMP_STARTED}],
+            self.stages.stages)
+
+        # add another stage
+        stage = Stage()
+        stage.set_name("stage2")
+        stage.set_started_at(constants.TIMESTAMP1)
+        stage.set_finished_at(constants.TIMESTAMP_FINISHED)
+        stage.set_duration(136.234)
+
+        self.stages.add_stage(stage)
+
+        # test number of stages
+        self.assertEquals(2, len(self.stages.stages))
+
+        # test started_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP_STARTED, self.stages.started_at)
+
+        # test finished_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP_FINISHED, self.stages.finished_at)
+
+        # test stages (names + duration)
+        self.assertListEqual(
+           [{'duration': 235,
+             'finished_at': constants.SPLIT_TIMESTAMP1,
+             'name': 'stage1',
+             'started_at': constants.SPLIT_TIMESTAMP_STARTED},
+            {'duration': 136.234,
+             'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+             'name': 'stage2',
+             'started_at': constants.SPLIT_TIMESTAMP1}],
+            self.stages.stages)
+
 class TestStage(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None

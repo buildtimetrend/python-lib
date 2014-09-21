@@ -136,6 +136,26 @@ class Stages(object):
             event_name = row[0]
             previous_timestamp = timestamp
 
+    def add_stage(self, stage):
+        '''
+        Add stage
+        param stage Stage instance
+        '''
+        if stage is None or type(stage) is not Stage:
+            raise TypeError("param %s should be a Stage instance" % stage)
+
+        # add stage
+        self.stages.append(stage.to_dict())
+
+        # assign starting timestamp of first stage
+        # to started_at of the build job
+        if self.started_at is None and "started_at" in stage.data:
+            self.started_at = stage.data["started_at"]
+
+        # assign finished timestamp
+        if "finished_at" in stage.data:
+            self.finished_at = stage.data["finished_at"]
+
 
 class Stage(object):
     '''

@@ -110,6 +110,8 @@ SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
     'timezone': 'UTC',
     'timezone_offset': '+0000'
 }
+
+TIMESTAMP1 = 1396378735
 SPLIT_TIMESTAMP1 = {'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
