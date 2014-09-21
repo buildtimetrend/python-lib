@@ -112,6 +112,14 @@ def split_datetime(timestamp_datetime):
     return timestamp_dict
 
 
+def nano2sec(time):
+    '''
+    Convert time in nanoseconds to seconds
+    Param time nanoseconds
+    '''
+    return float(time) / float(1000000000)
+
+
 def add_project_info_dict(payload):
     '''
     Adds project info to a dictonary

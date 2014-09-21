@@ -59,6 +59,21 @@ class TestTools(unittest.TestCase):
         self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE,
             split_isotimestamp(constants.ISOTIMESTAMP_TESTDATE))
 
+    def test_nano2sec(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, nano2sec)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, nano2sec, None)
+        self.assertRaises(ValueError, nano2sec, "string")
+
+        # test valid parameters
+        self.assertEqual(0.0, nano2sec(0))
+        self.assertEqual(123.456789123, nano2sec(123456789123))
+        self.assertEqual(.123456789123, nano2sec(123456789.123))
+        self.assertEqual(-123.456789123, nano2sec(-123456789123))
+        self.assertEqual(123.456789123, nano2sec("123456789123"))
+
     def test_add_project_info_dict(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, add_project_info_dict)
