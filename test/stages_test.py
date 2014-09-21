@@ -229,6 +229,29 @@ class TestStage(unittest.TestCase):
         self.assertTrue(self.stage.set_duration(0))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
+    def test_set_duration_nano(self):
+        # duration should be a number
+        self.assertFalse(self.stage.set_duration_nano(None))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
+        self.assertFalse(self.stage.set_duration_nano("text"))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
+
+        # duration can't be a negative value
+        self.assertFalse(self.stage.set_duration_nano(-1))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
+
+        # set duration
+        self.assertTrue(self.stage.set_duration_nano(123456789))
+        self.assertDictEqual({"name": "", "duration": 0.123456789}, self.stage.to_dict())
+        self.assertTrue(self.stage.set_duration_nano(123456789.123))
+        self.assertDictEqual(
+            {"name": "", "duration": 0.123456789123},
+            self.stage.to_dict())
+
+        # duration can be zero
+        self.assertTrue(self.stage.set_duration_nano(0))
+        self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
+
     def test_set_timestamp(self):
         # timestamp should be valid
         self.assertFalse(self.stage.set_timestamp("event1", None))

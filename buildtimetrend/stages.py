@@ -212,6 +212,13 @@ class Stage(object):
         except (ValueError, TypeError):
             return False
 
+    def set_duration_nano(self, duration):
+        '''Set stage duration in nanoseconds'''
+        try:
+            return self.set_duration(nano2sec(duration))
+        except (ValueError, TypeError):
+            return False
+
     def to_dict(self):
         '''return stages data as dictionary'''
         return self.data
