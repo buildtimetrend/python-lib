@@ -89,7 +89,7 @@ class Trend(object):
                                 # create list with zeros,
                                 # one for each existing build
                                 temp_dict = [0]*(index + 1)
-                            temp_dict[index] = int(stage.get('duration'))
+                            temp_dict[index] = float(stage.get('duration'))
                             self.stages[stage.get('name')] = temp_dict
             print "Build ID : %s, Job : %s, stages : %d" % \
                 (build_id, job_id, stage_count)

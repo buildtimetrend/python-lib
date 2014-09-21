@@ -26,7 +26,7 @@ import constants
 from lxml import etree
 import unittest
 
-STAGES_RESULT = [{'duration': 17,
+STAGES_RESULT = [{'duration': 17.0,
              'finished_at': constants.SPLIT_TIMESTAMP4,
              'name': 'stage1',
              'started_at': constants.SPLIT_TIMESTAMP1}]
@@ -145,9 +145,9 @@ class TestStages(unittest.TestCase):
 
         # test xml output
         self.assertEquals(
-            '<stages><stage duration="2" name="stage1"/>'
-            '<stage duration="5" name="stage2"/>'
-            '<stage duration="10" name="stage3"/></stages>',
+            '<stages><stage duration="2.0" name="stage1"/>'
+            '<stage duration="5.0" name="stage2"/>'
+            '<stage duration="10.0" name="stage3"/></stages>',
             etree.tostring(self.stages.to_xml()))
 
     def test_to_xml_string(self):
@@ -157,9 +157,9 @@ class TestStages(unittest.TestCase):
         # test xml string output
         self.assertEquals(
             '<stages>\n'
-            '  <stage duration="2" name="stage1"/>\n'
-            '  <stage duration="5" name="stage2"/>\n'
-            '  <stage duration="10" name="stage3"/>\n'
+            '  <stage duration="2.0" name="stage1"/>\n'
+            '  <stage duration="5.0" name="stage2"/>\n'
+            '  <stage duration="10.0" name="stage3"/>\n'
             '</stages>\n',
             self.stages.to_xml_string())
 

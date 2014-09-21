@@ -256,9 +256,9 @@ class TestBuild(unittest.TestCase):
 
         # test xml output
         self.assertEquals(
-            '<build><stages><stage duration="2" name="stage1"/>'
-            '<stage duration="5" name="stage2"/>'
-            '<stage duration="10" name="stage3"/></stages></build>',
+            '<build><stages><stage duration="2.0" name="stage1"/>'
+            '<stage duration="5.0" name="stage2"/>'
+            '<stage duration="10.0" name="stage3"/></stages></build>',
             etree.tostring(self.build.to_xml()))
 
         # add properties
@@ -267,9 +267,9 @@ class TestBuild(unittest.TestCase):
         # test xml output
         self.assertEquals(
             '<build property1="2" property2="3">'
-            '<stages><stage duration="2" name="stage1"/>'
-            '<stage duration="5" name="stage2"/>'
-            '<stage duration="10" name="stage3"/></stages></build>',
+            '<stages><stage duration="2.0" name="stage1"/>'
+            '<stage duration="5.0" name="stage2"/>'
+            '<stage duration="10.0" name="stage3"/></stages></build>',
             etree.tostring(self.build.to_xml()))
 
     def test_to_xml_string(self):
@@ -280,9 +280,9 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(
             '<build>\n'
             '  <stages>\n'
-            '    <stage duration="2" name="stage1"/>\n'
-            '    <stage duration="5" name="stage2"/>\n'
-            '    <stage duration="10" name="stage3"/>\n'
+            '    <stage duration="2.0" name="stage1"/>\n'
+            '    <stage duration="5.0" name="stage2"/>\n'
+            '    <stage duration="10.0" name="stage3"/>\n'
             '  </stages>\n'
             '</build>\n',
             self.build.to_xml_string())
@@ -294,9 +294,9 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(
             '<build property1="2" property2="3">\n'
             '  <stages>\n'
-            '    <stage duration="2" name="stage1"/>\n'
-            '    <stage duration="5" name="stage2"/>\n'
-            '    <stage duration="10" name="stage3"/>\n'
+            '    <stage duration="2.0" name="stage1"/>\n'
+            '    <stage duration="5.0" name="stage2"/>\n'
+            '    <stage duration="10.0" name="stage3"/>\n'
             '  </stages>\n'
             '</build>\n',
             self.build.to_xml_string())

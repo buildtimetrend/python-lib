@@ -123,11 +123,12 @@ class Stages(object):
                 print 'Duration {0} : {1}s'.format(event_name, duration)
 
                 # add stage duration to stages dict
-                self.stages.append({
-                    "name": event_name,
-                    "started_at": split_timestamp(previous_timestamp),
-                    "finished_at": split_timestamp(timestamp),
-                    "duration": duration})
+                stage = Stage()
+                stage.set_name(event_name)
+                stage.set_started_at(previous_timestamp)
+                stage.set_finished_at(timestamp)
+                stage.set_duration(duration)
+                self.stages.append(stage.to_dict())
 
             # event name of the timestamp is used in the next iteration
             # the timestamp of the next stage is used as the ending timestamp
