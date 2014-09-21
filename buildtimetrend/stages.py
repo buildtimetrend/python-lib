@@ -105,17 +105,11 @@ class Stages(object):
             # list of possible end tags
             end_tags = ['end', 'done', 'finished', 'completed']
 
-            # assign starting timestamp of first stage
-            # to started_at of the build job
-            if self.started_at is None:
-                self.started_at = split_timestamp(timestamp)
-
             # skip calculating the duration of the first stage,
             # the next timestamp is needed
             if event_name is not None:
                 # finish parsing when an end timestamp is encountered
                 if event_name.lower() in end_tags:
-                    self.finished_at = split_timestamp(previous_timestamp)
                     break
 
                 # calculate duration from current and previous timestamp
@@ -128,7 +122,7 @@ class Stages(object):
                 stage.set_started_at(previous_timestamp)
                 stage.set_finished_at(timestamp)
                 stage.set_duration(duration)
-                self.stages.append(stage.to_dict())
+                self.add_stage(stage)
 
             # event name of the timestamp is used in the next iteration
             # the timestamp of the next stage is used as the ending timestamp
