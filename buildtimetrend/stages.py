@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import csv
 from buildtimetrend.tools import split_timestamp
 from buildtimetrend.tools import check_file
+from buildtimetrend.tools import nano2sec
 from lxml import etree
 
 
@@ -198,7 +199,7 @@ class Stage(object):
         Param name timestamp name
         Param timestamp nanoseconds since epoch
         '''
-        return self.set_timestamp(name, float(timestamp) / float(1000000000))
+        return self.set_timestamp(name, nano2sec(timestamp))
 
     def set_duration(self, duration):
         '''Set stage duration in seconds'''
