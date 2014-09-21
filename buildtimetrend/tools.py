@@ -77,8 +77,8 @@ def split_datetime(timestamp_datetime):
     - timestamp_datetime : timestamp in datetime class format
     '''
     if timestamp_datetime is None or type(timestamp_datetime) is not datetime:
-        raise TypeError("param %s should be a datetime instance" % \
-            'timestamp_datetime')
+        raise TypeError("param %s should be a datetime instance" %
+                        'timestamp_datetime')
 
     timestamp_dict = {}
     timestamp_dict["isotimestamp"] = timestamp_datetime.isoformat()
@@ -91,7 +91,7 @@ def split_datetime(timestamp_datetime):
 
     # seconds since epoch
     timestamp_dict["timestamp_seconds"] = \
-            (timestamp_datetime - epoch).total_seconds()
+        (timestamp_datetime - epoch).total_seconds()
 
     timestamp_dict["year"] = timestamp_datetime.strftime("%Y")
     timestamp_dict["month"] = timestamp_datetime.strftime("%m")
