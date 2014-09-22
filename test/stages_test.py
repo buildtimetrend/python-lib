@@ -227,6 +227,58 @@ class TestStages(unittest.TestCase):
              'started_at': constants.SPLIT_TIMESTAMP1}],
             self.stages.stages)
 
+    def test_add_stage_incomplete(self):
+        # add a stage without started_at timestamp
+        stage = Stage()
+        stage.set_name("stage1")
+        stage.set_finished_at(constants.TIMESTAMP1)
+        stage.set_duration(235)
+
+        self.stages.add_stage(stage)
+
+        # test number of stages
+        self.assertEquals(1, len(self.stages.stages))
+
+        # test started_at
+        self.assertEqual(None, self.stages.started_at)
+
+        # test finished_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP1, self.stages.finished_at)
+
+        # test stages (names + duration)
+        self.assertListEqual(
+           [{'duration': 235,
+             'finished_at': constants.SPLIT_TIMESTAMP1,
+             'name': 'stage1'}],
+            self.stages.stages)
+
+        # add another stage without finished_at timestamp
+        stage = Stage()
+        stage.set_name("stage2")
+        stage.set_started_at(constants.TIMESTAMP1)
+        stage.set_duration(136.234)
+
+        self.stages.add_stage(stage)
+
+        # test number of stages
+        self.assertEquals(2, len(self.stages.stages))
+
+        # test started_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP1, self.stages.started_at)
+
+        # test finished_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP1, self.stages.finished_at)
+
+        # test stages (names + duration)
+        self.assertListEqual(
+           [{'duration': 235,
+             'finished_at': constants.SPLIT_TIMESTAMP1,
+             'name': 'stage1'},
+            {'duration': 136.234,
+             'name': 'stage2',
+             'started_at': constants.SPLIT_TIMESTAMP1}],
+            self.stages.stages)
+
 class TestStage(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
