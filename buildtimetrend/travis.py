@@ -26,6 +26,7 @@ import re
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.stages import Stage
+from buildtimetrend.stages import Stages
 import buildtimetrend
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
@@ -54,6 +55,7 @@ class TravisData(object):
         '''
         self.build_data = {}
         self.jobs_data = {}
+        self.stages = Stages()
         self.repo = repo
         self.api_url = TRAVIS_ORG_API_URL
         self.build_id = str(build_id)
@@ -127,6 +129,13 @@ class TravisData(object):
                     result = re.search(parse_string, line)
                     if result:
                         substage.process_parsed_tags(result.groupdict())
+
+                        # when finished : log stage and create a new instance
+                        if substage.has_finished():
+                            # only log complete substages
+                            if not substage.finished_incomplete:
+                                self.stages.add_stage(substage.stage)
+                            substage = TravisSubstage()
 
     def json_request(self, json_request):
         '''
