@@ -55,6 +55,7 @@ class TravisData(object):
         '''
         self.build_data = {}
         self.jobs_data = {}
+        self.travis_substage = None
         self.stages = Stages()
         self.repo = repo
         self.api_url = TRAVIS_ORG_API_URL
@@ -117,25 +118,32 @@ class TravisData(object):
         '''
         Parse Travis CI job log stream.
         '''
-        substage = TravisSubstage()
+        self.travis_substage = TravisSubstage()
 
         for line in stream:
             if 'travis_' in line:
-                print 'line : %s' % \
-                    line.replace('\x0d', '*').replace('\x1b', 'ESC')
+                self.parse_travis_time_tag(line)
 
-                # parse Travis CI timing tags
-                for parse_string in TRAVIS_LOG_PARSE_STRINGS:
-                    result = re.search(parse_string, line)
-                    if result:
-                        substage.process_parsed_tags(result.groupdict())
+    def parse_travis_time_tag(self, line):
+        '''
+        Parse and process Travis CI timing tags
+        Param line : line from logfile containing Travis CI tags
+        '''
+        print 'line : %s' % \
+            line.replace('\x0d', '*').replace('\x1b', 'ESC')
 
-                        # when finished : log stage and create a new instance
-                        if substage.has_finished():
-                            # only log complete substages
-                            if not substage.finished_incomplete:
-                                self.stages.add_stage(substage.stage)
-                            substage = TravisSubstage()
+        # parse Travis CI timing tags
+        for parse_string in TRAVIS_LOG_PARSE_STRINGS:
+            result = re.search(parse_string, line)
+            if result:
+                self.travis_substage.process_parsed_tags(result.groupdict())
+
+                # when finished : log stage and create a new instance
+                if self.travis_substage.has_finished():
+                    # only log complete substages
+                    if not self.travis_substage.finished_incomplete:
+                        self.stages.add_stage(self.travis_substage.stage)
+                    self.travis_substage = TravisSubstage()
 
     def json_request(self, json_request):
         '''
