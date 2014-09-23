@@ -78,23 +78,29 @@ class Trend(object):
             for build_child in build_xml:
                 if build_child.tag == 'stages':
                     stage_count = len(build_child)
-                    for stage in build_child:
-                        if (stage.tag == 'stage' and
-                                stage.get('name') is not None and
-                                stage.get('duration') is not None):
-                            if stage.get('name') in self.stages:
-                                temp_dict = self.stages[stage.get('name')]
-                            else:
-                                # when a new stage is added,
-                                # create list with zeros,
-                                # one for each existing build
-                                temp_dict = [0]*(index + 1)
-                            temp_dict[index] = float(stage.get('duration'))
-                            self.stages[stage.get('name')] = temp_dict
+                    self.parse_xml_stages(build_child, index)
             print "Build ID : %s, Job : %s, stages : %d" % \
                 (build_id, job_id, stage_count)
             index += 1
         return True
+
+    def parse_xml_stages(self, stages, index):
+        '''
+        Parse stages in from xml file
+        '''
+        for stage in stages:
+            if (stage.tag == 'stage' and
+                    stage.get('name') is not None and
+                    stage.get('duration') is not None):
+                if stage.get('name') in self.stages:
+                    temp_dict = self.stages[stage.get('name')]
+                else:
+                    # when a new stage is added,
+                    # create list with zeros,
+                    # one for each existing build
+                    temp_dict = [0]*(index + 1)
+                temp_dict[index] = float(stage.get('duration'))
+                self.stages[stage.get('name')] = temp_dict
 
     def generate(self, trend_file):
         '''
