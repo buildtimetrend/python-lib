@@ -24,6 +24,7 @@ from buildtimetrend.travis import *
 import constants
 import unittest
 
+TRAVIS_TIMING_TAGS_FILE = "test_sample_travis_time_tags"
 TEST_REPO = 'ruleant/buildtime-trend'
 TEST_BUILD = '158'
 VALID_HASH1 = '1234abcd'
@@ -40,6 +41,8 @@ class TestTravisData(unittest.TestCase):
          # data should be empty
         self.assertEquals(0, len(self.travis_data.build_data))
         self.assertEquals(None, self.travis_data.get_started_at())
+        self.assertEquals(None, self.travis_data.travis_substage)
+        self.assertEquals(0, len(self.travis_data.stages.stages))
 
     def test_gather_data(self):
         # retrieve data from Travis API
@@ -50,6 +53,44 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(
             '2014-07-08T11:18:13Z',
             self.travis_data.get_started_at())
+
+    def test_parse_travis_time_tag(self):
+        # read sample lines with timetags
+        with open(TRAVIS_TIMING_TAGS_FILE, 'rb') as f:
+            # read next log file line
+            self.travis_data.parse_travis_time_tag(f.next())
+
+            # stage 'install.4' is started, but is not finished
+            self.assertEquals(0, len(self.travis_data.stages.stages))
+            self.assertTrue(self.travis_data.travis_substage.has_name())
+            self.assertEquals('install.4', self.travis_data.travis_substage.get_name())
+            self.assertTrue(self.travis_data.travis_substage.has_timing_hash())
+            self.assertTrue(self.travis_data.travis_substage.has_command())
+            self.assertTrue(self.travis_data.travis_substage.has_started())
+            self.assertFalse(self.travis_data.travis_substage.has_finished())
+
+            # read next log file line
+            self.travis_data.parse_travis_time_tag(f.next())
+
+            # stage 'install.4' is finished, and is added to Stages object
+            self.assertEquals(1, len(self.travis_data.stages.stages))
+
+            self.assertEquals('install.4', self.travis_data.stages.stages[0]["name"])
+            self.assertEquals('CFLAGS="-O0" pip install -r requirements-tests.txt',
+                self.travis_data.stages.stages[0]["command"])
+            self.assertEquals('install.4', self.travis_data.stages.stages[0]["name"])
+            self.assertEquals(1408282890.843066,
+                self.travis_data.stages.stages[0]["started_at"]["timestamp_seconds"])
+            self.assertEquals(1408282894.494005,
+                self.travis_data.stages.stages[0]["finished_at"]["timestamp_seconds"])
+            self.assertEquals(3.650939474, self.travis_data.stages.stages[0]["duration"])
+
+            # new TravisSubstage object was created
+            self.assertFalse(self.travis_data.travis_substage.has_name())
+            self.assertFalse(self.travis_data.travis_substage.has_timing_hash())
+            self.assertFalse(self.travis_data.travis_substage.has_command())
+            self.assertFalse(self.travis_data.travis_substage.has_started())
+            self.assertFalse(self.travis_data.travis_substage.has_finished())
 
 
 class TestTravisSubstage(unittest.TestCase):
