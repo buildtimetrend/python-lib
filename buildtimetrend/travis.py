@@ -129,6 +129,9 @@ class TravisData(object):
         Parse and process Travis CI timing tags
         Param line : line from logfile containing Travis CI tags
         '''
+        if self.travis_substage is None:
+            self.travis_substage = TravisSubstage()
+
         print 'line : %s' % \
             line.replace('\x0d', '*').replace('\x1b', 'ESC')
 
