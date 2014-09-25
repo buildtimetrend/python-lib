@@ -24,7 +24,7 @@ from buildtimetrend.travis import *
 import constants
 import unittest
 
-TRAVIS_TIMING_TAGS_FILE = "test_sample_travis_time_tags"
+TRAVIS_TIMING_TAGS_FILE = "test/test_sample_travis_time_tags"
 TEST_REPO = 'ruleant/buildtime-trend'
 TEST_BUILD = '158'
 VALID_HASH1 = '1234abcd'
