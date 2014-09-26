@@ -1,0 +1,6 @@
+travis_fold:start:install.4[0Ktravis_time:start:126e6851[0K$ CFLAGS="-O0" pip install -r requirements-tests.txt
+travis_time:end:126e6851:start=1408282890843065984,finish=1408282894494005458,duration=3650939474[0Ktravis_fold:end:install.2[0K
+travis_fold:start:after_script.2[0Ktravis_time:start:11ad00c5[0K$ coveralls
+travis_time:end:11ad01c5:start=1408282896480781630,finish=1408282901258723972,duration=4777942342[0Ktravis_fold:end:after_script.2[0Ktravis_fold:start:after_script.3[0K$ echo $TRAVIS_TEST_RESULT
+travis_fold:end:after_script.3[0Ktravis_time:start:1db5972c[0K$ timestamp.sh Done
+travis_time:end:1db5972c:start=1408282901278675742,finish=1408282901287937062,duration=9261320[0Ktravis_fold:end:after_script.4[0K

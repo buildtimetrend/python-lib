@@ -25,6 +25,7 @@ import constants
 import unittest
 
 TRAVIS_TIMING_TAGS_FILE = "test/test_sample_travis_time_tags"
+TRAVIS_INCORRECT_TIMING_TAGS_FILE = "test/test_sample_travis_time_tags_incorrect"
 TEST_REPO = 'ruleant/buildtime-trend'
 TEST_BUILD = '158'
 VALID_HASH1 = '1234abcd'
@@ -163,6 +164,98 @@ class TestTravisData(unittest.TestCase):
             self.assertEquals(1408282901.287937,
                 self.travis_data.stages.stages[3]["finished_at"]["timestamp_seconds"])
             self.assertEquals(0.009261320, self.travis_data.stages.stages[3]["duration"])
+
+    def test_parse_travis_time_tag_incorrect(self):
+        # read sample lines with timetags
+        with open(TRAVIS_INCORRECT_TIMING_TAGS_FILE, 'rb') as f:
+            '''First stage'''
+            # read next log file line
+            self.travis_data.parse_travis_time_tag(f.next())
+
+            # stage 'install.4' is started, but is not finished
+            self.assertEquals(0, len(self.travis_data.stages.stages))
+            self.assertTrue(self.travis_data.travis_substage.has_name())
+            self.assertEquals('install.4', self.travis_data.travis_substage.get_name())
+            self.assertTrue(self.travis_data.travis_substage.has_timing_hash())
+            self.assertTrue(self.travis_data.travis_substage.has_command())
+            self.assertTrue(self.travis_data.travis_substage.has_started())
+            self.assertFalse(self.travis_data.travis_substage.has_finished())
+
+            # read next log file line
+            self.travis_data.parse_travis_time_tag(f.next())
+
+            # stage 'install.4' is not finished, end-tag is incorrect
+            self.assertEquals(0, len(self.travis_data.stages.stages))
+
+            # new TravisSubstage object was created
+            self.assertFalse(self.travis_data.travis_substage.has_name())
+            self.assertFalse(self.travis_data.travis_substage.has_timing_hash())
+            self.assertFalse(self.travis_data.travis_substage.has_command())
+            self.assertFalse(self.travis_data.travis_substage.has_started())
+            self.assertFalse(self.travis_data.travis_substage.has_finished())
+
+            '''Seconds stage'''
+            # read next log file line
+            self.travis_data.parse_travis_time_tag(f.next())
+
+            # stage 'after_script.2' is started, but is not finished
+            self.assertEquals(0, len(self.travis_data.stages.stages))
+            self.assertTrue(self.travis_data.travis_substage.has_name())
+            self.assertEquals('after_script.2', self.travis_data.travis_substage.get_name())
+            self.assertTrue(self.travis_data.travis_substage.has_timing_hash())
+            self.assertTrue(self.travis_data.travis_substage.has_command())
+            self.assertTrue(self.travis_data.travis_substage.has_started())
+            self.assertFalse(self.travis_data.travis_substage.has_finished())
+
+            # read next log file line
+            self.travis_data.parse_travis_time_tag(f.next())
+
+            # stage 'after_script.3' is not finished, because timing_hash is incorrect
+            self.assertEquals(0, len(self.travis_data.stages.stages))
+
+            '''Third stage'''
+            # new TravisSubstage object was created, and the next stage is started
+            self.assertTrue(self.travis_data.travis_substage.has_name())
+            self.assertEquals('after_script.3', self.travis_data.travis_substage.get_name())
+            self.assertFalse(self.travis_data.travis_substage.has_timing_hash())
+            self.assertTrue(self.travis_data.travis_substage.has_command())
+            self.assertTrue(self.travis_data.travis_substage.has_started())
+            self.assertFalse(self.travis_data.travis_substage.has_finished())
+
+            # read next log file line
+            self.travis_data.parse_travis_time_tag(f.next())
+
+            # stage 'after_script.3' is not finished, because timing_hash is incorrect
+            self.assertEquals(1, len(self.travis_data.stages.stages))
+
+            self.assertEquals('after_script.3', self.travis_data.stages.stages[0]["name"])
+            self.assertEquals('echo $TRAVIS_TEST_RESULT', self.travis_data.stages.stages[0]["command"])
+            self.assertFalse('started_at' in self.travis_data.stages.stages[0])
+            self.assertFalse('finished_at' in self.travis_data.stages.stages[0])
+            self.assertEquals(0, self.travis_data.stages.stages[0]["duration"])
+
+            '''Fourth stage'''
+            # new TravisSubstage object was created, and the next stage is started
+            self.assertFalse(self.travis_data.travis_substage.has_name())
+            self.assertEquals('timestamp.sh Done', self.travis_data.travis_substage.get_name())
+            self.assertTrue(self.travis_data.travis_substage.has_timing_hash())
+            self.assertTrue(self.travis_data.travis_substage.has_command())
+            self.assertTrue(self.travis_data.travis_substage.has_started())
+            self.assertFalse(self.travis_data.travis_substage.has_finished())
+
+            # read next log file line
+            self.travis_data.parse_travis_time_tag(f.next())
+
+            # stage 'timestamp.sh Done' is finished, and is added to Stages object
+            self.assertEquals(2, len(self.travis_data.stages.stages))
+
+            self.assertEquals('', self.travis_data.stages.stages[1]["name"])
+            self.assertEquals('timestamp.sh Done', self.travis_data.stages.stages[1]["command"])
+            self.assertEquals(1408282901.278676,
+                self.travis_data.stages.stages[1]["started_at"]["timestamp_seconds"])
+            self.assertEquals(1408282901.287937,
+                self.travis_data.stages.stages[1]["finished_at"]["timestamp_seconds"])
+            self.assertEquals(0.009261320, self.travis_data.stages.stages[1]["duration"])
 
 
 class TestTravisSubstage(unittest.TestCase):
