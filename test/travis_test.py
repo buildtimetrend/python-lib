@@ -63,6 +63,16 @@ class TestTravisData(unittest.TestCase):
         self.travis_data.parse_job_log_file('')
         self.assertEquals(0, len(self.travis_data.stages.stages))
 
+    def test_parse_valid_job_log(self):
+        # add a logfile with 4 stages
+        self.travis_data.parse_job_log_file(TRAVIS_TIMING_TAGS_FILE)
+        self.assertEquals(4, len(self.travis_data.stages.stages))
+
+        self.assertEquals('install.4', self.travis_data.stages.stages[0]["name"])
+        self.assertEquals('after_script.2', self.travis_data.stages.stages[1]["name"])
+        self.assertEquals('after_script.3', self.travis_data.stages.stages[2]["name"])
+        self.assertEquals('', self.travis_data.stages.stages[3]["name"])
+
     def test_parse_travis_time_tag(self):
         # read sample lines with timetags
         with open(TRAVIS_TIMING_TAGS_FILE, 'rb') as f:
