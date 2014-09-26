@@ -44,6 +44,8 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(None, self.travis_data.get_started_at())
         self.assertEquals(None, self.travis_data.travis_substage)
         self.assertEquals(0, len(self.travis_data.stages.stages))
+        self.assertEquals(None, self.travis_data.stages.started_at)
+        self.assertEquals(None, self.travis_data.stages.finished_at)
 
     def test_gather_data(self):
         # retrieve data from Travis API
