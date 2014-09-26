@@ -89,6 +89,13 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals('after_script.3', self.travis_data.stages.stages[0]["name"])
         self.assertEquals('', self.travis_data.stages.stages[1]["name"])
 
+        # check build started and finished timestamps
+        self.assertEquals(1408282901.278676,
+            self.travis_data.stages.started_at["timestamp_seconds"])
+        self.assertEquals(1408282901.287937,
+            self.travis_data.stages.finished_at["timestamp_seconds"])
+
+
     def test_parse_travis_time_tag(self):
         # read sample lines with timetags
         with open(TRAVIS_TIMING_TAGS_FILE, 'rb') as f:
@@ -253,6 +260,10 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_started())
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
+            # build started and finished timestamps are not set
+            self.assertEquals(None, self.travis_data.stages.started_at)
+            self.assertEquals(None, self.travis_data.stages.finished_at)
+
             '''Seconds stage'''
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())
@@ -271,6 +282,10 @@ class TestTravisData(unittest.TestCase):
 
             # stage 'after_script.3' is not finished, because timing_hash is incorrect
             self.assertEquals(0, len(self.travis_data.stages.stages))
+
+            # build started and finished timestamps are not set
+            self.assertEquals(None, self.travis_data.stages.started_at)
+            self.assertEquals(None, self.travis_data.stages.finished_at)
 
             '''Third stage'''
             # new TravisSubstage object was created, and the next stage is started
@@ -292,6 +307,10 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse('started_at' in self.travis_data.stages.stages[0])
             self.assertFalse('finished_at' in self.travis_data.stages.stages[0])
             self.assertEquals(0, self.travis_data.stages.stages[0]["duration"])
+
+            # build started and finished timestamps are not set
+            self.assertEquals(None, self.travis_data.stages.started_at)
+            self.assertEquals(None, self.travis_data.stages.finished_at)
 
             '''Fourth stage'''
             # new TravisSubstage object was created, and the next stage is started
@@ -315,6 +334,12 @@ class TestTravisData(unittest.TestCase):
             self.assertEquals(1408282901.287937,
                 self.travis_data.stages.stages[1]["finished_at"]["timestamp_seconds"])
             self.assertEquals(0.009261320, self.travis_data.stages.stages[1]["duration"])
+
+            # check build started and finished timestamps
+            self.assertEquals(1408282901.278676,
+                self.travis_data.stages.started_at["timestamp_seconds"])
+            self.assertEquals(1408282901.287937,
+                self.travis_data.stages.finished_at["timestamp_seconds"])
 
 
 class TestTravisSubstage(unittest.TestCase):
