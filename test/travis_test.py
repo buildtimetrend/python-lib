@@ -55,6 +55,14 @@ class TestTravisData(unittest.TestCase):
             '2014-07-08T11:18:13Z',
             self.travis_data.get_started_at())
 
+    def test_nofile(self):
+        # number of stages should be zero when file doesn't exist
+        self.travis_data.parse_job_log_file('nofile.csv')
+        self.assertEquals(0, len(self.travis_data.stages.stages))
+
+        self.travis_data.parse_job_log_file('')
+        self.assertEquals(0, len(self.travis_data.stages.stages))
+
     def test_parse_travis_time_tag(self):
         # read sample lines with timetags
         with open(TRAVIS_TIMING_TAGS_FILE, 'rb') as f:
