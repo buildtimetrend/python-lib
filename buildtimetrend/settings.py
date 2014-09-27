@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 import buildtimetrend
 
+VERBOSITY = 1
 
 def get_project_name():
     '''
@@ -46,3 +47,13 @@ def get_project_info():
         "schema_version": buildtimetrend.SCHEMA_VERSION,
         "project_name": str(get_project_name())
     }
+
+def print_verbose(string, level=1):
+    '''
+    Print wrapper, taking verbosity level into account.
+    Param string string to be printed
+    Param level verbosity level at which a string should be printed, default = 1
+    '''
+    # print string if level is equal or lower to verbosity level
+    if level <= VERBOSITY:
+        print string
