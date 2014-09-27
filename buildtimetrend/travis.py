@@ -27,6 +27,7 @@ from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.stages import Stage
 from buildtimetrend.stages import Stages
+from buildtimetrend.settings import print_verbose
 import buildtimetrend
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
@@ -132,8 +133,8 @@ class TravisData(object):
         if self.travis_substage is None:
             self.travis_substage = TravisSubstage()
 
-        print 'line : %s' % \
-            line.replace('\x0d', '*').replace('\x1b', 'ESC')
+        print_verbose('line : %s' % \
+            line.replace('\x0d', '*').replace('\x1b', 'ESC'), 3)
 
         # parse Travis CI timing tags
         for parse_string in TRAVIS_LOG_PARSE_STRINGS:
@@ -227,7 +228,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        print "Start stage : %s" % tags_dict
+        print_verbose("Start stage : %s" % tags_dict, 2)
 
         if self.has_started():
             print "Substage already started"
@@ -253,7 +254,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'start_hash'):
             return False
 
-        print "Start time : %s" % tags_dict
+        print_verbose("Start time : %s" % tags_dict, 2)
 
         if self.has_timing_hash():
             print "Substage timing already set"
@@ -275,7 +276,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'command'):
             return False
 
-        print "Command : %s" % tags_dict
+        print_verbose("Command : %s" % tags_dict, 2)
 
         if self.has_command():
             print "Command is already set"
@@ -304,7 +305,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        print "End time : %s" % tags_dict
+        print_verbose("End time : %s" % tags_dict, 2)
 
         # check if timing was started
         # and if hash matches
@@ -338,7 +339,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        print "End stage : %s" % tags_dict
+        print_verbose("End stage : %s" % tags_dict, 2)
 
         # construct substage name
         end_stagename = "%s.%s" % (
