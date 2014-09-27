@@ -59,15 +59,15 @@ class TestTravisData(unittest.TestCase):
 
     def test_nofile(self):
         # number of stages should be zero when file doesn't exist
-        self.travis_data.parse_job_log_file('nofile.csv')
+        self.assertFalse(self.travis_data.parse_job_log_file('nofile.csv'))
         self.assertEquals(0, len(self.travis_data.stages.stages))
 
-        self.travis_data.parse_job_log_file('')
+        self.assertFalse(self.travis_data.parse_job_log_file(''))
         self.assertEquals(0, len(self.travis_data.stages.stages))
 
     def test_parse_valid_job_log(self):
         # add a logfile with 4 stages
-        self.travis_data.parse_job_log_file(TRAVIS_TIMING_TAGS_FILE)
+        self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_TIMING_TAGS_FILE))
         self.assertEquals(4, len(self.travis_data.stages.stages))
 
         self.assertEquals('install.4', self.travis_data.stages.stages[0]["name"])
@@ -83,7 +83,7 @@ class TestTravisData(unittest.TestCase):
 
     def test_parse_incorrect_job_log(self):
         # add a logfile with 2 incomplete stages and 2 valid stages
-        self.travis_data.parse_job_log_file(TRAVIS_INCORRECT_TIMING_TAGS_FILE)
+        self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_INCORRECT_TIMING_TAGS_FILE))
         self.assertEquals(2, len(self.travis_data.stages.stages))
 
         self.assertEquals('after_script.3', self.travis_data.stages.stages[0]["name"])
