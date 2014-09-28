@@ -34,7 +34,7 @@ import buildtimetrend
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
 # strings to parse timestamps in Travis CI log file
-TRAVIS_LOG_PARSE_STRINGS = [
+TRAVIS_LOG_PARSE_TIMING_STRINGS = [
     r'travis_time:end:(?P<end_hash>.*):start=(?P<start_timestamp>\d+),'
     r'finish=(?P<finish_timestamp>\d+),duration=(?P<duration>\d+)\x0d\x1b',
     r'travis_fold:end:(?P<end_stage>\w+)\.(?P<end_substage>\d+)\x0d\x1b',
@@ -139,7 +139,7 @@ class TravisData(object):
             line.replace('\x0d', '*').replace('\x1b', 'ESC'), 3)
 
         # parse Travis CI timing tags
-        for parse_string in TRAVIS_LOG_PARSE_STRINGS:
+        for parse_string in TRAVIS_LOG_PARSE_TIMING_STRINGS:
             result = re.search(parse_string, line)
             if result:
                 self.travis_substage.process_parsed_tags(result.groupdict())
