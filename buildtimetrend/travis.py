@@ -42,6 +42,7 @@ TRAVIS_LOG_PARSE_STRINGS = [
     r'travis_time:start:(?P<start_hash>.*)\x0d\x1b\[0K',
     r'\$\ (?P<command>.*)\r',
 ]
+TRAVIS_LOG_PARSE_WORKER_STRING = r'Using worker:\ (?P<hostname>.*):(?P<os>.*)'
 
 
 class TravisData(object):
@@ -149,6 +150,30 @@ class TravisData(object):
                     if not self.travis_substage.finished_incomplete:
                         self.build.add_stage(self.travis_substage.stage)
                     self.travis_substage = TravisSubstage()
+
+    def parse_travis_worker_tag(self, line):
+        '''
+        Parse and process Travis CI worker tag
+        Param line : line from logfile containing Travis CI tags
+        '''
+        print_verbose('line : %s' % line, 3)
+
+        # parse Travis CI worker tags
+        result = re.search(TRAVIS_LOG_PARSE_WORKER_STRING, line)
+        if not result:
+            return
+
+        worker_tags = result.groupdict()
+
+        # check if parameter worker_tags is a dictionary and
+        # if it contains all required tags
+        tag_list = list({'hostname', 'os'})
+        if not check_dict(worker_tags, "worker_tags", tag_list):
+            return
+
+        print_verbose("Worker tags : %s" % worker_tags, 2)
+
+        self.build.add_property("worker", worker_tags)
 
     def json_request(self, json_request):
         '''
