@@ -25,6 +25,7 @@ import json
 import re
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
+from buildtimetrend.build import Build
 from buildtimetrend.stages import Stage
 from buildtimetrend.stages import Stages
 from buildtimetrend.settings import print_verbose
@@ -57,7 +58,7 @@ class TravisData(object):
         self.build_data = {}
         self.jobs_data = {}
         self.travis_substage = None
-        self.stages = Stages()
+        self.build = Build()
         self.repo = repo
         self.api_url = TRAVIS_ORG_API_URL
         self.build_id = str(build_id)
@@ -146,7 +147,7 @@ class TravisData(object):
                 if self.travis_substage.has_finished():
                     # only log complete substages
                     if not self.travis_substage.finished_incomplete:
-                        self.stages.add_stage(self.travis_substage.stage)
+                        self.build.add_stage(self.travis_substage.stage)
                     self.travis_substage = TravisSubstage()
 
     def json_request(self, json_request):
