@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.build import Build
+from buildtimetrend.stages import Stage
 from buildtimetrend.stages import Stages
 import constants
 from lxml import etree
@@ -84,6 +85,70 @@ class TestBuild(unittest.TestCase):
 
         self.build.add_stages(Stages())
         self.assertEquals(0, len(self.build.stages.stages))
+
+    def test_add_stage(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, self.build.add_stage)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, self.build.add_stage, None)
+        self.assertRaises(TypeError, self.build.add_stage, "string")
+
+        # add a stage
+        stage = Stage()
+        stage.set_name("stage1")
+        stage.set_started_at(constants.TIMESTAMP_STARTED)
+        stage.set_finished_at(constants.TIMESTAMP1)
+        stage.set_duration(235)
+
+        self.build.add_stage(stage)
+
+        # test number of stages
+        self.assertEquals(1, len(self.build.stages.stages))
+
+        # test started_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP_STARTED, self.build.stages.started_at)
+
+        # test finished_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP1, self.build.stages.finished_at)
+
+        # test stages (names + duration)
+        self.assertListEqual(
+           [{'duration': 235,
+             'finished_at': constants.SPLIT_TIMESTAMP1,
+             'name': 'stage1',
+             'started_at': constants.SPLIT_TIMESTAMP_STARTED}],
+            self.build.stages.stages)
+
+        # add another stage
+        stage = Stage()
+        stage.set_name("stage2")
+        stage.set_started_at(constants.TIMESTAMP1)
+        stage.set_finished_at(constants.TIMESTAMP_FINISHED)
+        stage.set_duration(136.234)
+
+        self.build.add_stage(stage)
+
+        # test number of stages
+        self.assertEquals(2, len(self.build.stages.stages))
+
+        # test started_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP_STARTED, self.build.stages.started_at)
+
+        # test finished_at
+        self.assertEqual(constants.SPLIT_TIMESTAMP_FINISHED, self.build.stages.finished_at)
+
+        # test stages (names + duration)
+        self.assertListEqual(
+           [{'duration': 235,
+             'finished_at': constants.SPLIT_TIMESTAMP1,
+             'name': 'stage1',
+             'started_at': constants.SPLIT_TIMESTAMP_STARTED},
+            {'duration': 136.234,
+             'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+             'name': 'stage2',
+             'started_at': constants.SPLIT_TIMESTAMP1}],
+            self.build.stages.stages)
 
     def test_add_property(self):
         self.build.add_property('property1', 2)

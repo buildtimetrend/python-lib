@@ -48,6 +48,15 @@ class Build(object):
         if stages is not None and type(stages) is Stages:
             self.stages = stages
 
+    def add_stage(self, stage):
+        '''
+        Add a Stage instance
+
+        Parameters :
+        - stage : Stage instance
+        '''
+        self.stages.add_stage(stage)
+
     def add_property(self, name, value):
         '''
         Add a build property
