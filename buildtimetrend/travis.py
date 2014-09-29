@@ -135,8 +135,8 @@ class TravisData(object):
         if self.travis_substage is None:
             self.travis_substage = TravisSubstage()
 
-        print_verbose('line : %s' % \
-            line.replace('\x0d', '*').replace('\x1b', 'ESC'), 3)
+        escaped_line = line.replace('\x0d', '*').replace('\x1b', 'ESC')
+        print_verbose('line : %s' % escaped_line, 3)
 
         # parse Travis CI timing tags
         for parse_string in TRAVIS_LOG_PARSE_TIMING_STRINGS:
