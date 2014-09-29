@@ -23,11 +23,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import urllib2
 import json
 import re
+import logging
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.build import Build
 from buildtimetrend.stages import Stage
-from buildtimetrend.settings import print_verbose
 import buildtimetrend
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
@@ -135,7 +135,7 @@ class TravisData(object):
             self.travis_substage = TravisSubstage()
 
         escaped_line = line.replace('\x0d', '*').replace('\x1b', 'ESC')
-        print_verbose('line : %s' % escaped_line, 3)
+        logging.debug('line : %s' % escaped_line)
 
         # parse Travis CI timing tags
         for parse_string in TRAVIS_LOG_PARSE_TIMING_STRINGS:
@@ -155,7 +155,7 @@ class TravisData(object):
         Parse and process Travis CI worker tag
         Param line : line from logfile containing Travis CI tags
         '''
-        print_verbose('line : %s' % line, 3)
+        logging.debug('line : %s' % line)
 
         # parse Travis CI worker tags
         result = re.search(TRAVIS_LOG_PARSE_WORKER_STRING, line)
@@ -170,7 +170,7 @@ class TravisData(object):
         if not check_dict(worker_tags, "worker_tags", tag_list):
             return
 
-        print_verbose("Worker tags : %s" % worker_tags, 2)
+        logging.debug("Worker tags : %s" % worker_tags)
 
         self.build.add_property("worker", worker_tags)
 
@@ -253,7 +253,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        print_verbose("Start stage : %s" % tags_dict, 2)
+        logging.debug("Start stage : %s" % tags_dict)
 
         if self.has_started():
             print "Substage already started"
@@ -279,7 +279,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'start_hash'):
             return False
 
-        print_verbose("Start time : %s" % tags_dict, 2)
+        logging.debug("Start time : %s" % tags_dict)
 
         if self.has_timing_hash():
             print "Substage timing already set"
@@ -301,7 +301,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'command'):
             return False
 
-        print_verbose("Command : %s" % tags_dict, 2)
+        logging.debug("Command : %s" % tags_dict)
 
         if self.has_command():
             print "Command is already set"
@@ -330,7 +330,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        print_verbose("End time : %s" % tags_dict, 2)
+        logging.debug("End time : %s" % tags_dict)
 
         # check if timing was started
         # and if hash matches
@@ -364,7 +364,7 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        print_verbose("End stage : %s" % tags_dict, 2)
+        logging.debug("End stage : %s" % tags_dict)
 
         # construct substage name
         end_stagename = "%s.%s" % (
