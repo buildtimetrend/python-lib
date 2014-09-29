@@ -256,14 +256,14 @@ class TravisSubstage(object):
         logging.debug("Start stage : %s", tags_dict)
 
         if self.has_started():
-            print "Substage already started"
+            logging.warning("Substage already started")
             return False
 
         name = "%s.%s" % (
             tags_dict['start_stage'], tags_dict['start_substage']
         )
         if self.stage.set_name(name):
-            print "Set name : %s" % name
+            logging.info("Set name : %s", name)
             return True
 
         return False
@@ -282,11 +282,11 @@ class TravisSubstage(object):
         logging.debug("Start time : %s", tags_dict)
 
         if self.has_timing_hash():
-            print "Substage timing already set"
+            logging.warning("Substage timing already set")
             return False
 
         self.timing_hash = tags_dict['start_hash']
-        print "Set timing hash : %s" % self.timing_hash
+        logging.info("Set timing hash : %s", self.timing_hash)
 
         return True
 
@@ -304,11 +304,11 @@ class TravisSubstage(object):
         logging.debug("Command : %s", tags_dict)
 
         if self.has_command():
-            print "Command is already set"
+            logging.warning("Command is already set")
             return False
 
         if self.stage.set_command(tags_dict['command']):
-            print "Set command : %s" % tags_dict['command']
+            logging.info("Set command : %s", tags_dict['command'])
             return True
 
         return False
@@ -336,18 +336,19 @@ class TravisSubstage(object):
         # and if hash matches
         if (not self.has_timing_hash() or
                 self.timing_hash != tags_dict['end_hash']):
-            print "Substage timing was not started or hash doesn't match"
+            logging.warning("Substage timing was not started or \
+                            hash doesn't match")
             self.finished_incomplete = True
             return False
 
         if self.stage.set_started_at_nano(tags_dict['start_timestamp']) and \
                 self.stage.set_finished_at_nano(tags_dict['finish_timestamp']) and \
                 self.stage.set_duration_nano(tags_dict['duration']):
-            print "Stage started at %s" % \
-                self.stage.data["started_at"]["isotimestamp"]
-            print "Stage finished at %s" % \
-                self.stage.data["finished_at"]["isotimestamp"]
-            print "Stage duration : %ss" % self.stage.data['duration']
+            logging.info("Stage started at %s",
+                         self.stage.data["started_at"]["isotimestamp"])
+            logging.info("Stage finished at %s",
+                         self.stage.data["finished_at"]["isotimestamp"])
+            logging.info("Stage duration : %ss", self.stage.data['duration'])
             return True
 
         return False
@@ -374,13 +375,13 @@ class TravisSubstage(object):
         # check if stage was started
         # and if substage name matches
         if not self.has_name() or self.stage.data["name"] != end_stagename:
-            print "Substage was not started or name doesn't match"
+            logging.warning("Substage was not started or name doesn't match")
             self.finished_incomplete = True
             return False
 
         # stage finished successfully
         self.finished = True
-        print "Stage %s finished successfully" % self.get_name()
+        logging.info("Stage %s finished successfully", self.get_name())
 
         return True
 
