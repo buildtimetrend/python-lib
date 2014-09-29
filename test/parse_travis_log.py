@@ -34,5 +34,5 @@ travis_data.parse_job_log_file(LOGFILE)
 
 print
 print "Finished stages"
-for stage in travis_data.stages.stages:
+for stage in travis_data.build.stages.stages:
     print "Substage %s, duration %ss, command : %s" % (stage["name"], stage["duration"], stage["command"])
