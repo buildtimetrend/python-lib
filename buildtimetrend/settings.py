@@ -54,7 +54,7 @@ def print_verbose(string, level=1):
     '''
     Print wrapper, taking verbosity level into account.
     Param string string to be printed
-    Param level verbosity level at which a string should be printed, default = 1
+    Param level verbosity level at which a string should be printed, default=1
     '''
     # print string if level is equal or lower to verbosity level
     if level <= VERBOSITY:
