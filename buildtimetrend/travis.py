@@ -27,7 +27,6 @@ from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.build import Build
 from buildtimetrend.stages import Stage
-from buildtimetrend.stages import Stages
 from buildtimetrend.settings import print_verbose
 import buildtimetrend
 
