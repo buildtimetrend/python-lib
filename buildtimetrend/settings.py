@@ -26,6 +26,7 @@ import buildtimetrend
 
 VERBOSITY = 1
 
+
 def get_project_name():
     '''
     Get project name
@@ -47,6 +48,7 @@ def get_project_info():
         "schema_version": buildtimetrend.SCHEMA_VERSION,
         "project_name": str(get_project_name())
     }
+
 
 def print_verbose(string, level=1):
     '''
