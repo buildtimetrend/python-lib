@@ -99,7 +99,7 @@ class Trend(object):
                     # when a new stage is added,
                     # create list with zeros,
                     # one for each existing build
-                    temp_dict = [0]*(index + 1)
+                    temp_dict = [0] * (index + 1)
                 temp_dict[index] = float(stage.get('duration'))
                 self.stages[stage.get('name')] = temp_dict
 
