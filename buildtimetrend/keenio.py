@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import os
+import logging
 import keen
 from keen import scoped_keys
 from buildtimetrend.tools import add_project_info_dict
@@ -101,7 +102,7 @@ def generate_overview_config_file(repo):
     if not ("BUILD_TREND_SAMPLE_CONFIGFILE" in os.environ
             and "BUILD_TREND_CONFIGFILE" in os.environ
             and "KEEN_PROJECT_ID" in os.environ):
-        print "Trends overview config file was not created"
+        logging.error("Trends overview config file was not created")
         return
 
     sample_filename = os.getenv("BUILD_TREND_SAMPLE_CONFIGFILE")
@@ -129,4 +130,4 @@ def generate_overview_config_file(repo):
                 line = line.replace(src, target)
             outfile.write(line)
 
-    print "Created trends overview config file"
+    logging.info("Created trends overview config file")

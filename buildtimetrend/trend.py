@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from lxml import etree
 import matplotlib
+import logging
 # Force matplotlib to not use any Xwindow backend.
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
@@ -79,8 +80,8 @@ class Trend(object):
                 if build_child.tag == 'stages':
                     stage_count = len(build_child)
                     self.parse_xml_stages(build_child, index)
-            print "Build ID : %s, Job : %s, stages : %d" % \
-                (build_id, job_id, stage_count)
+            logging.info("Build ID : %s, Job : %s, stages : %d",
+                build_id, job_id, stage_count)
             index += 1
         return True
 

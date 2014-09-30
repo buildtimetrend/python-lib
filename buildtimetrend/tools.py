@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import copy
 import os
+import logging
 from datetime import datetime
 from dateutil.parser import parse
 from dateutil.tz import tzutc
@@ -163,7 +164,7 @@ def check_file(filename):
     '''
     # load timestamps file
     if not os.path.isfile(filename):
-        print 'File doesn\'t exist : {0}'.format(filename)
+        logging.critical('File doesn\'t exist : %s', filename)
         return False
 
     return True
