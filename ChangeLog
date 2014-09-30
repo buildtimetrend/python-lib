@@ -5,6 +5,7 @@ v0.2 (not yet released)
 - issue #19 : update Keen.io charts using query request refresh function
 - issue #26 : add chart displaying builds per time of day or day of week
 - issue #44 : Display buildtime averages of different timeframes in the same chart
+- replace print statements by logging methods
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git
