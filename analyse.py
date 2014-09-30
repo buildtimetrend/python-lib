@@ -6,6 +6,7 @@ to an xml file or sends it to Keen.io, depending on the mode.
 
 Usage :
   analyse.py -h
+    --log=<log_level> : DEBUG, INFO, WARNING, ERRROR, CRITICAL
     --build=<buildID>
     --job=<jobID>
     --branch=<branchname>
@@ -37,6 +38,7 @@ import os
 import sys
 import getopt
 import logging
+from buildtimetrend import set_loglevel
 from buildtimetrend.build import Build
 from buildtimetrend.travis import TravisData
 from buildtimetrend.keenio import keen_io_writable
@@ -60,12 +62,13 @@ def analyse(argv):
     build = Build(TIMESTAMP_FILE)
 
     # process arguments
-    usage_string = 'analyse.py -h --build=<buildID>' \
+    usage_string = 'analyse.py -h --log=<log_level> --build=<buildID>' \
         ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
         ' --ci=<ci_platform> --result=<build_result> --mode=<storage_mode>'
     try:
         opts, args = getopt.getopt(
             argv, "h", [
+                "log=",
                 "build=", "job=", "branch=", "repo=",
                 "ci=", "result=", "mode=", "help"]
         )
@@ -76,6 +79,8 @@ def analyse(argv):
         if opt in ('-h', "--help"):
             print usage_string
             sys.exit()
+        elif opt == "--log":
+            set_loglevel(arg)
         elif opt == "--build":
             build.add_property("build", arg)
         elif opt == "--job":

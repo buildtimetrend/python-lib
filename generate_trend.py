@@ -28,6 +28,7 @@ import os
 import sys
 import getopt
 import logging
+from buildtimetrend import set_loglevel
 
 
 def generate_trend(argv):
@@ -35,9 +36,9 @@ def generate_trend(argv):
     Generate trends from analised buildtime data
     '''
     # process arguments
-    usage_string = 'generate_trend.py -h --mode=native,keen'
+    usage_string = 'generate_trend.py -h --log=<log_level> --mode=native,keen'
     try:
-        opts, args = getopt.getopt(argv, "h", ["mode=", "help"])
+        opts, args = getopt.getopt(argv, "h", ["log=", "mode=", "help"])
     except getopt.GetoptError:
         print usage_string
         sys.exit(2)
@@ -47,6 +48,8 @@ def generate_trend(argv):
         if opt in ('-h', "--help"):
             print usage_string
             sys.exit()
+        elif opt == "--log":
+            set_loglevel(arg)
         elif opt == "--mode":
             if arg == "native":
                 trend_native()
