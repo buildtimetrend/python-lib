@@ -27,6 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 import sys
 import getopt
+import logging
 
 
 def generate_trend(argv):
@@ -66,9 +67,9 @@ def trend_native():
 
     trend = Trend()
     if trend.gather_data(result_file):
-        # print number of builds and list of buildnames
-        print 'Builds ({}) :'.format(len(trend.builds)), trend.builds
-        print 'Stages ({}) :'.format(len(trend.stages)), trend.stages
+        # log number of builds and list of buildnames
+        logging.info('Builds (%d) : %s', len(trend.builds), trend.builds)
+        logging.info('Stages (%d) : %s', len(trend.stages), trend.stages)
         trend.generate(chart_file)
 
 

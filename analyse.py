@@ -36,6 +36,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 import sys
 import getopt
+import logging
 from buildtimetrend.build import Build
 from buildtimetrend.travis import TravisData
 from buildtimetrend.keenio import keen_io_writable
@@ -117,8 +118,8 @@ def log_build_native(build):
         try:
             root_xml = etree.parse(RESULT_FILE).getroot()
         except etree.XMLSyntaxError:
-            print 'ERROR : XML format invalid : a new file is created,' \
-                ' corrupt file is discarded'
+            logging.error('XML format invalid : a new file is created,'
+                ' corrupt file is discarded')
             root_xml = etree.Element("builds")
     else:
         root_xml = etree.Element("builds")
@@ -136,7 +137,7 @@ def log_build_native(build):
 def log_build_keen(build):
     '''Send build data to keen.io'''
     if keen_io_writable():
-        print "Sending data to Keen.io"
+        logging.info("Sending data to Keen.io")
         keen_add_event("builds", {"build": build.to_dict()})
         keen_add_events("build_stages", build.stages_to_list())
 
