@@ -29,12 +29,14 @@
 
 # set default mode
 mode=keen
+logLevel=WARNING
 
 # parse command line options
-while getopts ":m:h" option; do
+while getopts ":m:l:h" option; do
   case $option in
     m) mode=$OPTARG ;;
-    h) echo "usage: $0 [-h] [-m native,keen]"; exit ;;
+    l) logLevel=$OPTARG ;;
+    h) echo "usage: $0 [-h] [-m native,keen] [-l DEBUG,INFO, WARNING, ERROR, CRITICAL]"; exit ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -90,9 +92,9 @@ if [ "$TRAVIS" == "true" ] && [ "$BUILD_TREND_INIT" == "1" ]; then
   export BUILD_TREND_SAMPLE_CONFIGFILE=$BUILD_TREND_TRENDS_DIR/config_sample.js
 
   # perform analysis
-  analyse.sh -m "$mode"
+  analyse.sh -m "$mode" -l "$logLevel"
   # generate trend
-  generate_trend.py --mode="$mode"
+  generate_trend.py --mode="$mode" --log="$logLevel"
   # update trends overview HTML and JavaScript file
   cp "$BUILD_TREND_ORIGIN_OVERVIEWFILE" "$BUILD_TREND_OVERVIEWFILE"
   cp "$BUILD_TREND_ORIGIN_JSFILE" "$BUILD_TREND_JSFILE"

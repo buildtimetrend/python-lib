@@ -23,12 +23,14 @@
 
 # set default mode
 mode=keen
+logLevel=WARNING
 
 # parse command line options
-while getopts ":m:h" option; do
+while getopts ":m:l:h" option; do
   case $option in
     m) mode=$OPTARG ;;
-    h) echo "usage: $0 [-h] [-m native,keen]"; exit ;;
+    l) logLevel=$OPTARG ;;
+    h) echo "usage: $0 [-h] [-m native,keen] [-l DEBUG,INFO, WARNING, ERROR, CRITICAL]"; exit ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -55,9 +57,9 @@ if [ "$BUILD_TREND_INIT" == "1" ]; then
             test_result="errored"
             ;;
         esac
-        analyse.py --mode="$mode" --ci="travis" --branch="$TRAVIS_BRANCH" --build="$TRAVIS_BUILD_NUMBER" --job="$TRAVIS_JOB_NUMBER" --repo="$TRAVIS_REPO_SLUG" --result="$test_result"
+        analyse.py --mode="$mode" --log="$logLevel" --ci="travis" --branch="$TRAVIS_BRANCH" --build="$TRAVIS_BUILD_NUMBER" --job="$TRAVIS_JOB_NUMBER" --repo="$TRAVIS_REPO_SLUG" --result="$test_result"
     else
-	analyse.py --mode="$mode"
+        analyse.py --mode="$mode" --log="$logLevel"
     fi
 else
     echo "Buildtime-trend is not initialised, first run 'source init.sh'."
