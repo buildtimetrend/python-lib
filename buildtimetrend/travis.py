@@ -258,18 +258,19 @@ class TravisSubstage(object):
 
         logging.debug("Start stage : %s", tags_dict)
 
+        result = False
+
         if self.has_started():
             logging.warning("Substage already started")
-            return False
+        else:
+            name = "%s.%s" % (
+                tags_dict['start_stage'], tags_dict['start_substage']
+            )
+            if self.stage.set_name(name):
+                logging.info("Set name : %s", name)
+                result = True
 
-        name = "%s.%s" % (
-            tags_dict['start_stage'], tags_dict['start_substage']
-        )
-        if self.stage.set_name(name):
-            logging.info("Set name : %s", name)
-            return True
-
-        return False
+        return result
 
     def process_start_time(self, tags_dict):
         '''
@@ -306,15 +307,15 @@ class TravisSubstage(object):
 
         logging.debug("Command : %s", tags_dict)
 
+        result = False
+
         if self.has_command():
             logging.warning("Command is already set")
-            return False
-
-        if self.stage.set_command(tags_dict['command']):
+        elif self.stage.set_command(tags_dict['command']):
             logging.info("Set command : %s", tags_dict['command'])
-            return True
+            result = True
 
-        return False
+        return result
 
     def process_end_time(self, tags_dict):
         '''
@@ -335,6 +336,8 @@ class TravisSubstage(object):
 
         logging.debug("End time : %s", tags_dict)
 
+        result = False
+
         # check if timing was started
         # and if hash matches
         if (not self.has_timing_hash() or
@@ -342,9 +345,7 @@ class TravisSubstage(object):
             logging.warning("Substage timing was not started or \
                             hash doesn't match")
             self.finished_incomplete = True
-            return False
-
-        if self.stage.set_started_at_nano(tags_dict['start_timestamp']) and \
+        elif self.stage.set_started_at_nano(tags_dict['start_timestamp']) and \
                 self.stage.set_finished_at_nano(tags_dict['finish_timestamp']) and \
                 self.stage.set_duration_nano(tags_dict['duration']):
             logging.info("Stage started at %s",
@@ -352,9 +353,9 @@ class TravisSubstage(object):
             logging.info("Stage finished at %s",
                          self.stage.data["finished_at"]["isotimestamp"])
             logging.info("Stage duration : %ss", self.stage.data['duration'])
-            return True
+            result = True
 
-        return False
+        return result
 
     def process_end_stage(self, tags_dict):
         '''
