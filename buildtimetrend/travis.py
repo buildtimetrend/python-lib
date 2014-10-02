@@ -67,7 +67,7 @@ class TravisData(object):
         '''
         Retrieve Travis CI build data.
         '''
-        request = 'repos/' + self.repo + '/builds?number=' + self.build_id
+        request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
         self.build_data = self.json_request(request)
 
     def get_build_jobs(self):
@@ -82,14 +82,15 @@ class TravisData(object):
         '''
         Retrieve Travis CI job data.
         '''
-        self.jobs_data[str(job_id)] = self.json_request('jobs/' + str(job_id))
+        self.jobs_data[str(job_id)] = self.json_request('jobs/%s' % str(job_id))
 
     def get_job_log(self, job_id):
         '''
         Retrieve Travis CI job log.
         '''
-        request_url = self.api_url + 'jobs/' + str(job_id) + '/log'
-        print "Request build job log : " + request_url
+        request = 'jobs/%s/log' % str(job_id)
+        request_url = self.api_url + request
+        logging.info("Request build job log : %s", request_url)
         return urllib2.urlopen(request_url)
 
     def parse_job_log(self, job_id):
