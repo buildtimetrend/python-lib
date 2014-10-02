@@ -167,12 +167,9 @@ class TravisData(object):
         # check if parameter worker_tags is a dictionary and
         # if it contains all required tags
         tag_list = list({'hostname', 'os'})
-        if not check_dict(worker_tags, "worker_tags", tag_list):
-            return
-
-        logging.debug("Worker tags : %s", worker_tags)
-
-        self.build.add_property("worker", worker_tags)
+        if check_dict(worker_tags, "worker_tags", tag_list):
+            logging.debug("Worker tags : %s", worker_tags)
+            self.build.add_property("worker", worker_tags)
 
     def json_request(self, json_request):
         '''
