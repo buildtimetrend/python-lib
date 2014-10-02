@@ -23,6 +23,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
+from buildtimetrend.tools import set_loglevel
+
 VERSION = "0.2-dev"
 SCHEMA_VERSION = "2"
 USER_AGENT = "buildtime-trend/" + VERSION
+
+
+set_loglevel("WARNING")
