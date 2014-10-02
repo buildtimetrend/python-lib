@@ -129,6 +129,11 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(1408282905.966106,
             self.travis_data.build.stages.finished_at["timestamp_seconds"])
 
+        # check worker tag
+        self.assertDictEqual({'hostname': 'worker-linux-12-1.bb.travis-ci.org',
+            'os': 'travis-linux-11'},
+            self.travis_data.build.get_property("worker"))
+
     def test_parse_travis_time_tag(self):
         # read sample lines with timetags
         with open(TRAVIS_TIMING_TAGS_FILE, 'rb') as f:

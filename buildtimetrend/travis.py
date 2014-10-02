@@ -123,8 +123,12 @@ class TravisData(object):
         self.travis_substage = TravisSubstage()
 
         for line in stream:
+            # parse Travis CI timing tags
             if 'travis_' in line:
                 self.parse_travis_time_tag(line)
+            # parse Travis CI worker tag
+            if 'Using worker:' in line:
+                self.parse_travis_worker_tag(line)
 
     def parse_travis_time_tag(self, line):
         '''
