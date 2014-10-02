@@ -27,6 +27,8 @@ import unittest
 TRAVIS_TIMING_TAGS_FILE = "test/test_sample_travis_time_tags"
 TRAVIS_INCORRECT_TIMING_TAGS_FILE = "test/test_sample_travis_time_tags_incorrect"
 TRAVIS_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org:travis-linux-11"
+TRAVIS_INCOMPLETE_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org"
+
 TEST_REPO = 'ruleant/buildtime-trend'
 TEST_BUILD = '158'
 VALID_HASH1 = '1234abcd'
@@ -343,8 +345,16 @@ class TestTravisData(unittest.TestCase):
                 self.travis_data.build.stages.finished_at["timestamp_seconds"])
 
     def test_parse_travis_worker_tag(self):
-        self.travis_data.parse_travis_worker_tag(TRAVIS_LOG_WORKER)
+        # pass empty string
+        self.travis_data.parse_travis_worker_tag("")
+        self.assertEqual(None, self.travis_data.build.get_property("worker"))
 
+        # pass incomplete string
+        self.travis_data.parse_travis_worker_tag(TRAVIS_INCOMPLETE_LOG_WORKER)
+        self.assertEqual(None, self.travis_data.build.get_property("worker"))
+
+        # pass correct string
+        self.travis_data.parse_travis_worker_tag(TRAVIS_LOG_WORKER)
         self.assertDictEqual({'hostname': 'worker-linux-12-1.bb.travis-ci.org',
             'os': 'travis-linux-11'},
             self.travis_data.build.get_property("worker"))
