@@ -104,6 +104,11 @@ class TestTravisData(unittest.TestCase):
         self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_LOG_FILE))
         self._check_travis_log()
 
+    def test_parse_travis_log(self):
+        # retrieve and check Travis CI logfile
+        self.travis_data.parse_job_log(32774630)
+        self._check_travis_log()
+
     def _check_travis_log(self):
         # checks result of parsing a sample Travis CI log file
         self.assertEquals(18, len(self.travis_data.build.stages.stages))
