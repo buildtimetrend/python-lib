@@ -26,6 +26,7 @@ import unittest
 
 TRAVIS_TIMING_TAGS_FILE = "test/test_sample_travis_time_tags"
 TRAVIS_INCORRECT_TIMING_TAGS_FILE = "test/test_sample_travis_time_tags_incorrect"
+TRAVIS_LOG_FILE = "test/test_sample_travis_log"
 TRAVIS_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org:travis-linux-11"
 TRAVIS_INCOMPLETE_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org"
 
@@ -98,6 +99,35 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(1408282901.287937,
             self.travis_data.build.stages.finished_at["timestamp_seconds"])
 
+    def test_parse_valid_job_log_travis_sample(self):
+        # add a sample Travis CI logfile
+        self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_LOG_FILE))
+        self.assertEquals(18, len(self.travis_data.build.stages.stages))
+
+        self.assertEquals('git.1', self.travis_data.build.stages.stages[0]["name"])
+        self.assertEquals('', self.travis_data.build.stages.stages[1]["name"])
+        self.assertEquals('git.3', self.travis_data.build.stages.stages[2]["name"])
+        self.assertEquals('', self.travis_data.build.stages.stages[3]["name"])
+        self.assertEquals('', self.travis_data.build.stages.stages[4]["name"])
+        self.assertEquals('', self.travis_data.build.stages.stages[5]["name"])
+        self.assertEquals('', self.travis_data.build.stages.stages[6]["name"])
+        self.assertEquals('install.1', self.travis_data.build.stages.stages[7]["name"])
+        self.assertEquals('install.2', self.travis_data.build.stages.stages[8]["name"])
+        self.assertEquals('install.3', self.travis_data.build.stages.stages[9]["name"])
+        self.assertEquals('install.4', self.travis_data.build.stages.stages[10]["name"])
+        self.assertEquals('', self.travis_data.build.stages.stages[11]["name"])
+        self.assertEquals('', self.travis_data.build.stages.stages[12]["name"])
+        self.assertEquals('after_script.1', self.travis_data.build.stages.stages[13]["name"])
+        self.assertEquals('after_script.2', self.travis_data.build.stages.stages[14]["name"])
+        self.assertEquals('after_script.3', self.travis_data.build.stages.stages[15]["name"])
+        self.assertEquals('after_script.4', self.travis_data.build.stages.stages[16]["name"])
+        self.assertEquals('after_script.5', self.travis_data.build.stages.stages[17]["name"])
+
+        # check build started and finished timestamps
+        self.assertEquals(1408282815.329855,
+            self.travis_data.build.stages.started_at["timestamp_seconds"])
+        self.assertEquals(1408282905.966106,
+            self.travis_data.build.stages.finished_at["timestamp_seconds"])
 
     def test_parse_travis_time_tag(self):
         # read sample lines with timetags
