@@ -220,3 +220,20 @@ def check_list(param_list, name):
         raise TypeError("param %s should be a list" % name)
 
     return True
+
+
+def set_loglevel(loglevel):
+    '''
+    Sets loglevel
+    Based on example on https://docs.python.org/2/howto/logging.html
+
+    Assuming loglevel is bound to the string value obtained from the
+    command line argument. Convert to upper case to allow the user to
+    specify --log=DEBUG or --log=debug
+    '''
+    numeric_level = getattr(logging, loglevel.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+    logger = logging.getLogger()
+    logger.setLevel(numeric_level)
+    logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)

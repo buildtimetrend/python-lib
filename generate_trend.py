@@ -28,7 +28,7 @@ import os
 import sys
 import getopt
 import logging
-from buildtimetrend import set_loglevel
+from buildtimetrend.tools import set_loglevel
 
 
 def generate_trend(argv):
