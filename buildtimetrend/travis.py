@@ -266,9 +266,7 @@ class TravisSubstage(object):
             name = "%s.%s" % (
                 tags_dict['start_stage'], tags_dict['start_substage']
             )
-            if self.stage.set_name(name):
-                logging.info("Set name : %s", name)
-                result = True
+            result = self.stage.set_name(name)
 
         return result
 

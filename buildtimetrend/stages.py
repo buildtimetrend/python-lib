@@ -169,6 +169,7 @@ class Stage(object):
             return False
 
         self.data["name"] = str(name)
+        logging.info("Set name : %s", name)
         return True
 
     def set_command(self, command):
