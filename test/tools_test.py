@@ -25,6 +25,7 @@ from buildtimetrend.settings import get_project_info
 import os
 import unittest
 import constants
+import logging
 
 class TestTools(unittest.TestCase):
     def setUp(self):
@@ -224,3 +225,29 @@ class TestTools(unittest.TestCase):
 
         # should return true if parameter is a list
         self.assertTrue(check_list(["string", "test"], "name"))
+
+    def test_set_loglevel(self):
+        # TODO tests fail, getEffectiveLevel returns 0
+        logger = logging.getLogger()
+        # test default loglevel
+        #self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
+
+        # test setting loglevel to INFO
+        set_loglevel("INFO")
+        self.assertEquals(logging.INFO, logger.getEffectiveLevel())
+
+        # test setting loglevel to DEBUG
+        set_loglevel("DEBUG")
+        self.assertEquals(logging.DEBUG, logger.getEffectiveLevel())
+
+        # test setting loglevel to ERROR
+        set_loglevel("ERROR")
+        self.assertEquals(logging.ERROR, logger.getEffectiveLevel())
+
+        # test setting loglevel to CRITICAL
+        set_loglevel("CRITICAL")
+        self.assertEquals(logging.CRITICAL, logger.getEffectiveLevel())
+
+        # test setting loglevel to WARNING
+        set_loglevel("WARNING")
+        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())

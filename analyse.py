@@ -38,13 +38,13 @@ import os
 import sys
 import getopt
 import logging
-from buildtimetrend import set_loglevel
 from buildtimetrend.build import Build
 from buildtimetrend.travis import TravisData
 from buildtimetrend.keenio import keen_io_writable
 from buildtimetrend.keenio import keen_add_event
 from buildtimetrend.keenio import keen_add_events
 from buildtimetrend.tools import check_file
+from buildtimetrend.tools import set_loglevel
 
 # use parameter for timestamps file and check if file exists
 TIMESTAMP_FILE = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
