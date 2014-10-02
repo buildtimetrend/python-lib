@@ -251,3 +251,13 @@ class TestTools(unittest.TestCase):
         # test setting loglevel to WARNING
         set_loglevel("WARNING")
         self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
+
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, set_loglevel)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, set_loglevel, None)
+        self.assertRaises(ValueError, set_loglevel, "invalid")
+
+        # passing invalid tags should not change log level
+        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())

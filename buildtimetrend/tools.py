@@ -231,6 +231,9 @@ def set_loglevel(loglevel):
     command line argument. Convert to upper case to allow the user to
     specify --log=DEBUG or --log=debug
     '''
+    if loglevel is None or type(loglevel) is not str:
+        raise TypeError("param %s should be a string" % 'loglevel')
+
     numeric_level = getattr(logging, loglevel.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError('Invalid log level: %s' % loglevel)
