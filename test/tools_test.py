@@ -118,6 +118,19 @@ class TestTools(unittest.TestCase):
             add_project_info_dict({"test": "value"})
         )
 
+         # dict with finished_at timestamp
+        self.assertDictEqual(
+                {"test": "value",
+                "buildtime_trend": self.project_info,
+                "build": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED},
+                "keen": {"timestamp": constants.ISOTIMESTAMP_FINISHED}
+            },
+            add_project_info_dict(
+                {"test": "value",
+                "build": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED}
+            })
+        )
+
     def test_add_project_info_list(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, add_project_info_list)
