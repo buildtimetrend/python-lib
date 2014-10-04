@@ -62,6 +62,19 @@ class TestTravisData(unittest.TestCase):
             '2014-07-08T11:18:13Z',
             self.travis_data.get_started_at())
 
+    def test_process_build_jobs(self):
+        # retrieve data from Travis API
+        self.travis_data.get_build_data()
+        self.travis_data.process_build_jobs()
+        self.assertEquals(1, len(self.travis_data.build_jobs))
+
+        self.travis_data = TravisData('ruleant/getback_gps', 485)
+        self.assertEquals(0, len(self.travis_data.build_jobs))
+        # retrieve data from Travis API
+        self.travis_data.get_build_data()
+        self.travis_data.process_build_jobs()
+        self.assertEquals(2, len(self.travis_data.build_jobs))
+
     def test_nofile(self):
         # number of stages should be zero when file doesn't exist
         self.assertFalse(self.travis_data.parse_job_log_file('nofile.csv'))
