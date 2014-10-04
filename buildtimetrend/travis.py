@@ -56,9 +56,10 @@ class TravisData(object):
         Param build_id : Travis CI build id (fe. 158)
         '''
         self.build_data = {}
-        self.jobs_data = {}
+        self.job_data = {}
+        self.build_jobs = {}
+        self.current_job = Build()
         self.travis_substage = None
-        self.build = Build()
         self.repo = repo
         self.api_url = TRAVIS_ORG_API_URL
         self.build_id = str(build_id)
@@ -70,20 +71,28 @@ class TravisData(object):
         request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
         self.build_data = self.json_request(request)
 
-    def get_build_jobs(self):
+    def process_build_jobs(self):
         '''
         Retrieve Travis CI build job data.
         '''
         if len(self.build_data) > 0:
             for job_id in self.build_data['builds'][0]['job_ids']:
+                # retrieve job data from Travis CI
                 self.get_job_data(job_id)
+                # parse Travis CI job log file
+                self.parse_job_log(job_id)
+
+                # store build job
+                self.build_jobs[str(job_id)] = self.current_job
+                # create new build job instance
+                self.current_job = Build()
 
     def get_job_data(self, job_id):
         '''
         Retrieve Travis CI job data.
         '''
         request = 'jobs/%s' % str(job_id)
-        self.jobs_data[str(job_id)] = self.json_request(request)
+        self.job_data = self.json_request(request)
 
     def get_job_log(self, job_id):
         '''
@@ -153,7 +162,7 @@ class TravisData(object):
                 if self.travis_substage.has_finished():
                     # only log complete substages
                     if not self.travis_substage.finished_incomplete:
-                        self.build.add_stage(self.travis_substage.stage)
+                        self.current_job.add_stage(self.travis_substage.stage)
                     self.travis_substage = TravisSubstage()
 
     def parse_travis_worker_tag(self, line):
@@ -175,7 +184,7 @@ class TravisData(object):
         tag_list = list({'hostname', 'os'})
         if check_dict(worker_tags, "worker_tags", tag_list):
             logging.debug("Worker tags : %s", worker_tags)
-            self.build.add_property("worker", worker_tags)
+            self.current_job.add_property("worker", worker_tags)
 
     def json_request(self, json_request):
         '''
