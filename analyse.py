@@ -40,9 +40,7 @@ import getopt
 import logging
 from buildtimetrend.build import Build
 from buildtimetrend.travis import TravisData
-from buildtimetrend.keenio import keen_io_writable
-from buildtimetrend.keenio import keen_add_event
-from buildtimetrend.keenio import keen_add_events
+from buildtimetrend.keenio import log_build_keen
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import set_loglevel
 
@@ -138,13 +136,6 @@ def log_build_native(build):
             root_xml, xml_declaration=True,
             encoding='utf-8', pretty_print=True))
 
-
-def log_build_keen(build):
-    '''Send build data to keen.io'''
-    if keen_io_writable():
-        logging.info("Sending data to Keen.io")
-        keen_add_event("builds", {"build": build.to_dict()})
-        keen_add_events("build_stages", build.stages_to_list())
 
 if __name__ == "__main__":
     # only run analysis if timestampfile is not present

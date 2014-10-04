@@ -68,6 +68,14 @@ def keen_io_generate_read_key(repo):
     return None
 
 
+def log_build_keen(build):
+    '''Send build data to keen.io'''
+    if keen_io_writable():
+        logging.info("Sending data to Keen.io")
+        keen_add_event("builds", {"build": build.to_dict()})
+        keen_add_events("build_stages", build.stages_to_list())
+
+
 def keen_add_event(event_collection, payload):
     '''
     Wrapper for keen.add_event(), adds project info
