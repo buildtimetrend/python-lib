@@ -79,6 +79,8 @@ class TravisData(object):
             for job_id in self.build_data['builds'][0]['job_ids']:
                 # retrieve job data from Travis CI
                 self.get_job_data(job_id)
+                # process build/job data
+                self.process_job_data()
                 # parse Travis CI job log file
                 self.parse_job_log(job_id)
 
@@ -93,6 +95,25 @@ class TravisData(object):
         '''
         request = 'jobs/%s' % str(job_id)
         self.job_data = self.json_request(request)
+
+    def process_job_data(self):
+        '''
+        Process Job/build data and set build/job properties:
+        - Build/job ID
+        - build result : passed, failed, errored
+        - git repo
+        - git branch
+        - CI platform : Travis
+        '''
+        self.current_job.add_property("build",
+            self.build_data['builds'][0]['number'])
+        self.current_job.add_property("job", self.job_data['job']['number'])
+        self.current_job.add_property("branch",
+            self.job_data['commit']['branch'])
+        self.current_job.add_property("repo",
+            self.job_data['job']['repository_slug'])
+        self.current_job.add_property("ci_platform", 'travis')
+        self.current_job.add_property("result", self.job_data['job']['state'])
 
     def get_job_log(self, job_id):
         '''
