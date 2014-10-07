@@ -49,6 +49,7 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(None, self.travis_data.travis_substage)
         self.assertEquals(0, len(self.travis_data.build_jobs))
         self.assertEquals(0, len(self.travis_data.current_job.stages.stages))
+        self.assertEquals(0, len(self.travis_data.current_job.properties))
         self.assertEquals(None, self.travis_data.current_job.stages.started_at)
         self.assertEquals(None, self.travis_data.current_job.stages.finished_at)
 
@@ -67,13 +68,49 @@ class TestTravisData(unittest.TestCase):
         self.travis_data.get_build_data()
         self.travis_data.process_build_jobs()
         self.assertEquals(1, len(self.travis_data.build_jobs))
+        self.assertDictEqual({'branch': u'master',
+            'build': u'158',
+            'ci_platform': 'travis',
+            'job': u'158.1',
+            'repo': u'ruleant/buildtime-trend',
+            'result': u'passed',
+            'worker': {'hostname': 'worker-linux-11-2.bb.travis-ci.org',
+                'os': 'travis-linux-9'}
+            },
+            self.travis_data.build_jobs["29404875"].properties
+        )
 
+    def test_process_build_two_jobs(self):
         self.travis_data = TravisData('ruleant/getback_gps', 485)
         self.assertEquals(0, len(self.travis_data.build_jobs))
         # retrieve data from Travis API
         self.travis_data.get_build_data()
         self.travis_data.process_build_jobs()
         self.assertEquals(2, len(self.travis_data.build_jobs))
+        self.assertTrue("35665484" in self.travis_data.build_jobs)
+        self.assertDictEqual({'branch': u'master',
+            'build': u'485',
+            'ci_platform': 'travis',
+            'job': u'485.1',
+            'repo': u'ruleant/getback_gps',
+            'result': u'passed',
+            'worker': {'hostname': 'worker-linux-7-1.bb.travis-ci.org',
+                'os': 'travis-linux-7'}
+            },
+            self.travis_data.build_jobs["35665484"].properties
+        )
+        self.assertTrue("35665485" in self.travis_data.build_jobs)
+        self.assertDictEqual({'branch': u'master',
+            'build': u'485',
+            'ci_platform': 'travis',
+            'job': u'485.2',
+            'repo': u'ruleant/getback_gps',
+            'result': u'passed',
+            'worker': {'hostname': 'worker-linux-3-2.bb.travis-ci.org',
+                'os': 'travis-linux-7'}
+            },
+            self.travis_data.build_jobs["35665485"].properties
+        )
 
     def test_nofile(self):
         # number of stages should be zero when file doesn't exist
