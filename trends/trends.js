@@ -1,6 +1,6 @@
 /* vim: set expandtab sw=4 ts=4: */
 /**
- * Gathers build related data.
+ * Analyse and visualise trend data using the Keen.io API.
  *
  * Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
  *
