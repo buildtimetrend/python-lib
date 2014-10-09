@@ -493,10 +493,10 @@ function htmlEntities(str) {
  * Parameters :
  * - data : Keen.io query results
  * - index_captions : Captions for the index of the values
- * - value_caption : name of the value field in the query result array
+ * - value_fieldname : name of the value field in the query result array
  * - series_captions : captions for the data series
  */
-function mergeSeries(data, index_captions, value_caption, series_captions) {
+function mergeSeries(data, index_captions, value_fieldname, series_captions) {
     chart_data = [];
     // create and populate data array
     for (i = 0; i < index_captions.length; i++) {
@@ -512,7 +512,7 @@ function mergeSeries(data, index_captions, value_caption, series_captions) {
         timeframe_caption = series_captions[j];
         // copy query data into the populated array
         for (i = 0; i < timeframe_result.length; i++) {
-            index = parseInt(timeframe_result[i][value_caption])
+            index = parseInt(timeframe_result[i][value_fieldname])
             chart_data[index][timeframe_caption] = timeframe_result[i]["result"];
         }
     }
