@@ -489,6 +489,12 @@ function htmlEntities(str) {
 
 /**
  * Merge data from several series, with identical X-axis labels
+ * 
+ * Parameters :
+ * - data : Keen.io query results
+ * - index_captions : Captions for the index of the values
+ * - value_caption : name of the value field in the query result array
+ * - series_captions : captions for the data series
  */
 function mergeSeries(data, index_captions, value_caption, series_captions) {
     chart_data = [];
