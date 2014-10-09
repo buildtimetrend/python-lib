@@ -56,7 +56,6 @@ class TravisData(object):
         Param build_id : Travis CI build id (fe. 158)
         '''
         self.build_data = {}
-        self.job_data = {}
         self.build_jobs = {}
         self.current_job = Build()
         self.travis_substage = None
@@ -78,9 +77,9 @@ class TravisData(object):
         if len(self.build_data) > 0:
             for job_id in self.build_data['builds'][0]['job_ids']:
                 # retrieve job data from Travis CI
-                self.get_job_data(job_id)
+                job_data = self.get_job_data(job_id)
                 # process build/job data
-                self.process_job_data()
+                self.process_job_data(job_data)
                 # parse Travis CI job log file
                 self.parse_job_log(job_id)
 
@@ -94,9 +93,9 @@ class TravisData(object):
         Retrieve Travis CI job data.
         '''
         request = 'jobs/%s' % str(job_id)
-        self.job_data = self.json_request(request)
+        return self.json_request(request)
 
-    def process_job_data(self):
+    def process_job_data(self, job_data):
         '''
         Process Job/build data and set build/job properties:
         - Build/job ID
@@ -109,17 +108,14 @@ class TravisData(object):
             "build",
             self.build_data['builds'][0]['number']
         )
-        self.current_job.add_property("job", self.job_data['job']['number'])
-        self.current_job.add_property(
-            "branch",
-            self.job_data['commit']['branch']
-        )
+        self.current_job.add_property("job", job_data['job']['number'])
+        self.current_job.add_property("branch", job_data['commit']['branch'])
         self.current_job.add_property(
             "repo",
-            self.job_data['job']['repository_slug']
+            job_data['job']['repository_slug']
         )
         self.current_job.add_property("ci_platform", 'travis')
-        self.current_job.add_property("result", self.job_data['job']['state'])
+        self.current_job.add_property("result", job_data['job']['state'])
 
     def get_job_log(self, job_id):
         '''
