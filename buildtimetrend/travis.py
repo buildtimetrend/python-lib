@@ -105,13 +105,19 @@ class TravisData(object):
         - git branch
         - CI platform : Travis
         '''
-        self.current_job.add_property("build",
-            self.build_data['builds'][0]['number'])
+        self.current_job.add_property(
+            "build",
+            self.build_data['builds'][0]['number']
+        )
         self.current_job.add_property("job", self.job_data['job']['number'])
-        self.current_job.add_property("branch",
-            self.job_data['commit']['branch'])
-        self.current_job.add_property("repo",
-            self.job_data['job']['repository_slug'])
+        self.current_job.add_property(
+            "branch",
+            self.job_data['commit']['branch']
+        )
+        self.current_job.add_property(
+            "repo",
+            self.job_data['job']['repository_slug']
+        )
         self.current_job.add_property("ci_platform", 'travis')
         self.current_job.add_property("result", self.job_data['job']['state'])
 

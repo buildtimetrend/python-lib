@@ -136,8 +136,9 @@ def add_project_info_dict(payload):
 
     # override timestamp, set to finished_at timestamp
     if "build" in payload and "finished_at" in payload["build"]:
-        payload_as_dict["keen"] = {"timestamp":
-                payload["build"]["finished_at"]["isotimestamp"]}
+        payload_as_dict["keen"] = {
+            "timestamp": payload["build"]["finished_at"]["isotimestamp"]
+        }
 
     return payload_as_dict
 
