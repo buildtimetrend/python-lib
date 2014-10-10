@@ -373,15 +373,28 @@ class TravisSubstage(object):
             logging.warning("Substage timing was not started or \
                             hash doesn't match")
             self.finished_incomplete = True
-        elif self.stage.set_started_at_nano(tags_dict['start_timestamp']) and \
-                self.stage.set_finished_at_nano(tags_dict['finish_timestamp']) and \
-                self.stage.set_duration_nano(tags_dict['duration']):
-            logging.info("Stage started at %s",
-                         self.stage.data["started_at"]["isotimestamp"])
-            logging.info("Stage finished at %s",
+        else:
+            set_started = set_finished = set_duration = False
+
+            # Set started timestamp
+            if self.stage.set_started_at_nano(tags_dict['start_timestamp']):
+                logging.info("Stage started at %s",
+                        self.stage.data["started_at"]["isotimestamp"])
+                set_started = True
+
+            # Set finished timestamp
+            if self.stage.set_finished_at_nano(tags_dict['finish_timestamp']):
+                logging.info("Stage finished at %s",
                          self.stage.data["finished_at"]["isotimestamp"])
-            logging.info("Stage duration : %ss", self.stage.data['duration'])
-            result = True
+                set_finished = True
+
+            # Set duration
+            if self.stage.set_duration_nano(tags_dict['duration']):
+                logging.info("Stage duration : %ss",
+                        self.stage.data['duration'])
+                set_duration = True
+
+            result = set_started and set_finished and set_duration
 
         return result
 
