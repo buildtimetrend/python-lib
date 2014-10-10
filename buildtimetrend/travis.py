@@ -379,19 +379,19 @@ class TravisSubstage(object):
             # Set started timestamp
             if self.stage.set_started_at_nano(tags_dict['start_timestamp']):
                 logging.info("Stage started at %s",
-                        self.stage.data["started_at"]["isotimestamp"])
+                             self.stage.data["started_at"]["isotimestamp"])
                 set_started = True
 
             # Set finished timestamp
             if self.stage.set_finished_at_nano(tags_dict['finish_timestamp']):
                 logging.info("Stage finished at %s",
-                         self.stage.data["finished_at"]["isotimestamp"])
+                             self.stage.data["finished_at"]["isotimestamp"])
                 set_finished = True
 
             # Set duration
             if self.stage.set_duration_nano(tags_dict['duration']):
                 logging.info("Stage duration : %ss",
-                        self.stage.data['duration'])
+                             self.stage.data['duration'])
                 set_duration = True
 
             result = set_started and set_finished and set_duration
