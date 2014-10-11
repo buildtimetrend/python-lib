@@ -235,6 +235,15 @@ class TravisData(object):
         else:
             return None
 
+    def get_finished_at(self):
+        '''
+        Retrieve timestamp when build finished.
+        '''
+        if len(self.build_data) > 0:
+            return self.build_data['builds'][0]['finished_at']
+        else:
+            return None
+
 
 class TravisSubstage(object):
     '''

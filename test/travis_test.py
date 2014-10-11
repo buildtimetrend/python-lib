@@ -46,6 +46,7 @@ class TestTravisData(unittest.TestCase):
          # data should be empty
         self.assertEquals(0, len(self.travis_data.build_data))
         self.assertEquals(None, self.travis_data.get_started_at())
+        self.assertEquals(None, self.travis_data.get_finished_at())
         self.assertEquals(None, self.travis_data.travis_substage)
         self.assertEquals(0, len(self.travis_data.build_jobs))
         self.assertEquals(0, len(self.travis_data.current_job.stages.stages))
@@ -62,6 +63,11 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(
             '2014-07-08T11:18:13Z',
             self.travis_data.get_started_at())
+
+        # retrieve finished timestamp
+        self.assertEquals(
+            '2014-07-08T11:19:55Z',
+            self.travis_data.get_finished_at())
 
     def test_process_build_jobs(self):
         # retrieve data from Travis API
