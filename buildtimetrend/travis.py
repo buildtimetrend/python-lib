@@ -132,6 +132,8 @@ class TravisData(object):
         )
         self.current_job.add_property("ci_platform", 'travis')
         self.current_job.add_property("result", job_data['job']['state'])
+        self.current_job.set_started_at(job_data['job']['started_at'])
+        self.current_job.set_finished_at(job_data['job']['finished_at'])
 
     def get_job_log(self, job_id):
         '''
