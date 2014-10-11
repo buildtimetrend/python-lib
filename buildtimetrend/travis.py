@@ -70,6 +70,13 @@ class TravisData(object):
         request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
         self.build_data = self.json_request(request)
 
+        # log build_data
+        logging.debug(
+            "Build #%s data : %s",
+            str(self.build_id),
+            json.dumps(self.build_data, sort_keys=True, indent=2)
+        )
+
     def process_build_jobs(self):
         '''
         Retrieve Travis CI build job data.
