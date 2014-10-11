@@ -1,6 +1,7 @@
 Buildtime trend
 ===============
 
+Visualise what's trending in your build process!
 
 [![Buildtime trend](http://img.shields.io/badge/release-v0.1.2-blue.svg)](https://github.com/ruleant/buildtime-trend/releases/latest)
 [![Buildtime trend](http://img.shields.io/badge/dev-v0.2--dev-blue.svg)](https://github.com/ruleant/buildtime-trend/zipball/master)
@@ -11,12 +12,12 @@ Buildtime trend
 [![Buildtime trend](http://img.shields.io/badge/buildtime-trend-blue.svg)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
 [![status](https://sourcegraph.com/api/repos/github.com/ruleant/buildtime-trend/badges/status.png)](https://sourcegraph.com/github.com/ruleant/buildtime-trend)
 
-Gather data, analyse and visualise trends of build processes on Continuous Integration platforms
+Visualise trends of build processes on Continuous Integration platforms by gathering and analysing build and timing data.
 
 Features
 --------
 
-- Get timing data from each stage in a build process
+- Capture timing data from each stage in a build process
 - Store, analyse and create trends of the build process data
   - keen mode : send timing data to Keen.io and use the Keen.io API for analysis and visualisation
   - native mode : store data in xml format and use matplotlib to generate a chart (limited)
