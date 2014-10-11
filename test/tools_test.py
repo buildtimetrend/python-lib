@@ -21,7 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.tools import *
-from buildtimetrend.settings import get_project_info
+from buildtimetrend.settings import Settings
 import os
 import unittest
 import constants
@@ -29,7 +29,7 @@ import logging
 
 class TestTools(unittest.TestCase):
     def setUp(self):
-        self.project_info = get_project_info()
+        self.project_info = Settings.instance().get_project_info()
         self.maxDiff = None
 
     def test_format_timestamp(self):

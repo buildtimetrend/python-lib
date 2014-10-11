@@ -23,26 +23,38 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import buildtimetrend
+from buildtimetrend.singleton import Singleton
 
 
-def get_project_name():
+@Singleton
+class Settings(object):
     '''
-    Get project name
+    Settings class is a singleton
     '''
 
-    # use Travis repo slug as project name
-    if 'TRAVIS_REPO_SLUG' in os.environ:
-        return os.getenv('TRAVIS_REPO_SLUG')
+    def __init__(self):
+        '''
+        Initialise class
+        '''
+        self.settings = {}
 
-    return "None"
+    def get_project_name(self):
+        '''
+        Get project name
+        '''
 
+        # use Travis repo slug as project name
+        if 'TRAVIS_REPO_SLUG' in os.environ:
+            return os.getenv('TRAVIS_REPO_SLUG')
 
-def get_project_info():
-    '''
-    Get project info as a dictonary
-    '''
-    return {
-        "version": buildtimetrend.VERSION,
-        "schema_version": buildtimetrend.SCHEMA_VERSION,
-        "project_name": str(get_project_name())
-    }
+        return "None"
+
+    def get_project_info(self):
+        '''
+        Get project info as a dictonary
+        '''
+        return {
+            "version": buildtimetrend.VERSION,
+            "schema_version": buildtimetrend.SCHEMA_VERSION,
+            "project_name": str(self.get_project_name())
+        }

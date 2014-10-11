@@ -27,7 +27,7 @@ import logging
 from datetime import datetime
 from dateutil.parser import parse
 from dateutil.tz import tzutc
-from buildtimetrend.settings import get_project_info
+from buildtimetrend.settings import Settings
 
 
 def format_timestamp(timestamp):
@@ -132,7 +132,8 @@ def add_project_info_dict(payload):
 
     payload_as_dict = copy.deepcopy(payload)
 
-    payload_as_dict["buildtime_trend"] = get_project_info()
+    settings = Settings.instance()
+    payload_as_dict["buildtime_trend"] = settings.get_project_info()
 
     # override timestamp, set to finished_at timestamp
     if "build" in payload and "finished_at" in payload["build"]:

@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from buildtimetrend.settings import *
+from buildtimetrend.settings import Settings
 import buildtimetrend
 import os
 import unittest
@@ -28,6 +28,8 @@ import unittest
 
 class TestTools(unittest.TestCase):
     def setUp(self):
+        self.settings = Settings.instance()
+
         project_name = "None"
         if 'TRAVIS' in os.environ and os.getenv('TRAVIS'):
             project_name = os.getenv('TRAVIS_REPO_SLUG')
@@ -38,4 +40,4 @@ class TestTools(unittest.TestCase):
             "project_name": project_name}
 
     def test_get_project_info(self):
-        self.assertDictEqual(self.project_info, get_project_info())
+        self.assertDictEqual(self.project_info, self.settings.get_project_info())
