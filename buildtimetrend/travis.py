@@ -93,7 +93,16 @@ class TravisData(object):
         Retrieve Travis CI job data.
         '''
         request = 'jobs/%s' % str(job_id)
-        return self.json_request(request)
+        job_data = self.json_request(request)
+
+        # log job_data
+        logging.debug(
+            "Job #%s data : %s",
+            str(job_id),
+            json.dumps(job_data, sort_keys=True, indent=2)
+        )
+
+        return job_data
 
     def process_job_data(self, job_data):
         '''
