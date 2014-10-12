@@ -30,7 +30,7 @@ class TestTools(unittest.TestCase):
     def setUp(self):
         self.settings = Settings()
 
-        project_name = "None"
+        project_name = buildtimetrend.NAME
         if 'TRAVIS' in os.environ and os.getenv('TRAVIS'):
             project_name = os.getenv('TRAVIS_REPO_SLUG')
 

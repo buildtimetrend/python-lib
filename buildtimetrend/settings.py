@@ -40,7 +40,7 @@ class Settings(object):
             Initialise class
             '''
             self.settings = {}
-            self.settings["project_name"] = "None"
+            self.settings["project_name"] = buildtimetrend.NAME
 
         def get_project_name(self):
             '''
