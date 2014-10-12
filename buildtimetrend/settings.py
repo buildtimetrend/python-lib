@@ -40,17 +40,19 @@ class Settings(object):
             Initialise class
             '''
             self.settings = {}
+            self.settings["project_name"] = "None"
 
         def get_project_name(self):
             '''
             Get project name
             '''
+            project_name = self.settings["project_name"]
 
             # use Travis repo slug as project name
             if 'TRAVIS_REPO_SLUG' in os.environ:
-                return os.getenv('TRAVIS_REPO_SLUG')
+                project_name = os.getenv('TRAVIS_REPO_SLUG')
 
-            return "None"
+            return project_name
 
         def get_project_info(self):
             '''
