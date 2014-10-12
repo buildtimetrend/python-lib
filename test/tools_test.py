@@ -29,7 +29,7 @@ import logging
 
 class TestTools(unittest.TestCase):
     def setUp(self):
-        self.project_info = Settings.instance().get_project_info()
+        self.project_info = Settings().get_project_info()
         self.maxDiff = None
 
     def test_format_timestamp(self):

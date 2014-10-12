@@ -132,8 +132,7 @@ def add_project_info_dict(payload):
 
     payload_as_dict = copy.deepcopy(payload)
 
-    settings = Settings.instance()
-    payload_as_dict["buildtime_trend"] = settings.get_project_info()
+    payload_as_dict["buildtime_trend"] = Settings().get_project_info()
 
     # override timestamp, set to finished_at timestamp
     if "build" in payload and "finished_at" in payload["build"]:

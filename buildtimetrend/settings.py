@@ -23,38 +23,57 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import buildtimetrend
-from buildtimetrend.singleton import Singleton
 
 
-@Singleton
 class Settings(object):
     '''
     Settings class is a singleton
+    Inspired by
+ http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Singleton.html
     '''
+    class __Settings(object):
+        '''
+        Settings class contains settings and config options
+        '''
+        def __init__(self):
+            '''
+            Initialise class
+            '''
+            self.settings = {}
 
-    def __init__(self):
-        '''
-        Initialise class
-        '''
-        self.settings = {}
+        def get_project_name(self):
+            '''
+            Get project name
+            '''
 
-    def get_project_name(self):
-        '''
-        Get project name
-        '''
+            # use Travis repo slug as project name
+            if 'TRAVIS_REPO_SLUG' in os.environ:
+                return os.getenv('TRAVIS_REPO_SLUG')
 
-        # use Travis repo slug as project name
-        if 'TRAVIS_REPO_SLUG' in os.environ:
-            return os.getenv('TRAVIS_REPO_SLUG')
+            return "None"
 
-        return "None"
+        def get_project_info(self):
+            '''
+            Get project info as a dictonary
+            '''
+            return {
+                "version": buildtimetrend.VERSION,
+                "schema_version": buildtimetrend.SCHEMA_VERSION,
+                "project_name": str(self.get_project_name())
+            }
 
-    def get_project_info(self):
-        '''
-        Get project info as a dictonary
-        '''
-        return {
-            "version": buildtimetrend.VERSION,
-            "schema_version": buildtimetrend.SCHEMA_VERSION,
-            "project_name": str(self.get_project_name())
-        }
+    instance = None
+
+    def __new__(cls):  # __new__ always a classmethod
+        ''' Create a singleton '''
+        if not Settings.instance:
+            Settings.instance = Settings.__Settings()
+        return Settings.instance
+
+    def __getattr__(self, name):
+        ''' Redirect access to get singleton properties '''
+        return getattr(self.instance, name)
+
+    def __setattr__(self, name):
+        ''' Redirect access to set singleton properties '''
+        return setattr(self.instance, name)

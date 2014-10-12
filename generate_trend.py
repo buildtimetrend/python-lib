@@ -29,6 +29,7 @@ import sys
 import getopt
 import logging
 from buildtimetrend.tools import set_loglevel
+from buildtimetrend.settings import Settings
 
 
 def generate_trend(argv):
@@ -81,10 +82,8 @@ def trend_keen():
     Setup trends using Keen.io API
     '''
     from buildtimetrend.keenio import generate_overview_config_file
-    from buildtimetrend.settings import Settings
 
-    settings = Settings.instance()
-    generate_overview_config_file(settings.get_project_name())
+    generate_overview_config_file(Settings().get_project_name())
 
 if __name__ == "__main__":
     generate_trend(sys.argv[1:])

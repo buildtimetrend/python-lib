@@ -28,7 +28,7 @@ import unittest
 
 class TestTools(unittest.TestCase):
     def setUp(self):
-        self.settings = Settings.instance()
+        self.settings = Settings()
 
         project_name = "None"
         if 'TRAVIS' in os.environ and os.getenv('TRAVIS'):
