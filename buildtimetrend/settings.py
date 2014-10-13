@@ -63,6 +63,25 @@ class Settings(object):
 
             return project_name
 
+        def add_setting(self, name, value):
+            '''
+            Add a setting
+
+            Parameters :
+            - name : Setting name
+            - value : Setting value
+            '''
+            self.settings.add_item(name, value)
+
+        def get_setting(self, name):
+            '''
+            Get a setting value
+
+            Parameters :
+            - name : Setting name
+            '''
+            return self.settings.get_item(name)
+
         def get_project_info(self):
             '''
             Get project info as a dictonary

@@ -53,3 +53,19 @@ class TestTools(unittest.TestCase):
 
         self.settings.set_project_name("")
         self.assertEquals("", self.settings.get_project_name())
+
+    def test_get_add_setting(self):
+        # setting is not set yet
+        self.assertEquals(None, self.settings.get_setting("test_name"))
+
+        self.settings.add_setting("test_name", "test_value")
+        self.assertEquals("test_value", self.settings.get_setting("test_name"))
+
+        self.settings.add_setting("test_name", None)
+        self.assertEquals(None, self.settings.get_setting("test_name"))
+
+        self.settings.add_setting("test_name", "")
+        self.assertEquals("", self.settings.get_setting("test_name"))
+
+        self.settings.add_setting("test_name", 6)
+        self.assertEquals(6, self.settings.get_setting("test_name"))
