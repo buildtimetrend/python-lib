@@ -49,13 +49,13 @@ class Settings(object):
             Parameters :
             - name : project name
             '''
-            self.settings.add_item("project_name", name)
+            self.add_setting("project_name", name)
 
         def get_project_name(self):
             '''
             Get project name
             '''
-            project_name = self.settings.get_item("project_name")
+            project_name = self.get_setting("project_name")
 
             # use Travis repo slug as project name
             if 'TRAVIS_REPO_SLUG' in os.environ:
