@@ -70,7 +70,7 @@ class Build(object):
 
     def get_property(self, name):
         '''
-        Add a build property
+        Get a build property value
 
         Parameters :
         - name : Property name
