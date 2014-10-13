@@ -37,7 +37,7 @@ class TestBuild(unittest.TestCase):
     def test_novalue(self):
         # number of stages should be zero
         self.assertEquals(0, len(self.build.stages.stages))
-        self.assertEquals(0, len(self.build.properties))
+        self.assertEquals(0, self.build.properties.get_size())
 
         # get properties should return zero duration
         self.assertDictEqual({'duration': 0}, self.build.get_properties())
@@ -152,16 +152,16 @@ class TestBuild(unittest.TestCase):
 
     def test_add_property(self):
         self.build.add_property('property1', 2)
-        self.assertEquals(1, len(self.build.properties))
-        self.assertDictEqual({'property1': 2}, self.build.properties)
+        self.assertEquals(1, self.build.properties.get_size())
+        self.assertDictEqual({'property1': 2}, self.build.properties.get_items())
 
         self.build.add_property('property2', 3)
-        self.assertEquals(2, len(self.build.properties))
-        self.assertDictEqual({'property1': 2, 'property2': 3}, self.build.properties)
+        self.assertEquals(2, self.build.properties.get_size())
+        self.assertDictEqual({'property1': 2, 'property2': 3}, self.build.properties.get_items())
 
         self.build.add_property('property2', 4)
-        self.assertEquals(2, len(self.build.properties))
-        self.assertDictEqual({'property1': 2, 'property2': 4}, self.build.properties)
+        self.assertEquals(2, self.build.properties.get_size())
+        self.assertDictEqual({'property1': 2, 'property2': 4}, self.build.properties.get_items())
 
     def test_get_property(self):
         self.build.add_property('property1', 2)

@@ -51,7 +51,7 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(None, self.travis_data.travis_substage)
         self.assertEquals(0, len(self.travis_data.build_jobs))
         self.assertEquals(0, len(self.travis_data.current_job.stages.stages))
-        self.assertEquals(0, len(self.travis_data.current_job.properties))
+        self.assertEquals(0, self.travis_data.current_job.properties.get_size())
         self.assertEquals(None, self.travis_data.current_job.stages.started_at)
         self.assertEquals(None, self.travis_data.current_job.stages.finished_at)
 
@@ -120,7 +120,7 @@ class TestTravisData(unittest.TestCase):
                 'timezone_offset': '+0000',
                 'year': '2014'}
             },
-            self.travis_data.build_jobs["29404875"].properties
+            self.travis_data.build_jobs["29404875"].properties.get_items()
         )
 
     def test_process_build_two_jobs(self):
@@ -176,7 +176,7 @@ class TestTravisData(unittest.TestCase):
                 'timezone_offset': '+0000',
                 'year': '2014'}
             },
-            self.travis_data.build_jobs["35665484"].properties
+            self.travis_data.build_jobs["35665484"].properties.get_items()
         )
         self.assertTrue("35665485" in self.travis_data.build_jobs)
         self.assertDictEqual({'branch': u'master',
@@ -224,7 +224,7 @@ class TestTravisData(unittest.TestCase):
                 'timezone_offset': '+0000',
                 'year': '2014'}
             },
-            self.travis_data.build_jobs["35665485"].properties
+            self.travis_data.build_jobs["35665485"].properties.get_items()
         )
 
     def test_nofile(self):

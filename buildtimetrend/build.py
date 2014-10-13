@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import copy
 from lxml import etree
 from buildtimetrend.stages import Stages
+from buildtimetrend.collection import Collection
 from buildtimetrend.tools import split_isotimestamp
 
 
@@ -33,7 +34,7 @@ class Build(object):
     '''
 
     def __init__(self, csv_filename=None):
-        self.properties = {}
+        self.properties = Collection()
         self.stages = Stages()
         if csv_filename is not None:
             self.stages.read_csv(csv_filename)
@@ -65,7 +66,7 @@ class Build(object):
         - name : Property name
         - value : Property value
         '''
-        self.properties[name] = value
+        self.properties.add_item(name, value)
 
     def get_property(self, name):
         '''
@@ -74,15 +75,14 @@ class Build(object):
         Parameters :
         - name : Property name
         '''
-        if name in self.properties:
-            return self.properties[name]
+        return self.properties.get_item(name)
 
     def get_properties(self):
         '''
         Return build properties
         '''
         # copy values of properties
-        data = copy.deepcopy(self.properties)
+        data = self.properties.get_items()
 
         # add total duration
         data["duration"] = self.stages.total_duration()
@@ -158,8 +158,8 @@ class Build(object):
         root = etree.Element("build")
 
         # add properties
-        for key in self.properties:
-            root.set(str(key), str(self.properties[key]))
+        for key in self.properties.get_items():
+            root.set(str(key), str(self.properties.get_item(key)))
 
         # add stages
         if type(self.stages) is Stages:
