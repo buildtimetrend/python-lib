@@ -51,6 +51,8 @@ class Collection(object):
         '''
         if name in self.items:
             return self.items[name]
+        else:
+            return None
 
     def get_items(self):
         '''
