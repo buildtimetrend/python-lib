@@ -30,14 +30,26 @@ class TestTools(unittest.TestCase):
     def setUp(self):
         self.settings = Settings()
 
-        project_name = buildtimetrend.NAME
+        self.project_name = buildtimetrend.NAME
         if 'TRAVIS' in os.environ and os.getenv('TRAVIS'):
-            project_name = os.getenv('TRAVIS_REPO_SLUG')
+            self.project_name = os.getenv('TRAVIS_REPO_SLUG')
 
         self.project_info = {
             "version": buildtimetrend.VERSION,
             "schema_version": buildtimetrend.SCHEMA_VERSION,
-            "project_name": project_name}
+            "project_name": self.project_name}
 
     def test_get_project_info(self):
         self.assertDictEqual(self.project_info, self.settings.get_project_info())
+
+    def test_get_set_project_name(self):
+        self.assertEquals(self.project_name, self.settings.get_project_name())
+
+        self.settings.set_project_name("test_name")
+        self.assertEquals("test_name", self.settings.get_project_name())
+
+        self.settings.set_project_name(None)
+        self.assertEquals(None, self.settings.get_project_name())
+
+        self.settings.set_project_name("")
+        self.assertEquals("", self.settings.get_project_name())

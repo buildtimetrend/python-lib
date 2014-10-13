@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import buildtimetrend
+from buildtimetrend.collection import Collection
 
 
 class Settings(object):
@@ -39,14 +40,22 @@ class Settings(object):
             '''
             Initialise class
             '''
-            self.settings = {}
-            self.settings["project_name"] = buildtimetrend.NAME
+            self.settings = Collection()
+            self.set_project_name(buildtimetrend.NAME)
+
+        def set_project_name(self, name):
+            '''
+            Set project name
+            Parameters :
+            - name : project name
+            '''
+            self.settings.add_item("project_name", name)
 
         def get_project_name(self):
             '''
             Get project name
             '''
-            project_name = self.settings["project_name"]
+            project_name = self.settings.get_item("project_name")
 
             # use Travis repo slug as project name
             if 'TRAVIS_REPO_SLUG' in os.environ:
