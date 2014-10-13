@@ -54,6 +54,15 @@ class Collection(object):
         else:
             return None
 
+    def get_size(self):
+        '''
+        Get an item from a collection
+
+        Parameters :
+        - name : Item name
+        '''
+        return len(self.items)
+
     def get_items(self):
         '''
         Return items collection as dictionary
