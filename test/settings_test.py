@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.settings import Settings
+from buildtimetrend.collection import Collection
 import buildtimetrend
 import os
 import unittest
@@ -69,3 +70,14 @@ class TestTools(unittest.TestCase):
 
         self.settings.add_setting("test_name", 6)
         self.assertEquals(6, self.settings.get_setting("test_name"))
+
+    def test_get_set_settings(self):
+        new_settings = Collection()
+        new_settings.add_item("test_name", "value")
+        self.settings.settings = new_settings
+        self.assertEquals("value", self.settings.get_setting("test_name"))
+
+        self.settings.set_project_name(self.project_name)
+        self.assertEquals(
+            self.project_name,
+            self.settings.settings.get_item("project_name"))
