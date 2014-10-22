@@ -63,13 +63,14 @@ Dependencies
 ```
 pip install keen
 pip install python-dateutil
+pip install pyyaml
 pip install lxml
 pip install 'matplotlib>=1.2.0'
 ```
 
 - install as a Debian package :
 
-`apt-get install python-lxml python-dateutil`
+`apt-get install python-lxml python-dateutil python-yaml`
 
 Keen.io client and the required matplotlib version are not available as Debian packages, so look at the `pip` instructions above
 
