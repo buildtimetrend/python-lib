@@ -23,11 +23,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import logging
+import copy
 import keen
 from keen import scoped_keys
-from buildtimetrend.tools import add_project_info_dict
-from buildtimetrend.tools import add_project_info_list
+from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_file
+from buildtimetrend.tools import check_dict
+from buildtimetrend.tools import check_list
 
 
 def keen_io_writable():
@@ -100,6 +102,44 @@ def keen_add_events(event_collection, payload):
 
     # submit list of events to Keen.io
     keen.add_events({event_collection: payload})
+
+
+def add_project_info_dict(payload):
+    '''
+    Adds project info to a dictonary
+    Param payload: dictonary payload
+    '''
+    if not check_dict(payload, "payload"):
+        return None
+
+    payload_as_dict = copy.deepcopy(payload)
+
+    payload_as_dict["buildtime_trend"] = Settings().get_project_info()
+
+    # override timestamp, set to finished_at timestamp
+    if "build" in payload and "finished_at" in payload["build"]:
+        payload_as_dict["keen"] = {
+            "timestamp": payload["build"]["finished_at"]["isotimestamp"]
+        }
+
+    return payload_as_dict
+
+
+def add_project_info_list(payload):
+    '''
+    Adds project info to a list of dictionaries
+    Param payload: list of dictionaries
+    '''
+    if not check_list(payload, "payload"):
+        return None
+
+    payload_as_list = []
+
+    # loop over dicts in payload and add project info to each one
+    for event_dict in payload:
+        payload_as_list.append(add_project_info_dict(event_dict))
+
+    return payload_as_list
 
 
 def generate_overview_config_file(repo):

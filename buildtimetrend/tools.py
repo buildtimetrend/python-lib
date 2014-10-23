@@ -21,13 +21,11 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import copy
 import os
 import logging
 from datetime import datetime
 from dateutil.parser import parse
 from dateutil.tz import tzutc
-from buildtimetrend.settings import Settings
 
 
 def format_timestamp(timestamp):
@@ -120,44 +118,6 @@ def nano2sec(time):
     Param time nanoseconds
     '''
     return float(time) / float(1000000000)
-
-
-def add_project_info_dict(payload):
-    '''
-    Adds project info to a dictonary
-    Param payload: dictonary payload
-    '''
-    if not check_dict(payload, "payload"):
-        return None
-
-    payload_as_dict = copy.deepcopy(payload)
-
-    payload_as_dict["buildtime_trend"] = Settings().get_project_info()
-
-    # override timestamp, set to finished_at timestamp
-    if "build" in payload and "finished_at" in payload["build"]:
-        payload_as_dict["keen"] = {
-            "timestamp": payload["build"]["finished_at"]["isotimestamp"]
-        }
-
-    return payload_as_dict
-
-
-def add_project_info_list(payload):
-    '''
-    Adds project info to a list of dictionaries
-    Param payload: list of dictionaries
-    '''
-    if not check_list(payload, "payload"):
-        return None
-
-    payload_as_list = []
-
-    # loop over dicts in payload and add project info to each one
-    for event_dict in payload:
-        payload_as_list.append(add_project_info_dict(event_dict))
-
-    return payload_as_list
 
 
 def check_file(filename):
