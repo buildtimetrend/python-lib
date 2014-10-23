@@ -80,6 +80,46 @@ class TestCollection(unittest.TestCase):
     def test_get_property_does_not_exist(self):
         self.assertEquals(None, self.collection.get_item('no_property'))
 
+    def test_add_items(self):
+        # add item to empty collection
+        self.collection.add_items({'property1': 2})
+        self.assertDictEqual(
+            {'property1': 2},
+            self.collection.get_items())
+
+        # add nonexistant item to an existing collection
+        self.collection.add_items({'property2': 3})
+        self.assertDictEqual(
+            {'property1': 2, 'property2': 3},
+            self.collection.get_items())
+
+        # add existant item with different value to an existing collection
+        self.collection.add_items({'property2': 4})
+        self.assertDictEqual(
+            {'property1': 2, 'property2': 4},
+            self.collection.get_items())
+
+    def test_add_items_multiple(self):
+        # fill collection with items
+        self.collection.add_item('property1', 2)
+        self.collection.add_item('property2', 3)
+
+        # add items (existing and new)
+        self.collection.add_items({
+            'property2': 4,
+            'property3': 6
+        })
+
+        # assert items collection
+        self.assertDictEqual(
+            {
+                'property1': 2,
+                'property2': 4,
+                'property3': 6
+            },
+            self.collection.get_items()
+        )
+
     def test_get_items(self):
         self.collection.add_item('property1', 2)
         self.assertDictEqual(

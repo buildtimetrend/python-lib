@@ -63,6 +63,16 @@ class Collection(object):
         '''
         return len(self.items)
 
+    def add_items(self, items_dict):
+        '''
+        Add items as a dictionary to the collection
+
+        Parameters:
+        - items_dict : dictionary with items
+        '''
+        # append dictionary with items to the existing collection
+        self.items.update(items_dict)
+
     def get_items(self):
         '''
         Return items collection as dictionary
