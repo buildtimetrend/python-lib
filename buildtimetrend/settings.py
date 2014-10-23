@@ -22,8 +22,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import os
+import yaml
 import buildtimetrend
 from buildtimetrend.collection import Collection
+from buildtimetrend.tools import check_file
 
 
 class Settings(object):
@@ -83,6 +85,20 @@ class Settings(object):
             - name : Setting name
             '''
             return self.settings.get_item(name)
+
+        def load_config_file(self, config_file="config.yml"):
+            '''
+            Load settings from a config file
+
+            Parameters :
+            - config_file : name of the config file
+            '''
+            if not check_file(config_file):
+                return
+
+            stream = file(config_file)
+            config = yaml.load(stream)
+            self.settings.add_items(config["buildtimetrend"])
 
         def get_project_info(self):
             '''
