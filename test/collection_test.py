@@ -80,6 +80,15 @@ class TestCollection(unittest.TestCase):
     def test_get_property_does_not_exist(self):
         self.assertEquals(None, self.collection.get_item('no_property'))
 
+    def test_add_items_invalidparameter(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, self.collection.add_items)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, self.collection.add_items, None)
+        self.assertRaises(TypeError, self.collection.add_items, "string")
+        self.assertRaises(TypeError, self.collection.add_items, 1234)
+
     def test_add_items(self):
         # add item to empty collection
         self.collection.add_items({'property1': 2})

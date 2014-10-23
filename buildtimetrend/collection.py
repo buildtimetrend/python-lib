@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import copy
+from buildtimetrend.tools import check_dict
 
 
 class Collection(object):
@@ -70,8 +71,9 @@ class Collection(object):
         Parameters:
         - items_dict : dictionary with items
         '''
-        # append dictionary with items to the existing collection
-        self.items.update(items_dict)
+        if check_dict(items_dict, "items_dict"):
+            # append dictionary with items to the existing collection
+            self.items.update(items_dict)
 
     def get_items(self):
         '''
