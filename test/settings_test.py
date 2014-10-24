@@ -25,6 +25,7 @@ from buildtimetrend.collection import Collection
 import buildtimetrend
 import os
 import unittest
+import constants
 
 
 class TestTools(unittest.TestCase):
@@ -102,3 +103,11 @@ class TestTools(unittest.TestCase):
 
         # function should throw an error when no filename is set
         self.assertRaises(TypeError, self.settings.load_config_file)
+
+    def test_load_config_file(self):
+        # load sample config file
+        self.assertTrue(self.settings.load_config_file(constants.TEST_SAMPLE_CONFIG_FILE))
+        self.assertDictEqual(
+            {"project_name": "test_project",
+             "setting1": "test_value1"},
+            self.settings.settings.get_items())

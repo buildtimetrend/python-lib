@@ -1,0 +1,7 @@
+keen:
+    projectId: "1234"
+    writeKey: "12345678"
+    readKey: "abcdefgi"
+buildtimetrend:
+    project_name : "test_project"
+    setting1 : "test_value1"
