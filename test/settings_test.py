@@ -87,3 +87,18 @@ class TestTools(unittest.TestCase):
         self.assertDictEqual(
             {"project_name": self.project_name},
             self.settings.settings.get_items())
+
+    def test_no_config_file(self):
+        # function should return false when file doesn't exist
+        self.assertFalse(self.settings.load_config_file('no_file.yml'))
+        self.assertDictEqual(
+            {"project_name": self.project_name},
+            self.settings.settings.get_items())
+
+        self.assertFalse(self.settings.load_config_file(''))
+        self.assertDictEqual(
+            {"project_name": self.project_name},
+            self.settings.settings.get_items())
+
+        # function should throw an error when no filename is set
+        self.assertRaises(TypeError, self.settings.load_config_file)

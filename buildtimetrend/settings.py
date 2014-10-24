@@ -87,7 +87,7 @@ class Settings(object):
             '''
             return self.settings.get_item(name)
 
-        def load_config_file(self, config_file="config.yml"):
+        def load_config_file(self, config_file):
             '''
             Load settings from a config file
 
@@ -95,11 +95,12 @@ class Settings(object):
             - config_file : name of the config file
             '''
             if not check_file(config_file):
-                return
+                return False
 
             with open(config_file, 'rb') as file_stream:
                 config = yaml.load(file_stream)
                 self.settings.add_items(config["buildtimetrend"])
+                return True
 
         def get_project_info(self):
             '''
