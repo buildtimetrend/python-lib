@@ -96,9 +96,9 @@ class Settings(object):
             if not check_file(config_file):
                 return
 
-            stream = file(config_file)
-            config = yaml.load(stream)
-            self.settings.add_items(config["buildtimetrend"])
+            with open(config_file, 'rb') as file_stream:
+                config = yaml.load(file_stream)
+                self.settings.add_items(config["buildtimetrend"])
 
         def get_project_info(self):
             '''
