@@ -28,7 +28,8 @@ import unittest
 
 
 class TestTools(unittest.TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpClass(self):
         self.settings = Settings()
 
         self.project_name = buildtimetrend.NAME
@@ -39,6 +40,11 @@ class TestTools(unittest.TestCase):
             "version": buildtimetrend.VERSION,
             "schema_version": buildtimetrend.SCHEMA_VERSION,
             "project_name": self.project_name}
+
+    def setUp(self):
+        # reinit settings singleton
+        if self.settings is not None:
+            self.settings.__init__()
 
     def test_get_project_info(self):
         self.assertDictEqual(self.project_info, self.settings.get_project_info())
@@ -71,13 +77,9 @@ class TestTools(unittest.TestCase):
         self.settings.add_setting("test_name", 6)
         self.assertEquals(6, self.settings.get_setting("test_name"))
 
-    def test_get_set_settings(self):
-        new_settings = Collection()
-        new_settings.add_item("test_name", "value")
-        self.settings.settings = new_settings
-        self.assertEquals("value", self.settings.get_setting("test_name"))
+    def test_get_setting(self):
+        self.assertEquals(None, self.settings.get_setting("test_name"))
 
-        self.settings.set_project_name(self.project_name)
         self.assertEquals(
             self.project_name,
-            self.settings.settings.get_item("project_name"))
+            self.settings.get_setting("project_name"))
