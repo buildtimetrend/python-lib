@@ -25,20 +25,26 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 from buildtimetrend.travis import TravisData
 from buildtimetrend.settings import Settings
 from buildtimetrend.keenio import log_build_keen
+from buildtimetrend.keenio import keen_io_writable
 
-REPO = 'ruleant/buildtime-trend'
 BUILD = ''
 
-Settings().set_project_name(REPO)
+settings = Settings()
+settings.load_config_file("config_service.yml")
 
-travis_data = TravisData(REPO, BUILD)
+travis_data = TravisData(settings.get_project_name(), BUILD)
 
 # retrieve build data using Travis CI API
-print "Retrieve build #%s data from Travis CI" % BUILD
+print "Retrieve build #%s data of %s from Travis CI" % \
+    (BUILD, settings.get_project_name())
 travis_data.get_build_data()
 
 # process all build jobs
 travis_data.process_build_jobs()
+
+if not keen_io_writable():
+    print "Keen IO write key not set, no data was sent"
+    quit()
 
 # send build job data to Keen.io
 for build_job in travis_data.build_jobs:
