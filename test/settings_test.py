@@ -83,3 +83,7 @@ class TestTools(unittest.TestCase):
         self.assertEquals(
             self.project_name,
             self.settings.get_setting("project_name"))
+
+        self.assertDictEqual(
+            {"project_name": self.project_name},
+            self.settings.settings.get_items())
