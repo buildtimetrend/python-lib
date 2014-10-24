@@ -1,4 +1,5 @@
 # vim: set expandtab sw=4 ts=4:
+# pylint: disable=invalid-name,too-few-public-methods
 '''
 Manages settings of buildtime trend
 
