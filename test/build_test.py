@@ -72,7 +72,7 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(0, len(self.build.stages.stages))
 
         stages = Stages()
-        stages.read_csv(constants.TEST_SAMPLE_FILE)
+        stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE)
         self.build.add_stages(stages)
         self.assertEquals(3, len(self.build.stages.stages))
 
@@ -197,7 +197,7 @@ class TestBuild(unittest.TestCase):
 
     def test_to_dict(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_FILE)
+        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test dict
         self.assertDictEqual(
@@ -251,7 +251,7 @@ class TestBuild(unittest.TestCase):
 
     def test_stages_to_list(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_FILE)
+        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test list
         self.assertListEqual(
@@ -317,7 +317,7 @@ class TestBuild(unittest.TestCase):
 
     def test_to_xml(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_FILE)
+        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml output
         self.assertEquals(
@@ -339,7 +339,7 @@ class TestBuild(unittest.TestCase):
 
     def test_to_xml_string(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_FILE)
+        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml string output
         self.assertEquals(

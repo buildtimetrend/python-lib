@@ -107,7 +107,7 @@ class TestTools(unittest.TestCase):
         self.assertRaises(TypeError, check_file)
 
         # function should return true if file exists
-        self.assertTrue(check_file(constants.TEST_SAMPLE_FILE))
+        self.assertTrue(check_file(constants.TEST_SAMPLE_TIMESTAMP_FILE))
 
     def test_check_dict(self):
         # error is thrown when called without parameters
