@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import yaml
+import keen
 import buildtimetrend
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
@@ -100,6 +101,15 @@ class Settings(object):
             with open(config_file, 'rb') as file_stream:
                 config = yaml.load(file_stream)
                 self.settings.add_items(config["buildtimetrend"])
+
+                # set Keen.io settings
+                if "keen" in config:
+                    if "project_id" in config["keen"]:
+                        keen.project_id = config["keen"]["project_id"]
+                    if "write_key" in config["keen"]:
+                        keen.write_key = config["keen"]["write_key"]
+                    if "read_key" in config["keen"]:
+                        keen.read_key = config["keen"]["read_key"]
                 return True
 
         def get_project_info(self):
