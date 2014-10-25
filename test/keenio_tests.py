@@ -65,6 +65,11 @@ class TestTools(unittest.TestCase):
         if "KEEN_READ_KEY" in os.environ:
             del os.environ["KEEN_READ_KEY"]
 
+        # reset Keen.io connection settings before each test
+        keen.project_id = None
+        keen.write_key = None
+        keen.read_key = None
+
     def test_add_project_info_dict(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, add_project_info_dict)
