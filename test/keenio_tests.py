@@ -35,6 +35,9 @@ class TestTools(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
+        self.project_info = Settings().get_project_info()
+        self.maxDiff = None
+
         # copy Keen.io environment variables
         if "KEEN_PROJECT_ID" in os.environ:
             self.copy_keen_project_id = os.environ["KEEN_PROJECT_ID"]
@@ -54,9 +57,6 @@ class TestTools(unittest.TestCase):
             os.environ["KEEN_READ_KEY"] = self.copy_keen_read_key
 
     def setUp(self):
-        self.project_info = Settings().get_project_info()
-        self.maxDiff = None
-
         # reset Keen.io environment variables before each test
         if "KEEN_PROJECT_ID" in os.environ:
             del os.environ["KEEN_PROJECT_ID"]
