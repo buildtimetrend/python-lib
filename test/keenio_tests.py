@@ -31,29 +31,39 @@ import logging
 class TestTools(unittest.TestCase):
     copy_keen_project_id = None
     copy_keen_write_key = None
+    copy_keen_read_key = None
 
     @classmethod
     def setUpClass(self):
+        # copy Keen.io environment variables
         if "KEEN_PROJECT_ID" in os.environ:
             self.copy_keen_project_id = os.environ["KEEN_PROJECT_ID"]
         if "KEEN_WRITE_KEY" in os.environ:
             self.copy_keen_write_key = os.environ["KEEN_WRITE_KEY"]
+        if "KEEN_READ_KEY" in os.environ:
+            self.copy_keen_read_key = os.environ["KEEN_READ_KEY"]
 
     @classmethod
     def tearDownClass(self):
+        # restore saved Keen.io environment variables
         if self.copy_keen_project_id is not None:
             os.environ["KEEN_PROJECT_ID"] = self.copy_keen_project_id
         if self.copy_keen_write_key is not None:
             os.environ["KEEN_WRITE_KEY"] = self.copy_keen_write_key
+        if self.copy_keen_read_key is not None:
+            os.environ["KEEN_READ_KEY"] = self.copy_keen_read_key
 
     def setUp(self):
         self.project_info = Settings().get_project_info()
         self.maxDiff = None
 
+        # reset Keen.io environment variables before each test
         if "KEEN_PROJECT_ID" in os.environ:
             del os.environ["KEEN_PROJECT_ID"]
         if "KEEN_WRITE_KEY" in os.environ:
             del os.environ["KEEN_WRITE_KEY"]
+        if "KEEN_READ_KEY" in os.environ:
+            del os.environ["KEEN_READ_KEY"]
 
     def test_add_project_info_dict(self):
         # error is thrown when called without parameters
