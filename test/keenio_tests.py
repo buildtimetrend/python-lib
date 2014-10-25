@@ -23,14 +23,37 @@
 from buildtimetrend.keenio import *
 from buildtimetrend.settings import Settings
 import os
+import keen
 import unittest
 import constants
 import logging
 
 class TestTools(unittest.TestCase):
+    copy_keen_project_id = None
+    copy_keen_write_key = None
+
+    @classmethod
+    def setUpClass(self):
+        if "KEEN_PROJECT_ID" in os.environ:
+            self.copy_keen_project_id = os.environ["KEEN_PROJECT_ID"]
+        if "KEEN_WRITE_KEY" in os.environ:
+            self.copy_keen_write_key = os.environ["KEEN_WRITE_KEY"]
+
+    @classmethod
+    def tearDownClass(self):
+        if self.copy_keen_project_id is not None:
+            os.environ["KEEN_PROJECT_ID"] = self.copy_keen_project_id
+        if self.copy_keen_write_key is not None:
+            os.environ["KEEN_WRITE_KEY"] = self.copy_keen_write_key
+
     def setUp(self):
         self.project_info = Settings().get_project_info()
         self.maxDiff = None
+
+        if "KEEN_PROJECT_ID" in os.environ:
+            del os.environ["KEEN_PROJECT_ID"]
+        if "KEEN_WRITE_KEY" in os.environ:
+            del os.environ["KEEN_WRITE_KEY"]
 
     def test_add_project_info_dict(self):
         # error is thrown when called without parameters
@@ -97,3 +120,22 @@ class TestTools(unittest.TestCase):
             add_project_info_list([{"test": "value"},
                 {"test2": "value2"}])
         )
+
+    def test_keen_io_writable_keen_var(self):
+        self.assertEqual(None, keen.project_id)
+        self.assertEqual(None, keen.write_key)
+
+        self.assertFalse(keen_io_writable())
+
+        keen.project_id = "1234abcd"
+        keen.write_key = "1234abcd5678efgh"
+
+        self.assertTrue(keen_io_writable())
+
+    def test_keen_io_writable_envir_vars(self):
+        self.assertFalse(keen_io_writable())
+
+        os.environ["KEEN_PROJECT_ID"] = "1234abcd"
+        os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
+
+        self.assertTrue(keen_io_writable())
