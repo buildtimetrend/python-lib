@@ -154,3 +154,22 @@ class TestTools(unittest.TestCase):
         os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
 
         self.assertTrue(keen_io_writable())
+
+    def test_keen_io_readable_keen_var(self):
+        self.assertEqual(None, keen.project_id)
+        self.assertEqual(None, keen.read_key)
+
+        self.assertFalse(keen_io_readable())
+
+        keen.project_id = "1234abcd"
+        keen.read_key = "4567abcd5678efgh"
+
+        self.assertTrue(keen_io_readable())
+
+    def test_keen_io_readable_envir_vars(self):
+        self.assertFalse(keen_io_readable())
+
+        os.environ["KEEN_PROJECT_ID"] = "1234abcd"
+        os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
+
+        self.assertTrue(keen_io_readable())
