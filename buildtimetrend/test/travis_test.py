@@ -24,9 +24,9 @@ from buildtimetrend.travis import *
 import constants
 import unittest
 
-TRAVIS_TIMING_TAGS_FILE = "test/test_sample_travis_time_tags"
-TRAVIS_INCORRECT_TIMING_TAGS_FILE = "test/test_sample_travis_time_tags_incorrect"
-TRAVIS_LOG_FILE = "test/test_sample_travis_log"
+TRAVIS_TIMING_TAGS_FILE = "buildtimetrend/test/test_sample_travis_time_tags"
+TRAVIS_INCORRECT_TIMING_TAGS_FILE = "buildtimetrend/test/test_sample_travis_time_tags_incorrect"
+TRAVIS_LOG_FILE = "buildtimetrend/test/test_sample_travis_log"
 TRAVIS_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org:travis-linux-11"
 TRAVIS_INCOMPLETE_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org"
 
