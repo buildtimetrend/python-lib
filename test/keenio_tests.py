@@ -71,6 +71,14 @@ class TestTools(unittest.TestCase):
         keen.write_key = None
         keen.read_key = None
 
+    def test_novalues(self):
+        self.assertEqual(None, keen.project_id)
+        self.assertEqual(None, keen.write_key)
+
+        self.assertFalse(keen_io_writable())
+        self.assertFalse(keen_io_readable())
+
+
     def test_add_project_info_dict(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, add_project_info_dict)
@@ -138,19 +146,12 @@ class TestTools(unittest.TestCase):
         )
 
     def test_keen_io_writable_keen_var(self):
-        self.assertEqual(None, keen.project_id)
-        self.assertEqual(None, keen.write_key)
-
-        self.assertFalse(keen_io_writable())
-
         keen.project_id = "1234abcd"
         keen.write_key = "1234abcd5678efgh"
 
         self.assertTrue(keen_io_writable())
 
     def test_keen_io_writable_envir_vars(self):
-        self.assertFalse(keen_io_writable())
-
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
         os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
 
@@ -159,19 +160,12 @@ class TestTools(unittest.TestCase):
         self.assertTrue(keen_io_writable())
 
     def test_keen_io_readable_keen_var(self):
-        self.assertEqual(None, keen.project_id)
-        self.assertEqual(None, keen.read_key)
-
-        self.assertFalse(keen_io_readable())
-
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
 
         self.assertTrue(keen_io_readable())
 
     def test_keen_io_readable_envir_vars(self):
-        self.assertFalse(keen_io_readable())
-
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
 
