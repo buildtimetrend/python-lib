@@ -149,6 +149,8 @@ class TestTools(unittest.TestCase):
         keen.project_id = "1234abcd"
         keen.write_key = "1234abcd5678efgh"
 
+        keen._initialize_client_from_environment()
+
         self.assertTrue(keen_io_writable())
 
     def test_keen_io_writable_envir_vars(self):
@@ -162,6 +164,8 @@ class TestTools(unittest.TestCase):
     def test_keen_io_readable_keen_var(self):
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
+
+        keen._initialize_client_from_environment()
 
         self.assertTrue(keen_io_readable())
 
