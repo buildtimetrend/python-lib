@@ -29,24 +29,32 @@ from buildtimetrend.keenio import keen_io_writable
 
 BUILD = ''
 
-settings = Settings()
-settings.load_config_file("config_service.yml")
+def retrieve_and_store_data():
+    '''
+    Retrieve timing data from Travis CI, parse it and store it in Keen.io
+    '''
 
-travis_data = TravisData(settings.get_project_name(), BUILD)
+    settings = Settings()
+    settings.load_config_file("config_service.yml")
 
-# retrieve build data using Travis CI API
-print "Retrieve build #%s data of %s from Travis CI" % \
-    (BUILD, settings.get_project_name())
-travis_data.get_build_data()
+    travis_data = TravisData(settings.get_project_name(), BUILD)
 
-# process all build jobs
-travis_data.process_build_jobs()
+    # retrieve build data using Travis CI API
+    print "Retrieve build #%s data of %s from Travis CI" % \
+        (BUILD, settings.get_project_name())
+    travis_data.get_build_data()
 
-if not keen_io_writable():
-    print "Keen IO write key not set, no data was sent"
-    quit()
+    # process all build jobs
+    travis_data.process_build_jobs()
 
-# send build job data to Keen.io
-for build_job in travis_data.build_jobs:
-    print "Send build job #%s data to Keen.io" % build_job
-    log_build_keen(travis_data.build_jobs[build_job])
+    if not keen_io_writable():
+        print "Keen IO write key not set, no data was sent"
+        quit()
+
+    # send build job data to Keen.io
+    for build_job in travis_data.build_jobs:
+        print "Send build job #%s data to Keen.io" % build_job
+        log_build_keen(travis_data.build_jobs[build_job])
+
+if __name__ == "__main__":
+    retrieve_and_store_data()
