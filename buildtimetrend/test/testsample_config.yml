@@ -1,7 +1,7 @@
 keen:
-    projectId: "1234"
-    writeKey: "12345678"
-    readKey: "abcdefgi"
+    project_id: "1234"
+    write_key: "12345678"
+    read_key: "abcdefg"
 buildtimetrend:
     project_name : "test_project"
     setting1 : "test_value1"
