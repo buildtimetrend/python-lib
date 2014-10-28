@@ -22,6 +22,8 @@
 
 from buildtimetrend.settings import Settings
 from buildtimetrend.collection import Collection
+from buildtimetrend.keenio import keen_io_writable
+from buildtimetrend.keenio import keen_io_readable
 import buildtimetrend
 import os
 import unittest
@@ -105,9 +107,17 @@ class TestTools(unittest.TestCase):
         self.assertRaises(TypeError, self.settings.load_config_file)
 
     def test_load_config_file(self):
+        # checking if Keen.io configuration is not set (yet)
+        self.assertFalse(keen_io_readable())
+        self.assertFalse(keen_io_writable())
+
         # load sample config file
         self.assertTrue(self.settings.load_config_file(constants.TEST_SAMPLE_CONFIG_FILE))
         self.assertDictEqual(
             {"project_name": "test_project",
              "setting1": "test_value1"},
             self.settings.settings.get_items())
+
+        # checking if Keen.io configuration is set
+        self.assertTrue(keen_io_readable())
+        self.assertTrue(keen_io_writable())
