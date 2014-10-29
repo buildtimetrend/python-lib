@@ -1,7 +1,11 @@
+# Buildtime Trend general settings
+buildtimetrend:
+    project_name : "test_project"
+    setting1 : "test_value1"
+
+# Keen.io connection settings
 keen:
     project_id: "1234"
     write_key: "12345678"
     read_key: "abcdefg"
-buildtimetrend:
-    project_name : "test_project"
-    setting1 : "test_value1"
+
