@@ -49,7 +49,7 @@ def retrieve_and_store_data():
 
     if not keen_io_writable():
         print "Keen IO write key not set, no data was sent"
-        quit()
+        return
 
     # send build job data to Keen.io
     for build_job in travis_data.build_jobs:
