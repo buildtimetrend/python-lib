@@ -38,6 +38,7 @@ import os
 import sys
 import getopt
 import logging
+from buildtimetrend.settings import Settings
 from buildtimetrend.build import Build
 from buildtimetrend.travis import TravisData
 from buildtimetrend.keenio import log_build_keen
@@ -55,6 +56,8 @@ def analyse(argv):
     '''
     mode_native = False
     mode_keen = True
+
+    settings = Settings()
 
     # read build data from timestamp CSV file
     build = Build(TIMESTAMP_FILE)
@@ -87,6 +90,7 @@ def analyse(argv):
             build.add_property("branch", arg)
         elif opt == "--repo":
             build.add_property("repo", arg)
+            settings.set_project_name(arg)
         elif opt == "--ci":
             build.add_property("ci_platform", arg)
         elif opt == "--result":
