@@ -46,14 +46,8 @@ class Settings(object):
             '''
             self.settings = Collection()
 
-            # set project name
-            project_name = buildtimetrend.NAME
-
-            # use Travis repo slug as project name
-            if 'TRAVIS_REPO_SLUG' in os.environ:
-                project_name = os.getenv('TRAVIS_REPO_SLUG')
-
-            self.set_project_name(project_name)
+            # set default project name
+            self.set_project_name(buildtimetrend.NAME)
 
         def set_project_name(self, name):
             '''

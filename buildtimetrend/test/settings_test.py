@@ -36,8 +36,6 @@ class TestTools(unittest.TestCase):
         self.settings = Settings()
 
         self.project_name = buildtimetrend.NAME
-        if 'TRAVIS' in os.environ and os.getenv('TRAVIS'):
-            self.project_name = os.getenv('TRAVIS_REPO_SLUG')
 
         self.project_info = {
             "version": buildtimetrend.VERSION,
