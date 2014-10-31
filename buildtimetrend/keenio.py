@@ -36,22 +36,24 @@ def keen_io_writable():
     '''
     Check if login keys for Keen IO API are set, to allow writing.
     '''
-    if keen.project_id is None or keen.write_key is None:
-        logging.warning("Keen.io Write Key is not set")
-        return False
-
-    return True
+    if ("KEEN_PROJECT_ID" in os.environ and "KEEN_WRITE_KEY" in os.environ or
+        keen.project_id is not None and keen.write_key is not None):
+        return True
+    
+    logging.warning("Keen.io Write Key is not set")
+    return False
 
 
 def keen_io_readable():
     '''
     Check if login keys for Keen IO API are set, to allow reading.
     '''
-    if keen.project_id is None or keen.read_key is None:
-        logging.warning("Keen.io Read Key is not set")
-        return False
-
-    return True
+    if ("KEEN_PROJECT_ID" in os.environ and "KEEN_READ_KEY" in os.environ or
+        keen.project_id is not None and keen.read_key is not None):
+        return True
+    
+    logging.warning("Keen.io Read Key is not set")
+    return False
 
 
 def keen_io_generate_read_key(repo):

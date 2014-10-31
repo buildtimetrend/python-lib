@@ -66,7 +66,6 @@ class TestTools(unittest.TestCase):
             del os.environ["KEEN_READ_KEY"]
 
         # reset Keen.io connection settings before each test
-        keen._client = None
         keen.project_id = None
         keen.write_key = None
         keen.read_key = None
@@ -157,8 +156,6 @@ class TestTools(unittest.TestCase):
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
         os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
 
-        keen._initialize_client_from_environment()
-
         self.assertTrue(keen_io_writable())
 
     def test_keen_io_readable_keen_var(self):
@@ -172,7 +169,5 @@ class TestTools(unittest.TestCase):
     def test_keen_io_readable_envir_vars(self):
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
-
-        keen._initialize_client_from_environment()
 
         self.assertTrue(keen_io_readable())
