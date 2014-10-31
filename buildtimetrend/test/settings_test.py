@@ -26,6 +26,7 @@ from buildtimetrend.keenio import keen_io_writable
 from buildtimetrend.keenio import keen_io_readable
 import buildtimetrend
 import os
+import keen
 import unittest
 import constants
 
@@ -106,8 +107,9 @@ class TestTools(unittest.TestCase):
 
     def test_load_config_file(self):
         # checking if Keen.io configuration is not set (yet)
-        self.assertFalse(keen_io_readable())
-        self.assertFalse(keen_io_writable())
+        self.assertEquals(None, keen.project_id)
+        self.assertEquals(None, keen.write_key)
+        self.assertEquals(None, keen.read_key)
 
         # load sample config file
         self.assertTrue(self.settings.load_config_file(constants.TEST_SAMPLE_CONFIG_FILE))
@@ -117,5 +119,8 @@ class TestTools(unittest.TestCase):
             self.settings.settings.get_items())
 
         # checking if Keen.io configuration is set
+        self.assertEquals("1234", keen.project_id)
+        self.assertEquals("12345678", keen.write_key)
+        self.assertEquals("abcdefg", keen.read_key)
         self.assertTrue(keen_io_readable())
         self.assertTrue(keen_io_writable())
