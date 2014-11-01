@@ -72,7 +72,10 @@ def keen_io_generate_read_key(repo):
             "allowed_operations": ["read"]
         }
 
+        logging.info("Keen.io Read Key is created for %s", repo)
         return scoped_keys.encrypt(master_key, privileges)
+
+    logging.warning("Keen.io Read Key was not created.")
     return None
 
 
