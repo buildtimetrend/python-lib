@@ -20,6 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import buildtimetrend
 from buildtimetrend.tools import *
 from buildtimetrend.settings import Settings
 import os
@@ -175,7 +176,7 @@ class TestTools(unittest.TestCase):
 
     def test_set_loglevel(self):
         # TODO tests fail, getEffectiveLevel returns 0
-        logger = logging.getLogger()
+        logger = logging.getLogger(buildtimetrend.NAME)
         # test default loglevel
         #self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
 

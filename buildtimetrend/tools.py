@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import logging
+import buildtimetrend
 from datetime import datetime
 from dateutil.parser import parse
 from dateutil.tz import tzutc
@@ -203,6 +204,6 @@ def set_loglevel(loglevel):
     numeric_level = getattr(logging, loglevel.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError('Invalid log level: %s' % loglevel)
-    logger = logging.getLogger()
+    logger = logging.getLogger(buildtimetrend.NAME)
     logger.setLevel(numeric_level)
     logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
