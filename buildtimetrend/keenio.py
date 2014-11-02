@@ -43,7 +43,7 @@ def keen_has_project_id():
     return False
 
 
-def keen_io_writable():
+def keen_is_writable():
     '''
     Check if login keys for Keen IO API are set, to allow writing.
     '''
@@ -92,7 +92,7 @@ def keen_io_generate_read_key(repo):
 
 def log_build_keen(build):
     '''Send build data to keen.io'''
-    if keen_io_writable():
+    if keen_is_writable():
         logging.info("Sending data to Keen.io")
         keen_add_event("builds", {"build": build.to_dict()})
         keen_add_events("build_stages", build.stages_to_list())

@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 from buildtimetrend.travis import TravisData
 from buildtimetrend.settings import Settings
 from buildtimetrend.keenio import log_build_keen
-from buildtimetrend.keenio import keen_io_writable
+from buildtimetrend.keenio import keen_is_writable
 
 BUILD = ''
 
@@ -47,7 +47,7 @@ def retrieve_and_store_data():
     # process all build jobs
     travis_data.process_build_jobs()
 
-    if not keen_io_writable():
+    if not keen_is_writable():
         print "Keen IO write key not set, no data was sent"
         return
 
