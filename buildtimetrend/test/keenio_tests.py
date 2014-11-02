@@ -76,7 +76,7 @@ class TestTools(unittest.TestCase):
 
         self.assertFalse(keen_has_project_id())
         self.assertFalse(keen_is_writable())
-        self.assertFalse(keen_io_readable())
+        self.assertFalse(keen_is_readable())
 
 
     def test_add_project_info_dict(self):
@@ -171,16 +171,16 @@ class TestTools(unittest.TestCase):
 
         self.assertTrue(keen_is_writable())
 
-    def test_keen_io_readable_keen_var(self):
+    def test_keen_is_readable_keen_var(self):
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
 
         keen._initialize_client_from_environment()
 
-        self.assertTrue(keen_io_readable())
+        self.assertTrue(keen_is_readable())
 
-    def test_keen_io_readable_envir_vars(self):
+    def test_keen_is_readable_envir_vars(self):
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
 
-        self.assertTrue(keen_io_readable())
+        self.assertTrue(keen_is_readable())

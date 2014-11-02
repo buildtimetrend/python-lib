@@ -23,7 +23,7 @@
 from buildtimetrend.settings import Settings
 from buildtimetrend.collection import Collection
 from buildtimetrend.keenio import keen_is_writable
-from buildtimetrend.keenio import keen_io_readable
+from buildtimetrend.keenio import keen_is_readable
 import buildtimetrend
 import os
 import keen
@@ -122,5 +122,5 @@ class TestTools(unittest.TestCase):
         self.assertEquals("1234", keen.project_id)
         self.assertEquals("12345678", keen.write_key)
         self.assertEquals("abcdefg", keen.read_key)
-        self.assertTrue(keen_io_readable())
+        self.assertTrue(keen_is_readable())
         self.assertTrue(keen_is_writable())
