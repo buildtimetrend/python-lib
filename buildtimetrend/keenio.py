@@ -48,7 +48,7 @@ def keen_is_writable():
     Check if login keys for Keen IO API are set, to allow writing.
     '''
     if (keen_has_project_id() and
-        "KEEN_WRITE_KEY" in os.environ or keen.write_key is not None):
+            "KEEN_WRITE_KEY" in os.environ or keen.write_key is not None):
         return True
 
     logging.warning("Keen.io Write Key is not set")
