@@ -158,29 +158,43 @@ class TestTools(unittest.TestCase):
         self.assertTrue(keen_has_project_id())
 
     def test_keen_is_writable_keen_var(self):
+        # only set project id, check should fail
         keen.project_id = "1234abcd"
-        keen.write_key = "1234abcd5678efgh"
+        keen._initialize_client_from_environment()
 
+        self.assertFalse(keen_is_writable())
+
+        # set write_key
+        keen.write_key = "1234abcd5678efgh"
         keen._initialize_client_from_environment()
 
         self.assertTrue(keen_is_writable())
 
     def test_keen_is_writable_envir_vars(self):
+        # only set project id, check should fail
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
-        os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
+        self.assertFalse(keen_is_writable())
 
+        # set write_key
+        os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
         self.assertTrue(keen_is_writable())
 
     def test_keen_is_readable_keen_var(self):
+        # only set project id, check should fail
         keen.project_id = "1234abcd"
-        keen.read_key = "4567abcd5678efgh"
-
         keen._initialize_client_from_environment()
+        self.assertFalse(keen_is_readable())
 
+        # set read_key
+        keen.read_key = "4567abcd5678efgh"
+        keen._initialize_client_from_environment()
         self.assertTrue(keen_is_readable())
 
     def test_keen_is_readable_envir_vars(self):
+        # only set project id, check should fail
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
-        os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
+        self.assertFalse(keen_is_readable())
 
+        # set read_key
+        os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
         self.assertTrue(keen_is_readable())
