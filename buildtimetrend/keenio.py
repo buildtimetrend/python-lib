@@ -32,6 +32,17 @@ from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_list
 
 
+def keen_has_project_id():
+    '''
+    Check if Keen.io project ID is set.
+    '''
+    if ("KEEN_PROJECT_ID" in os.environ or keen.project_id is not None):
+        return True
+
+    logging.warning("Keen.io Project ID is not set")
+    return False
+
+
 def keen_io_writable():
     '''
     Check if login keys for Keen IO API are set, to allow writing.

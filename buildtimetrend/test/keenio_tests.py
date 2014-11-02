@@ -74,6 +74,7 @@ class TestTools(unittest.TestCase):
         self.assertEqual(None, keen.project_id)
         self.assertEqual(None, keen.write_key)
 
+        self.assertFalse(keen_has_project_id())
         self.assertFalse(keen_io_writable())
         self.assertFalse(keen_io_readable())
 
@@ -143,6 +144,18 @@ class TestTools(unittest.TestCase):
             add_project_info_list([{"test": "value"},
                 {"test2": "value2"}])
         )
+
+    def test_keen_has_project_id_keen_var(self):
+        keen.project_id = "1234abcd"
+
+        keen._initialize_client_from_environment()
+
+        self.assertTrue(keen_has_project_id())
+
+    def test_keen_has_project_envir_vars(self):
+        os.environ["KEEN_PROJECT_ID"] = "1234abcd"
+
+        self.assertTrue(keen_has_project_id())
 
     def test_keen_io_writable_keen_var(self):
         keen.project_id = "1234abcd"
