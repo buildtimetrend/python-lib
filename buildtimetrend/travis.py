@@ -78,6 +78,20 @@ def load_travis_env_vars():
             settings.add_setting("result", test_result)
 
 
+def env_var_to_settings(env_var_name, settings_name):
+    '''
+    Store environment variable value as a setting
+    Parameters:
+    - env_var_name : Name of the environment variable
+    - settings_name : Name of the corresponding settings value
+    '''
+    if env_var_name in os.environ:
+        Settings().add_setting(settings_name, os.environ[env_var_name])
+        return True
+    else:
+        return False
+
+
 class TravisData(object):
     '''
     Gather data from Travis CI using the API

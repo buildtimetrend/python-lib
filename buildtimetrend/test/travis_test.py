@@ -20,7 +20,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import os
 from buildtimetrend.travis import *
+from buildtimetrend.settings import Settings
 import constants
 import unittest
 
@@ -37,6 +39,24 @@ VALID_HASH2 = '1234abce'
 INVALID_HASH = 'abcd1234'
 DURATION_NANO = 11000000000
 DURATION_SEC = 11.0
+
+class TestTravis(unittest.TestCase):
+    #def setUp(self):
+
+    def test_novalue(self):
+        self.assertFalse(env_var_to_settings("",""))
+
+    def test_env_var_to_settings(self):
+        self.assertEquals(None, Settings().get_setting("test"))
+        self.assertFalse(env_var_to_settings("NO_VAR", "test"))
+        self.assertEquals(None, Settings().get_setting("test"))
+
+        os.environ["BTT_TEST_VAR"] = "test_value1"
+        self.assertTrue(env_var_to_settings("BTT_TEST_VAR", "test"))
+        self.assertEquals("test_value1", Settings().get_setting("test"))
+
+        del os.environ["BTT_TEST_VAR"]
+
 
 class TestTravisData(unittest.TestCase):
     def setUp(self):
