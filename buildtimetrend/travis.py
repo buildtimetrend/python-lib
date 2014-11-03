@@ -64,7 +64,7 @@ def load_travis_env_vars():
         if "TRAVIS_BRANCH" in os.environ:
             settings.add_setting("branch", os.environ["TRAVIS_BRANCH"])
         if "TRAVIS_REPO_SLUG" in os.environ:
-            settings.set_project_name(os.environ["TRAVIS_BRANCH"])
+            settings.set_project_name(os.environ["TRAVIS_REPO_SLUG"])
 
         if "TRAVIS_TEST_RESULT" in os.environ:
             # map $TRAVIS_TEST_RESULT to a more readable value
