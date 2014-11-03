@@ -20,6 +20,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
+import os
 import urllib2
 import json
 import re
@@ -27,6 +28,7 @@ import logging
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.build import Build
+from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stage
 import buildtimetrend
 
@@ -42,6 +44,37 @@ TRAVIS_LOG_PARSE_TIMING_STRINGS = [
     r'\$\ (?P<command>.*)\r',
 ]
 TRAVIS_LOG_PARSE_WORKER_STRING = r'Using worker:\ (?P<hostname>.*):(?P<os>.*)'
+
+def load_travis_env_vars():
+    '''
+    Loads Travis CI environment variables and assigns them to
+    the corresponding settings item.
+    '''
+    if "TRAVIS" in os.environ and os.environ["TRAVIS"] is "true":
+
+        settings = Settings()
+
+        settings.add_setting("ci_platform", "travis")
+
+        if "TRAVIS_BUILD_NUMBER" in os.environ:
+            settings.add_setting("build", os.environ["TRAVIS_BUILD_NUMBER"])
+        if "TRAVIS_BUILD_JOB" in os.environ:
+            settings.add_setting("job", os.environ["TRAVIS_BUILD_JOB"])
+        if "TRAVIS_BRANCH" in os.environ:
+            settings.add_setting("branch", os.environ["TRAVIS_BRANCH"])
+        if "TRAVIS_REPO_SLUG" in os.environ:
+            settings.set_project_name(os.environ["TRAVIS_BRANCH"])
+
+        if "TRAVIS_TEST_RESULT" in os.environ:
+            # map $TRAVIS_TEST_RESULT to a more readable value
+            if os.environ["TRAVIS_TEST_RESULT"] is 0:
+                test_result = "passed"
+            elif os.environ["TRAVIS_TEST_RESULT"] is 1:
+                test_result = "failed"
+            else:
+                test_result = "errored"
+
+            settings.add_setting("result", test_result)
 
 
 class TravisData(object):
