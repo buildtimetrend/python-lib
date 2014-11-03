@@ -45,6 +45,7 @@ TRAVIS_LOG_PARSE_TIMING_STRINGS = [
 ]
 TRAVIS_LOG_PARSE_WORKER_STRING = r'Using worker:\ (?P<hostname>.*):(?P<os>.*)'
 
+
 def load_travis_env_vars():
     '''
     Loads Travis CI environment variables and assigns them to
