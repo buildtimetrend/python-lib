@@ -52,20 +52,18 @@ def load_travis_env_vars():
     the corresponding settings item.
     '''
     if "TRAVIS" in os.environ and os.environ["TRAVIS"] is "true":
-
         settings = Settings()
 
+        # set ci_platform setting to "travis"
         settings.add_setting("ci_platform", "travis")
 
-        if "TRAVIS_BUILD_NUMBER" in os.environ:
-            settings.add_setting("build", os.environ["TRAVIS_BUILD_NUMBER"])
-        if "TRAVIS_BUILD_JOB" in os.environ:
-            settings.add_setting("job", os.environ["TRAVIS_BUILD_JOB"])
-        if "TRAVIS_BRANCH" in os.environ:
-            settings.add_setting("branch", os.environ["TRAVIS_BRANCH"])
-        if "TRAVIS_REPO_SLUG" in os.environ:
-            settings.set_project_name(os.environ["TRAVIS_REPO_SLUG"])
+        # set settings with TRAVIS values
+        env_var_to_settings("TRAVIS_BUILD_NUMBER", "build")
+        env_var_to_settings("TRAVIS_BUILD_JOB", "job")
+        env_var_to_settings("TRAVIS_BRANCH", "branch")
+        env_var_to_settings("TRAVIS_REPO_SLUG", "project_name")
 
+        # convert and set Travis build result
         if "TRAVIS_TEST_RESULT" in os.environ:
             # map $TRAVIS_TEST_RESULT to a more readable value
             if os.environ["TRAVIS_TEST_RESULT"] is 0:
