@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import buildtimetrend
 from buildtimetrend.travis import *
 from buildtimetrend.settings import Settings
 import constants
@@ -56,6 +57,53 @@ class TestTravis(unittest.TestCase):
         self.assertEquals("test_value1", Settings().get_setting("test"))
 
         del os.environ["BTT_TEST_VAR"]
+
+    def test_load_travis_env_vars(self):
+        self.assertEquals(None, Settings().get_setting("ci_platform"))
+        self.assertEquals(None, Settings().get_setting("build"))
+        self.assertEquals(None, Settings().get_setting("job"))
+        self.assertEquals(None, Settings().get_setting("branch"))
+        self.assertEquals(None, Settings().get_setting("result"))
+        self.assertEquals(buildtimetrend.NAME, Settings().get_project_name())
+
+        load_travis_env_vars()
+
+        self.assertEquals(None, Settings().get_setting("ci_platform"))
+        self.assertEquals(None, Settings().get_setting("build"))
+        self.assertEquals(None, Settings().get_setting("job"))
+        self.assertEquals(None, Settings().get_setting("branch"))
+        self.assertEquals(None, Settings().get_setting("result"))
+        self.assertEquals(buildtimetrend.NAME, Settings().get_project_name())
+
+        if "TRAVIS" in os.environ and os.environ["TRAVIS"] is "true":
+            reset_travis_vars = False
+            expected_build = os.environ["TRAVIS_BUILD_NUMBER"]
+            expected_job = os.environ["TRAVIS_BUILD_JOB"]
+            expected_branch = os.environ["TRAVIS_BRANCH"]
+            expected_project_name = os.environ["TRAVIS_REPO_SLUG"]
+        else:
+            reset_travis_vars = True
+            os.environ["TRAVIS"] = "true"
+            expected_build = os.environ["TRAVIS_BUILD_NUMBER"] = "123"
+            expected_job = os.environ["TRAVIS_BUILD_JOB"] = "123.1"
+            expected_branch = os.environ["TRAVIS_BRANCH"] = "branch1"
+            expected_project_name = os.environ["TRAVIS_REPO_SLUG"] = "test/project"
+
+        load_travis_env_vars()
+
+        self.assertEquals("travis", Settings().get_setting("ci_platform"))
+        self.assertEquals(expected_build, Settings().get_setting("build"))
+        self.assertEquals(expected_job, Settings().get_setting("job"))
+        self.assertEquals(expected_branch, Settings().get_setting("branch"))
+        self.assertEquals(expected_project_name, Settings().get_project_name())
+
+        # reset test Travis vars
+        if reset_travis_vars:
+            del os.environ["TRAVIS"]
+            del os.environ["TRAVIS_BUILD_NUMBER"]
+            del os.environ["TRAVIS_BUILD_JOB"]
+            del os.environ["TRAVIS_BRANCH"]
+            del os.environ["TRAVIS_REPO_SLUG"]
 
 
 class TestTravisData(unittest.TestCase):
