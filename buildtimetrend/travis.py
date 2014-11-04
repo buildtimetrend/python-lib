@@ -90,6 +90,22 @@ def env_var_to_settings(env_var_name, settings_name):
         return False
 
 
+def convert_build_result(result):
+    '''
+    Convert Travis build result to a more readable value
+    Parameters:
+    - result : numerical build result
+    '''
+    if result is 0:
+        build_result = "passed"
+    elif result is 1:
+        build_result = "failed"
+    else:
+        build_result = "errored"
+
+    return build_result
+
+
 class TravisData(object):
     '''
     Gather data from Travis CI using the API
