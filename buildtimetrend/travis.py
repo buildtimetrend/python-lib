@@ -83,12 +83,12 @@ def env_var_to_settings(env_var_name, settings_name):
         Settings().add_setting(settings_name, os.environ[env_var_name])
         logging.debug(
             "Setting %s was set to %s",
-            (settings_name, os.environ[env_var_name]))
+            settings_name, os.environ[env_var_name])
         return True
     else:
         logging.debug(
             "Setting %s was not set, environment variable %s doesn't exist",
-            (settings_name, env_var_name))
+            settings_name, env_var_name)
         return False
 
 
