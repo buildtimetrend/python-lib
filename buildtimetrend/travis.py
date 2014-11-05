@@ -66,14 +66,10 @@ def load_travis_env_vars():
         # convert and set Travis build result
         if "TRAVIS_TEST_RESULT" in os.environ:
             # map $TRAVIS_TEST_RESULT to a more readable value
-            if os.environ["TRAVIS_TEST_RESULT"] is 0:
-                test_result = "passed"
-            elif os.environ["TRAVIS_TEST_RESULT"] is 1:
-                test_result = "failed"
-            else:
-                test_result = "errored"
-
-            settings.add_setting("result", test_result)
+            settings.add_setting(
+                "result",
+                convert_build_result(os.environ["TRAVIS_TEST_RESULT"])
+            )
 
 
 def env_var_to_settings(env_var_name, settings_name):
