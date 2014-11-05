@@ -24,4 +24,4 @@ after_script:
   # synchronise buildtime-trend result with gh-pages
   - echo $TRAVIS_TEST_RESULT
   - timestamp.sh Done
-  - sync-buildtime-trend-with-gh-pages.sh -l INFO -m native
+  - sync-buildtime-trend-with-gh-pages.sh -l DEBUG -m native
