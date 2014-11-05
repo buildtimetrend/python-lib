@@ -29,6 +29,7 @@ import sys
 import getopt
 import logging
 from buildtimetrend.tools import set_loglevel
+from buildtimetrend.travis import load_travis_env_vars
 from buildtimetrend.settings import Settings
 
 
@@ -36,6 +37,9 @@ def generate_trend(argv):
     '''
     Generate trends from analised buildtime data
     '''
+    # load Travis environment variables and save them in settings
+    load_travis_env_vars()
+    
     # process arguments
     usage_string = 'generate_trend.py -h --log=<log_level> --mode=native,keen'
     try:
