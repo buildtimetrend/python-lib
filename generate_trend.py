@@ -27,7 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 import sys
 import getopt
-import logging
+from buildtimetrend.tools import get_logger
 from buildtimetrend.tools import set_loglevel
 from buildtimetrend.travis import load_travis_env_vars
 from buildtimetrend.settings import Settings
@@ -75,9 +75,10 @@ def trend_native():
 
     trend = Trend()
     if trend.gather_data(result_file):
+        logger = get_logger()
         # log number of builds and list of buildnames
-        logging.info('Builds (%d) : %s', len(trend.builds), trend.builds)
-        logging.info('Stages (%d) : %s', len(trend.stages), trend.stages)
+        logger.info('Builds (%d) : %s', len(trend.builds), trend.builds)
+        logger.info('Stages (%d) : %s', len(trend.stages), trend.stages)
         trend.generate(chart_file)
 
 

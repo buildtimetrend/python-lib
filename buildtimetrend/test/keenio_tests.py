@@ -26,7 +26,6 @@ import os
 import keen
 import unittest
 import constants
-import logging
 
 class TestTools(unittest.TestCase):
     copy_keen_project_id = None

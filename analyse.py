@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 import sys
 import getopt
-import logging
+from buildtimetrend.tools import get_logger
 from buildtimetrend.settings import Settings
 from buildtimetrend.build import Build
 from buildtimetrend.travis import TravisData
@@ -125,7 +125,7 @@ def log_build_native(build):
         try:
             root_xml = etree.parse(RESULT_FILE).getroot()
         except etree.XMLSyntaxError:
-            logging.error('XML format invalid : a new file is created,'
+            get_logger().error('XML format invalid : a new file is created,'
                 ' corrupt file is discarded')
             root_xml = etree.Element("builds")
     else:

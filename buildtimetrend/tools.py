@@ -131,7 +131,7 @@ def check_file(filename):
     '''
     # load timestamps file
     if not os.path.isfile(filename):
-        logging.critical('File doesn\'t exist : %s', filename)
+        get_logger().critical('File doesn\'t exist : %s', filename)
         return False
 
     return True
