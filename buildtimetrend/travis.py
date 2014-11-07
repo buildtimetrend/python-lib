@@ -51,7 +51,9 @@ def load_travis_env_vars():
     Loads Travis CI environment variables and assigns them to
     the corresponding settings item.
     '''
+    print "Checking if Travis env vars exist"
     if "TRAVIS" in os.environ and os.environ["TRAVIS"] is "true":
+        print "Getting Travis env vars"
         settings = Settings()
 
         # set ci_platform setting to "travis"
