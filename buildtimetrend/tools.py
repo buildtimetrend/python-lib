@@ -188,6 +188,11 @@ def check_list(param_list, name):
 
     return True
 
+def get_logger():
+    '''
+    Returns logger object
+    '''
+    return logging.getLogger(buildtimetrend.NAME)
 
 def set_loglevel(loglevel):
     '''
@@ -204,6 +209,6 @@ def set_loglevel(loglevel):
     numeric_level = getattr(logging, loglevel.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError('Invalid log level: %s' % loglevel)
-    logger = logging.getLogger(buildtimetrend.NAME)
+    logger = get_logger()
     logger.setLevel(numeric_level)
     logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
