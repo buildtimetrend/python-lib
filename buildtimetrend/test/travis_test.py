@@ -70,14 +70,14 @@ class TestTravis(unittest.TestCase):
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
             expected_build = os.environ["TRAVIS_BUILD_NUMBER"]
-            expected_job = os.environ["TRAVIS_BUILD_JOB"]
+            expected_job = os.environ["TRAVIS_JOB_NUMBER"]
             expected_branch = os.environ["TRAVIS_BRANCH"]
             expected_project_name = os.environ["TRAVIS_REPO_SLUG"]
         else:
             reset_travis_vars = True
             os.environ["TRAVIS"] = "true"
             expected_build = os.environ["TRAVIS_BUILD_NUMBER"] = "123"
-            expected_job = os.environ["TRAVIS_BUILD_JOB"] = "123.1"
+            expected_job = os.environ["TRAVIS_JOB_NUMBER"] = "123.1"
             expected_branch = os.environ["TRAVIS_BRANCH"] = "branch1"
             expected_project_name = os.environ["TRAVIS_REPO_SLUG"] = "test/project"
 
@@ -93,7 +93,7 @@ class TestTravis(unittest.TestCase):
         if reset_travis_vars:
             del os.environ["TRAVIS"]
             del os.environ["TRAVIS_BUILD_NUMBER"]
-            del os.environ["TRAVIS_BUILD_JOB"]
+            del os.environ["TRAVIS_JOB_NUMBER"]
             del os.environ["TRAVIS_BRANCH"]
             del os.environ["TRAVIS_REPO_SLUG"]
 

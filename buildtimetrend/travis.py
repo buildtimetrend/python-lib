@@ -59,7 +59,7 @@ def load_travis_env_vars():
 
         # set settings with TRAVIS values
         env_var_to_settings("TRAVIS_BUILD_NUMBER", "build")
-        env_var_to_settings("TRAVIS_BUILD_JOB", "job")
+        env_var_to_settings("TRAVIS_JOB_NUMBER, "job")
         env_var_to_settings("TRAVIS_BRANCH", "branch")
         env_var_to_settings("TRAVIS_REPO_SLUG", "project_name")
 
