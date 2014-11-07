@@ -67,15 +67,6 @@ class TestTravis(unittest.TestCase):
         self.assertEquals(None, Settings().get_setting("result"))
         self.assertEquals(buildtimetrend.NAME, Settings().get_project_name())
 
-        load_travis_env_vars()
-
-        self.assertEquals(None, Settings().get_setting("ci_platform"))
-        self.assertEquals(None, Settings().get_setting("build"))
-        self.assertEquals(None, Settings().get_setting("job"))
-        self.assertEquals(None, Settings().get_setting("branch"))
-        self.assertEquals(None, Settings().get_setting("result"))
-        self.assertEquals(buildtimetrend.NAME, Settings().get_project_name())
-
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
             expected_build = os.environ["TRAVIS_BUILD_NUMBER"]
