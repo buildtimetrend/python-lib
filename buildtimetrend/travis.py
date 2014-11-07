@@ -52,7 +52,7 @@ def load_travis_env_vars():
     the corresponding settings item.
     '''
     print "Checking if Travis env vars exist"
-    if "TRAVIS" in os.environ and os.environ["TRAVIS"] is "true":
+    if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
         print "Getting Travis env vars"
         settings = Settings()
 
