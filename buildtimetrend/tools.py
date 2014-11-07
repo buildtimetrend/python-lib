@@ -188,11 +188,13 @@ def check_list(param_list, name):
 
     return True
 
+
 def get_logger():
     '''
     Returns logger object
     '''
     return logging.getLogger(buildtimetrend.NAME)
+
 
 def set_loglevel(loglevel):
     '''
