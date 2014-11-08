@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import copy
 from lxml import etree
+from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stages
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import split_isotimestamp
@@ -116,6 +117,32 @@ class Build(object):
         - isotimestamp : timestamp in iso format when build started
         '''
         self.add_property("finished_at", split_isotimestamp(isotimestamp))
+
+    def load_properties_from_settings(self):
+        '''
+        Load build properties from settings.
+        '''
+        self.load_property_from_settings("build")
+        self.load_property_from_settings("job")
+        self.load_property_from_settings("branch")
+        self.load_property_from_settings("ci_platform")
+        self.load_property_from_settings("result")
+        self.add_property("repo", Settings().get_project_name())
+
+    def load_property_from_settings(self, property_name, setting_name=None):
+        '''
+        Load the value of a setting and set it as a build property
+        Parameters
+        - property_name : name of the build property
+        - setting_name : name of the setting (takes property_name if not set)
+        '''
+        if setting_name is None:
+            setting_name = property_name
+
+        value = Settings().get_setting(setting_name)
+
+        if value is not None:
+            self.add_property(property_name, value)
 
     def to_dict(self):
         '''
