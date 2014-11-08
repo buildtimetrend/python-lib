@@ -211,6 +211,12 @@ def set_loglevel(loglevel):
     numeric_level = getattr(logging, loglevel.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError('Invalid log level: %s' % loglevel)
+
+    # create handler
+    ch = logging.StreamHandler()
+    ch.setLevel(numeric_level)
+
+    # setup logger
     logger = get_logger()
-    logger.setLevel(numeric_level)
+    logger.addHandler(ch)
     logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
