@@ -31,7 +31,7 @@ import unittest
 import constants
 
 
-class TestTools(unittest.TestCase):
+class TestSettings(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.settings = Settings()
