@@ -59,9 +59,6 @@ def analyse(argv):
 
     settings = Settings()
 
-    # read build data from timestamp CSV file
-    build = Build(TIMESTAMP_FILE)
-
     # process arguments
     usage_string = 'analyse.py -h --log=<log_level> --build=<buildID>' \
         ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
@@ -83,21 +80,26 @@ def analyse(argv):
         elif opt == "--log":
             set_loglevel(arg)
         elif opt == "--build":
-            build.add_property("build", arg)
+            settings.add_setting("build", arg)
         elif opt == "--job":
-            build.add_property("job", arg)
+            settings.add_setting("job", arg)
         elif opt == "--branch":
-            build.add_property("branch", arg)
+            settings.add_setting("branch", arg)
         elif opt == "--repo":
-            build.add_property("repo", arg)
             settings.set_project_name(arg)
         elif opt == "--ci":
-            build.add_property("ci_platform", arg)
+            settings.add_setting("ci_platform", arg)
         elif opt == "--result":
-            build.add_property("result", arg)
+            settings.add_setting("result", arg)
         elif opt == "--mode":
             if arg == "native":
                 mode_native = True
+
+    # read build data from timestamp CSV file
+    build = Build(TIMESTAMP_FILE)
+
+    # load build properties from settings
+    build.load_properties_from_settings()
 
     # retrieve data from Travis CI API
     if build.get_property("ci_platform") == "travis":
