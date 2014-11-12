@@ -39,7 +39,7 @@ def generate_trend(argv):
     '''
     # load Travis environment variables and save them in settings
     load_travis_env_vars()
-    
+
     # process arguments
     usage_string = 'generate_trend.py -h --log=<log_level> --mode=native,keen'
     try:
