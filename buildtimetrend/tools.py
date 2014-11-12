@@ -213,11 +213,11 @@ def set_loglevel(loglevel):
         raise ValueError('Invalid log level: %s' % loglevel)
 
     # create handler
-    ch = logging.StreamHandler()
-    ch.setLevel(numeric_level)
+    log_handler = logging.StreamHandler()
+    log_handler.setLevel(numeric_level)
 
     # setup logger
     logger = get_logger()
     logger.setLevel(numeric_level)
-    logger.addHandler(ch)
+    logger.addHandler(log_handler)
     logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
