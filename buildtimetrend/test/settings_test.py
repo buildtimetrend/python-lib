@@ -127,8 +127,8 @@ class TestSettings(unittest.TestCase):
         self.assertTrue(self.settings.load_config_file(constants.TEST_SAMPLE_CONFIG_FILE))
         self.assertDictEqual(
             {"project_name": "test_project",
-            "mode_native": False,
-            "mode_keen": True,
+            "mode_native": True,
+            "mode_keen": False,
             "setting1": "test_value1"},
             self.settings.settings.get_items())
 
