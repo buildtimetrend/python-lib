@@ -31,7 +31,7 @@ import unittest
 import constants
 
 
-class TestTools(unittest.TestCase):
+class TestSettings(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.settings = Settings()
@@ -87,19 +87,31 @@ class TestTools(unittest.TestCase):
             self.settings.get_setting("project_name"))
 
         self.assertDictEqual(
-            {"project_name": self.project_name},
+            {
+                "project_name": self.project_name,
+                "mode_native": False,
+                "mode_keen": True
+            },
             self.settings.settings.get_items())
 
     def test_no_config_file(self):
         # function should return false when file doesn't exist
         self.assertFalse(self.settings.load_config_file('no_file.yml'))
         self.assertDictEqual(
-            {"project_name": self.project_name},
+            {
+                "project_name": self.project_name,
+                "mode_native": False,
+                "mode_keen": True
+            },
             self.settings.settings.get_items())
 
         self.assertFalse(self.settings.load_config_file(''))
         self.assertDictEqual(
-            {"project_name": self.project_name},
+            {
+                "project_name": self.project_name,
+                "mode_native": False,
+                "mode_keen": True
+            },
             self.settings.settings.get_items())
 
         # function should throw an error when no filename is set
@@ -115,7 +127,9 @@ class TestTools(unittest.TestCase):
         self.assertTrue(self.settings.load_config_file(constants.TEST_SAMPLE_CONFIG_FILE))
         self.assertDictEqual(
             {"project_name": "test_project",
-             "setting1": "test_value1"},
+            "mode_native": True,
+            "mode_keen": False,
+            "setting1": "test_value1"},
             self.settings.settings.get_items())
 
         # checking if Keen.io configuration is set

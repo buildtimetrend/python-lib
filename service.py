@@ -29,6 +29,7 @@ from buildtimetrend.keenio import keen_is_writable
 
 BUILD = ''
 
+
 def retrieve_and_store_data():
     '''
     Retrieve timing data from Travis CI, parse it and store it in Keen.io

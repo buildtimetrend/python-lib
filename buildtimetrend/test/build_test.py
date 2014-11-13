@@ -20,6 +20,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import buildtimetrend
+from buildtimetrend.settings import Settings
 from buildtimetrend.build import Build
 from buildtimetrend.stages import Stage
 from buildtimetrend.stages import Stages
@@ -193,6 +195,32 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property2', 4)
         self.assertDictEqual(
             {'duration': 0, 'property1': 2, 'property2': 4},
+            self.build.get_properties())
+
+    def test_load_properties(self):
+        self.build.load_properties_from_settings()
+
+        self.assertDictEqual(
+            {'duration': 0, "repo": buildtimetrend.NAME},
+            self.build.get_properties())
+
+        settings = Settings()
+        settings.add_setting("ci_platform", "travis")
+        settings.add_setting("build", "123")
+        settings.add_setting("job", "123.1")
+        settings.add_setting("branch", "branch1")
+        settings.add_setting("result", "passed")
+        settings.set_project_name("test/project")
+
+        self.build.load_properties_from_settings()
+        self.assertDictEqual(
+            {   'duration': 0,
+                'ci_platform': "travis",
+                'build': "123",
+                'job': "123.1",
+                'branch': "branch1",
+                'result': "passed",
+                'repo': "test/project"},
             self.build.get_properties())
 
     def test_to_dict(self):

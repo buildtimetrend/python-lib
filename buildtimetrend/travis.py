@@ -24,7 +24,7 @@ import os
 import urllib2
 import json
 import re
-import logging
+from buildtimetrend.tools import get_logger
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.build import Build
@@ -81,14 +81,16 @@ def env_var_to_settings(env_var_name, settings_name):
     - env_var_name : Name of the environment variable
     - settings_name : Name of the corresponding settings value
     '''
+    logger = get_logger()
+
     if env_var_name in os.environ:
         Settings().add_setting(settings_name, os.environ[env_var_name])
-        logging.debug(
+        logger.debug(
             "Setting %s was set to %s",
             settings_name, os.environ[env_var_name])
         return True
     else:
-        logging.debug(
+        logger.debug(
             "Setting %s was not set, environment variable %s doesn't exist",
             settings_name, env_var_name)
         return False
@@ -137,7 +139,7 @@ class TravisData(object):
         self.build_data = self.json_request(request)
 
         # log build_data
-        logging.debug(
+        get_logger().debug(
             "Build #%s data : %s",
             str(self.build_id),
             json.dumps(self.build_data, sort_keys=True, indent=2)
@@ -169,7 +171,7 @@ class TravisData(object):
         job_data = self.json_request(request)
 
         # log job_data
-        logging.debug(
+        get_logger().debug(
             "Job #%s data : %s",
             str(job_id),
             json.dumps(job_data, sort_keys=True, indent=2)
@@ -207,7 +209,7 @@ class TravisData(object):
         '''
         request = 'jobs/%s/log' % str(job_id)
         request_url = self.api_url + request
-        logging.info("Request build job log : %s", request_url)
+        get_logger().info("Request build job log : %s", request_url)
         return urllib2.urlopen(request_url)
 
     def parse_job_log(self, job_id):
@@ -257,7 +259,7 @@ class TravisData(object):
             self.travis_substage = TravisSubstage()
 
         escaped_line = line.replace('\x0d', '*').replace('\x1b', 'ESC')
-        logging.debug('line : %s', escaped_line)
+        get_logger().debug('line : %s', escaped_line)
 
         # parse Travis CI timing tags
         for parse_string in TRAVIS_LOG_PARSE_TIMING_STRINGS:
@@ -277,7 +279,7 @@ class TravisData(object):
         Parse and process Travis CI worker tag
         Param line : line from logfile containing Travis CI tags
         '''
-        logging.debug('line : %s', line)
+        get_logger().debug('line : %s', line)
 
         # parse Travis CI worker tags
         result = re.search(TRAVIS_LOG_PARSE_WORKER_STRING, line)
@@ -290,7 +292,7 @@ class TravisData(object):
         # if it contains all required tags
         tag_list = list({'hostname', 'os'})
         if check_dict(worker_tags, "worker_tags", tag_list):
-            logging.debug("Worker tags : %s", worker_tags)
+            get_logger().debug("Worker tags : %s", worker_tags)
             self.current_job.add_property("worker", worker_tags)
 
     def json_request(self, json_request):
@@ -379,12 +381,13 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logging.debug("Start stage : %s", tags_dict)
+        logger = get_logger()
+        logger.debug("Start stage : %s", tags_dict)
 
         result = False
 
         if self.has_started():
-            logging.warning("Substage already started")
+            logger.warning("Substage already started")
         else:
             name = "%s.%s" % (
                 tags_dict['start_stage'], tags_dict['start_substage']
@@ -404,14 +407,15 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'start_hash'):
             return False
 
-        logging.debug("Start time : %s", tags_dict)
+        logger = get_logger()
+        logger.debug("Start time : %s", tags_dict)
 
         if self.has_timing_hash():
-            logging.warning("Substage timing already set")
+            logger.warning("Substage timing already set")
             return False
 
         self.timing_hash = tags_dict['start_hash']
-        logging.info("Set timing hash : %s", self.timing_hash)
+        logger.info("Set timing hash : %s", self.timing_hash)
 
         return True
 
@@ -426,14 +430,15 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'command'):
             return False
 
-        logging.debug("Command : %s", tags_dict)
+        logger = get_logger()
+        logger.debug("Command : %s", tags_dict)
 
         result = False
 
         if self.has_command():
-            logging.warning("Command is already set")
+            logger.warning("Command is already set")
         elif self.stage.set_command(tags_dict['command']):
-            logging.info("Set command : %s", tags_dict['command'])
+            logger.info("Set command : %s", tags_dict['command'])
             result = True
 
         return result
@@ -455,7 +460,8 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logging.debug("End time : %s", tags_dict)
+        logger = get_logger()
+        logger.debug("End time : %s", tags_dict)
 
         result = False
 
@@ -463,28 +469,28 @@ class TravisSubstage(object):
         # and if hash matches
         if (not self.has_timing_hash() or
                 self.timing_hash != tags_dict['end_hash']):
-            logging.warning("Substage timing was not started or \
-                            hash doesn't match")
+            logger.warning("Substage timing was not started or"
+                           " hash doesn't match")
             self.finished_incomplete = True
         else:
             set_started = set_finished = set_duration = False
 
             # Set started timestamp
             if self.stage.set_started_at_nano(tags_dict['start_timestamp']):
-                logging.info("Stage started at %s",
-                             self.stage.data["started_at"]["isotimestamp"])
+                logger.info("Stage started at %s",
+                            self.stage.data["started_at"]["isotimestamp"])
                 set_started = True
 
             # Set finished timestamp
             if self.stage.set_finished_at_nano(tags_dict['finish_timestamp']):
-                logging.info("Stage finished at %s",
-                             self.stage.data["finished_at"]["isotimestamp"])
+                logger.info("Stage finished at %s",
+                            self.stage.data["finished_at"]["isotimestamp"])
                 set_finished = True
 
             # Set duration
             if self.stage.set_duration_nano(tags_dict['duration']):
-                logging.info("Stage duration : %ss",
-                             self.stage.data['duration'])
+                logger.info("Stage duration : %ss",
+                            self.stage.data['duration'])
                 set_duration = True
 
             result = set_started and set_finished and set_duration
@@ -503,7 +509,8 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logging.debug("End stage : %s", tags_dict)
+        logger = get_logger()
+        logger.debug("End stage : %s", tags_dict)
 
         # construct substage name
         end_stagename = "%s.%s" % (
@@ -513,13 +520,13 @@ class TravisSubstage(object):
         # check if stage was started
         # and if substage name matches
         if not self.has_name() or self.stage.data["name"] != end_stagename:
-            logging.warning("Substage was not started or name doesn't match")
+            logger.warning("Substage was not started or name doesn't match")
             self.finished_incomplete = True
             return False
 
         # stage finished successfully
         self.finished = True
-        logging.info("Stage %s finished successfully", self.get_name())
+        logger.info("Stage %s finished successfully", self.get_name())
 
         return True
 

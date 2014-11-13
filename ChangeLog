@@ -10,6 +10,7 @@ v0.2 (not yet released)
 - issue #24 : Assign Travis CI started and finished timestamps to build job
 - method keenio.keen_io_writable() renamed to keenio.keen_is_writable()
 - method keenio.keen_io_readable() renamed to keenio.keen_is_readable()
+- issue #55 : get_logger() returns buildtimetrend logger object
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git

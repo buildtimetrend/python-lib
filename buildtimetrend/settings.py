@@ -48,6 +48,10 @@ class Settings(object):
             # set default project name
             self.set_project_name(buildtimetrend.NAME)
 
+            # set modes
+            self.add_setting("mode_native", False)
+            self.add_setting("mode_keen", True)
+
         def set_project_name(self, name):
             '''
             Set project name

@@ -27,7 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 import sys
 import getopt
-import logging
+from buildtimetrend.tools import get_logger
 from buildtimetrend.tools import set_loglevel
 from buildtimetrend.travis import load_travis_env_vars
 from buildtimetrend.settings import Settings
@@ -37,9 +37,11 @@ def generate_trend(argv):
     '''
     Generate trends from analised buildtime data
     '''
+    settings = Settings()
+
     # load Travis environment variables and save them in settings
     load_travis_env_vars()
-    
+
     # process arguments
     usage_string = 'generate_trend.py -h --log=<log_level> --mode=native,keen'
     try:
@@ -57,11 +59,16 @@ def generate_trend(argv):
             set_loglevel(arg)
         elif opt == "--mode":
             if arg == "native":
-                trend_native()
+                settings.add_setting("mode_native", True)
+            elif arg == "keen":
+                settings.add_setting("mode_keen", True)
 
     # run trend_keen() always,
     # if $KEEN_PROJECT_ID variable is set (checked later), it will be executed
-    trend_keen()
+    if settings.get_setting("mode_native") is True:
+        trend_native()
+    if settings.get_setting("mode_keen") is True:
+        trend_keen()
 
 
 def trend_native():
@@ -75,9 +82,10 @@ def trend_native():
 
     trend = Trend()
     if trend.gather_data(result_file):
+        logger = get_logger()
         # log number of builds and list of buildnames
-        logging.info('Builds (%d) : %s', len(trend.builds), trend.builds)
-        logging.info('Stages (%d) : %s', len(trend.stages), trend.stages)
+        logger.info('Builds (%d) : %s', len(trend.builds), trend.builds)
+        logger.info('Stages (%d) : %s', len(trend.stages), trend.stages)
         trend.generate(chart_file)
 
 

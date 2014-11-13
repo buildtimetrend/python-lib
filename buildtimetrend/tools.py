@@ -131,7 +131,7 @@ def check_file(filename):
     '''
     # load timestamps file
     if not os.path.isfile(filename):
-        logging.critical('File doesn\'t exist : %s', filename)
+        get_logger().critical('File doesn\'t exist : %s', filename)
         return False
 
     return True
@@ -189,6 +189,13 @@ def check_list(param_list, name):
     return True
 
 
+def get_logger():
+    '''
+    Returns logger object
+    '''
+    return logging.getLogger(buildtimetrend.NAME)
+
+
 def set_loglevel(loglevel):
     '''
     Sets loglevel
@@ -204,6 +211,13 @@ def set_loglevel(loglevel):
     numeric_level = getattr(logging, loglevel.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError('Invalid log level: %s' % loglevel)
-    logger = logging.getLogger(buildtimetrend.NAME)
+
+    # create handler
+    log_handler = logging.StreamHandler()
+    log_handler.setLevel(numeric_level)
+
+    # setup logger
+    logger = get_logger()
     logger.setLevel(numeric_level)
+    logger.addHandler(log_handler)
     logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)

@@ -1,7 +1,9 @@
 # Buildtime Trend general settings
 buildtimetrend:
-    project_name : "test_project"
-    setting1 : "test_value1"
+    project_name: "test_project"
+    setting1: "test_value1"
+    mode_native: true
+    mode_keen: false
 
 # Keen.io connection settings
 keen:

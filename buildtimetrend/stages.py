@@ -23,7 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import csv
-import logging
+from buildtimetrend.tools import get_logger
 from buildtimetrend.tools import split_timestamp
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import nano2sec
@@ -115,7 +115,7 @@ class Stages(object):
 
                 # calculate duration from current and previous timestamp
                 duration = timestamp - previous_timestamp
-                logging.info(
+                get_logger().info(
                     'Duration {0} : {1}s'.format(event_name, duration))
 
                 # add stage duration to stages dict
@@ -169,7 +169,7 @@ class Stage(object):
             return False
 
         self.data["name"] = str(name)
-        logging.info("Set name : %s", name)
+        get_logger().info("Set name : %s", name)
         return True
 
     def set_command(self, command):

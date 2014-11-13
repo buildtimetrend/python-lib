@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 import sys
 import getopt
-import logging
+from buildtimetrend.tools import get_logger
 from buildtimetrend.settings import Settings
 from buildtimetrend.build import Build
 from buildtimetrend.travis import TravisData
@@ -54,13 +54,7 @@ def analyse(argv):
     '''
     Analyse timestamp file
     '''
-    mode_native = False
-    mode_keen = True
-
     settings = Settings()
-
-    # read build data from timestamp CSV file
-    build = Build(TIMESTAMP_FILE)
 
     # process arguments
     usage_string = 'analyse.py -h --log=<log_level> --build=<buildID>' \
@@ -83,21 +77,28 @@ def analyse(argv):
         elif opt == "--log":
             set_loglevel(arg)
         elif opt == "--build":
-            build.add_property("build", arg)
+            settings.add_setting("build", arg)
         elif opt == "--job":
-            build.add_property("job", arg)
+            settings.add_setting("job", arg)
         elif opt == "--branch":
-            build.add_property("branch", arg)
+            settings.add_setting("branch", arg)
         elif opt == "--repo":
-            build.add_property("repo", arg)
             settings.set_project_name(arg)
         elif opt == "--ci":
-            build.add_property("ci_platform", arg)
+            settings.add_setting("ci_platform", arg)
         elif opt == "--result":
-            build.add_property("result", arg)
+            settings.add_setting("result", arg)
         elif opt == "--mode":
             if arg == "native":
-                mode_native = True
+                settings.add_setting("mode_native", True)
+            elif arg == "keen":
+                settings.add_setting("mode_keen", True)
+
+    # read build data from timestamp CSV file
+    build = Build(TIMESTAMP_FILE)
+
+    # load build properties from settings
+    build.load_properties_from_settings()
 
     # retrieve data from Travis CI API
     if build.get_property("ci_platform") == "travis":
@@ -109,9 +110,9 @@ def analyse(argv):
         build.set_started_at(travis_data.get_started_at())
 
     # log data
-    if mode_native is True:
+    if settings.get_setting("mode_native") is True:
         log_build_native(build)
-    if mode_keen is True:
+    if settings.get_setting("mode_keen") is True:
         log_build_keen(build)
 
 
@@ -125,8 +126,8 @@ def log_build_native(build):
         try:
             root_xml = etree.parse(RESULT_FILE).getroot()
         except etree.XMLSyntaxError:
-            logging.error('XML format invalid : a new file is created,'
-                ' corrupt file is discarded')
+            get_logger().error('XML format invalid : a new file is created,'
+                               ' corrupt file is discarded')
             root_xml = etree.Element("builds")
     else:
         root_xml = etree.Element("builds")
@@ -142,6 +143,6 @@ def log_build_native(build):
 
 
 if __name__ == "__main__":
-    # only run analysis if timestampfile is not present
+    # only run analysis if timestampfile is present
     if check_file(TIMESTAMP_FILE):
         analyse(sys.argv[1:])
