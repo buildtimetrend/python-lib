@@ -56,6 +56,9 @@ def analyse(argv):
     '''
     settings = Settings()
 
+    # load Travis environment variables and save them in settings
+    load_travis_env_vars()
+
     # process arguments
     usage_string = 'analyse.py -h --log=<log_level> --build=<buildID>' \
         ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
