@@ -37,6 +37,8 @@ def generate_trend(argv):
     '''
     Generate trends from analised buildtime data
     '''
+    settings = Settings()
+
     # load Travis environment variables and save them in settings
     load_travis_env_vars()
 
@@ -57,11 +59,16 @@ def generate_trend(argv):
             set_loglevel(arg)
         elif opt == "--mode":
             if arg == "native":
-                trend_native()
+                settings.add_setting("mode_native", True)
+            elif arg == "keen":
+                settings.add_setting("mode_keen", True)
 
     # run trend_keen() always,
     # if $KEEN_PROJECT_ID variable is set (checked later), it will be executed
-    trend_keen()
+    if settings.get_setting("mode_native") is True:
+        trend_native()
+    if settings.get_setting("mode_keen") is True:
+        trend_keen()
 
 
 def trend_native():
