@@ -143,6 +143,6 @@ def log_build_native(build):
 
 
 if __name__ == "__main__":
-    # only run analysis if timestampfile is not present
+    # only run analysis if timestampfile is present
     if check_file(TIMESTAMP_FILE):
         analyse(sys.argv[1:])
