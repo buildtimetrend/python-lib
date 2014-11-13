@@ -43,10 +43,10 @@ If you prefer to use git, several options are available :
 Dependencies
 ------------
 
-- keen (client for storing build time data as events in Keen.io)
-- python-dateutil (for formatting datetime objects)
-- lxml (python wrapper for libxml2 and libxslt)
-- matplotlib v1.2.0 or higher (for drawing the `native` trend graph, can be omitted when only using Keen.io to generate charts. Stackplot requires version v1.2.0)
+- keen : client for storing build time data as events in Keen.io
+- python-dateutil : for formatting datetime objects
+- lxml : python wrapper for libxml2 and libxslt
+- matplotlib (v1.2.0 or higher) : for drawing the `native` trend graph, can be omitted when only using Keen.io to generate charts. Stackplot requires version v1.2.0
 
 ### Dependency installation
 
