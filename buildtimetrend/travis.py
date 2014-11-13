@@ -467,7 +467,7 @@ class TravisSubstage(object):
         # and if hash matches
         if (not self.has_timing_hash() or
                 self.timing_hash != tags_dict['end_hash']):
-            logger.warning("Substage timing was not started or" \
+            logger.warning("Substage timing was not started or"
                            " hash doesn't match")
             self.finished_incomplete = True
         else:
