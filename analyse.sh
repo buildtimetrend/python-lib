@@ -44,23 +44,8 @@ done
 
 if [ "$BUILD_TREND_INIT" == "1" ]; then
     timestamp.sh -q end
-    if [[ "$TRAVIS" == "true" ]]; then
-        # map $TRAVIS_TEST_RESULT to a more readable value
-        case "$TRAVIS_TEST_RESULT" in
-        0)
-            test_result="passed"
-            ;;
-        1)
-            test_result="failed"
-            ;;
-        *)
-            test_result="errored"
-            ;;
-        esac
-        analyse.py --mode="$mode" --log="$logLevel" --ci="travis" --branch="$TRAVIS_BRANCH" --build="$TRAVIS_BUILD_NUMBER" --job="$TRAVIS_JOB_NUMBER" --repo="$TRAVIS_REPO_SLUG" --result="$test_result"
-    else
-        analyse.py --mode="$mode" --log="$logLevel"
-    fi
+
+    analyse.py --mode="$mode" --log="$logLevel"
 else
     echo "Buildtime-trend is not initialised, first run 'source init.sh'."
 fi
