@@ -1,6 +1,6 @@
 # Buildtime Trend general settings
 buildtimetrend:
-    project_name : "project_name or git repo"
+    project_name: "project_name or git repo"
     mode_native: false
     mode_keen: true
 
