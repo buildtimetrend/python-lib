@@ -46,7 +46,8 @@ class TestTravis(unittest.TestCase):
 
     def test_novalue(self):
         self.assertFalse(env_var_to_settings("",""))
-        self.assertEquals("errored", convert_build_result(None))
+        self.assertRaises(TypeError, convert_build_result)
+        self.assertRaises(TypeError, convert_build_result, None)
 
     def test_env_var_to_settings(self):
         self.assertEquals(None, Settings().get_setting("test"))
@@ -102,6 +103,11 @@ class TestTravis(unittest.TestCase):
         self.assertEquals("failed", convert_build_result(1))
         self.assertEquals("errored", convert_build_result(-1))
         self.assertEquals("errored", convert_build_result(2))
+
+        self.assertEquals("passed", convert_build_result("0"))
+        self.assertEquals("failed", convert_build_result("1"))
+        self.assertEquals("errored", convert_build_result("-1"))
+        self.assertEquals("errored", convert_build_result("2"))
 
 
 class TestTravisData(unittest.TestCase):
