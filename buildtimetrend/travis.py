@@ -102,6 +102,13 @@ def convert_build_result(result):
     Parameters:
     - result : numerical build result
     '''
+    if result is None or not (type(result) is str or type(result) is int):
+        raise TypeError(
+                "param %s should be a numerical string or integer" % "result"
+        )
+
+    result = int(result)
+
     if result is 0:
         build_result = "passed"
     elif result is 1:
