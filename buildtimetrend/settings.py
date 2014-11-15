@@ -22,11 +22,15 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import sys
+import getopt
 import yaml
 import keen
 import buildtimetrend
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
+from buildtimetrend.tools import set_loglevel
+from buildtimetrend.tools import get_logger
 
 
 class Settings(object):
@@ -134,3 +138,51 @@ class Settings(object):
     def __setattr__(self, name):
         ''' Redirect access to set singleton properties '''
         return setattr(self.instance, name)
+
+
+def process_argv(argv):
+    '''
+    Process command line arguments
+    '''
+    usage_string = '%s -h --log=<log_level> --build=<buildID>' \
+        ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
+        ' --ci=<ci_platform> --result=<build_result> --mode=<storage_mode>' % \
+        argv[0]
+
+    settings = Settings()
+
+    try:
+        opts, args = getopt.getopt(
+            argv[1:], "h", [
+                "log=",
+                "build=", "job=", "branch=", "repo=",
+                "ci=", "result=", "mode=", "help"]
+        )
+    except getopt.GetoptError:
+        print usage_string
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ('-h', "--help"):
+            print usage_string
+            sys.exit()
+        elif opt == "--log":
+            set_loglevel(arg)
+        elif opt == "--build":
+            settings.add_setting("build", arg)
+        elif opt == "--job":
+            settings.add_setting("job", arg)
+        elif opt == "--branch":
+            settings.add_setting("branch", arg)
+        elif opt == "--repo":
+            settings.set_project_name(arg)
+        elif opt == "--ci":
+            settings.add_setting("ci_platform", arg)
+        elif opt == "--result":
+            settings.add_setting("result", arg)
+        elif opt == "--mode":
+            if arg == "native":
+                settings.add_setting("mode_native", True)
+            elif arg == "keen":
+                settings.add_setting("mode_keen", True)
+
+    return args
