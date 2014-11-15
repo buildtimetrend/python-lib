@@ -26,11 +26,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import sys
-import getopt
 from buildtimetrend.tools import get_logger
-from buildtimetrend.tools import set_loglevel
 from buildtimetrend.travis import load_travis_env_vars
 from buildtimetrend.settings import Settings
+from buildtimetrend.settings import process_argv
 
 
 def generate_trend(argv):
@@ -42,26 +41,8 @@ def generate_trend(argv):
     # load Travis environment variables and save them in settings
     load_travis_env_vars()
 
-    # process arguments
-    usage_string = 'generate_trend.py -h --log=<log_level> --mode=native,keen'
-    try:
-        opts, args = getopt.getopt(argv, "h", ["log=", "mode=", "help"])
-    except getopt.GetoptError:
-        print usage_string
-        sys.exit(2)
-
-    # check options
-    for opt, arg in opts:
-        if opt in ('-h', "--help"):
-            print usage_string
-            sys.exit()
-        elif opt == "--log":
-            set_loglevel(arg)
-        elif opt == "--mode":
-            if arg == "native":
-                settings.add_setting("mode_native", True)
-            elif arg == "keen":
-                settings.add_setting("mode_keen", True)
+    # process command line arguments
+    process_argv(argv)
 
     # run trend_keen() always,
     # if $KEEN_PROJECT_ID variable is set (checked later), it will be executed
@@ -98,4 +79,4 @@ def trend_keen():
     generate_overview_config_file(Settings().get_project_name())
 
 if __name__ == "__main__":
-    generate_trend(sys.argv[1:])
+    generate_trend(sys.argv)
