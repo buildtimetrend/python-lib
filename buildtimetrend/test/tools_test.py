@@ -174,6 +174,27 @@ class TestTools(unittest.TestCase):
         # should return true if parameter is a list
         self.assertTrue(check_list(["string", "test"], "name"))
 
+    def test_num_string(self):
+        self.assertRaises(TypeError, check_num_string)
+        self.assertRaises(TypeError, check_num_string, None)
+        self.assertRaises(TypeError, check_num_string, 2.2, "name")
+        self.assertRaises(ValueError, check_num_string, "2.2", "name")
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            check_num_string(None, "name")
+        self.assertEqual("param name should be a numerical string or an integer", str(cm.exception))
+
+        self.assertEquals(0, check_num_string(0, "name"))
+        self.assertEquals(1, check_num_string(1, "name"))
+        self.assertEquals(-1, check_num_string(-1, "name"))
+        self.assertEquals(2, check_num_string(2, "name"))
+
+        self.assertEquals(0, check_num_string("0", "name"))
+        self.assertEquals(1, check_num_string("1", "name"))
+        self.assertEquals(-1, check_num_string("-1", "name"))
+        self.assertEquals(2, check_num_string("2", "name"))
+
     def test_set_loglevel(self):
         # TODO tests fail, getEffectiveLevel returns 0
         logger = logging.getLogger(buildtimetrend.NAME)

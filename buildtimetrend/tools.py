@@ -189,6 +189,22 @@ def check_list(param_list, name):
     return True
 
 
+def check_num_string(num_string, name):
+    '''
+    Checks if a parameter is an integer or numerical string
+    Param num_string: parameter that should be a numerical string
+    Param name: name of the parameter
+    Returns integer of numerical string, throws error when it isn't
+    '''
+    if num_string is None or \
+            not (type(num_string) is str or type(num_string) is int):
+        raise TypeError(
+            "param %s should be a numerical string or an integer" % name
+        )
+
+    return int(num_string)
+
+
 def get_logger():
     '''
     Returns logger object
