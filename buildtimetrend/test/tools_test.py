@@ -196,10 +196,9 @@ class TestTools(unittest.TestCase):
         self.assertEquals(2, check_num_string("2", "name"))
 
     def test_set_loglevel(self):
-        # TODO tests fail, getEffectiveLevel returns 0
         logger = logging.getLogger(buildtimetrend.NAME)
         # test default loglevel
-        #self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
+        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
 
         # test setting loglevel to INFO
         set_loglevel("INFO")
