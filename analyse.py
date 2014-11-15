@@ -43,6 +43,7 @@ from buildtimetrend.travis import TravisData
 from buildtimetrend.travis import load_travis_env_vars
 from buildtimetrend.keenio import log_build_keen
 from buildtimetrend.tools import check_file
+from buildtimetrend.tools import get_logger
 
 # use parameter for timestamps file and check if file exists
 TIMESTAMP_FILE = os.getenv('BUILD_TREND_LOGFILE', 'timestamps.csv')
