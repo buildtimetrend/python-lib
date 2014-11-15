@@ -22,15 +22,15 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import sys
 from buildtimetrend.travis import TravisData
 from buildtimetrend.settings import Settings
+from buildtimetrend.settings import process_argv
 from buildtimetrend.keenio import log_build_keen
 from buildtimetrend.keenio import keen_is_writable
 
-BUILD = ''
 
-
-def retrieve_and_store_data():
+def retrieve_and_store_data(argv):
     '''
     Retrieve timing data from Travis CI, parse it and store it in Keen.io
     '''
@@ -38,11 +38,19 @@ def retrieve_and_store_data():
     settings = Settings()
     settings.load_config_file("config_service.yml")
 
-    travis_data = TravisData(settings.get_project_name(), BUILD)
+    # process command line arguments
+    process_argv(argv)
+
+    build = settings.get_setting('build')
+    if build is None:
+        print "Build number is not set, use --build=build_id"
+        return
+
+    travis_data = TravisData(settings.get_project_name(), build)
 
     # retrieve build data using Travis CI API
     print "Retrieve build #%s data of %s from Travis CI" % \
-        (BUILD, settings.get_project_name())
+        (build, settings.get_project_name())
     travis_data.get_build_data()
 
     # process all build jobs
@@ -58,4 +66,4 @@ def retrieve_and_store_data():
         log_build_keen(travis_data.build_jobs[build_job])
 
 if __name__ == "__main__":
-    retrieve_and_store_data()
+    retrieve_and_store_data(sys.argv)
