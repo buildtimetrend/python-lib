@@ -27,6 +27,7 @@ import re
 from buildtimetrend.tools import get_logger
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
+from buildtimetrend.tools import check_num_string
 from buildtimetrend.build import Build
 from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stage
@@ -100,12 +101,7 @@ def convert_build_result(result):
     Parameters:
     - result : numerical build result
     '''
-    if result is None or not (type(result) is str or type(result) is int):
-        raise TypeError(
-                "param %s should be a numerical string or integer" % "result"
-        )
-
-    result = int(result)
+    result = check_num_string(result, "result")
 
     if result is 0:
         build_result = "passed"
