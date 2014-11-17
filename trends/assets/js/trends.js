@@ -118,9 +118,6 @@ function initCharts() {
         });
         queryRequests.push(requestTotalBuilds);
 
-        // display div inline (show it next to the next chart)
-        document.getElementById("metric_total_builds").style.display = "inline-block";
-
         /* Total builds passed */
         // create query
         var queryTotalBuildsPassed = new Keen.Query("count", {
@@ -156,9 +153,6 @@ function initCharts() {
             );
         });
         queryRequests.push(colorBuildsPassed);
-
-        // display div inline (show it next to the next chart)
-        document.getElementById("metric_total_builds_passed").style.display = "inline-block";
 
         /* Total builds passed */
         // create query
@@ -196,9 +190,6 @@ function initCharts() {
         });
         queryRequests.push(colorBuildsFailed);
 
-        // display div inline (show it next to the previous chart)
-        document.getElementById("metric_total_builds_failed").style.display = "inline-block";
-
         /* average build time of all stages */
         // create query
         var queryAverageBuildTime = new Keen.Query("average", {
@@ -219,9 +210,6 @@ function initCharts() {
             });
         });
         queryRequests.push(requestAverageBuildTime);
-
-        // display div inline (show it next to the previous chart)
-        document.getElementById("metric_average_build_time").style.display = "inline-block";
 
         /* average stage duration */
         // create query
@@ -250,9 +238,6 @@ function initCharts() {
         });
         queryRequests.push(requestStageDuration);
 
-        // display div inline (show it next to the next chart)
-        document.getElementById("chart_stage_duration").style.display = "inline-block";
-
         /* Stage duration fraction */
         // create query
         var queryStageFraction = new Keen.Query("average", {
@@ -271,9 +256,6 @@ function initCharts() {
             });
         });
         queryRequests.push(requestStageFraction);
-
-        // display div inline (show it next to the previous chart)
-        document.getElementById("chart_stage_fraction").style.display = "inline-block";
 
         /* Builds */
         // create query
@@ -301,9 +283,6 @@ function initCharts() {
         });
         queryRequests.push(requestBuilds);
 
-        // display div inline (show it next to the next chart)
-        document.getElementById("chart_builds").style.display = "inline-block";
-
         /* Builds per branch */
         // create query
         var queryTotalBuildsBranch = new Keen.Query("count_unique", {
@@ -321,9 +300,6 @@ function initCharts() {
             });
         });
         queryRequests.push(requestTotalBuildsBranch);
-
-        // display div inline (show it next to the previous chart)
-        document.getElementById("chart_total_builds_branch").style.display = "inline-block";
 
         /* Average buildtime per time of day */
         // create query
@@ -388,10 +364,6 @@ function initCharts() {
             });
         });
         queryRequests.push(requestAvgBuildtimeHour);
-
-        // display div inline (show it next to the previous chart)
-        document.getElementById("chart_avg_buildtime_hour").style.display
-            = "inline-block";
 
         /* Average buildtime per day of week */
         // create query
@@ -465,9 +437,6 @@ function initCharts() {
             });
         });
         queryRequests.push(requestAvgBuildtimeWeekDay);
-
-        // display div inline (show it next to the previous chart)
-        document.getElementById("chart_avg_buildtime_weekday").style.display = "inline-block";
     });
 }
 
