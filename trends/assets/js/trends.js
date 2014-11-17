@@ -231,7 +231,6 @@ function initCharts() {
                 title: "Average build stage duration",
                 chartOptions: {
                     isStacked: true,
-                    chartArea: {left: 75, width: 350},
                     vAxis: {title: "duration [s]"}
                 }
             });
@@ -276,7 +275,6 @@ function initCharts() {
                 title: "Builds per branch",
                 chartOptions: {
                     isStacked: true,
-                    chartArea: {left: 75, width: 350},
                     vAxis: {title: "build count"}
                 }
             });
