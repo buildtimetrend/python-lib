@@ -33,7 +33,7 @@ TRAVIS_LOG_FILE = "buildtimetrend/test/test_sample_travis_log"
 TRAVIS_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org:travis-linux-11"
 TRAVIS_INCOMPLETE_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org"
 
-TEST_REPO = 'ruleant/buildtime-trend'
+TEST_REPO = 'buildtimetrend/python-lib'
 TEST_BUILD = '158'
 VALID_HASH1 = '1234abcd'
 VALID_HASH2 = '1234abce'
@@ -151,7 +151,7 @@ class TestTravisData(unittest.TestCase):
             'build': u'158',
             'ci_platform': 'travis',
             'job': u'158.1',
-            'repo': u'ruleant/buildtime-trend',
+            'repo': u'buildtimetrend/python-lib',
             'result': u'passed',
             'worker': {'hostname': 'worker-linux-11-2.bb.travis-ci.org',
                 'os': 'travis-linux-9'},
