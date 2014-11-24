@@ -19,6 +19,6 @@ setup(
     author_email="ruleant@users.sourceforge.net",
     description="Visualise what's trending in your build process",
     license="GPLv3",
-    keywords="trends charts build ci timing data",
+    keywords=["trends", "charts", "build", "ci", "timing data"],
     url="http://ruleant.github.io/buildtime-trend/"
 )
