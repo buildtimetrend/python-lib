@@ -3,7 +3,7 @@ python:
   - "2.7"
 install:
   - CFLAGS="-O0" pip install -e .[native]
-  python setup.py test
+  - python setup.py test
 script:
   - nosetests --with-coverage --cover-package=buildtimetrend
 after_script:
