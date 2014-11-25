@@ -79,7 +79,7 @@ Keen.io client and the required matplotlib version are not available as Debian p
 Usage
 -----
 
-This library powers the [Buildtime Trend client](https://github.com/buildtimetrend/python-client), have a look at its documentation on how to use it.
+The [Buildtime Trend client](https://github.com/buildtimetrend/python-client) is one of the ways to use this library, have a look at its documentation on how to use it.
 
 Store build time data in xml (native mode)
 ------------------------------------------
