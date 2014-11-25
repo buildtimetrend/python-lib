@@ -21,7 +21,7 @@ setup(
     url="http://ruleant.github.io/buildtime-trend/",
     license="GPLv3+",
     keywords=["trends", "charts", "build", "ci", "timing data"],
-    classifiers = [
+    classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
