@@ -2,12 +2,11 @@
 # vim: set expandtab sw=4 ts=4:
 
 from setuptools import setup, find_packages
-from buildtimetrend import VERSION
 
 
 setup(
     name="Buildtime Trend library",
-    version=VERSION,
+    version="0.2-dev",
     packages=find_packages(),
     install_requires=['keen', 'lxml', 'pyyaml', 'python-dateutil'],
     tests_require=['nose', 'coveralls'],
