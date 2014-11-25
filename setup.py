@@ -11,7 +11,7 @@ setup(
     install_requires=['keen', 'lxml', 'pyyaml', 'python-dateutil'],
     tests_require=['nose'],
     extras_require={
-        'native trends': ['matplotlib>=1.2.0']
+        'native': ['lxml', 'matplotlib>=1.2.0']
     },
 
     # metadata
