@@ -9,7 +9,7 @@ setup(
     version="0.2-dev",
     packages=find_packages(),
     install_requires=['keen', 'lxml', 'pyyaml', 'python-dateutil'],
-    tests_require=['nose'],
+    tests_require=['nose', 'coveralls'],
     extras_require={
         'native': ['lxml', 'matplotlib>=1.2.0']
     },
