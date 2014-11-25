@@ -2,9 +2,7 @@ language: python
 python:
   - "2.7"
 install:
-  - CFLAGS="-O0" pip install -r requirements.txt
-  - CFLAGS="-O0" pip install -r requirements-native.txt
-  - CFLAGS="-O0" pip install -r requirements-tests.txt
+  - CFLAGS="-O0" pip install -e .[native]
 script:
   - nosetests --with-coverage --cover-package=buildtimetrend
 after_script:
