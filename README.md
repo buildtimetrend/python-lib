@@ -48,17 +48,18 @@ Dependencies
 - `python-dateutil` : for formatting datetime objects
 - `lxml` : python wrapper for libxml2 and libxslt
 - `pyyaml` : for parsing the config file in yaml format
-- `matplotlib` (v1.2.0 or higher) : for drawing the `native` trend graph, can be omitted when only using Keen.io to generate charts. Stackplot requires version v1.2.0
+- native mode :
+  - `matplotlib` (v1.2.0 or higher) : for drawing the `native` trend graph, can be omitted when only using Keen.io to generate charts. Stackplot requires version v1.2.0
 
 ### Dependency installation
 
-- using pip :
+- using the setup script
 
-`pip install -r requirements.txt`
+`python setup.py install`
 
-- if you want to store data or generate charts in `native` mode :
+- if you want to use `native` mode to store data or generate charts  :
 
-`pip install -r requirements-native.txt`
+`python setup.py install -e .[native]`
 
 - install each dependency individually :
 
@@ -69,12 +70,6 @@ pip install pyyaml
 pip install lxml
 pip install 'matplotlib>=1.2.0'
 ```
-
-- install as a Debian package :
-
-`apt-get install python-lxml python-dateutil python-yaml`
-
-Keen.io client and the required matplotlib version are not available as Debian packages, so look at the `pip` instructions above
 
 Usage
 -----
