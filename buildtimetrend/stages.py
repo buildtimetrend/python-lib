@@ -115,8 +115,7 @@ class Stages(object):
 
                 # calculate duration from current and previous timestamp
                 duration = timestamp - previous_timestamp
-                get_logger().info(
-                    'Duration {0} : {1}s'.format(event_name, duration))
+                get_logger().info('Duration %s : %ds', event_name, duration)
 
                 # add stage duration to stages dict
                 stage = Stage()
