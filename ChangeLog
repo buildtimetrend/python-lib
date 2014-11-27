@@ -13,6 +13,7 @@ v0.2 (not yet released)
 - issue #55 : get_logger() returns buildtimetrend logger object
 - issue #15 : use Keen.io dashboard template for trends dashboard
 - issue #58 : split project in a library (current project) and a client, see https://github.com/buildtimetrend/python-client
+- change license to GNU Affero General Public License v3 or later (AGPLv3+)
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git

@@ -112,15 +112,17 @@ License
 
 Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
+This software was originally released under GNU General Public License version 3 or any later version, all commits contributed from 27th of November 2014 on, are contributed as GNU Affero General Public License. Hence the project is considered to be GNU Affero General Public License from 27th of November 2014 on.
+
 This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
+it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU General Public License
+You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.

@@ -19,7 +19,7 @@ setup(
     author_email="ruleant@users.sourceforge.net",
     description="Visualise what's trending in your build process",
     url="http://ruleant.github.io/buildtime-trend/",
-    license="GPLv3+",
+    license="AGPLv3+",
     keywords=["trends", "charts", "build", "ci", "timing data"],
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -27,7 +27,8 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
-        "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+        "License :: OSI Approved :: GNU Affero General Public License v3" \
+        " or later (AGPLv3+)",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Quality Assurance"
     ]
