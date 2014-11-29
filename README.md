@@ -74,7 +74,7 @@ pip install 'matplotlib>=1.2.0'
 Usage
 -----
 
-The [Buildtime Trend client](https://github.com/buildtimetrend/python-client) is one of the ways to use this library, have a look at its documentation on how to use it.
+The [Buildtime Trend client](https://github.com/buildtimetrend/python-client) and [Buildtime Trend service](https://github.com/buildtimetrend/service) are using this library, have a look at their documentation on how to use them.
 
 Store build time data in xml (native mode)
 ------------------------------------------
