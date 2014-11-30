@@ -8,3 +8,7 @@ script:
   - nosetests --with-coverage --cover-package=buildtimetrend
 after_script:
   - coveralls
+notifications:
+  webhooks:
+    # parse Travis CI log and send result to Keen.io, using Builtime Trend Service
+    - http://buildtimetrend-service.herokuapp.com/travis?repo=$TRAVIS_REPO_SLUG&build=$TRAVIS_BUILD_NUMBER
