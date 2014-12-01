@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name="Buildtime Trend library",
+    name="buildtimetrend",
     version="0.2-dev",
     packages=find_packages(),
     install_requires=['keen', 'lxml', 'pyyaml', 'python-dateutil'],
