@@ -113,6 +113,37 @@ def convert_build_result(result):
     return build_result
 
 
+def process_notification_payload(payload):
+    '''
+    Load payload from Travis notification
+    '''
+    if payload is None:
+        return
+
+    logger = get_logger()
+    settings = Settings()
+
+    json_payload = json.loads(payload)
+    logger.info("Travis Payload : %r.", json_payload)
+
+    # get repo name from payload
+    if ("repository" in json_payload
+            and "owner_name" in json_payload["repository"]
+            and "name" in json_payload["repository"]):
+
+        repo = "%s/%s" % \
+            (json_payload["repository"]["owner_name"],
+             json_payload["repository"]["name"])
+
+        logger.info("Build repo : %s", repo)
+        settings.set_project_name(repo)
+
+    # get build number from payload
+    if "number" in json_payload:
+        logger.info("Build number : %s", str(json_payload["number"]))
+        settings.add_setting('build', json_payload['number'])
+
+
 class TravisData(object):
     '''
     Gather data from Travis CI using the API
