@@ -191,6 +191,15 @@ def process_argv(argv):
     return args
 
 
+def load_env_vars():
+    '''
+    Load environment variables and assign their values to
+    the corresponding setting value.
+    '''
+    # assign environment variable values to setting value
+    env_var_to_settings("TRAVIS_ACCOUNT_TOKEN", "travis_account_token")
+
+
 def env_var_to_settings(env_var_name, settings_name):
     '''
     Store environment variable value as a setting

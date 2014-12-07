@@ -150,3 +150,20 @@ class TestSettings(unittest.TestCase):
         self.assertEquals("test_value1", Settings().get_setting("test"))
 
         del os.environ["BTT_TEST_VAR"]
+
+    def test_load_env_vars(self):
+        settings = Settings()
+
+        self.assertEquals(None, settings.get_setting("travis_account_token"))
+
+        # set test environment variables
+        expected_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
+
+        load_env_vars()
+
+        # test environment variables
+        self.assertEquals(expected_account_token,
+                          settings.get_setting("travis_account_token"))
+
+        # reset test environment variables
+        del os.environ["TRAVIS_ACCOUNT_TOKEN"]
