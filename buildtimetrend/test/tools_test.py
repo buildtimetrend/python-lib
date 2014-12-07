@@ -28,6 +28,7 @@ import unittest
 import constants
 import logging
 
+
 class TestTools(unittest.TestCase):
     def setUp(self):
         self.project_info = Settings().get_project_info()

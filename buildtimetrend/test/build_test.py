@@ -45,7 +45,7 @@ class TestBuild(unittest.TestCase):
         self.assertDictEqual({'duration': 0}, self.build.get_properties())
 
         # dict should be empty
-        self.assertDictEqual({'duration': 0, 'stages' : []}, self.build.to_dict())
+        self.assertDictEqual({'duration': 0, 'stages': []}, self.build.to_dict())
 
         # list should be empty
         self.assertListEqual([], self.build.stages_to_list())
@@ -214,13 +214,13 @@ class TestBuild(unittest.TestCase):
 
         self.build.load_properties_from_settings()
         self.assertDictEqual(
-            {   'duration': 0,
-                'ci_platform': "travis",
-                'build': "123",
-                'job': "123.1",
-                'branch': "branch1",
-                'result': "passed",
-                'repo': "test/project"},
+            {'duration': 0,
+             'ci_platform': "travis",
+             'build': "123",
+             'job': "123.1",
+             'branch': "branch1",
+             'result': "passed",
+             'repo': "test/project"},
             self.build.get_properties())
 
     def test_to_dict(self):

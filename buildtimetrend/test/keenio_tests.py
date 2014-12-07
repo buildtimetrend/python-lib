@@ -27,6 +27,7 @@ import keen
 import unittest
 import constants
 
+
 class TestTools(unittest.TestCase):
     copy_keen_project_id = None
     copy_keen_write_key = None
@@ -76,7 +77,6 @@ class TestTools(unittest.TestCase):
         self.assertFalse(keen_has_project_id())
         self.assertFalse(keen_is_writable())
         self.assertFalse(keen_is_readable())
-
 
     def test_add_project_info_dict(self):
         # error is thrown when called without parameters

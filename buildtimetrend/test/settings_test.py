@@ -140,7 +140,7 @@ class TestSettings(unittest.TestCase):
         self.assertTrue(keen_is_writable())
 
     def test_env_var_to_settings(self):
-        self.assertFalse(env_var_to_settings("",""))
+        self.assertFalse(env_var_to_settings("", ""))
         self.assertEquals(None, Settings().get_setting("test"))
         self.assertFalse(env_var_to_settings("NO_VAR", "test"))
         self.assertEquals(None, Settings().get_setting("test"))

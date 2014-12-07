@@ -25,6 +25,7 @@ import unittest
 
 TEST_SAMPLE_FILE = 'buildtimetrend/test/testsample_buildtimes.xml'
 
+
 class TestTrend(unittest.TestCase):
     def setUp(self):
         self.trend = Trend()
