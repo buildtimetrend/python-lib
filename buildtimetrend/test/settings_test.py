@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from buildtimetrend.settings import Settings
+from buildtimetrend.settings import *
 from buildtimetrend.collection import Collection
 from buildtimetrend.keenio import keen_is_writable
 from buildtimetrend.keenio import keen_is_readable
@@ -138,3 +138,15 @@ class TestSettings(unittest.TestCase):
         self.assertEquals("abcdefg", keen.read_key)
         self.assertTrue(keen_is_readable())
         self.assertTrue(keen_is_writable())
+
+    def test_env_var_to_settings(self):
+        self.assertFalse(env_var_to_settings("",""))
+        self.assertEquals(None, Settings().get_setting("test"))
+        self.assertFalse(env_var_to_settings("NO_VAR", "test"))
+        self.assertEquals(None, Settings().get_setting("test"))
+
+        os.environ["BTT_TEST_VAR"] = "test_value1"
+        self.assertTrue(env_var_to_settings("BTT_TEST_VAR", "test"))
+        self.assertEquals("test_value1", Settings().get_setting("test"))
+
+        del os.environ["BTT_TEST_VAR"]

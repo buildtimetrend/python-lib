@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import sys
+import os
 import getopt
 import yaml
 import keen
@@ -30,6 +31,7 @@ import buildtimetrend
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import set_loglevel
+from buildtimetrend.tools import get_logger
 
 
 class Settings(object):
@@ -187,3 +189,25 @@ def process_argv(argv):
                 settings.add_setting("mode_keen", True)
 
     return args
+
+
+def env_var_to_settings(env_var_name, settings_name):
+    '''
+    Store environment variable value as a setting
+    Parameters:
+    - env_var_name : Name of the environment variable
+    - settings_name : Name of the corresponding settings value
+    '''
+    logger = get_logger()
+
+    if env_var_name in os.environ:
+        Settings().add_setting(settings_name, os.environ[env_var_name])
+        logger.debug(
+            "Setting %s was set to %s",
+            settings_name, os.environ[env_var_name])
+        return True
+    else:
+        logger.debug(
+            "Setting %s was not set, environment variable %s doesn't exist",
+            settings_name, env_var_name)
+        return False

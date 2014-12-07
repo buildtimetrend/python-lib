@@ -45,20 +45,8 @@ class TestTravis(unittest.TestCase):
     #def setUp(self):
 
     def test_novalue(self):
-        self.assertFalse(env_var_to_settings("",""))
         self.assertRaises(TypeError, convert_build_result)
         self.assertRaises(TypeError, convert_build_result, None)
-
-    def test_env_var_to_settings(self):
-        self.assertEquals(None, Settings().get_setting("test"))
-        self.assertFalse(env_var_to_settings("NO_VAR", "test"))
-        self.assertEquals(None, Settings().get_setting("test"))
-
-        os.environ["BTT_TEST_VAR"] = "test_value1"
-        self.assertTrue(env_var_to_settings("BTT_TEST_VAR", "test"))
-        self.assertEquals("test_value1", Settings().get_setting("test"))
-
-        del os.environ["BTT_TEST_VAR"]
 
     def test_load_travis_env_vars(self):
         self.assertEquals(None, Settings().get_setting("ci_platform"))

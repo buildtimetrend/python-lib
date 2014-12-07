@@ -30,6 +30,7 @@ from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string
 from buildtimetrend.build import Build
 from buildtimetrend.settings import Settings
+from buildtimetrend.settings import env_var_to_settings
 from buildtimetrend.stages import Stage
 import buildtimetrend
 
@@ -71,28 +72,6 @@ def load_travis_env_vars():
                 "result",
                 convert_build_result(os.environ["TRAVIS_TEST_RESULT"])
             )
-
-
-def env_var_to_settings(env_var_name, settings_name):
-    '''
-    Store environment variable value as a setting
-    Parameters:
-    - env_var_name : Name of the environment variable
-    - settings_name : Name of the corresponding settings value
-    '''
-    logger = get_logger()
-
-    if env_var_name in os.environ:
-        Settings().add_setting(settings_name, os.environ[env_var_name])
-        logger.debug(
-            "Setting %s was set to %s",
-            settings_name, os.environ[env_var_name])
-        return True
-    else:
-        logger.debug(
-            "Setting %s was not set, environment variable %s doesn't exist",
-            settings_name, env_var_name)
-        return False
 
 
 def convert_build_result(result):
