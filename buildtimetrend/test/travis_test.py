@@ -50,12 +50,14 @@ class TestTravis(unittest.TestCase):
         self.assertRaises(TypeError, convert_build_result, None)
 
     def test_load_travis_env_vars(self):
-        self.assertEquals(None, Settings().get_setting("ci_platform"))
-        self.assertEquals(None, Settings().get_setting("build"))
-        self.assertEquals(None, Settings().get_setting("job"))
-        self.assertEquals(None, Settings().get_setting("branch"))
-        self.assertEquals(None, Settings().get_setting("result"))
-        self.assertEquals(buildtimetrend.NAME, Settings().get_project_name())
+        settings = Settings()
+
+        self.assertEquals(None, settings.get_setting("ci_platform"))
+        self.assertEquals(None, settings.get_setting("build"))
+        self.assertEquals(None, settings.get_setting("job"))
+        self.assertEquals(None, settings.get_setting("branch"))
+        self.assertEquals(None, settings.get_setting("result"))
+        self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
 
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
@@ -73,11 +75,11 @@ class TestTravis(unittest.TestCase):
 
         load_travis_env_vars()
 
-        self.assertEquals("travis", Settings().get_setting("ci_platform"))
-        self.assertEquals(expected_build, Settings().get_setting("build"))
-        self.assertEquals(expected_job, Settings().get_setting("job"))
-        self.assertEquals(expected_branch, Settings().get_setting("branch"))
-        self.assertEquals(expected_project_name, Settings().get_project_name())
+        self.assertEquals("travis", settings.get_setting("ci_platform"))
+        self.assertEquals(expected_build, settings.get_setting("build"))
+        self.assertEquals(expected_job, settings.get_setting("job"))
+        self.assertEquals(expected_branch, settings.get_setting("branch"))
+        self.assertEquals(expected_project_name, settings.get_project_name())
 
         # reset test Travis vars
         if reset_travis_vars:
