@@ -50,8 +50,8 @@ TRAVIS_LOG_PARSE_WORKER_STRING = r'Using worker:\ (?P<hostname>.*):(?P<os>.*)'
 
 def load_travis_env_vars():
     '''
-    Loads Travis CI environment variables and assigns them to
-    the corresponding settings item.
+    Load Travis CI environment variables and assign their values to
+    the corresponding setting value.
     '''
     if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
         settings = Settings()
@@ -59,7 +59,7 @@ def load_travis_env_vars():
         # set ci_platform setting to "travis"
         settings.add_setting("ci_platform", "travis")
 
-        # set settings with TRAVIS values
+        # assign TRAVIS environment variable values to setting value
         env_var_to_settings("TRAVIS_BUILD_NUMBER", "build")
         env_var_to_settings("TRAVIS_JOB_NUMBER", "job")
         env_var_to_settings("TRAVIS_BRANCH", "branch")
