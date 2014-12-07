@@ -124,6 +124,85 @@ class Settings(object):
                 "project_name": str(self.get_project_name())
             }
 
+        def process_argv(self, argv):
+            '''
+            Process command line arguments
+            '''
+            usage_string = '%s -h --log=<log_level> --build=<buildID>' \
+                ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
+                ' --ci=<ci_platform> --result=<build_result>' \
+                ' --mode=<storage_mode>' % \
+                argv[0]
+
+            try:
+                opts, args = getopt.getopt(
+                    argv[1:], "h", [
+                        "log=",
+                        "build=", "job=", "branch=", "repo=",
+                        "ci=", "result=", "mode=", "help"]
+                )
+            except getopt.GetoptError:
+                print usage_string
+                sys.exit(2)
+
+            # check options
+            for opt, arg in opts:
+                if opt in ('-h', "--help"):
+                    print usage_string
+                    sys.exit()
+                elif opt == "--log":
+                    set_loglevel(arg)
+                elif opt == "--build":
+                    self.add_setting("build", arg)
+                elif opt == "--job":
+                    self.add_setting("job", arg)
+                elif opt == "--branch":
+                    self.add_setting("branch", arg)
+                elif opt == "--repo":
+                    self.set_project_name(arg)
+                elif opt == "--ci":
+                    self.add_setting("ci_platform", arg)
+                elif opt == "--result":
+                    self.add_setting("result", arg)
+                elif opt == "--mode":
+                    if arg == "native":
+                        self.add_setting("mode_native", True)
+                    elif arg == "keen":
+                        self.add_setting("mode_keen", True)
+
+            return args
+
+        def load_env_vars(self):
+            '''
+            Load environment variables and assign their values to
+            the corresponding setting value.
+            '''
+            # assign environment variable values to setting value
+            self.env_var_to_settings("TRAVIS_ACCOUNT_TOKEN",
+                                     "travis_account_token")
+
+        def env_var_to_settings(self, env_var_name, settings_name):
+            '''
+            Store environment variable value as a setting
+            Parameters:
+            - env_var_name : Name of the environment variable
+            - settings_name : Name of the corresponding settings value
+            '''
+            logger = get_logger()
+
+            if env_var_name in os.environ:
+                self.add_setting(settings_name, os.environ[env_var_name])
+                logger.debug(
+                    "Setting %s was set to %s",
+                    settings_name, os.environ[env_var_name])
+                return True
+            else:
+                logger.debug(
+                    "Setting %s was not set,"
+                    " environment variable %s doesn't exist",
+                    settings_name, env_var_name)
+                return False
+
     instance = None
 
     def __new__(cls):  # __new__ always a classmethod
@@ -139,84 +218,3 @@ class Settings(object):
     def __setattr__(self, name):
         ''' Redirect access to set singleton properties '''
         return setattr(self.instance, name)
-
-
-def process_argv(argv):
-    '''
-    Process command line arguments
-    '''
-    usage_string = '%s -h --log=<log_level> --build=<buildID>' \
-        ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
-        ' --ci=<ci_platform> --result=<build_result> --mode=<storage_mode>' % \
-        argv[0]
-
-    settings = Settings()
-
-    try:
-        opts, args = getopt.getopt(
-            argv[1:], "h", [
-                "log=",
-                "build=", "job=", "branch=", "repo=",
-                "ci=", "result=", "mode=", "help"]
-        )
-    except getopt.GetoptError:
-        print usage_string
-        sys.exit(2)
-
-    # check options
-    for opt, arg in opts:
-        if opt in ('-h', "--help"):
-            print usage_string
-            sys.exit()
-        elif opt == "--log":
-            set_loglevel(arg)
-        elif opt == "--build":
-            settings.add_setting("build", arg)
-        elif opt == "--job":
-            settings.add_setting("job", arg)
-        elif opt == "--branch":
-            settings.add_setting("branch", arg)
-        elif opt == "--repo":
-            settings.set_project_name(arg)
-        elif opt == "--ci":
-            settings.add_setting("ci_platform", arg)
-        elif opt == "--result":
-            settings.add_setting("result", arg)
-        elif opt == "--mode":
-            if arg == "native":
-                settings.add_setting("mode_native", True)
-            elif arg == "keen":
-                settings.add_setting("mode_keen", True)
-
-    return args
-
-
-def load_env_vars():
-    '''
-    Load environment variables and assign their values to
-    the corresponding setting value.
-    '''
-    # assign environment variable values to setting value
-    env_var_to_settings("TRAVIS_ACCOUNT_TOKEN", "travis_account_token")
-
-
-def env_var_to_settings(env_var_name, settings_name):
-    '''
-    Store environment variable value as a setting
-    Parameters:
-    - env_var_name : Name of the environment variable
-    - settings_name : Name of the corresponding settings value
-    '''
-    logger = get_logger()
-
-    if env_var_name in os.environ:
-        Settings().add_setting(settings_name, os.environ[env_var_name])
-        logger.debug(
-            "Setting %s was set to %s",
-            settings_name, os.environ[env_var_name])
-        return True
-    else:
-        logger.debug(
-            "Setting %s was not set, environment variable %s doesn't exist",
-            settings_name, env_var_name)
-        return False

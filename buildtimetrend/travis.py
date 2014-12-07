@@ -30,7 +30,6 @@ from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string
 from buildtimetrend.build import Build
 from buildtimetrend.settings import Settings
-from buildtimetrend.settings import env_var_to_settings
 from buildtimetrend.stages import Stage
 import buildtimetrend
 
@@ -60,10 +59,10 @@ def load_travis_env_vars():
         settings.add_setting("ci_platform", "travis")
 
         # assign TRAVIS environment variable values to setting value
-        env_var_to_settings("TRAVIS_BUILD_NUMBER", "build")
-        env_var_to_settings("TRAVIS_JOB_NUMBER", "job")
-        env_var_to_settings("TRAVIS_BRANCH", "branch")
-        env_var_to_settings("TRAVIS_REPO_SLUG", "project_name")
+        settings.env_var_to_settings("TRAVIS_BUILD_NUMBER", "build")
+        settings.env_var_to_settings("TRAVIS_JOB_NUMBER", "job")
+        settings.env_var_to_settings("TRAVIS_BRANCH", "branch")
+        settings.env_var_to_settings("TRAVIS_REPO_SLUG", "project_name")
 
         # convert and set Travis build result
         if "TRAVIS_TEST_RESULT" in os.environ:
