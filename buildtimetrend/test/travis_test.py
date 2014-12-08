@@ -59,6 +59,7 @@ class TestTravis(unittest.TestCase):
         self.assertEquals(None, settings.get_setting("result"))
         self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
 
+        #setup Travis env vars
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
             expected_build = os.environ["TRAVIS_BUILD_NUMBER"]
@@ -73,6 +74,14 @@ class TestTravis(unittest.TestCase):
             expected_branch = os.environ["TRAVIS_BRANCH"] = "branch1"
             expected_project_name = os.environ["TRAVIS_REPO_SLUG"] = "test/project"
 
+        # setup Travis test result
+        if "TRAVIS_TEST_RESULT" in os.environ:
+            reset_travis_result = False
+            copy_result = os.environ["TRAVIS_TEST_RESULT"]
+        else:
+            reset_travis_result = True
+        os.environ["TRAVIS_TEST_RESULT"] = "0"
+
         load_travis_env_vars()
 
         self.assertEquals("travis", settings.get_setting("ci_platform"))
@@ -80,6 +89,11 @@ class TestTravis(unittest.TestCase):
         self.assertEquals(expected_job, settings.get_setting("job"))
         self.assertEquals(expected_branch, settings.get_setting("branch"))
         self.assertEquals(expected_project_name, settings.get_project_name())
+        self.assertEquals("passed", settings.get_setting("result"))
+
+        os.environ["TRAVIS_TEST_RESULT"] = "1"
+        load_travis_env_vars()
+        self.assertEquals("failed", settings.get_setting("result"))
 
         # reset test Travis vars
         if reset_travis_vars:
@@ -88,6 +102,12 @@ class TestTravis(unittest.TestCase):
             del os.environ["TRAVIS_JOB_NUMBER"]
             del os.environ["TRAVIS_BRANCH"]
             del os.environ["TRAVIS_REPO_SLUG"]
+
+        # reset Travis test result
+        if reset_travis_result:
+            del os.environ["TRAVIS_TEST_RESULT"]
+        else:
+            os.environ["TRAVIS_TEST_RESULT"] = copy_result
 
     def test_convert_build_result(self):
         self.assertEquals("passed", convert_build_result(0))
