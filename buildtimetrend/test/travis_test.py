@@ -120,6 +120,24 @@ class TestTravis(unittest.TestCase):
         self.assertEquals("errored", convert_build_result("-1"))
         self.assertEquals("errored", convert_build_result("2"))
 
+    def test_check_authorization(self):
+        self.assertTrue(check_authorization(None, None))
+
+        # set account token
+        Settings().add_setting("travis_account_token", "co44eCtT0k3n")
+
+        # test incorrect values
+        self.assertFalse(check_authorization(None, None))
+        self.assertFalse(check_authorization(TEST_REPO, None))
+        self.assertFalse(check_authorization(None, "header1234"))
+        self.assertFalse(check_authorization(TEST_REPO, "header1234"))
+
+        # test correct Authorization header
+        self.assertTrue(check_authorization(
+            TEST_REPO,
+            "61db633141cd24b4c9cbccb2a2c2c6a99988c3e346b951e4666e50474518cb82")
+        )
+
 
 class TestTravisData(unittest.TestCase):
     def setUp(self):

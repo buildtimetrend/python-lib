@@ -24,6 +24,7 @@ import os
 import urllib2
 import json
 import re
+from hashlib import sha256
 from buildtimetrend.tools import get_logger
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
@@ -120,6 +121,52 @@ def process_notification_payload(payload):
     if "number" in json_payload:
         logger.info("Build number : %s", str(json_payload["number"]))
         settings.add_setting('build', json_payload['number'])
+
+
+def check_authorization(repo, auth_header):
+    '''
+    Check if Travis CI notification has a correct Authorization header.
+    This check is enabled if travis_account_token is defined in settings.
+
+    More information on the Authorization header :
+    http://docs.travis-ci.com/user/notifications/#Authorization-for-Webhooks
+
+    Returns true if Authorization header is valid, but also if
+    travis_account_token is not defined.
+
+    Parameters:
+    - repo : git repo name
+    - auth_header : Travis CI notification Authorization header
+    '''
+    logger = get_logger()
+
+    # get Travis account token from Settings
+    token = Settings().get_setting("travis_account_token")
+
+    # return True if token is not set
+    if token is None:
+        logger.info("Setting travis_account_token is not defined,"
+                    " Travis CI notification Authorization header"
+                    " is not checked.")
+        return True
+
+    # check if parameters are strings
+    if type(repo) is str and type(auth_header) is str and type(token) is str:
+        # generate hash and compare with Authorization header
+        auth_hash = sha256(repo + token).hexdigest()
+
+        if auth_hash == auth_header:
+            logger.info("Travis CI notification Authorization header"
+                        " is correct.")
+            return True
+        else:
+            logger.error("Travis CI notification Authorization header"
+                         " is incorrect.")
+            return False
+    else:
+        logger.debug("repo, auth_header and travis_auth_token"
+                     " should be strings.")
+        return False
 
 
 class TravisData(object):
