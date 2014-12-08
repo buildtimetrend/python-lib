@@ -49,7 +49,9 @@ class TestSettings(unittest.TestCase):
             self.settings.__init__()
 
     def test_get_project_info(self):
-        self.assertDictEqual(self.project_info, self.settings.get_project_info())
+        self.assertDictEqual(
+            self.project_info, self.settings.get_project_info()
+        )
 
     def test_get_set_project_name(self):
         self.assertEquals(self.project_name, self.settings.get_project_name())
@@ -124,12 +126,16 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(None, keen.read_key)
 
         # load sample config file
-        self.assertTrue(self.settings.load_config_file(constants.TEST_SAMPLE_CONFIG_FILE))
+        self.assertTrue(
+            self.settings.load_config_file(constants.TEST_SAMPLE_CONFIG_FILE)
+        )
         self.assertDictEqual(
-            {"project_name": "test_project",
-            "mode_native": True,
-            "mode_keen": False,
-            "setting1": "test_value1"},
+            {
+                "project_name": "test_project",
+                "mode_native": True,
+                "mode_keen": False,
+                "setting1": "test_value1"
+            },
             self.settings.settings.get_items())
 
         # checking if Keen.io configuration is set
@@ -146,21 +152,24 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(None, self.settings.get_setting("test"))
 
         os.environ["BTT_TEST_VAR"] = "test_value1"
-        self.assertTrue(self.settings.env_var_to_settings("BTT_TEST_VAR", "test"))
+        self.assertTrue(
+            self.settings.env_var_to_settings("BTT_TEST_VAR", "test")
+        )
         self.assertEquals("test_value1", self.settings.get_setting("test"))
 
         del os.environ["BTT_TEST_VAR"]
 
     def test_load_env_vars(self):
-        self.assertEquals(None, self.settings.get_setting("travis_account_token"))
+        self.assertEquals(None,
+                          self.settings.get_setting("travis_account_token"))
 
         # set test environment variables
-        expected_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
+        exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
 
         self.settings.load_env_vars()
 
         # test environment variables
-        self.assertEquals(expected_account_token,
+        self.assertEquals(exp_account_token,
                           self.settings.get_setting("travis_account_token"))
 
         # reset test environment variables
