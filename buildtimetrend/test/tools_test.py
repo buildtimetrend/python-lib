@@ -43,24 +43,34 @@ class TestTools(unittest.TestCase):
 
     def test_split_timestamp(self):
         # test 0 timestamp (epoch)
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH, split_timestamp(0))
+        self.assertDictEqual(
+            constants.TIMESTAMP_SPLIT_EPOCH, split_timestamp(0)
+        )
 
         # test timestamp
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE,
-            split_timestamp(constants.TIMESTAMP_TESTDATE))
+        self.assertDictEqual(
+            constants.TIMESTAMP_SPLIT_TESTDATE,
+            split_timestamp(constants.TIMESTAMP_TESTDATE)
+        )
 
     def test_split_isotimestamp(self):
         # test 0 timestamp (epoch) in UTC
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH,
-            split_isotimestamp("1970-01-01T00:00:00Z"))
+        self.assertDictEqual(
+            constants.TIMESTAMP_SPLIT_EPOCH,
+            split_isotimestamp("1970-01-01T00:00:00Z")
+        )
 
         # test 0 timestamp (epoch), without timezone
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH_NOTZ,
-            split_isotimestamp("1970-01-01T00:00:00"))
+        self.assertDictEqual(
+            constants.TIMESTAMP_SPLIT_EPOCH_NOTZ,
+            split_isotimestamp("1970-01-01T00:00:00")
+        )
 
         # test timestamp
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE,
-            split_isotimestamp(constants.ISOTIMESTAMP_TESTDATE))
+        self.assertDictEqual(
+            constants.TIMESTAMP_SPLIT_TESTDATE,
+            split_isotimestamp(constants.ISOTIMESTAMP_TESTDATE)
+        )
 
     def test_split_datetime(self):
         # error is thrown when called without parameters
@@ -72,18 +82,24 @@ class TestTools(unittest.TestCase):
 
         # test 0 timestamp (epoch) in UTC
         epoch_utc_dt = datetime.utcfromtimestamp(0).replace(tzinfo=tzutc())
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH,
-            split_datetime(epoch_utc_dt))
+        self.assertDictEqual(
+            constants.TIMESTAMP_SPLIT_EPOCH,
+            split_datetime(epoch_utc_dt)
+        )
 
         # test 0 timestamp (epoch), without timezone
         epoch_dt = datetime.utcfromtimestamp(0)
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH_NOTZ,
-            split_datetime(epoch_dt))
+        self.assertDictEqual(
+            constants.TIMESTAMP_SPLIT_EPOCH_NOTZ,
+            split_datetime(epoch_dt)
+        )
 
         # test timestamp
         timestamp_dt = datetime.utcfromtimestamp(constants.TIMESTAMP_TESTDATE).replace(tzinfo=tzutc())
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE,
-            split_datetime(timestamp_dt))
+        self.assertDictEqual(
+            constants.TIMESTAMP_SPLIT_TESTDATE,
+            split_datetime(timestamp_dt)
+        )
 
     def test_nano2sec(self):
         # error is thrown when called without parameters
@@ -118,11 +134,15 @@ class TestTools(unittest.TestCase):
         # error is thrown when called with an invalid parameter
         with self.assertRaises(TypeError) as cm:
             check_dict(None, "name")
-        self.assertEqual("param name should be a dictionary", str(cm.exception))
+        self.assertEqual(
+            "param name should be a dictionary", str(cm.exception)
+        )
 
         with self.assertRaises(TypeError) as cm:
             check_dict("string", "string_name")
-        self.assertEqual("param string_name should be a dictionary", str(cm.exception))
+        self.assertEqual(
+            "param string_name should be a dictionary", str(cm.exception)
+        )
 
         # should return true if parameter is a dictionary
         self.assertTrue(check_dict({"string": "test"}, "name"))
@@ -170,7 +190,9 @@ class TestTools(unittest.TestCase):
 
         with self.assertRaises(TypeError) as cm:
             check_list("string", "string_name")
-        self.assertEqual("param string_name should be a list", str(cm.exception))
+        self.assertEqual(
+            "param string_name should be a list", str(cm.exception)
+        )
 
         # should return true if parameter is a list
         self.assertTrue(check_list(["string", "test"], "name"))
@@ -184,7 +206,10 @@ class TestTools(unittest.TestCase):
         # error is thrown when called with an invalid parameter
         with self.assertRaises(TypeError) as cm:
             check_num_string(None, "name")
-        self.assertEqual("param name should be a numerical string or an integer", str(cm.exception))
+        self.assertEqual(
+            "param name should be a numerical string or an integer",
+            str(cm.exception)
+        )
 
         self.assertEquals(0, check_num_string(0, "name"))
         self.assertEquals(1, check_num_string(1, "name"))
