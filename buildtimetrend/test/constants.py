@@ -92,7 +92,8 @@ TIMESTAMP_SPLIT_TESTDATE = {
 TIMESTAMP_STARTED = 1396378500
 TIMESTAMP_NANO_STARTED = 1396378500000000000
 ISOTIMESTAMP_STARTED = '2014-04-01T18:55:00+00:00'
-SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
+SPLIT_TIMESTAMP_STARTED = {
+    'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
     'day_of_week_short_en': 'Tue',
@@ -113,7 +114,8 @@ SPLIT_TIMESTAMP_STARTED = {'day_of_month': '01',
 }
 
 TIMESTAMP1 = 1396378735
-SPLIT_TIMESTAMP1 = {'day_of_month': '01',
+SPLIT_TIMESTAMP1 = {
+    'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
     'day_of_week_short_en': 'Tue',
@@ -132,7 +134,8 @@ SPLIT_TIMESTAMP1 = {'day_of_month': '01',
     'timezone': 'UTC',
     'timezone_offset': '+0000'
 }
-SPLIT_TIMESTAMP2 = {'day_of_month': '01',
+SPLIT_TIMESTAMP2 = {
+    'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
     'day_of_week_short_en': 'Tue',
@@ -151,7 +154,8 @@ SPLIT_TIMESTAMP2 = {'day_of_month': '01',
     'timezone': 'UTC',
     'timezone_offset': '+0000'
 }
-SPLIT_TIMESTAMP3 = {'day_of_month': '01',
+SPLIT_TIMESTAMP3 = {
+    'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
     'day_of_week_short_en': 'Tue',
@@ -170,7 +174,8 @@ SPLIT_TIMESTAMP3 = {'day_of_month': '01',
     'timezone': 'UTC',
     'timezone_offset': '+0000'
 }
-SPLIT_TIMESTAMP4 = {'day_of_month': '01',
+SPLIT_TIMESTAMP4 = {
+    'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
     'day_of_week_short_en': 'Tue',
@@ -189,7 +194,8 @@ SPLIT_TIMESTAMP4 = {'day_of_month': '01',
     'timezone': 'UTC',
     'timezone_offset': '+0000'
 }
-SPLIT_TIMESTAMP_ENDTAG = {'day_of_month': '01',
+SPLIT_TIMESTAMP_ENDTAG = {
+    'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
     'day_of_week_short_en': 'Tue',
@@ -212,7 +218,8 @@ SPLIT_TIMESTAMP_ENDTAG = {'day_of_month': '01',
 TIMESTAMP_FINISHED = 1396378871.234
 TIMESTAMP_NANO_FINISHED = 1396378871234000000
 ISOTIMESTAMP_FINISHED = '2014-04-01T19:01:11.234000+00:00'
-SPLIT_TIMESTAMP_FINISHED = {'day_of_month': '01',
+SPLIT_TIMESTAMP_FINISHED = {
+    'day_of_month': '01',
     'day_of_week': '2',
     'day_of_week_full_en': 'Tuesday',
     'day_of_week_short_en': 'Tue',
@@ -232,6 +239,6 @@ SPLIT_TIMESTAMP_FINISHED = {'day_of_month': '01',
     'timezone_offset': '+0000'
 }
 STAGES_RESULT = [{'duration': 17,
-             'finished_at': SPLIT_TIMESTAMP4,
-             'name': 'stage1',
-             'started_at': SPLIT_TIMESTAMP1}]
+                  'finished_at': SPLIT_TIMESTAMP4,
+                  'name': 'stage1',
+                  'started_at': SPLIT_TIMESTAMP1}]
