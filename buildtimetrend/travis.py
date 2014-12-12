@@ -208,17 +208,28 @@ class TravisData(object):
         '''
         if len(self.build_data) > 0:
             for job_id in self.build_data['builds'][0]['job_ids']:
-                # retrieve job data from Travis CI
-                job_data = self.get_job_data(job_id)
-                # process build/job data
-                self.process_job_data(job_data)
-                # parse Travis CI job log file
-                self.parse_job_log(job_id)
+                self.process_build_job(job_id)
 
-                # store build job
-                self.build_jobs[str(job_id)] = self.current_job
-                # create new build job instance
-                self.current_job = Build()
+    def process_build_job(self, job_id):
+        '''
+        Retrieve Travis CI build job data.
+        Parameters:
+        - job_id : ID of the job to process
+        '''
+        if job_id is None:
+            return
+
+        # retrieve job data from Travis CI
+        job_data = self.get_job_data(job_id)
+        # process build/job data
+        self.process_job_data(job_data)
+        # parse Travis CI job log file
+        self.parse_job_log(job_id)
+
+        # store build job
+        self.build_jobs[str(job_id)] = self.current_job
+        # create new build job instance
+        self.current_job = Build()
 
     def get_job_data(self, job_id):
         '''
