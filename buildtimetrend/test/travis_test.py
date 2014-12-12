@@ -171,6 +171,12 @@ class TestTravisData(unittest.TestCase):
             '2014-07-08T11:19:55Z',
             self.travis_data.get_finished_at())
 
+    def test_process_no_build_jobs(self):
+        # retrieve empty Travis API result
+        self.travis_data.build_data = {"builds":[],"commits":[]}
+        self.travis_data.process_build_jobs()
+        self.assertEquals(0, len(self.travis_data.build_jobs))
+
     def test_process_build_jobs(self):
         # retrieve data from Travis API
         self.travis_data.get_build_data()

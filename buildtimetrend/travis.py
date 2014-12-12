@@ -206,9 +206,11 @@ class TravisData(object):
         '''
         Retrieve Travis CI build job data.
         '''
-        if len(self.build_data) > 0:
-            for job_id in self.build_data['builds'][0]['job_ids']:
-                self.process_build_job(job_id)
+        if len(self.build_data) > 0 and "builds" in self.build_data:
+            for build in self.build_data['builds']:
+                if "job_ids" in build:
+                    for job_id in build['job_ids']:
+                        self.process_build_job(job_id)
 
     def process_build_job(self, job_id):
         '''
