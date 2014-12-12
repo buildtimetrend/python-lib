@@ -4,8 +4,8 @@ Interface to Travis CI API.
 
 Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
-This file is part of buildtime-trend
-<https://github.com/ruleant/buildtime-trend/>
+This file is part of buildtimetrend/python-lib
+<https://github.com/buildtimetrend/python-lib/>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -177,7 +177,7 @@ class TravisData(object):
     def __init__(self, repo, build_id):
         '''
         Retrieve Travis CI build data using the API.
-        Param repo : github repository slug (fe. ruleant/buildtime-trend)
+        Param repo : github repository slug (fe. buildtimetrend/python-lib)
         Param build_id : Travis CI build id (fe. 158)
         '''
         self.build_data = {}

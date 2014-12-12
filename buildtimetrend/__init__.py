@@ -7,8 +7,8 @@ analyse them, store the results and other supporting tools.
 
 Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
-This file is part of buildtime-trend
-<https://github.com/ruleant/buildtime-trend/>
+This file is part of buildtimetrend/python-lib
+<https://github.com/buildtimetrend/python-lib/>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by

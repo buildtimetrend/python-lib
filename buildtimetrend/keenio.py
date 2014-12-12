@@ -4,8 +4,8 @@ Interface to Keen IO.
 
 Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
-This file is part of buildtime-trend
-<https://github.com/ruleant/buildtime-trend/>
+This file is part of buildtimetrend/python-lib
+<https://github.com/buildtimetrend/python-lib/>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -70,7 +70,7 @@ def keen_is_readable():
 def keen_io_generate_read_key(repo):
     '''
     Create scoped key for reading only the build-stages related data.
-    Param repo : github repository slug (fe. ruleant/buildtime-trend)
+    Param repo : github repository slug (fe. buildtimetrend/python-lib)
     '''
     logger = get_logger()
 
