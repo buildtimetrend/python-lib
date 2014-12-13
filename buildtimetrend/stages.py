@@ -168,12 +168,13 @@ class Stages(object):
         - start_time : start of stage timestamp
         - end_time : end of stage timestamp
         '''
-        if not (type(start_time) is int and type(end_time) is int):
+        if not (type(start_time) in (int, float) and
+                type(end_time) in (int, float)):
             return None
 
         # calculate duration from start and end timestamp
         duration = end_time - start_time
-        get_logger().info('Duration %s : %ds', name, duration)
+        get_logger().info('Duration %s : %fs', name, duration)
 
         # create stage
         stage = Stage()
