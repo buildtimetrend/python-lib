@@ -50,6 +50,7 @@ class Stages(object):
         - timestamp : end timestamp
         '''
         if type(timestamp) in (int, float) and timestamp > 0:
+            get_logger().info("Set end_timestamp : %f", timestamp)
             self.end_timestamp = timestamp
 
     def read_csv(self, csv_filename):
