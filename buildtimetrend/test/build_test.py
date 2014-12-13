@@ -66,6 +66,12 @@ class TestBuild(unittest.TestCase):
         self.build = Build('')
         self.assertEquals(0, len(self.build.stages.stages))
 
+    def test_end_timestamp(self):
+        self.assertEquals(0, self.build.stages.end_timestamp)
+
+        self.build = Build('', 123)
+        self.assertEquals(123, self.build.stages.end_timestamp)
+
     def test_add_stages(self):
         self.build.add_stages(None)
         self.assertEquals(0, len(self.build.stages.stages))

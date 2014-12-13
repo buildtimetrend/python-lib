@@ -34,9 +34,11 @@ class Build(object):
     Gathers Build related data.
     '''
 
-    def __init__(self, csv_filename=None):
+    def __init__(self, csv_filename=None, end_timestamp=None):
         self.properties = Collection()
         self.stages = Stages()
+        if end_timestamp is not None:
+            self.stages.set_end_timestamp(end_timestamp)
         if csv_filename is not None:
             self.stages.read_csv(csv_filename)
 
