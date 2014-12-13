@@ -58,6 +58,18 @@ class TestStages(unittest.TestCase):
         # function should throw an error when no filename is set
         self.assertRaises(TypeError, self.stages.read_csv)
 
+    def test_set_end_timestamp(self):
+        self.assertEquals(0, self.stages.end_timestamp)
+
+        self.stages.set_end_timestamp("string")
+        self.assertEquals(0, self.stages.end_timestamp)
+
+        self.stages.set_end_timestamp(23.45)
+        self.assertEquals(23.45, self.stages.end_timestamp)
+
+        self.stages.set_end_timestamp(123)
+        self.assertEquals(123, self.stages.end_timestamp)
+
     def test_read_csv(self):
         # read and parse sample file
         self.assertTrue(self.stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE))

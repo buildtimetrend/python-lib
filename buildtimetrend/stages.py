@@ -41,6 +41,16 @@ class Stages(object):
         self.stages = []
         self.started_at = None
         self.finished_at = None
+        self.end_timestamp = 0
+
+    def set_end_timestamp(self, timestamp):
+        '''
+        Set end timestamp
+        Parameters:
+        - timestamp : end timestamp
+        '''
+        if type(timestamp) in (int, float) and timestamp > 0:
+            self.end_timestamp = timestamp
 
     def read_csv(self, csv_filename):
         '''
