@@ -162,6 +162,17 @@ class TestStages(unittest.TestCase):
 
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
+    def test_parse_timestamps_end_timestamp(self):
+        # no end_timestamp set
+        self.stages.parse_timestamps([["stage1", "1396378735"]])
+        self.assertEqual(0, len(self.stages.stages))
+
+        # with end_timestamp set
+        self.stages.set_end_timestamp(1396378752)
+        self.stages.parse_timestamps([["stage1", "1396378735"]])
+        self.assertEqual(1, len(self.stages.stages))
+        self.assertListEqual(STAGES_RESULT, self.stages.stages)
+
     def test_total_duration(self):
         # read and parse sample file
         self.assertTrue(self.stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE))

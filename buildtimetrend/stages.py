@@ -107,8 +107,10 @@ class Stages(object):
         doesn't produce a stage duration.
         The parsing ends when an event with the name 'end' is encountered.
         '''
+        finished = False
         previous_timestamp = 0
         event_name = None
+
         # iterate over all timestamps
         for row in timestamps:
             timestamp = int(row[1])
@@ -121,6 +123,7 @@ class Stages(object):
             if event_name is not None:
                 # finish parsing when an end timestamp is encountered
                 if event_name.lower() in end_tags:
+                    finished = True
                     break
 
                 self.create_stage(event_name, previous_timestamp, timestamp)
@@ -130,6 +133,11 @@ class Stages(object):
             # of this stage
             event_name = row[0]
             previous_timestamp = timestamp
+
+        if finished is False and self.end_timestamp > 0:
+            self.create_stage(event_name,
+                              previous_timestamp,
+                              self.end_timestamp)
 
     def add_stage(self, stage):
         '''
