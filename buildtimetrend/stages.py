@@ -113,17 +113,7 @@ class Stages(object):
                 if event_name.lower() in end_tags:
                     break
 
-                # calculate duration from current and previous timestamp
-                duration = timestamp - previous_timestamp
-                get_logger().info('Duration %s : %ds', event_name, duration)
-
-                # add stage duration to stages dict
-                stage = Stage()
-                stage.set_name(event_name)
-                stage.set_started_at(previous_timestamp)
-                stage.set_finished_at(timestamp)
-                stage.set_duration(duration)
-                self.add_stage(stage)
+                self.create_stage(event_name, previous_timestamp, timestamp)
 
             # event name of the timestamp is used in the next iteration
             # the timestamp of the next stage is used as the ending timestamp
@@ -150,6 +140,30 @@ class Stages(object):
         # assign finished timestamp
         if "finished_at" in stage.data:
             self.finished_at = stage.data["finished_at"]
+
+    def create_stage(self, name, start_time, end_time):
+        '''
+        Create a stage
+        Parameters :
+        - name : stage name
+        - start_time : start of stage timestamp
+        - end_time : end of stage timestamp
+        '''
+        if not (type(start_time) is int and type(end_time) is int):
+            return None
+
+        # calculate duration from start and end timestamp
+        duration = end_time - start_time
+        get_logger().info('Duration %s : %ds', name, duration)
+
+        # create stage
+        stage = Stage()
+        stage.set_name(name)
+        stage.set_started_at(start_time)
+        stage.set_finished_at(end_time)
+        stage.set_duration(duration)
+
+        self.add_stage(stage)
 
 
 class Stage(object):
