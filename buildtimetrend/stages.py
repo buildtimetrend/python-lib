@@ -116,7 +116,7 @@ class Stages(object):
 
         # iterate over all timestamps
         for row in timestamps:
-            timestamp = int(row[1])
+            timestamp = float(row[1])
 
             # skip calculating the duration of the first stage,
             # the next timestamp is needed
