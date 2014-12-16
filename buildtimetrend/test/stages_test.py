@@ -434,43 +434,43 @@ class TestStage(unittest.TestCase):
 
         # test 0 timestamp (epoch)
         self.assertTrue(self.stage.set_timestamp("event1", 0))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH, self.stage.data["event1"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_EPOCH, self.stage.data["event1"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "event1": constants.TIMESTAMP_SPLIT_EPOCH},
+                "event1": constants.SPLIT_TIMESTAMP_EPOCH},
             self.stage.to_dict())
 
         # test timestamp
         self.assertTrue(self.stage.set_timestamp("event1", constants.TIMESTAMP_TESTDATE))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["event1"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_TESTDATE, self.stage.data["event1"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "event1": constants.TIMESTAMP_SPLIT_TESTDATE},
+                "event1": constants.SPLIT_TIMESTAMP_TESTDATE},
             self.stage.to_dict())
 
     def test_set_timestamp_nano(self):
         # test 0 timestamp (epoch)
         self.assertTrue(self.stage.set_timestamp_nano("event1", 0))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH, self.stage.data["event1"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_EPOCH, self.stage.data["event1"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "event1": constants.TIMESTAMP_SPLIT_EPOCH},
+                "event1": constants.SPLIT_TIMESTAMP_EPOCH},
             self.stage.to_dict())
 
         # test timestamp
         self.assertTrue(self.stage.set_timestamp_nano("event1", constants.TIMESTAMP_NANO_TESTDATE))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["event1"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_TESTDATE, self.stage.data["event1"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "event1": constants.TIMESTAMP_SPLIT_TESTDATE},
+                "event1": constants.SPLIT_TIMESTAMP_TESTDATE},
             self.stage.to_dict())
 
     def test_set_started_at(self):
@@ -482,33 +482,33 @@ class TestStage(unittest.TestCase):
 
         # test 0 timestamp (epoch)
         self.assertTrue(self.stage.set_started_at(0))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH, self.stage.data["started_at"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_EPOCH, self.stage.data["started_at"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "started_at": constants.TIMESTAMP_SPLIT_EPOCH},
+                "started_at": constants.SPLIT_TIMESTAMP_EPOCH},
             self.stage.to_dict())
 
         # test timestamp
         self.assertTrue(self.stage.set_started_at(constants.TIMESTAMP_TESTDATE))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["started_at"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_TESTDATE, self.stage.data["started_at"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "started_at": constants.TIMESTAMP_SPLIT_TESTDATE},
+                "started_at": constants.SPLIT_TIMESTAMP_TESTDATE},
             self.stage.to_dict())
 
     def test_set_started_at_nano(self):
         # test timestamp
         self.assertTrue(self.stage.set_started_at_nano(constants.TIMESTAMP_NANO_TESTDATE))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["started_at"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_TESTDATE, self.stage.data["started_at"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "started_at": constants.TIMESTAMP_SPLIT_TESTDATE},
+                "started_at": constants.SPLIT_TIMESTAMP_TESTDATE},
             self.stage.to_dict())
 
     def test_set_finished_at(self):
@@ -520,33 +520,33 @@ class TestStage(unittest.TestCase):
 
         # test 0 timestamp (epoch)
         self.assertTrue(self.stage.set_finished_at(0))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_EPOCH, self.stage.data["finished_at"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_EPOCH, self.stage.data["finished_at"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "finished_at": constants.TIMESTAMP_SPLIT_EPOCH},
+                "finished_at": constants.SPLIT_TIMESTAMP_EPOCH},
             self.stage.to_dict())
 
         # test timestamp
         self.assertTrue(self.stage.set_finished_at(constants.TIMESTAMP_TESTDATE))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["finished_at"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_TESTDATE, self.stage.data["finished_at"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "finished_at": constants.TIMESTAMP_SPLIT_TESTDATE},
+                "finished_at": constants.SPLIT_TIMESTAMP_TESTDATE},
             self.stage.to_dict())
 
     def test_set_finished_at_nano(self):
         # test timestamp
         self.assertTrue(self.stage.set_finished_at_nano(constants.TIMESTAMP_NANO_TESTDATE))
-        self.assertDictEqual(constants.TIMESTAMP_SPLIT_TESTDATE, self.stage.data["finished_at"])
+        self.assertDictEqual(constants.SPLIT_TIMESTAMP_TESTDATE, self.stage.data["finished_at"])
         self.assertDictEqual(
             {
                 "name": "",
                 "duration": 0,
-                "finished_at": constants.TIMESTAMP_SPLIT_TESTDATE},
+                "finished_at": constants.SPLIT_TIMESTAMP_TESTDATE},
             self.stage.to_dict())
 
     def test_todict(self):

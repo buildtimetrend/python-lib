@@ -44,31 +44,31 @@ class TestTools(unittest.TestCase):
     def test_split_timestamp(self):
         # test 0 timestamp (epoch)
         self.assertDictEqual(
-            constants.TIMESTAMP_SPLIT_EPOCH, split_timestamp(0)
+            constants.SPLIT_TIMESTAMP_EPOCH, split_timestamp(0)
         )
 
         # test timestamp
         self.assertDictEqual(
-            constants.TIMESTAMP_SPLIT_TESTDATE,
+            constants.SPLIT_TIMESTAMP_TESTDATE,
             split_timestamp(constants.TIMESTAMP_TESTDATE)
         )
 
     def test_split_isotimestamp(self):
         # test 0 timestamp (epoch) in UTC
         self.assertDictEqual(
-            constants.TIMESTAMP_SPLIT_EPOCH,
+            constants.SPLIT_TIMESTAMP_EPOCH,
             split_isotimestamp("1970-01-01T00:00:00Z")
         )
 
         # test 0 timestamp (epoch), without timezone
         self.assertDictEqual(
-            constants.TIMESTAMP_SPLIT_EPOCH_NOTZ,
+            constants.SPLIT_TIMESTAMP_EPOCH_NOTZ,
             split_isotimestamp("1970-01-01T00:00:00")
         )
 
         # test timestamp
         self.assertDictEqual(
-            constants.TIMESTAMP_SPLIT_TESTDATE,
+            constants.SPLIT_TIMESTAMP_TESTDATE,
             split_isotimestamp(constants.ISOTIMESTAMP_TESTDATE)
         )
 
@@ -83,21 +83,21 @@ class TestTools(unittest.TestCase):
         # test 0 timestamp (epoch) in UTC
         epoch_utc_dt = datetime.utcfromtimestamp(0).replace(tzinfo=tzutc())
         self.assertDictEqual(
-            constants.TIMESTAMP_SPLIT_EPOCH,
+            constants.SPLIT_TIMESTAMP_EPOCH,
             split_datetime(epoch_utc_dt)
         )
 
         # test 0 timestamp (epoch), without timezone
         epoch_dt = datetime.utcfromtimestamp(0)
         self.assertDictEqual(
-            constants.TIMESTAMP_SPLIT_EPOCH_NOTZ,
+            constants.SPLIT_TIMESTAMP_EPOCH_NOTZ,
             split_datetime(epoch_dt)
         )
 
         # test timestamp
         timestamp_dt = datetime.utcfromtimestamp(constants.TIMESTAMP_TESTDATE).replace(tzinfo=tzutc())
         self.assertDictEqual(
-            constants.TIMESTAMP_SPLIT_TESTDATE,
+            constants.SPLIT_TIMESTAMP_TESTDATE,
             split_datetime(timestamp_dt)
         )
 

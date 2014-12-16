@@ -23,7 +23,7 @@
 TEST_SAMPLE_TIMESTAMP_FILE = 'buildtimetrend/test/testsample_timestamps.csv'
 TEST_SAMPLE_CONFIG_FILE = 'buildtimetrend/test/testsample_config.yml'
 
-TIMESTAMP_SPLIT_EPOCH = {
+SPLIT_TIMESTAMP_EPOCH = {
     "isotimestamp": "1970-01-01T00:00:00+00:00",
     "timestamp_seconds": 0.0,
     "year": "1970",
@@ -44,7 +44,7 @@ TIMESTAMP_SPLIT_EPOCH = {
     "timezone_offset": "+0000"
 }
 
-TIMESTAMP_SPLIT_EPOCH_NOTZ = {
+SPLIT_TIMESTAMP_EPOCH_NOTZ = {
     "isotimestamp": "1970-01-01T00:00:00",
     "timestamp_seconds": 0.0,
     "year": "1970",
@@ -68,7 +68,7 @@ TIMESTAMP_SPLIT_EPOCH_NOTZ = {
 TIMESTAMP_TESTDATE = 1404913113.456789
 TIMESTAMP_NANO_TESTDATE = 1404913113456789000
 ISOTIMESTAMP_TESTDATE = "2014-07-09T13:38:33.456789Z"
-TIMESTAMP_SPLIT_TESTDATE = {
+SPLIT_TIMESTAMP_TESTDATE = {
     "isotimestamp": "2014-07-09T13:38:33.456789+00:00",
     "timestamp_seconds": TIMESTAMP_TESTDATE,
     "year": "2014",
