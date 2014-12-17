@@ -134,6 +134,8 @@ SPLIT_TIMESTAMP1 = {
     'timezone': 'UTC',
     'timezone_offset': '+0000'
 }
+
+TIMESTAMP2 = 1396378737
 SPLIT_TIMESTAMP2 = {
     'day_of_month': '01',
     'day_of_week': '2',
@@ -154,6 +156,8 @@ SPLIT_TIMESTAMP2 = {
     'timezone': 'UTC',
     'timezone_offset': '+0000'
 }
+
+TIMESTAMP3 = 1396378742
 SPLIT_TIMESTAMP3 = {
     'day_of_month': '01',
     'day_of_week': '2',
@@ -174,6 +178,8 @@ SPLIT_TIMESTAMP3 = {
     'timezone': 'UTC',
     'timezone_offset': '+0000'
 }
+
+TIMESTAMP4 = 1396378752
 SPLIT_TIMESTAMP4 = {
     'day_of_month': '01',
     'day_of_week': '2',
