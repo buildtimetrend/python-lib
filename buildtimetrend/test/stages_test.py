@@ -188,6 +188,37 @@ class TestStages(unittest.TestCase):
         # test total duration
         self.assertEqual(371.2339999675751, self.stages.total_duration())
 
+    def test_create_stage(self):
+        self.assertEqual(None, self.stages.create_stage("stage1", "string", "string"))
+        self.assertEqual(None, self.stages.create_stage("stage1", 1, "string"))
+        self.assertEqual(None, self.stages.create_stage("stage1", "string", 1))
+        self.assertEqual(Stage, type(self.stages.create_stage("stage1", 1, 2)))
+        self.assertEqual(Stage, type(self.stages.create_stage("stage1", 1.0, 2.0)))
+
+        self.assertDictEqual(
+            {'duration': 17,
+             'finished_at': constants.SPLIT_TIMESTAMP4,
+             'name': 'stage1',
+             'started_at': constants.SPLIT_TIMESTAMP1},
+            self.stages.create_stage(
+                "stage1",
+                constants.TIMESTAMP1,
+                constants.TIMESTAMP4
+            ).to_dict()
+        )
+
+        self.assertDictEqual(
+            {'duration': 371.2339999675751,
+             'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+             'name': 'stage1',
+             'started_at': constants.SPLIT_TIMESTAMP_STARTED},
+            self.stages.create_stage(
+                "stage1",
+                constants.TIMESTAMP_STARTED,
+                constants.TIMESTAMP_FINISHED
+            ).to_dict()
+        )
+
     def test_total_duration(self):
         # read and parse sample file
         self.assertTrue(self.stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE))

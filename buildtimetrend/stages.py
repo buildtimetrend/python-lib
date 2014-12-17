@@ -166,6 +166,7 @@ class Stages(object):
         - start_time : start of stage timestamp
         - end_time : end of stage timestamp
         '''
+        # timestamps should be integer or floating point numbers
         if not (type(start_time) in (int, float) and
                 type(end_time) in (int, float)):
             return None
@@ -182,6 +183,7 @@ class Stages(object):
         stage.set_duration(duration)
 
         self.add_stage(stage)
+        return stage
 
 
 class Stage(object):
