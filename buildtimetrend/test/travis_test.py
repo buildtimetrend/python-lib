@@ -43,7 +43,9 @@ DURATION_SEC = 11.0
 
 
 class TestTravis(unittest.TestCase):
-    #def setUp(self):
+    def setUp(self):
+        # reinit settings singleton
+        Settings().__init__()
 
     def test_novalue(self):
         self.assertRaises(TypeError, convert_build_result)
@@ -119,6 +121,37 @@ class TestTravis(unittest.TestCase):
         self.assertEquals("failed", convert_build_result("1"))
         self.assertEquals("errored", convert_build_result("-1"))
         self.assertEquals("errored", convert_build_result("2"))
+
+    def test_process_notification_payload(self):
+        settings = Settings()
+
+        self.assertEquals(None, settings.get_setting("build"))
+        self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
+
+        self.assertRaises(TypeError, process_notification_payload)
+        self.assertRaises(ValueError, process_notification_payload, "")
+        self.assertRaises(ValueError, process_notification_payload, "no_json")
+
+        process_notification_payload(None)
+        self.assertEquals(None, settings.get_setting("build"))
+        self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
+
+        process_notification_payload(123)
+        self.assertEquals(None, settings.get_setting("build"))
+        self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
+
+        expected_build = '123'
+        expected_owner = 'test'
+        expected_repo = 'project'
+        expected_project_name = '%s/%s' % (expected_owner, expected_repo)
+
+        process_notification_payload(
+            '{"number": "%s", "repository": {"owner_name": "%s", "name": "%s"}}'
+            % (expected_build, expected_owner, expected_repo)
+        )
+
+        self.assertEquals(expected_build, settings.get_setting("build"))
+        self.assertEquals(expected_project_name, settings.get_project_name())
 
     def test_check_authorization(self):
         self.assertTrue(check_authorization(None, None))

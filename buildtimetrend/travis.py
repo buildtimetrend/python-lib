@@ -96,7 +96,7 @@ def process_notification_payload(payload):
     '''
     Load payload from Travis notification
     '''
-    if payload is None:
+    if payload is None or type(payload) is not str:
         return
 
     logger = get_logger()
