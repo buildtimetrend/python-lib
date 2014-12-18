@@ -174,3 +174,41 @@ class TestSettings(unittest.TestCase):
 
         # reset test environment variables
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
+
+    def test_process_argv(self):
+        scriptname = "script.py"
+
+        expected_ci = "travis"
+        expected_build = "123"
+        expected_job = "123.1"
+        expected_branch = "branch1"
+        expected_project_name = "test/project"
+        expected_result = "passed"
+
+        self.settings.add_setting("mode_keen", False)
+        self.assertEquals(False, self.settings.get_setting("mode_keen"))
+        self.assertEquals(False, self.settings.get_setting("mode_native"))
+
+        argv = [
+            scriptname,
+            "--ci=%s" % expected_ci,
+            "--build=%s" % expected_build,
+            "--job=%s" % expected_job,
+            "--branch=%s" % expected_branch,
+            "--repo=%s" % expected_project_name,
+            "--result=%s" % expected_result,
+            "--mode=keen",
+            "--mode=native",
+            "argument"
+        ]
+
+        self.assertListEqual(["argument"], self.settings.process_argv(argv))
+
+        self.assertEquals(expected_ci, self.settings.get_setting("ci_platform"))
+        self.assertEquals(expected_build, self.settings.get_setting("build"))
+        self.assertEquals(expected_job, self.settings.get_setting("job"))
+        self.assertEquals(expected_branch, self.settings.get_setting("branch"))
+        self.assertEquals(expected_project_name, self.settings.get_project_name())
+        self.assertEquals(expected_result, self.settings.get_setting("result"))
+        self.assertEquals(True, self.settings.get_setting("mode_keen"))
+        self.assertEquals(True, self.settings.get_setting("mode_native"))
