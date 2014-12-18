@@ -164,7 +164,7 @@ def keys_in_dict(param_dict, key_list):
     Param key_list: key or list of keys that should be present in the dict
     Returns true if all keys were found in the dictionary
     '''
-    if type(key_list) is str or type(key_list) is int:
+    if type(key_list) in (str, int):
         return key_list in param_dict
     elif not check_list(key_list, "key_list"):
         return False
@@ -197,7 +197,7 @@ def check_num_string(num_string, name):
     Returns integer of numerical string, throws error when it isn't
     '''
     if num_string is None or \
-            not (type(num_string) is str or type(num_string) is int):
+            not (type(num_string) in (str,int)):
         raise TypeError(
             "param %s should be a numerical string or an integer" % name
         )
