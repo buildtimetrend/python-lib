@@ -134,6 +134,14 @@ class Settings(object):
                 ' --mode=<storage_mode>' % \
                 argv[0]
 
+            options = {
+                "--build": "build",
+                "--job": "job",
+                "--branch": "branch",
+                "--ci": "ci_platform",
+                "--result": "result"
+            }
+
             try:
                 opts, args = getopt.getopt(
                     argv[1:], "h", [
@@ -152,18 +160,10 @@ class Settings(object):
                     sys.exit()
                 elif opt == "--log":
                     set_loglevel(arg)
-                elif opt == "--build":
-                    self.add_setting("build", arg)
-                elif opt == "--job":
-                    self.add_setting("job", arg)
-                elif opt == "--branch":
-                    self.add_setting("branch", arg)
+                elif opt in options:
+                    self.add_setting(options[opt], arg)
                 elif opt == "--repo":
                     self.set_project_name(arg)
-                elif opt == "--ci":
-                    self.add_setting("ci_platform", arg)
-                elif opt == "--result":
-                    self.add_setting("result", arg)
                 elif opt == "--mode":
                     if arg == "native":
                         self.add_setting("mode_native", True)
