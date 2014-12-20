@@ -22,7 +22,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import sys
 import os
 import getopt
 import yaml
@@ -127,6 +126,8 @@ class Settings(object):
         def process_argv(self, argv):
             '''
             Process command line arguments
+            returns a list with arguments (non-options) or
+            None if options are invalid
             '''
             usage_string = '%s -h --log=<log_level> --build=<buildID>' \
                 ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
@@ -151,13 +152,13 @@ class Settings(object):
                 )
             except getopt.GetoptError:
                 print usage_string
-                sys.exit(2)
+                return None
 
             # check options
             for opt, arg in opts:
                 if opt in ('-h', "--help"):
                     print usage_string
-                    sys.exit()
+                    return None
                 elif opt == "--log":
                     set_loglevel(arg)
                 elif opt in options:

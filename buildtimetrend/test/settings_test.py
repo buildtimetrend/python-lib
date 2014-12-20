@@ -21,6 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.settings import *
+from buildtimetrend.tools import get_logger
 from buildtimetrend.collection import Collection
 from buildtimetrend.keenio import keen_is_writable
 from buildtimetrend.keenio import keen_is_readable
@@ -29,6 +30,7 @@ import os
 import keen
 import unittest
 import constants
+import logging
 
 
 class TestSettings(unittest.TestCase):
@@ -176,6 +178,8 @@ class TestSettings(unittest.TestCase):
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
 
     def test_process_argv(self):
+        logger = get_logger()
+
         scriptname = "script.py"
 
         expected_ci = "travis"
@@ -188,9 +192,11 @@ class TestSettings(unittest.TestCase):
         self.settings.add_setting("mode_keen", False)
         self.assertEquals(False, self.settings.get_setting("mode_keen"))
         self.assertEquals(False, self.settings.get_setting("mode_native"))
+        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
 
         argv = [
             scriptname,
+            "--log=INFO",
             "--ci=%s" % expected_ci,
             "--build=%s" % expected_build,
             "--job=%s" % expected_job,
@@ -204,6 +210,12 @@ class TestSettings(unittest.TestCase):
 
         self.assertListEqual(["argument"], self.settings.process_argv(argv))
 
+        # test setting loglevel to WARNING
+        self.assertEquals(logging.INFO, logger.getEffectiveLevel())
+        # reset default loglevel
+        set_loglevel("WARNING")
+
+        # test other options
         self.assertEquals(expected_ci, self.settings.get_setting("ci_platform"))
         self.assertEquals(expected_build, self.settings.get_setting("build"))
         self.assertEquals(expected_job, self.settings.get_setting("job"))
@@ -212,3 +224,13 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(expected_result, self.settings.get_setting("result"))
         self.assertEquals(True, self.settings.get_setting("mode_keen"))
         self.assertEquals(True, self.settings.get_setting("mode_native"))
+
+        # no parameters
+        self.assertListEqual([], self.settings.process_argv([scriptname]))
+
+        # invalid parameters
+        self.assertEquals(None, self.settings.process_argv([scriptname, "-x"]))
+        self.assertEquals(None, self.settings.process_argv([scriptname, "--invalid"]))
+        # help
+        self.assertEquals(None, self.settings.process_argv([scriptname, "-h"]))
+        self.assertEquals(None, self.settings.process_argv([scriptname, "--help"]))
