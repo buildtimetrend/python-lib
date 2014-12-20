@@ -53,8 +53,8 @@ class Settings(object):
             self.set_project_name(buildtimetrend.NAME)
 
             # set modes
-            self.add_setting("mode_native", False)
-            self.add_setting("mode_keen", True)
+            self.set_mode("native", False)
+            self.set_mode("keen", True)
 
         def set_project_name(self, name):
             '''
@@ -166,10 +166,7 @@ class Settings(object):
                 elif opt == "--repo":
                     self.set_project_name(arg)
                 elif opt == "--mode":
-                    if arg == "native":
-                        self.add_setting("mode_native", True)
-                    elif arg == "keen":
-                        self.add_setting("mode_keen", True)
+                    self.set_mode(arg)
 
             return args
 
