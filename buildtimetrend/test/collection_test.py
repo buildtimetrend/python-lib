@@ -45,11 +45,13 @@ class TestCollection(unittest.TestCase):
 
         self.collection.add_item('property2', 3)
         self.assertEquals(2, len(self.collection.items))
-        self.assertDictEqual({'property1': 2, 'property2': 3}, self.collection.items)
+        self.assertDictEqual({'property1': 2, 'property2': 3},
+                             self.collection.items)
 
         self.collection.add_item('property2', 4)
         self.assertEquals(2, len(self.collection.items))
-        self.assertDictEqual({'property1': 2, 'property2': 4}, self.collection.items)
+        self.assertDictEqual({'property1': 2, 'property2': 4},
+                             self.collection.items)
 
     def test_get_size(self):
         self.collection.add_item('property1', 2)

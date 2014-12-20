@@ -799,9 +799,9 @@ class TestTravisSubstage(unittest.TestCase):
         }))
         self.assertFalse(self.substage.has_finished())
         self.assertDictEqual(constants.SPLIT_TIMESTAMP_STARTED,
-            self.substage.stage.data["started_at"])
+                             self.substage.stage.data["started_at"])
         self.assertDictEqual(constants.SPLIT_TIMESTAMP_FINISHED,
-            self.substage.stage.data["finished_at"])
+                             self.substage.stage.data["finished_at"])
         self.assertEquals(DURATION_SEC, self.substage.stage.data["duration"])
 
         # pass valid end tag
@@ -825,13 +825,17 @@ class TestTravisSubstage(unittest.TestCase):
 
     def test_process_parsed_tags_no_starttag(self):
         # pass a valid timing hash
-        self.assertTrue(self.substage.process_parsed_tags({'start_hash': VALID_HASH1}))
+        self.assertTrue(
+            self.substage.process_parsed_tags({'start_hash': VALID_HASH1})
+        )
         self.assertTrue(self.substage.has_started())
         self.assertEquals(VALID_HASH1, self.substage.timing_hash)
         self.assertFalse(self.substage.has_finished())
 
         # pass a valid command name
-        self.assertTrue(self.substage.process_parsed_tags({'command': 'command1.sh'}))
+        self.assertTrue(
+            self.substage.process_parsed_tags({'command': 'command1.sh'})
+        )
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.stage.data["command"])
         self.assertFalse(self.substage.has_finished())
@@ -868,7 +872,9 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.has_finished())
 
         # pass a valid command name
-        self.assertTrue(self.substage.process_parsed_tags({'command': 'command1.sh'}))
+        self.assertTrue(
+            self.substage.process_parsed_tags({'command': 'command1.sh'})
+        )
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.stage.data["command"])
         self.assertFalse(self.substage.has_finished())
@@ -892,9 +898,15 @@ class TestTravisSubstage(unittest.TestCase):
 
     def test_process_start_stage(self):
         # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(self.substage.process_start_stage({'invalid': 'param'}))
-        self.assertFalse(self.substage.process_start_stage({'start_stage': 'stage'}))
-        self.assertFalse(self.substage.process_start_stage({'start_substage': 'substage'}))
+        self.assertFalse(
+            self.substage.process_start_stage({'invalid': 'param'})
+        )
+        self.assertFalse(
+            self.substage.process_start_stage({'start_stage': 'stage'})
+        )
+        self.assertFalse(
+            self.substage.process_start_stage({'start_substage': 'substage'})
+        )
 
         # pass a valid start tag
         self.assertTrue(self.substage.process_start_stage({
@@ -914,16 +926,22 @@ class TestTravisSubstage(unittest.TestCase):
 
     def test_process_start_time(self):
         # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(self.substage.process_start_time({'invalid': 'param'}))
+        self.assertFalse(
+            self.substage.process_start_time({'invalid': 'param'})
+        )
 
         # pass a valid timing hash
-        self.assertTrue(self.substage.process_start_time({'start_hash': VALID_HASH1}))
+        self.assertTrue(
+            self.substage.process_start_time({'start_hash': VALID_HASH1})
+        )
         self.assertTrue(self.substage.has_started())
         self.assertEquals(VALID_HASH1, self.substage.timing_hash)
         self.assertFalse(self.substage.has_finished())
 
         # passing a valid start tag when it was started already, should fail
-        self.assertFalse(self.substage.process_start_time({'start_hash': VALID_HASH2}))
+        self.assertFalse(
+            self.substage.process_start_time({'start_hash': VALID_HASH2})
+        )
         self.assertTrue(self.substage.has_started())
         self.assertEquals(VALID_HASH1, self.substage.timing_hash)
         self.assertFalse(self.substage.has_finished())
@@ -947,13 +965,17 @@ class TestTravisSubstage(unittest.TestCase):
     def __check_process_command(self, expected_command):
         '''similar test for test_process_command*'''
         # pass a valid command name
-        self.assertTrue(self.substage.process_command({'command': 'command1.sh'}))
+        self.assertTrue(
+            self.substage.process_command({'command': 'command1.sh'})
+        )
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.stage.data["command"])
         self.assertEquals(expected_command, self.substage.get_name())
 
         # passing a valid command when it was started already, should fail
-        self.assertFalse(self.substage.process_command({'command': 'command2.sh'}))
+        self.assertFalse(
+            self.substage.process_command({'command': 'command2.sh'})
+        )
         self.assertTrue(self.substage.has_started())
         self.assertEquals('command1.sh', self.substage.stage.data["command"])
         self.assertEquals(expected_command, self.substage.get_name())
@@ -961,10 +983,21 @@ class TestTravisSubstage(unittest.TestCase):
     def test_process_end_time_tags(self):
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(self.substage.process_end_time({'invalid': 'param'}))
-        self.assertFalse(self.substage.process_end_time({'end_hash': VALID_HASH1}))
-        self.assertFalse(self.substage.process_end_time({'start_timestamp': constants.TIMESTAMP_NANO_STARTED}))
-        self.assertFalse(self.substage.process_end_time({'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED}))
-        self.assertFalse(self.substage.process_end_time({'duration': DURATION_NANO}))
+        self.assertFalse(
+            self.substage.process_end_time({'end_hash': VALID_HASH1})
+        )
+        self.assertFalse(
+            self.substage.process_end_time(
+                {'start_timestamp': constants.TIMESTAMP_NANO_STARTED}
+            )
+        )
+        self.assertFalse(
+            self.substage.process_end_time(
+                {'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED}
+            )
+        )
+        self.assertFalse(
+            self.substage.process_end_time({'duration': DURATION_NANO}))
 
     def test_process_end_time_not_started(self):
         # pass a valid start tag but, timing hasn't started
@@ -1004,16 +1037,19 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_finished())
 
         self.assertDictEqual(constants.SPLIT_TIMESTAMP_STARTED,
-            self.substage.stage.data["started_at"])
+                             self.substage.stage.data["started_at"])
         self.assertDictEqual(constants.SPLIT_TIMESTAMP_FINISHED,
-            self.substage.stage.data["finished_at"])
+                             self.substage.stage.data["finished_at"])
         self.assertEquals(DURATION_SEC, self.substage.stage.data["duration"])
 
     def test_process_end_stage_tags(self):
         # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(self.substage.process_end_stage({'invalid': 'param'}))
-        self.assertFalse(self.substage.process_end_stage({'end_stage': 'stage1'}))
-        self.assertFalse(self.substage.process_end_stage({'end_substage': 'substage1'}))
+        self.assertFalse(
+            self.substage.process_end_stage({'invalid': 'param'}))
+        self.assertFalse(
+            self.substage.process_end_stage({'end_stage': 'stage1'}))
+        self.assertFalse(
+            self.substage.process_end_stage({'end_substage': 'substage1'}))
 
     def test_process_end_stage_not_started(self):
         # pass a valid end tag but, stage wasn't started

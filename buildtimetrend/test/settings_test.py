@@ -216,11 +216,13 @@ class TestSettings(unittest.TestCase):
         set_loglevel("WARNING")
 
         # test other options
-        self.assertEquals(expected_ci, self.settings.get_setting("ci_platform"))
+        self.assertEquals(expected_ci,
+                          self.settings.get_setting("ci_platform"))
         self.assertEquals(expected_build, self.settings.get_setting("build"))
         self.assertEquals(expected_job, self.settings.get_setting("job"))
         self.assertEquals(expected_branch, self.settings.get_setting("branch"))
-        self.assertEquals(expected_project_name, self.settings.get_project_name())
+        self.assertEquals(expected_project_name,
+                          self.settings.get_project_name())
         self.assertEquals(expected_result, self.settings.get_setting("result"))
         self.assertEquals(True, self.settings.get_setting("mode_keen"))
         self.assertEquals(True, self.settings.get_setting("mode_native"))
@@ -230,10 +232,15 @@ class TestSettings(unittest.TestCase):
 
         # invalid parameters
         self.assertEquals(None, self.settings.process_argv([scriptname, "-x"]))
-        self.assertEquals(None, self.settings.process_argv([scriptname, "--invalid"]))
+        self.assertEquals(
+            None,
+            self.settings.process_argv([scriptname, "--invalid"])
+        )
+
         # help
         self.assertEquals(None, self.settings.process_argv([scriptname, "-h"]))
-        self.assertEquals(None, self.settings.process_argv([scriptname, "--help"]))
+        self.assertEquals(None,
+                          self.settings.process_argv([scriptname, "--help"]))
 
     def test_set_mode(self):
         self.assertEquals(True, self.settings.get_setting("mode_keen"))
