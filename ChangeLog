@@ -17,6 +17,7 @@ v0.2 (not yet released)
 - issue #6 : create Settings class
 - issue #7 : populate Settings class with Travis CI environment variables
 - issue #60 : check if API result contains builds
+- issue #33 : add microseconds when logging a timestamp
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git
