@@ -260,7 +260,8 @@ class TravisData(object):
         '''
         self.current_job.add_property(
             "build",
-            self.build_data['builds'][0]['number']
+            # buildnumber is part before "." of job number
+            job_data['job']['number'].split(".")[0]
         )
         self.current_job.add_property("job", job_data['job']['number'])
         self.current_job.add_property("branch", job_data['commit']['branch'])
