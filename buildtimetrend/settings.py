@@ -173,6 +173,18 @@ class Settings(object):
 
             return args
 
+        def set_mode(self, mode, value=True):
+            '''
+            Set mode
+            Parameters
+            mode : keen, native
+            value : enable (=True, default) or disable (=False) mode
+            '''
+            if mode == "native":
+                self.add_setting("mode_native", bool(value))
+            elif mode == "keen":
+                self.add_setting("mode_keen", bool(value))
+
         def load_env_vars(self):
             '''
             Load environment variables and assign their values to

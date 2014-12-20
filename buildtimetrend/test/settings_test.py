@@ -234,3 +234,33 @@ class TestSettings(unittest.TestCase):
         # help
         self.assertEquals(None, self.settings.process_argv([scriptname, "-h"]))
         self.assertEquals(None, self.settings.process_argv([scriptname, "--help"]))
+
+    def test_set_mode(self):
+        self.assertEquals(True, self.settings.get_setting("mode_keen"))
+        self.assertEquals(False, self.settings.get_setting("mode_native"))
+
+        # test native mode
+        self.settings.set_mode("native")
+        self.assertEquals(True, self.settings.get_setting("mode_native"))
+        self.settings.set_mode("native", False)
+        self.assertEquals(False, self.settings.get_setting("mode_native"))
+        self.settings.set_mode("native", True)
+        self.assertEquals(True, self.settings.get_setting("mode_native"))
+        self.settings.set_mode("native", 0)
+        self.assertEquals(False, self.settings.get_setting("mode_native"))
+        self.settings.set_mode("native", 1234)
+        self.assertEquals(True, self.settings.get_setting("mode_native"))
+        self.settings.set_mode("native", False)
+        self.assertEquals(False, self.settings.get_setting("mode_native"))
+        self.settings.set_mode("native", "1234")
+        self.assertEquals(True, self.settings.get_setting("mode_native"))
+
+        # test keen mode
+        self.settings.set_mode("keen", False)
+        self.assertEquals(False, self.settings.get_setting("mode_keen"))
+        self.settings.set_mode("keen", True)
+        self.assertEquals(True, self.settings.get_setting("mode_keen"))
+        self.settings.set_mode("keen", False)
+        self.assertEquals(False, self.settings.get_setting("mode_keen"))
+        self.settings.set_mode("keen")
+        self.assertEquals(True, self.settings.get_setting("mode_keen"))
