@@ -14,6 +14,7 @@ v0.2 (not yet released)
 - issue #15 : use Keen.io dashboard template for trends dashboard
 - issue #58 : split project in a library (current project) and a client, see https://github.com/buildtimetrend/python-client
 - change license to GNU Affero General Public License v3 or later (AGPLv3+)
+- issue #6 : create Settings class
 - issue #7 : populate Settings class with Travis CI environment variables
 - issue #60 : check if API result contains builds
 
