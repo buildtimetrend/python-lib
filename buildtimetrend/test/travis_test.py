@@ -145,8 +145,18 @@ class TestTravis(unittest.TestCase):
         expected_repo = 'project'
         expected_project_name = '%s/%s' % (expected_owner, expected_repo)
 
+        # test with string
         process_notification_payload(
             '{"number": "%s", "repository": {"owner_name": "%s", "name": "%s"}}'
+            % (expected_build, expected_owner, expected_repo)
+        )
+
+        self.assertEquals(expected_build, settings.get_setting("build"))
+        self.assertEquals(expected_project_name, settings.get_project_name())
+
+        # test with unicode string
+        process_notification_payload(
+            unicode('{"number": "%s", "repository": {"owner_name": "%s", "name": "%s"}}')
             % (expected_build, expected_owner, expected_repo)
         )
 
