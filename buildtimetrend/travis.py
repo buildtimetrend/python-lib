@@ -96,11 +96,17 @@ def process_notification_payload(payload):
     '''
     Load payload from Travis notification
     '''
-    if payload is None or type(payload) is not str:
-        return
-
     logger = get_logger()
     settings = Settings()
+
+    if payload is None:
+        logger.warning("Travis notifcation payload is not set")
+        return
+
+    if type(payload) is not str:
+        logger.warning("Travis notifcation payload is incorrect :"
+                       " string expected, got %s" % type(payload))
+        return
 
     json_payload = json.loads(payload)
     logger.info("Travis Payload : %r.", json_payload)
