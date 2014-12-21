@@ -22,6 +22,7 @@
 
 from buildtimetrend.settings import *
 from buildtimetrend.tools import get_logger
+from buildtimetrend.tools import set_loglevel
 from buildtimetrend.collection import Collection
 from buildtimetrend.keenio import keen_is_writable
 from buildtimetrend.keenio import keen_is_readable
@@ -49,6 +50,8 @@ class TestSettings(unittest.TestCase):
         # reinit settings singleton
         if self.settings is not None:
             self.settings.__init__()
+
+        set_loglevel("WARNING")
 
     def test_get_project_info(self):
         self.assertDictEqual(
@@ -94,7 +97,8 @@ class TestSettings(unittest.TestCase):
             {
                 "project_name": self.project_name,
                 "mode_native": False,
-                "mode_keen": True
+                "mode_keen": True,
+                "loglevel": "WARNING"
             },
             self.settings.settings.get_items())
 
@@ -105,7 +109,8 @@ class TestSettings(unittest.TestCase):
             {
                 "project_name": self.project_name,
                 "mode_native": False,
-                "mode_keen": True
+                "mode_keen": True,
+                "loglevel": "WARNING"
             },
             self.settings.settings.get_items())
 
@@ -114,7 +119,8 @@ class TestSettings(unittest.TestCase):
             {
                 "project_name": self.project_name,
                 "mode_native": False,
-                "mode_keen": True
+                "mode_keen": True,
+                "loglevel": "WARNING"
             },
             self.settings.settings.get_items())
 
@@ -136,6 +142,7 @@ class TestSettings(unittest.TestCase):
                 "project_name": "test_project",
                 "mode_native": True,
                 "mode_keen": False,
+                "loglevel": "INFO",
                 "setting1": "test_value1"
             },
             self.settings.settings.get_items())
@@ -162,19 +169,23 @@ class TestSettings(unittest.TestCase):
         del os.environ["BTT_TEST_VAR"]
 
     def test_load_env_vars(self):
+        self.assertEquals("WARNING", self.settings.get_setting("loglevel"))
         self.assertEquals(None,
                           self.settings.get_setting("travis_account_token"))
 
         # set test environment variables
         exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
+        exp_loglevel = os.environ["BTT_LOGLEVEL"] = "INFO"
 
         self.settings.load_env_vars()
 
         # test environment variables
+        self.assertEquals(exp_loglevel, self.settings.get_setting("loglevel"))
         self.assertEquals(exp_account_token,
                           self.settings.get_setting("travis_account_token"))
 
         # reset test environment variables
+        del os.environ["BTT_LOGLEVEL"]
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
 
     def test_process_argv(self):

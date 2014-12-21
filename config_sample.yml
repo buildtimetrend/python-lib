@@ -3,6 +3,7 @@ buildtimetrend:
     project_name: "project_name or git repo"
     mode_native: false
     mode_keen: true
+    loglevel: "WARNING" # possible values : "DEBUG", "INFO", "WARNING", "ERROR"
 
 # Keen.io connection settings
 keen:

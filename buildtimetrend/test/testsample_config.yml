@@ -4,6 +4,7 @@ buildtimetrend:
     setting1: "test_value1"
     mode_native: true
     mode_keen: false
+    loglevel: "INFO"
 
 # Keen.io connection settings
 keen:

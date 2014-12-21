@@ -49,6 +49,9 @@ class Settings(object):
             '''
             self.settings = Collection()
 
+            # set loglevel
+            self.add_setting("loglevel", "WARNING")
+
             # set default project name
             self.set_project_name(buildtimetrend.NAME)
 
@@ -102,6 +105,8 @@ class Settings(object):
             with open(config_file, 'rb') as file_stream:
                 config = yaml.load(file_stream)
                 self.settings.add_items(config["buildtimetrend"])
+
+                set_loglevel(self.get_setting("loglevel"))
 
                 # set Keen.io settings
                 if "keen" in config:
@@ -187,7 +192,11 @@ class Settings(object):
             Load environment variables and assign their values to
             the corresponding setting value.
             '''
+
             # assign environment variable values to setting value
+            if self.env_var_to_settings("BTT_LOGLEVEL", "loglevel"):
+                set_loglevel(self.get_setting("loglevel"))
+
             self.env_var_to_settings("TRAVIS_ACCOUNT_TOKEN",
                                      "travis_account_token")
 

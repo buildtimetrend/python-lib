@@ -18,6 +18,7 @@ v0.2 (not yet released)
 - issue #7 : populate Settings class with Travis CI environment variables
 - issue #60 : check if API result contains builds
 - issue #33 : add microseconds when logging a timestamp
+- set loglevel with environment variable BTT_LOGLEVEL and config file setting
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git
