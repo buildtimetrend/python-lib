@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 from buildtimetrend.tools import set_loglevel
 
-NAME = "buildtime-trend"
+NAME = "buildtimetrend"
 VERSION = "0.2-dev"
 SCHEMA_VERSION = "2"
 USER_AGENT = "%s/%s" % (NAME, VERSION)
