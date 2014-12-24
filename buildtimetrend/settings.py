@@ -92,6 +92,17 @@ class Settings(object):
             '''
             return self.settings.get_item(name)
 
+        def load_settings(self, argv=None, config_file="config.yml"):
+            '''
+            Load config settings from :
+            - configfile
+            - environment variables
+            - command line arguments
+            '''
+            self.load_config_file(config_file)
+            self.load_env_vars()
+            return self.process_argv(argv)
+
         def load_config_file(self, config_file):
             '''
             Load settings from a config file
