@@ -240,6 +240,7 @@ class TestSettings(unittest.TestCase):
 
         # no parameters
         self.assertListEqual([], self.settings.process_argv([scriptname]))
+        self.assertEquals(None, self.settings.process_argv(None))
 
         # invalid parameters
         self.assertEquals(None, self.settings.process_argv([scriptname, "-x"]))

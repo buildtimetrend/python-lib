@@ -134,6 +134,9 @@ class Settings(object):
             returns a list with arguments (non-options) or
             None if options are invalid
             '''
+            if argv is None:
+                return None
+
             usage_string = '%s -h --log=<log_level> --build=<buildID>' \
                 ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
                 ' --ci=<ci_platform> --result=<build_result>' \
