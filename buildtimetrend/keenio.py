@@ -203,3 +203,33 @@ def generate_overview_config_file(repo):
             outfile.write(line)
 
     logger.info("Created trends overview config file")
+
+def get_avg_buildtime(repo, interval=None):
+    '''
+    Query Keen.io database and retrieve average buildtime
+
+    Parameters :
+    - repo : repo name (fe. buildtimetrend/service)
+    '''
+    if repo is None or not keen_is_readable():
+        return None
+
+    if interval == "week":
+        timeframe = "this_7_days"
+    elif interval == "month":
+        timeframe = "this_30_days"
+    elif interval == "year":
+        timeframe = "this_52_weeks"
+    else:
+        timeframe = "this_7_days"
+
+    return keen.average(
+        "builds",
+        target_property="build.duration",
+        timeframe=timeframe,
+        filters=[{
+            "property_name": "build.repo",
+            "operator": "eq",
+            "property_value": str(repo)
+        }]
+    )
