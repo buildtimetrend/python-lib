@@ -233,3 +233,24 @@ def get_avg_buildtime(repo, interval=None):
             "property_value": str(repo)
         }]
     )
+
+def get_latest_buildtime(repo):
+    '''
+    Query Keen.io database and retrieve buildtime duration of last build
+
+    Parameters :
+    - repo : repo name (fe. buildtimetrend/python-lib)
+    '''
+    if repo is None or not keen_is_readable():
+        return None
+
+    return keen.extraction(
+        "builds",
+        property_names="build.duration",
+        latest=1,
+        filters=[{
+            "property_name": "build.repo",
+            "operator": "eq",
+            "property_value": str(repo)
+        }]
+    )
