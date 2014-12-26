@@ -248,7 +248,7 @@ def get_latest_buildtime(repo):
     if repo is None or not keen_is_readable():
         return None
 
-    return keen.extraction(
+    result = keen.extraction(
         "builds",
         property_names="build.duration",
         latest=1,
@@ -258,3 +258,8 @@ def get_latest_buildtime(repo):
             "property_value": str(repo)
         }]
     )
+
+    if result is not None and len(result) > 0:
+        return result[0]['build']['duration']
+
+    return None
