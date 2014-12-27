@@ -236,3 +236,13 @@ def set_loglevel(loglevel):
     logger.setLevel(numeric_level)
     logger.addHandler(log_handler)
     logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
+
+
+def get_reposlug(repo_owner, repo_name):
+    '''
+    Returns repo slug
+    '''
+    if repo_owner is not None and repo_name is not None:
+        return "%s/%s" % (str(repo_owner), str(repo_name))
+    else:
+        return None
