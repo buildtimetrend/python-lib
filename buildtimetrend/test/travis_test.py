@@ -24,6 +24,7 @@ import os
 import buildtimetrend
 from buildtimetrend.travis import *
 from buildtimetrend.settings import Settings
+from buildtimetrend.tools import get_repo_slug
 import constants
 import unittest
 
@@ -143,7 +144,7 @@ class TestTravis(unittest.TestCase):
         expected_build = '123'
         expected_owner = 'test'
         expected_repo = 'project'
-        expected_project_name = '%s/%s' % (expected_owner, expected_repo)
+        expected_project_name = get_repo_slug(expected_owner, expected_repo)
 
         # test with string
         process_notification_payload(

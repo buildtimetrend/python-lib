@@ -29,6 +29,7 @@ from buildtimetrend.tools import get_logger
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string
+from buildtimetrend.tools import get_repo_slug
 from buildtimetrend.build import Build
 from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stage
@@ -116,9 +117,8 @@ def process_notification_payload(payload):
             and "owner_name" in json_payload["repository"]
             and "name" in json_payload["repository"]):
 
-        repo = "%s/%s" % \
-            (json_payload["repository"]["owner_name"],
-             json_payload["repository"]["name"])
+        repo = get_repo_slug(json_payload["repository"]["owner_name"],
+                             json_payload["repository"]["name"])
 
         logger.info("Build repo : %s", repo)
         settings.set_project_name(repo)
