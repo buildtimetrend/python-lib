@@ -101,11 +101,11 @@ def process_notification_payload(payload):
     settings = Settings()
 
     if payload is None:
-        logger.warning("Travis notifcation payload is not set")
+        logger.warning("Travis notification payload is not set")
         return
 
     if not type(payload) in (str, unicode):
-        logger.warning("Travis notifcation payload is incorrect :"
+        logger.warning("Travis notification payload is incorrect :"
                        " (unicode) string expected, got %s" % type(payload))
         return
 
