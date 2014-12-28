@@ -247,7 +247,7 @@ def set_loglevel(loglevel):
 
 def get_repo_slug(repo_owner, repo_name):
     '''
-    Returns repo slug, fe. buildtimetrend\service
+    Returns repo slug, fe. buildtimetrend/service
     Parameters :
     - repo_owner : name of the Github repo owner, fe. `buildtimetrend`
     - repo_name : name of the Github repo, fe. `service`
