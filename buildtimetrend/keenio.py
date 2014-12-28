@@ -30,6 +30,7 @@ from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_list
+from buildtimetrend.tools import check_interval
 
 
 def keen_has_project_id():
@@ -217,14 +218,7 @@ def get_avg_buildtime(repo, interval=None):
     if repo is None or not keen_is_readable():
         return None
 
-    if interval == "week":
-        timeframe = "this_7_days"
-    elif interval == "month":
-        timeframe = "this_30_days"
-    elif interval == "year":
-        timeframe = "this_52_weeks"
-    else:
-        timeframe = "this_7_days"
+    timeframe = check_interval(interval)['timeframe']
 
     return keen.average(
         "builds",
