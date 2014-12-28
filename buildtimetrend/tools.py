@@ -266,7 +266,11 @@ def check_interval(interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     '''
-    if interval in INTERVALS:
-        return INTERVALS[interval]
-    else:
-        return INTERVALS['week']
+    if type(interval) is str:
+        # convert to lowercase
+        interval = interval.lower()
+
+        if interval in INTERVALS:
+            return INTERVALS[interval]
+
+    return INTERVALS['week']
