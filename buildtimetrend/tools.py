@@ -253,7 +253,7 @@ def get_repo_slug(repo_owner, repo_name):
     - repo_name : name of the Github repo, fe. `service`
     '''
     if repo_owner is not None and repo_name is not None:
-        return "%s/%s" % (str(repo_owner), str(repo_name))
+        return "%s/%s" % (str(repo_owner).lower(), str(repo_name).lower())
     else:
         return None
 
