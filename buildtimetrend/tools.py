@@ -29,10 +29,10 @@ from dateutil.parser import parse
 from dateutil.tz import tzutc
 
 
-INTERVALS={
-    'week':{'name': 'week', 'timeframe': 'this_7_days'},
-    'month':{'name': 'month', 'timeframe': 'this_30_days'},
-    'year':{'name': 'year', 'timeframe': 'this_52_weeks'}
+INTERVALS = {
+    'week': {'name': 'week', 'timeframe': 'this_7_days'},
+    'month': {'name': 'month', 'timeframe': 'this_30_days'},
+    'year': {'name': 'year', 'timeframe': 'this_52_weeks'}
 }
 
 

@@ -106,7 +106,7 @@ def process_notification_payload(payload):
 
     if not type(payload) in (str, unicode):
         logger.warning("Travis notification payload is incorrect :"
-                       " (unicode) string expected, got %s" % type(payload))
+                       " (unicode) string expected, got %s", type(payload))
         return
 
     json_payload = json.loads(payload)
