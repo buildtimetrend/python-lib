@@ -29,6 +29,13 @@ from dateutil.parser import parse
 from dateutil.tz import tzutc
 
 
+INTERVALS={
+    'week':{'name': 'week', 'timeframe': 'this_7_days'},
+    'month':{'name': 'month', 'timeframe': 'this_30_days'},
+    'year':{'name': 'year', 'timeframe': 'this_52_weeks'}
+}
+
+
 def format_timestamp(timestamp):
     '''
     Format a datetime timestamp (UTC) to ISO format (YYYY-MM-DDTHH:MM:SS)
@@ -249,3 +256,17 @@ def get_repo_slug(repo_owner, repo_name):
         return "%s/%s" % (str(repo_owner), str(repo_name))
     else:
         return None
+
+
+def check_interval(interval=None):
+    '''
+    Check time interval and returns corresponding parameters
+
+    Parameters :
+    - interval : timeframe, possible values : 'week', 'month', 'year',
+                 anything else defaults to 'week'
+    '''
+    if interval in INTERVALS:
+        return INTERVALS[interval]
+    else:
+        return INTERVALS['week']
