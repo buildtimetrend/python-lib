@@ -216,20 +216,25 @@ def get_avg_buildtime(repo, interval=None):
                  anything else defaults to 'week'
     '''
     if repo is None or not keen_is_readable():
-        return None
+        return -1
 
     timeframe = check_interval(interval)['timeframe']
 
-    return keen.average(
-        "builds",
-        target_property="build.duration",
-        timeframe=timeframe,
-        filters=[{
-            "property_name": "build.repo",
-            "operator": "eq",
-            "property_value": str(repo)
-        }]
-    )
+    try:
+        return keen.average(
+            "builds",
+            target_property="build.duration",
+            timeframe=timeframe,
+            filters=[{
+                "property_name": "build.repo",
+                "operator": "eq",
+                "property_value": str(repo)
+            }]
+        )
+    except:
+        # TODO except ConnectionError:
+        get_logger().error("Connection to Keen.io API failed")
+        return -1
 
 
 def get_latest_buildtime(repo):
@@ -240,20 +245,25 @@ def get_latest_buildtime(repo):
     - repo : repo name (fe. buildtimetrend/python-lib)
     '''
     if repo is None or not keen_is_readable():
-        return None
+        return -1
 
-    result = keen.extraction(
-        "builds",
-        property_names="build.duration",
-        latest=1,
-        filters=[{
-            "property_name": "build.repo",
-            "operator": "eq",
-            "property_value": str(repo)
-        }]
-    )
+    try:
+        result = keen.extraction(
+            "builds",
+            property_names="build.duration",
+            latest=1,
+            filters=[{
+                "property_name": "build.repo",
+                "operator": "eq",
+                "property_value": str(repo)
+            }]
+        )
+    except:
+        # TODO except ConnectionError:
+        get_logger().error("Connection to Keen.io API failed")
+        return -1
 
     if result is not None and len(result) > 0:
         return result[0]['build']['duration']
 
-    return None
+    return -1
