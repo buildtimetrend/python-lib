@@ -12,7 +12,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="buildtimetrend",
-    version="0.2-dev-build10",
+    version="0.2-dev-build11",
     packages=find_packages(),
     install_requires=['keen', 'lxml', 'pyyaml', 'python-dateutil'],
     tests_require=['nose', 'coveralls'],
