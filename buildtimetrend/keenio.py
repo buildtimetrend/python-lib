@@ -206,7 +206,7 @@ def generate_overview_config_file(repo):
     logger.info("Created trends overview config file")
 
 
-def get_avg_buildtime(repo, interval=None):
+def get_avg_buildtime(repo=None, interval=None):
     '''
     Query Keen.io database and retrieve average buildtime
 
@@ -233,7 +233,7 @@ def get_avg_buildtime(repo, interval=None):
         return -1
 
 
-def get_latest_buildtime(repo):
+def get_latest_buildtime(repo=None):
     '''
     Query Keen.io database and retrieve buildtime duration of last build
 
