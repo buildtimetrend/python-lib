@@ -197,3 +197,21 @@ class TestTools(unittest.TestCase):
         # set read_key
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
         self.assertTrue(keen_is_readable())
+
+    def test_get_repo_filter(self):
+        self.assertEqual(None, get_repo_filter())
+        self.assertEqual(None, get_repo_filter(None))
+
+        self.assertDictEqual({
+            "property_name": "build.repo",
+            "operator": "eq",
+            "property_value": "repo/name"},
+            get_repo_filter("repo/name")
+        )
+
+        self.assertDictEqual({
+            "property_name": "build.repo",
+            "operator": "eq",
+            "property_value": "1234"},
+            get_repo_filter(1234)
+        )

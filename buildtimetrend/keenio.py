@@ -267,3 +267,19 @@ def get_latest_buildtime(repo):
         return result[0]['build']['duration']
 
     return -1
+
+
+def get_repo_filter(repo=None):
+    '''
+    Return filter for analysis request
+    Parameters
+    - repo : repo slug name, fe. buildtimetrend/python-lib
+    '''
+    if repo is None:
+        return None
+
+    return {
+        "property_name": "build.repo",
+        "operator": "eq",
+        "property_value": str(repo)
+    }
