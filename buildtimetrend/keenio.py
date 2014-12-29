@@ -225,11 +225,7 @@ def get_avg_buildtime(repo, interval=None):
             "builds",
             target_property="build.duration",
             timeframe=timeframe,
-            filters=[{
-                "property_name": "build.repo",
-                "operator": "eq",
-                "property_value": str(repo)
-            }]
+            filters=[get_repo_filter(repo)]
         )
     except:
         # TODO except ConnectionError:
@@ -252,11 +248,7 @@ def get_latest_buildtime(repo):
             "builds",
             property_names="build.duration",
             latest=1,
-            filters=[{
-                "property_name": "build.repo",
-                "operator": "eq",
-                "property_value": str(repo)
-            }]
+            filters=[get_repo_filter(repo)]
         )
     except:
         # TODO except ConnectionError:
