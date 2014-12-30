@@ -45,7 +45,10 @@ class TestBuild(unittest.TestCase):
         self.assertDictEqual({'duration': 0}, self.build.get_properties())
 
         # dict should be empty
-        self.assertDictEqual({'duration': 0, 'stages': []}, self.build.to_dict())
+        self.assertDictEqual(
+            {'duration': 0, 'stages': []},
+            self.build.to_dict()
+        )
 
         # list should be empty
         self.assertListEqual([], self.build.stages_to_list())
@@ -115,10 +118,16 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(1, len(self.build.stages.stages))
 
         # test started_at
-        self.assertEqual(constants.SPLIT_TIMESTAMP_STARTED, self.build.stages.started_at)
+        self.assertEqual(
+            constants.SPLIT_TIMESTAMP_STARTED,
+            self.build.stages.started_at
+        )
 
         # test finished_at
-        self.assertEqual(constants.SPLIT_TIMESTAMP1, self.build.stages.finished_at)
+        self.assertEqual(
+            constants.SPLIT_TIMESTAMP1,
+            self.build.stages.finished_at
+        )
 
         # test stages (names + duration)
         self.assertListEqual(
@@ -141,10 +150,16 @@ class TestBuild(unittest.TestCase):
         self.assertEquals(2, len(self.build.stages.stages))
 
         # test started_at
-        self.assertEqual(constants.SPLIT_TIMESTAMP_STARTED, self.build.stages.started_at)
+        self.assertEqual(
+            constants.SPLIT_TIMESTAMP_STARTED,
+            self.build.stages.started_at
+        )
 
         # test finished_at
-        self.assertEqual(constants.SPLIT_TIMESTAMP_FINISHED, self.build.stages.finished_at)
+        self.assertEqual(
+            constants.SPLIT_TIMESTAMP_FINISHED,
+            self.build.stages.finished_at
+        )
 
         # test stages (names + duration)
         self.assertListEqual(
@@ -161,15 +176,24 @@ class TestBuild(unittest.TestCase):
     def test_add_property(self):
         self.build.add_property('property1', 2)
         self.assertEquals(1, self.build.properties.get_size())
-        self.assertDictEqual({'property1': 2}, self.build.properties.get_items())
+        self.assertDictEqual(
+            {'property1': 2},
+            self.build.properties.get_items()
+        )
 
         self.build.add_property('property2', 3)
         self.assertEquals(2, self.build.properties.get_size())
-        self.assertDictEqual({'property1': 2, 'property2': 3}, self.build.properties.get_items())
+        self.assertDictEqual(
+            {'property1': 2, 'property2': 3},
+            self.build.properties.get_items()
+        )
 
         self.build.add_property('property2', 4)
         self.assertEquals(2, self.build.properties.get_size())
-        self.assertDictEqual({'property1': 2, 'property2': 4}, self.build.properties.get_items())
+        self.assertDictEqual(
+            {'property1': 2, 'property2': 4},
+            self.build.properties.get_items()
+        )
 
     def test_get_property(self):
         self.build.add_property('property1', 2)
