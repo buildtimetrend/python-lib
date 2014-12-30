@@ -245,7 +245,7 @@ def set_loglevel(loglevel):
     logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
 
 
-def get_repo_slug(repo_owner, repo_name):
+def get_repo_slug(repo_owner=None, repo_name=None):
     '''
     Returns repo slug, fe. buildtimetrend/service
     Parameters :
