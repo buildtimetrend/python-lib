@@ -255,3 +255,13 @@ class TestTools(unittest.TestCase):
 
         # passing invalid tags should not change log level
         self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
+
+    def test_get_repo_slug(self):
+        self.assertEquals(None, get_repo_slug())
+        self.assertEquals(None, get_repo_slug("abcd", None))
+        self.assertEquals(None, get_repo_slug(None, "efgh"))
+        self.assertEquals(None, get_repo_slug(None, None))
+
+        self.assertEquals("abcd/efgh", get_repo_slug("abcd", "efgh"))
+        self.assertEquals("abcd/efgh", get_repo_slug("Abcd", "eFgh"))
+        self.assertEquals("123/456", get_repo_slug(123, 456))
