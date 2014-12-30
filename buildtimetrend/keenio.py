@@ -25,6 +25,7 @@ import os
 from buildtimetrend.tools import get_logger
 import copy
 import keen
+import requests
 from keen import scoped_keys
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_file
@@ -227,8 +228,7 @@ def get_avg_buildtime(repo=None, interval=None):
             timeframe=timeframe,
             filters=[get_repo_filter(repo)]
         )
-    except:
-        # TODO except ConnectionError:
+    except requests.ConnectionError:
         get_logger().error("Connection to Keen.io API failed")
         return -1
 
@@ -250,8 +250,7 @@ def get_latest_buildtime(repo=None):
             latest=1,
             filters=[get_repo_filter(repo)]
         )
-    except:
-        # TODO except ConnectionError:
+    except requests.ConnectionError:
         get_logger().error("Connection to Keen.io API failed")
         return -1
 
