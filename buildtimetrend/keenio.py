@@ -31,7 +31,13 @@ from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_list
-from buildtimetrend.tools import check_interval
+
+
+TIME_INTERVALS = {
+    'week': {'name': 'week', 'timeframe': 'this_7_days'},
+    'month': {'name': 'month', 'timeframe': 'this_30_days'},
+    'year': {'name': 'year', 'timeframe': 'this_52_weeks'}
+}
 
 
 def keen_has_project_id():
@@ -219,7 +225,7 @@ def get_avg_buildtime(repo=None, interval=None):
     if repo is None or not keen_is_readable():
         return -1
 
-    timeframe = check_interval(interval)['timeframe']
+    timeframe = check_time_interval(interval)['timeframe']
 
     try:
         return keen.average(
@@ -274,3 +280,21 @@ def get_repo_filter(repo=None):
         "operator": "eq",
         "property_value": str(repo)
     }
+
+
+def check_time_interval(interval=None):
+    '''
+    Check time interval and returns corresponding parameters
+
+    Parameters :
+    - interval : timeframe, possible values : 'week', 'month', 'year',
+                 anything else defaults to 'week'
+    '''
+    if type(interval) is str:
+        # convert to lowercase
+        interval = interval.lower()
+
+        if interval in TIME_INTERVALS:
+            return TIME_INTERVALS[interval]
+
+    return TIME_INTERVALS['week']
