@@ -238,6 +238,31 @@ def get_avg_buildtime(repo=None, interval=None):
         get_logger().error("Connection to Keen.io API failed")
         return -1
 
+def get_total_build_jobs(repo=None, interval=None):
+    '''
+    Query Keen.io database and retrieve total number of builds
+
+    Parameters :
+    - repo : repo name (fe. buildtimetrend/service)
+    - interval : timeframe, possible values : 'week', 'month', 'year',
+                 anything else defaults to 'week'
+    '''
+    if repo is None or not keen_is_readable():
+        return -1
+
+    timeframe = check_time_interval(interval)['timeframe']
+
+    try:
+        return keen.count_unique(
+            "builds",
+            target_property="build.job",
+            timeframe=timeframe,
+            filters=[get_repo_filter(repo)]
+        )
+    except requests.ConnectionError:
+        get_logger().error("Connection to Keen.io API failed")
+        return -1
+
 
 def get_latest_buildtime(repo=None):
     '''
