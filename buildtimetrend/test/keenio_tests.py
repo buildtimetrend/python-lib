@@ -215,3 +215,46 @@ class TestTools(unittest.TestCase):
             "property_value": "1234"},
             get_repo_filter(1234)
         )
+
+    def test_check_time_interval(self):
+        # empty or undefined defaults to 'week'
+        self.assertDictEqual(
+            {'name': 'week', 'timeframe': 'this_7_days'},
+            check_time_interval()
+        )
+        self.assertDictEqual(
+            {'name': 'week', 'timeframe': 'this_7_days'},
+            check_time_interval(None)
+        )
+        self.assertDictEqual(
+            {'name': 'week', 'timeframe': 'this_7_days'},
+            check_time_interval(1234)
+        )
+        self.assertDictEqual(
+            {'name': 'week', 'timeframe': 'this_7_days'},
+            check_time_interval([])
+        )
+
+        # valid entries : week, month, year
+        self.assertDictEqual(
+            {'name': 'week', 'timeframe': 'this_7_days'},
+            check_time_interval("week")
+        )
+        self.assertDictEqual(
+            {'name': 'month', 'timeframe': 'this_30_days'},
+            check_time_interval("month")
+        )
+        self.assertDictEqual(
+            {'name': 'year', 'timeframe': 'this_52_weeks'},
+            check_time_interval("year")
+        )
+
+        # valid entries are case insensitive
+        self.assertDictEqual(
+            {'name': 'week', 'timeframe': 'this_7_days'},
+            check_time_interval("wEEk")
+        )
+        self.assertDictEqual(
+            {'name': 'month', 'timeframe': 'this_30_days'},
+            check_time_interval("moNth")
+        )
