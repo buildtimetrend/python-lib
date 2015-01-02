@@ -297,6 +297,29 @@ def get_passed_build_jobs(repo=None, interval=None):
         return -1
 
 
+def get_pct_passed_build_jobs(repo=None, interval=None):
+    '''
+    Calculate percentage of passed build jobs.
+
+    Parameters :
+    - repo : repo name (fe. buildtimetrend/service)
+    - interval : timeframe, possible values : 'week', 'month', 'year',
+                 anything else defaults to 'week'
+    '''
+    total_jobs = get_total_build_jobs(repo, interval)
+    passed_jobs = get_passed_build_jobs(repo, interval)
+
+    get_logger().debug("passed/total build jobs : %d/%d",
+                       passed_jobs, total_jobs)
+
+    # calculate percentage if at least one job was executed
+    # passed is a valid number (not -1)
+    if total_jobs > 0 and passed_jobs >= 0:
+        return int(float(passed_jobs) / float(total_jobs) * 100.0)
+
+    return -1
+
+
 def get_total_builds(repo=None, interval=None):
     '''
     Query Keen.io database and retrieve total number of builds
