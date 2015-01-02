@@ -238,6 +238,7 @@ def get_avg_buildtime(repo=None, interval=None):
         get_logger().error("Connection to Keen.io API failed")
         return -1
 
+
 def get_total_build_jobs(repo=None, interval=None):
     '''
     Query Keen.io database and retrieve total number of build jobs
@@ -318,6 +319,7 @@ def get_pct_passed_build_jobs(repo=None, interval=None):
         return int(float(passed_jobs) / float(total_jobs) * 100.0)
 
     return -1
+
 
 def get_result_color(value=0, ok=90, warning=70):
     '''
