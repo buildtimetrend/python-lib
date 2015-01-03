@@ -223,7 +223,7 @@ class TestTravisData(unittest.TestCase):
 
     def test_process_no_build_jobs(self):
         # retrieve empty Travis API result
-        self.travis_data.build_data = {"builds":[],"commits":[]}
+        self.travis_data.build_data = {"builds": [], "commits": []}
         self.travis_data.process_build_jobs()
         self.assertEquals(0, len(self.travis_data.build_jobs))
 
