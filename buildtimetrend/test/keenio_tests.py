@@ -258,3 +258,48 @@ class TestTools(unittest.TestCase):
             {'name': 'month', 'timeframe': 'this_30_days'},
             check_time_interval("moNth")
         )
+
+    def test_get_result_color(self):
+        self.assertEqual("red", get_result_color())
+        self.assertEqual("lightgrey", get_result_color(None))
+        self.assertEqual("lightgrey", get_result_color(None, None))
+        self.assertEqual("lightgrey", get_result_color(None, None, None))
+        self.assertEqual("lightgrey", get_result_color(None))
+        self.assertEqual("lightgrey", get_result_color(123, None))
+        self.assertEqual("lightgrey", get_result_color(123, 34, None))
+        self.assertEqual("lightgrey", get_result_color("string"))
+        self.assertEqual("lightgrey", get_result_color(123, "string"))
+        self.assertEqual("lightgrey", get_result_color(123, 34, "string"))
+
+        # test 'OK' threshold
+        self.assertEqual("green", get_result_color(100))
+        self.assertEqual("green", get_result_color(100.0))
+        self.assertEqual("green", get_result_color(91))
+        self.assertEqual("green", get_result_color(90))
+        self.assertEqual("green", get_result_color(90.0))
+
+        # test 'warning' threshold
+        self.assertEqual("yellow", get_result_color(89))
+        self.assertEqual("yellow", get_result_color(89.9))
+        self.assertEqual("yellow", get_result_color(71))
+        self.assertEqual("yellow", get_result_color(70))
+        self.assertEqual("yellow", get_result_color(70.0))
+
+         # test 'error' threshold
+        self.assertEqual("red", get_result_color(69))
+        self.assertEqual("red", get_result_color(69.9))
+        self.assertEqual("red", get_result_color(50))
+        self.assertEqual("red", get_result_color(50.0))
+        self.assertEqual("red", get_result_color(0))
+        self.assertEqual("red", get_result_color(-10))
+
+        # test custom thresholds
+        self.assertEqual("green", get_result_color(100, 75, 50))
+        self.assertEqual("green", get_result_color(76, 75, 50))
+        self.assertEqual("green", get_result_color(75, 75, 50))
+        self.assertEqual("yellow", get_result_color(74, 75, 50))
+        self.assertEqual("yellow", get_result_color(51, 75, 50))
+        self.assertEqual("yellow", get_result_color(50, 75, 50))
+        self.assertEqual("red", get_result_color(49, 75, 50))
+        self.assertEqual("red", get_result_color(0, 75, 50))
+        self.assertEqual("red", get_result_color(-10, 75, 50))
