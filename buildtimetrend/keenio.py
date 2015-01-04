@@ -200,7 +200,8 @@ def generate_overview_config_file(repo):
     replacements = {
         'keen_project_id': str(keen_project_id),
         'keen_read_key': str(read_key),
-        'project_name': str(repo)
+        'project_name': str(repo),
+        'repo_name': str(repo)
     }
 
     with open(sample_filename, 'rb') as infile, \
