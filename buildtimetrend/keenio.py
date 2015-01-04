@@ -321,24 +321,24 @@ def get_pct_passed_build_jobs(repo=None, interval=None):
     return -1
 
 
-def get_result_color(value=0, ok=90, warning=70):
+def get_result_color(value=0, ok_thershold=90, warning_thershold=70):
     '''
     Get color code corresponding to result
 
     Parameters:
     - value : value to check
-    - ok : OK value threshold
-    - warning : warning value threshold
+    - ok_thershold : OK threshold value
+    - warning_thershold : warning thershold value
     '''
     if not(type(value) in (int, float) and
-            type(ok) in (int, float) and
-            type(warning) in (int, float)):
+            type(ok_thershold) in (int, float) and
+            type(warning_thershold) in (int, float)):
         return "lightgrey"
 
     # check thresholds
-    if value >= ok:
+    if value >= ok_thershold:
         return "green"
-    elif value >= warning:
+    elif value >= warning_thershold:
         return "yellow"
     else:
         return "red"
