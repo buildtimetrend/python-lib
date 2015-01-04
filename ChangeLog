@@ -20,6 +20,7 @@ v0.2 (not yet released)
 - issue #33 : add microseconds when logging a timestamp
 - set loglevel with environment variable BTT_LOGLEVEL and config file setting
 - issue #67 : check if Travis CI notification payload is unicode
+- issue #17 : add status badges to dashboard
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git
