@@ -114,7 +114,7 @@ Follow us on [Twitter](https://twitter.com/buildtime_trend), [Github](https://gi
 License
 -------
 
-Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
+Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
 This software was originally released under GNU General Public License version 3 or any later version, all commits contributed from 27th of November 2014 on, are contributed as GNU Affero General Public License. Hence the project is considered to be GNU Affero General Public License from 27th of November 2014 on.
 

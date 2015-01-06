@@ -5,7 +5,7 @@ on Continuous Integration platforms
 Buildtime trend library, to parse input files with timestamps,
 analyse them, store the results and other supporting tools.
 
-Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
+Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
 This file is part of buildtimetrend/python-lib
 <https://github.com/buildtimetrend/python-lib/>
