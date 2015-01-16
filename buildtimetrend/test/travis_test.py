@@ -1177,7 +1177,7 @@ class TestTravisSubstage(unittest.TestCase):
         }))
         self.assertTrue(self.substage.has_finished())
 
-    def test_has_finished_stage_name(self):
+    def test_has_finished_stage_command(self):
         ''' has_finished() should return true if command is set'''
         self.substage.process_command({'command': 'command1.sh'})
         self.assertTrue(self.substage.has_finished())
