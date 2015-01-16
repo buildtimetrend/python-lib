@@ -9,6 +9,7 @@ Visualise what's trending in your build process
 [![Coverage Status](https://coveralls.io/repos/buildtimetrend/python-lib/badge.png?branch=master)](https://coveralls.io/r/buildtimetrend/python-lib?branch=master)
 [![Code Health](https://landscape.io/github/buildtimetrend/python-lib/master/landscape.png)](https://landscape.io/github/buildtimetrend/python-lib/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/?branch=master)
+[![Codacy Badge](https://www.codacy.com/project/badge/38e1a8fcf164434f87389a693368d0f2)](https://www.codacy.com/public/ruleant/python-lib)
 
 [![Buildtime trend](https://buildtimetrend-service.herokuapp.com/badge/buildtimetrend/python-lib/latest)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
 [![Total builds](https://buildtimetrend-service.herokuapp.com/badge/buildtimetrend/python-lib/builds/month)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
