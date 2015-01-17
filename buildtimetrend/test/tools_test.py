@@ -127,6 +127,46 @@ class TestTools(unittest.TestCase):
         # function should return true if file exists
         self.assertTrue(check_file(constants.TEST_SAMPLE_TIMESTAMP_FILE))
 
+    def test_file_is_newer(self):
+        NEWER_FILE = 'newer_file.tmp'
+
+        # create a testfile
+        with open(NEWER_FILE, 'w') as outfile:
+            outfile.write("test")
+
+        # function should return false when any of the files doesn't exist
+        self.assertFalse(file_is_newer('nofile.csv', 'nofile.csv'))
+        self.assertFalse(
+            file_is_newer('nofile.csv', constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        )
+        self.assertFalse(
+            file_is_newer(constants.TEST_SAMPLE_TIMESTAMP_FILE, 'nofile.csv')
+        )
+
+        # function should throw an error when no filename is set
+        self.assertRaises(TypeError, file_is_newer)
+        self.assertRaises(TypeError, file_is_newer, '')
+        self.assertRaises(TypeError, file_is_newer, None, '')
+
+        # function should return false if both files
+        # were modified at the same time
+        self.assertFalse(file_is_newer(
+            constants.TEST_SAMPLE_TIMESTAMP_FILE,
+            constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        )
+
+        # file 1 is newer than file 2
+        self.assertTrue(file_is_newer(
+            NEWER_FILE,
+            constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        )
+
+        # file 1 is older than file 2
+        self.assertFalse(file_is_newer(
+            constants.TEST_SAMPLE_TIMESTAMP_FILE,
+            NEWER_FILE)
+        )
+
     def test_check_dict(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, check_dict)

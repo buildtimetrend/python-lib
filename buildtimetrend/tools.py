@@ -137,6 +137,27 @@ def check_file(filename):
     return True
 
 
+def file_is_newer(path1, path2):
+    '''
+    Checks if a file is newer than another file.
+
+    Parameters :
+    - path1 : path of first file
+    - path2 : ipath of second file
+    Returns true if the first file is newer than the second one,
+    returns false if it is older, or if any of the files doesn't exist.
+    '''
+    # check if files exist
+    if not check_file(path1) or not check_file(path2):
+        return False
+
+    mtime1 = os.path.getmtime(path1)
+    mtime2 = os.path.getmtime(path2)
+
+    # check modification times
+    return (mtime1 - mtime2) > 0
+
+
 def check_dict(param_dict, name, key_list=None):
     '''
     Checks if a parameter is a dictionary
