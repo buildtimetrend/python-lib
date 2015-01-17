@@ -4,6 +4,7 @@ trend.png
 config.js
 config.yml
 config_service.yml
+newer_file.tmp
 *.py[cod]
 
 # C extensions
