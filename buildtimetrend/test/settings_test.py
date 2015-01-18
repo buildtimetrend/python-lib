@@ -34,6 +34,15 @@ import constants
 import logging
 
 
+DEFAULT_SETTINGS = {
+    "project_name": buildtimetrend.NAME,
+    "mode_native": False,
+    "mode_keen": True,
+    "loglevel": "WARNING",
+    "dashboard_sample_configfile": "dashboard/config_sample.js",
+    "dashboard_configfile": "dashboard/config.js"
+}
+
 class TestSettings(unittest.TestCase):
     @classmethod
     def setUpClass(self):
@@ -93,42 +102,18 @@ class TestSettings(unittest.TestCase):
             self.project_name,
             self.settings.get_setting("project_name"))
 
-        self.assertDictEqual(
-            {
-                "project_name": self.project_name,
-                "mode_native": False,
-                "mode_keen": True,
-                "loglevel": "WARNING",
-                "dashboard_sample_configfile": "dashboard/config_sample.js",
-                "dashboard_configfile": "dashboard/config.js"
-            },
-            self.settings.settings.get_items())
+        self.assertDictEqual(DEFAULT_SETTINGS,
+                             self.settings.settings.get_items())
 
     def test_no_config_file(self):
         # function should return false when file doesn't exist
         self.assertFalse(self.settings.load_config_file('no_file.yml'))
-        self.assertDictEqual(
-            {
-                "project_name": self.project_name,
-                "mode_native": False,
-                "mode_keen": True,
-                "loglevel": "WARNING",
-                "dashboard_sample_configfile": "dashboard/config_sample.js",
-                "dashboard_configfile": "dashboard/config.js"
-            },
-            self.settings.settings.get_items())
+        self.assertDictEqual(DEFAULT_SETTINGS,
+                             self.settings.settings.get_items())
 
         self.assertFalse(self.settings.load_config_file(''))
-        self.assertDictEqual(
-            {
-                "project_name": self.project_name,
-                "mode_native": False,
-                "mode_keen": True,
-                "loglevel": "WARNING",
-                "dashboard_sample_configfile": "dashboard/config_sample.js",
-                "dashboard_configfile": "dashboard/config.js"
-            },
-            self.settings.settings.get_items())
+        self.assertDictEqual(DEFAULT_SETTINGS,
+                             self.settings.settings.get_items())
 
         # function should throw an error when no filename is set
         self.assertRaises(TypeError, self.settings.load_config_file)
