@@ -5,6 +5,7 @@ buildtimetrend:
     mode_native: true
     mode_keen: false
     loglevel: "INFO"
+    dashboard_sample_configfile: "test/dashboard/config_sample.js"
 
 # Keen.io connection settings
 keen:

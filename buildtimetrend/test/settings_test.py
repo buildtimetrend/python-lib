@@ -98,7 +98,8 @@ class TestSettings(unittest.TestCase):
                 "project_name": self.project_name,
                 "mode_native": False,
                 "mode_keen": True,
-                "loglevel": "WARNING"
+                "loglevel": "WARNING",
+                "dashboard_sample_configfile": "dashboard/config_sample.js"
             },
             self.settings.settings.get_items())
 
@@ -110,7 +111,8 @@ class TestSettings(unittest.TestCase):
                 "project_name": self.project_name,
                 "mode_native": False,
                 "mode_keen": True,
-                "loglevel": "WARNING"
+                "loglevel": "WARNING",
+                "dashboard_sample_configfile": "dashboard/config_sample.js"
             },
             self.settings.settings.get_items())
 
@@ -120,7 +122,8 @@ class TestSettings(unittest.TestCase):
                 "project_name": self.project_name,
                 "mode_native": False,
                 "mode_keen": True,
-                "loglevel": "WARNING"
+                "loglevel": "WARNING",
+                "dashboard_sample_configfile": "dashboard/config_sample.js"
             },
             self.settings.settings.get_items())
 
@@ -145,7 +148,8 @@ class TestSettings(unittest.TestCase):
                 "mode_native": True,
                 "mode_keen": False,
                 "loglevel": "INFO",
-                "setting1": "test_value1"
+                "setting1": "test_value1",
+                "dashboard_sample_configfile": "test/dashboard/config_sample.js"
             },
             self.settings.settings.get_items())
 
@@ -180,6 +184,7 @@ class TestSettings(unittest.TestCase):
         exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
         exp_loglevel = os.environ["BTT_LOGLEVEL"] = "INFO"
         exp_master_key = os.environ["KEEN_MASTER_KEY"] = "4567ghij"
+        exp_sample_config = os.environ["BUILD_TREND_SAMPLE_CONFIGFILE"] = "test/sample.js"
 
         self.settings.load_env_vars()
 
@@ -188,11 +193,14 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(exp_account_token,
                           self.settings.get_setting("travis_account_token"))
         self.assertEquals(exp_master_key, keen.master_key)
+        self.assertEquals(exp_sample_config,
+                          self.settings.get_setting("dashboard_sample_configfile"))
 
         # reset test environment variables
         del os.environ["BTT_LOGLEVEL"]
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
         del os.environ["KEEN_MASTER_KEY"]
+        del os.environ["BUILD_TREND_SAMPLE_CONFIGFILE"]
 
     def test_process_argv(self):
         logger = get_logger()

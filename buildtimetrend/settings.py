@@ -59,6 +59,10 @@ class Settings(object):
             self.set_mode("native", False)
             self.set_mode("keen", True)
 
+            # set default paths
+            self.add_setting('dashboard_sample_configfile',
+                             'dashboard/config_sample.js')
+
         def set_project_name(self, name):
             '''
             Set project name
@@ -215,6 +219,8 @@ class Settings(object):
 
             self.env_var_to_settings("TRAVIS_ACCOUNT_TOKEN",
                                      "travis_account_token")
+            self.env_var_to_settings("BUILD_TREND_SAMPLE_CONFIGFILE",
+                                     "dashboard_sample_configfile")
 
             # TODO remove if master_key is part of the keen module
             if "KEEN_MASTER_KEY" in os.environ:

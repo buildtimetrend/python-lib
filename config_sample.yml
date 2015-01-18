@@ -4,6 +4,7 @@ buildtimetrend:
     mode_native: false
     mode_keen: true
     loglevel: "WARNING" # possible values : "DEBUG", "INFO", "WARNING", "ERROR"
+    dashboard_sample_configfile: "path/to/config_sample.js"
 
 # Keen.io connection settings
 keen:
