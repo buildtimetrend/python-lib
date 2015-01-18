@@ -11,4 +11,4 @@ keen:
     project_id: "1234"
     write_key: "12345678"
     read_key: "abcdefg"
-
+    master_key: "7890abcd"

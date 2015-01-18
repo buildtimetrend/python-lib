@@ -10,3 +10,4 @@ keen:
     project_id: "Keen.io project_id"
     write_key: "Keen.io write_key"
     read_key: "Keen.io read_key"
+    master_key: "Keen.io Master API key"

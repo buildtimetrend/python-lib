@@ -127,6 +127,8 @@ class Settings(object):
                         keen.write_key = config["keen"]["write_key"]
                     if "read_key" in config["keen"]:
                         keen.read_key = config["keen"]["read_key"]
+                    if "master_key" in config["keen"]:
+                        keen.master_key = config["keen"]["master_key"]
                 return True
 
         def get_project_info(self):

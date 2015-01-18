@@ -132,6 +132,8 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(None, keen.project_id)
         self.assertEquals(None, keen.write_key)
         self.assertEquals(None, keen.read_key)
+        # TODO change test if master_key is part of the keen module
+        # self.assertEquals(None, keen.master_key)
 
         # load sample config file
         self.assertTrue(
@@ -151,6 +153,7 @@ class TestSettings(unittest.TestCase):
         self.assertEquals("1234", keen.project_id)
         self.assertEquals("12345678", keen.write_key)
         self.assertEquals("abcdefg", keen.read_key)
+        self.assertEquals("7890abcd", keen.master_key)
         self.assertTrue(keen_is_readable())
         self.assertTrue(keen_is_writable())
 
