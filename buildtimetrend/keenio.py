@@ -191,6 +191,11 @@ def generate_dashboard_config_file(repo):
                      " keen.project_id is not defined.")
         return
 
+    if keen.project_id is None:
+        keen_project_id = os.environ["KEEN_PROJECT_ID"]
+    else:
+        keen_project_id = keen.project_id
+
     sample_filename = settings.get_setting("dashboard_sample_configfile")
     config_file = settings.get_setting("dashboard_configfile")
 
@@ -205,7 +210,7 @@ def generate_dashboard_config_file(repo):
 
     # list of string pairs to be replaced (search string : new string)
     replacements = {
-        'keen_project_id': str(keen.project_id),
+        'keen_project_id': str(keen_project_id),
         'keen_read_key': str(read_key),
         'project_name': str(repo),
         'repo_name': str(repo)
