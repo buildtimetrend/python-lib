@@ -179,6 +179,7 @@ class TestSettings(unittest.TestCase):
         # set test environment variables
         exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
         exp_loglevel = os.environ["BTT_LOGLEVEL"] = "INFO"
+        exp_master_key = os.environ["KEEN_MASTER_KEY"] = "4567ghij"
 
         self.settings.load_env_vars()
 
@@ -186,10 +187,12 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(exp_loglevel, self.settings.get_setting("loglevel"))
         self.assertEquals(exp_account_token,
                           self.settings.get_setting("travis_account_token"))
+        self.assertEquals(exp_master_key, keen.master_key)
 
         # reset test environment variables
         del os.environ["BTT_LOGLEVEL"]
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
+        del os.environ["KEEN_MASTER_KEY"]
 
     def test_process_argv(self):
         logger = get_logger()
