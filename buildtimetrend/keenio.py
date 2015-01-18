@@ -82,22 +82,28 @@ def keen_io_generate_read_key(repo):
     '''
     logger = get_logger()
 
-    if "KEEN_MASTER_KEY" in os.environ:
-        master_key = os.getenv("KEEN_MASTER_KEY")
-        privileges = {
-            "filters": [{
-                "property_name": "build.repo",
-                "operator": "eq",
-                "property_value": repo
-            }],
-            "allowed_operations": ["read"]
-        }
+    # TODO remove try if master_key is part of the keen module
+    try:
+        master_key = keen.master_key
+    except AttributeError:
+        master_key = None
 
-        logger.info("Keen.io Read Key is created for %s", repo)
-        return scoped_keys.encrypt(master_key, privileges)
+    if master_key is None:
+        logger.warning("Keen.io Read Key was not created,"
+                       " keen.master_key is not defined.")
+        return None
 
-    logger.warning("Keen.io Read Key was not created.")
-    return None
+    privileges = {
+        "filters": [{
+            "property_name": "build.repo",
+            "operator": "eq",
+            "property_value": repo
+        }],
+        "allowed_operations": ["read"]
+    }
+
+    logger.info("Keen.io Read Key is created for %s", repo)
+    return scoped_keys.encrypt(master_key, privileges)
 
 
 def log_build_keen(build):
