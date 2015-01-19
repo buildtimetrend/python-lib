@@ -97,16 +97,16 @@ def keen_io_generate_read_key(repo):
     '''
     logger = get_logger()
 
+    if keen_has_master_key() is None:
+        logger.warning("Keen.io Read Key was not created,"
+                       " keen.master_key is not defined.")
+        return None
+
     # TODO remove try if master_key is part of the keen module
     try:
         master_key = keen.master_key
     except AttributeError:
         master_key = None
-
-    if master_key is None:
-        logger.warning("Keen.io Read Key was not created,"
-                       " keen.master_key is not defined.")
-        return None
 
     privileges = {
         "filters": [{
@@ -201,9 +201,9 @@ def generate_dashboard_config_file(repo):
     logger = get_logger()
     settings = Settings()
 
-    if not keen_has_project_id():
+    if not keen_has_project_id() or not keen_has_master_key():
         logger.error("Trends Dashboard config file was not created,"
-                     " keen.project_id is not defined.")
+                     " keen.project_id or keen.master_key are not defined.")
         return
 
     if keen.project_id is None:
