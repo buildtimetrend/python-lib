@@ -32,6 +32,7 @@ class TestTools(unittest.TestCase):
     copy_keen_project_id = None
     copy_keen_write_key = None
     copy_keen_read_key = None
+    copy_keen_master_key = None
 
     @classmethod
     def setUpClass(self):
@@ -45,6 +46,8 @@ class TestTools(unittest.TestCase):
             self.copy_keen_write_key = os.environ["KEEN_WRITE_KEY"]
         if "KEEN_READ_KEY" in os.environ:
             self.copy_keen_read_key = os.environ["KEEN_READ_KEY"]
+        if "KEEN_MASTER_KEY" in os.environ:
+            self.copy_keen_master_key = os.environ["KEEN_MASTER_KEY"]
 
     @classmethod
     def tearDownClass(self):
@@ -55,6 +58,8 @@ class TestTools(unittest.TestCase):
             os.environ["KEEN_WRITE_KEY"] = self.copy_keen_write_key
         if self.copy_keen_read_key is not None:
             os.environ["KEEN_READ_KEY"] = self.copy_keen_read_key
+        if self.copy_keen_master_key is not None:
+            os.environ["KEEN_MASTER_KEY"] = self.copy_keen_master_key
 
     def setUp(self):
         # reset Keen.io environment variables before each test
@@ -64,17 +69,23 @@ class TestTools(unittest.TestCase):
             del os.environ["KEEN_WRITE_KEY"]
         if "KEEN_READ_KEY" in os.environ:
             del os.environ["KEEN_READ_KEY"]
+        if "KEEN_MASTER_KEY" in os.environ:
+            del os.environ["KEEN_MASTER_KEY"]
 
         # reset Keen.io connection settings before each test
         keen.project_id = None
         keen.write_key = None
         keen.read_key = None
+        keen.master_key = None
 
     def test_novalues(self):
         self.assertEqual(None, keen.project_id)
         self.assertEqual(None, keen.write_key)
+        self.assertEqual(None, keen.read_key)
+        self.assertEqual(None, keen.master_key)
 
         self.assertFalse(keen_has_project_id())
+        self.assertFalse(keen_has_master_key())
         self.assertFalse(keen_is_writable())
         self.assertFalse(keen_is_readable())
 
@@ -151,10 +162,24 @@ class TestTools(unittest.TestCase):
 
         self.assertTrue(keen_has_project_id())
 
+    def test_keen_has_master_key_keen_var(self):
+        keen.master_key = "abcd1234"
+        keen.project_id = "1234abcd"
+
+        keen._initialize_client_from_environment()
+
+        self.assertTrue(keen_has_master_key())
+
     def test_keen_has_project_envir_vars(self):
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
+        keen.project_id = "1234abcd"
 
         self.assertTrue(keen_has_project_id())
+
+    def test_keen_has_master_key_env_vars(self):
+        os.environ["KEEN_MASTER_KEY"] = "abcd1234"
+
+        self.assertTrue(keen_has_master_key())
 
     def test_keen_is_writable_keen_var(self):
         # only set project id, check should fail
