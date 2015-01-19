@@ -204,7 +204,7 @@ def generate_dashboard_config_file(repo):
     if not keen_has_project_id() or not keen_has_master_key():
         logger.error("Trends Dashboard config file was not created,"
                      " keen.project_id or keen.master_key are not defined.")
-        return
+        return False
 
     if keen.project_id is None:
         keen_project_id = os.environ["KEEN_PROJECT_ID"]
@@ -218,7 +218,7 @@ def generate_dashboard_config_file(repo):
     if not check_file(sample_filename):
         logger.error("Trends dashboard config file was not created,"
                      " sample config file doesn't exist")
-        return
+        return False
 
     # generate read key
     read_key = keen_io_generate_read_key(repo)
@@ -240,7 +240,12 @@ def generate_dashboard_config_file(repo):
                 line = line.replace(src, target)
             outfile.write(line)
 
-    logger.info("Created trends dashboard config file")
+    if check_file(config_file):
+        logger.info("Created trends dashboard config file %s", config_file)
+        return True
+    else:
+        logger.warning("The dashboard config file was not created")
+        return False
 
 
 def get_avg_buildtime(repo=None, interval=None):
