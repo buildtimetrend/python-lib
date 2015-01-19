@@ -207,6 +207,8 @@ def generate_dashboard_config_file(repo):
 
     # generate read key
     read_key = keen_io_generate_read_key(repo)
+    if read_key is None:
+        read_key = ""
 
     # list of string pairs to be replaced (search string : new string)
     replacements = {
