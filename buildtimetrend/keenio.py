@@ -446,7 +446,7 @@ def get_all_projects():
         get_logger().error("Connection to Keen.io API failed")
         return -1
 
-    if result is not None and len(result) > 0:
+    if type(result) is list:
         return result
 
     return -1
