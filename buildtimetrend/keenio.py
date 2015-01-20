@@ -432,6 +432,25 @@ def get_latest_buildtime(repo=None):
     return -1
 
 
+def get_all_projects():
+    '''
+    Query Keen.io database and retrieve a list of all projects
+    '''
+    if not keen_is_readable():
+        return -1
+
+    try:
+        result = keen.select_unique("builds", "build.repo")
+    except requests.ConnectionError:
+        get_logger().error("Connection to Keen.io API failed")
+        return -1
+
+    if result is not None and len(result) > 0:
+        return result
+
+    return -1
+
+
 def get_repo_filter(repo=None):
     '''
     Return filter for analysis request
