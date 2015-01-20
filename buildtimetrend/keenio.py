@@ -438,18 +438,18 @@ def get_all_projects():
     Query Keen.io database and retrieve a list of all projects
     '''
     if not keen_is_readable():
-        return -1
+        return []
 
     try:
         result = keen.select_unique("builds", "build.repo")
     except requests.ConnectionError:
         get_logger().error("Connection to Keen.io API failed")
-        return -1
+        return []
 
     if type(result) is list:
         return result
 
-    return -1
+    return []
 
 
 def get_repo_filter(repo=None):
