@@ -230,7 +230,8 @@ def generate_dashboard_config_file(repo):
         'keen_project_id': str(keen_project_id),
         'keen_read_key': str(read_key),
         'project_name': str(repo),
-        'repo_name': str(repo)
+        'repo_name': str(repo),
+        '[]': str([x.encode('UTF8') for x in get_all_projects()])
     }
 
     with open(sample_filename, 'rb') as infile, \
