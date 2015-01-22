@@ -232,7 +232,6 @@ def generate_dashboard_config_file(repo):
         replacements['keen_read_key'] =  str(read_key)
 
     if repo is not None and not repo is "":
-        print "add repo (%s)" % repo
         # merge extra remplacements into existing dict
         replacements.update({
             'project_name': str(repo),
