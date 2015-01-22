@@ -220,17 +220,16 @@ def generate_dashboard_config_file(repo):
                      " sample config file doesn't exist")
         return False
 
-    # generate read key
-    read_key = keen_io_generate_read_key(repo)
-    if read_key is None:
-        read_key = ""
-
     # list of string pairs to be replaced (search string : new string)
     replacements = {
         'keen_project_id': str(keen_project_id),
-        'keen_read_key': str(read_key),
         '[]': str([x.encode('UTF8') for x in get_all_projects()])
     }
+
+    # generate read key
+    read_key = keen_io_generate_read_key(repo)
+    if read_key is not None:
+        replacements['keen_read_key'] =  str(read_key)
 
     if repo is not None and not repo is "":
         print "add repo (%s)" % repo
