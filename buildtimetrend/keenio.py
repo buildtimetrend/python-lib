@@ -229,7 +229,7 @@ def generate_dashboard_config_file(repo):
     # generate read key
     read_key = keen_io_generate_read_key(repo)
     if read_key is not None:
-        replacements['keen_read_key'] =  str(read_key)
+        replacements['keen_read_key'] = str(read_key)
 
     if repo is not None and not repo is "":
         # merge extra remplacements into existing dict
