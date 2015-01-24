@@ -234,7 +234,8 @@ def get_dashboard_config(repo):
     keen_config = get_dashboard_keen_config(repo)
 
     # list of repoNames of other projects hosted on the same website
-    config['projectList'] = str([x.encode('UTF8') for x in get_all_projects()])
+    # convert values from unicode to UTF8
+    config['projectList'] = [x.encode('UTF8') for x in get_all_projects()]
 
     if repo is not None and not repo == "":
         # merge extra settings into existing config dictionary
