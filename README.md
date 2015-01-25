@@ -49,6 +49,7 @@ If you prefer to use git, several options are available :
 Dependencies
 ------------
 
+- `python` : Python 2.7
 - `keen` : client for storing build time data as events in Keen.io
 - `python-dateutil` : for formatting datetime objects
 - `lxml` : python wrapper for libxml2 and libxslt
