@@ -47,8 +47,8 @@ class TestStages(unittest.TestCase):
         self.assertEqual(None, self.stages.started_at)
         self.assertEqual(None, self.stages.finished_at)
         # xml shouldn't contain items
-        self.assertEquals("<stages/>", etree.tostring(self.stages.to_xml()))
-        self.assertEquals("<stages/>\n", self.stages.to_xml_string())
+        self.assertEquals(b"<stages/>", etree.tostring(self.stages.to_xml()))
+        self.assertEquals(b"<stages/>\n", self.stages.to_xml_string())
 
     def test_nofile(self):
         # function should return false when file doesn't exist
@@ -242,9 +242,9 @@ class TestStages(unittest.TestCase):
 
         # test xml output
         self.assertEquals(
-            '<stages><stage duration="2.0" name="stage1"/>'
-            '<stage duration="5.0" name="stage2"/>'
-            '<stage duration="10.0" name="stage3"/></stages>',
+            b'<stages><stage duration="2.0" name="stage1"/>'
+            b'<stage duration="5.0" name="stage2"/>'
+            b'<stage duration="10.0" name="stage3"/></stages>',
             etree.tostring(self.stages.to_xml()))
 
     def test_to_xml_string(self):
@@ -253,11 +253,11 @@ class TestStages(unittest.TestCase):
 
         # test xml string output
         self.assertEquals(
-            '<stages>\n'
-            '  <stage duration="2.0" name="stage1"/>\n'
-            '  <stage duration="5.0" name="stage2"/>\n'
-            '  <stage duration="10.0" name="stage3"/>\n'
-            '</stages>\n',
+            b'<stages>\n'
+            b'  <stage duration="2.0" name="stage1"/>\n'
+            b'  <stage duration="5.0" name="stage2"/>\n'
+            b'  <stage duration="10.0" name="stage3"/>\n'
+            b'</stages>\n',
             self.stages.to_xml_string())
 
     def test_add_stage(self):

@@ -55,11 +55,11 @@ class TestBuild(unittest.TestCase):
 
         # xml shouldn't contain items
         self.assertEquals(
-            '<build><stages/></build>', etree.tostring(self.build.to_xml()))
+            b'<build><stages/></build>', etree.tostring(self.build.to_xml()))
         self.assertEquals(
-            '<build>\n'
-            '  <stages/>\n'
-            '</build>\n', self.build.to_xml_string())
+            b'<build>\n'
+            b'  <stages/>\n'
+            b'</build>\n', self.build.to_xml_string())
 
     def test_nofile(self):
         # number of stages should be zero when file doesn't exist
@@ -379,9 +379,9 @@ class TestBuild(unittest.TestCase):
 
         # test xml output
         self.assertEquals(
-            '<build><stages><stage duration="2.0" name="stage1"/>'
-            '<stage duration="5.0" name="stage2"/>'
-            '<stage duration="10.0" name="stage3"/></stages></build>',
+            b'<build><stages><stage duration="2.0" name="stage1"/>'
+            b'<stage duration="5.0" name="stage2"/>'
+            b'<stage duration="10.0" name="stage3"/></stages></build>',
             etree.tostring(self.build.to_xml()))
 
         # add properties
@@ -389,10 +389,10 @@ class TestBuild(unittest.TestCase):
         self.build.add_property('property2', 3)
         # test xml output
         self.assertEquals(
-            '<build property1="2" property2="3">'
-            '<stages><stage duration="2.0" name="stage1"/>'
-            '<stage duration="5.0" name="stage2"/>'
-            '<stage duration="10.0" name="stage3"/></stages></build>',
+            b'<build property1="2" property2="3">'
+            b'<stages><stage duration="2.0" name="stage1"/>'
+            b'<stage duration="5.0" name="stage2"/>'
+            b'<stage duration="10.0" name="stage3"/></stages></build>',
             etree.tostring(self.build.to_xml()))
 
     def test_to_xml_string(self):
@@ -401,13 +401,13 @@ class TestBuild(unittest.TestCase):
 
         # test xml string output
         self.assertEquals(
-            '<build>\n'
-            '  <stages>\n'
-            '    <stage duration="2.0" name="stage1"/>\n'
-            '    <stage duration="5.0" name="stage2"/>\n'
-            '    <stage duration="10.0" name="stage3"/>\n'
-            '  </stages>\n'
-            '</build>\n',
+            b'<build>\n'
+            b'  <stages>\n'
+            b'    <stage duration="2.0" name="stage1"/>\n'
+            b'    <stage duration="5.0" name="stage2"/>\n'
+            b'    <stage duration="10.0" name="stage3"/>\n'
+            b'  </stages>\n'
+            b'</build>\n',
             self.build.to_xml_string())
 
         # add properties
