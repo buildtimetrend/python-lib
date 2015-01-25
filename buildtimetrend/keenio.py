@@ -226,6 +226,14 @@ def get_dashboard_keen_config(repo):
     return keen_config
 
 
+def get_config_project_list():
+    '''
+    Returns a list of repoNames of other projects hosted on the same website
+    '''
+    # convert values from unicode to UTF8
+    return {'projectList': [x.encode('UTF8') for x in get_all_projects()]}
+
+
 def get_dashboard_config(repo, extra=None):
     '''
     Generates a config file for the dashboard HTML file that contains the
@@ -237,10 +245,6 @@ def get_dashboard_config(repo, extra=None):
     # initialise config settings dictionaries
     config = {}
     keen_config = get_dashboard_keen_config(repo)
-
-    # list of repoNames of other projects hosted on the same website
-    # convert values from unicode to UTF8
-    config['projectList'] = [x.encode('UTF8') for x in get_all_projects()]
 
     # add repo and project name
     if repo is not None and not repo == "":
