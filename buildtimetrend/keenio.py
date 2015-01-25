@@ -226,14 +226,6 @@ def get_dashboard_keen_config(repo):
     return keen_config
 
 
-def get_config_project_list():
-    '''
-    Returns a list of repoNames of other projects hosted on the same website
-    '''
-    # convert values from unicode to UTF8
-    return {'projectList': [x.encode('UTF8') for x in get_all_projects()]}
-
-
 def get_dashboard_config(repo, extra=None):
     '''
     Generates a config file for the dashboard HTML file that contains the
