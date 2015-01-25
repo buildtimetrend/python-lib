@@ -176,13 +176,13 @@ class Settings(object):
                         "ci=", "result=", "mode=", "help"]
                 )
             except getopt.GetoptError:
-                print usage_string
+                print(usage_string)
                 return None
 
             # check options
             for opt, arg in opts:
                 if opt in ('-h', "--help"):
-                    print usage_string
+                    print(usage_string)
                     return None
                 elif opt == "--log":
                     set_loglevel(arg)
