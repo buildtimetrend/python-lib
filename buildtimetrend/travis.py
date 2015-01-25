@@ -21,7 +21,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 import os
-import urllib2
 import json
 import re
 from hashlib import sha256
@@ -34,6 +33,12 @@ from buildtimetrend.build import Build
 from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stage
 import buildtimetrend
+try:
+    # For Python 3.0 and later
+    from urllib.request import urlopen, Request, build_opener
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import urlopen, Request, build_opener
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
@@ -287,7 +292,7 @@ class TravisData(object):
         request = 'jobs/%s/log' % str(job_id)
         request_url = self.api_url + request
         get_logger().info("Request build job log : %s", request_url)
-        return urllib2.urlopen(request_url)
+        return urlopen(request_url)
 
     def parse_job_log(self, job_id):
         '''
@@ -376,7 +381,7 @@ class TravisData(object):
         '''
         Retrieve Travis CI data using API.
         '''
-        req = urllib2.Request(
+        req = Request(
             self.api_url + json_request,
             None,
             {
@@ -384,7 +389,7 @@ class TravisData(object):
                 'accept': 'application/vnd.travis-ci.2+json'
             }
         )
-        opener = urllib2.build_opener()
+        opener = build_opener()
         result = opener.open(req)
 
         return json.load(result)
