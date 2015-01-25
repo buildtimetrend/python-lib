@@ -232,12 +232,12 @@ class TestTravisData(unittest.TestCase):
         self.travis_data.get_build_data()
         self.travis_data.process_build_jobs()
         self.assertEquals(1, len(self.travis_data.build_jobs))
-        self.assertDictEqual({'branch': u'master',
-            'build': u'158',
+        self.assertDictEqual({'branch': 'master',
+            'build': '158',
             'ci_platform': 'travis',
-            'job': u'158.1',
-            'repo': u'buildtimetrend/python-lib',
-            'result': u'passed',
+            'job': '158.1',
+            'repo': 'buildtimetrend/python-lib',
+            'result': 'passed',
             'worker': {'hostname': 'worker-linux-11-2.bb.travis-ci.org',
                 'os': 'travis-linux-9'},
             'started_at': {'day_of_month': '08',
@@ -288,12 +288,12 @@ class TestTravisData(unittest.TestCase):
         self.travis_data.process_build_jobs()
         self.assertEquals(2, len(self.travis_data.build_jobs))
         self.assertTrue("35665484" in self.travis_data.build_jobs)
-        self.assertDictEqual({'branch': u'master',
-            'build': u'485',
+        self.assertDictEqual({'branch': 'master',
+            'build': '485',
             'ci_platform': 'travis',
-            'job': u'485.1',
-            'repo': u'ruleant/getback_gps',
-            'result': u'passed',
+            'job': '485.1',
+            'repo': 'ruleant/getback_gps',
+            'result': 'passed',
             'worker': {'hostname': 'worker-linux-7-1.bb.travis-ci.org',
                 'os': 'travis-linux-7'},
             'started_at': {'day_of_month': '18',
@@ -336,12 +336,12 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.build_jobs["35665484"].properties.get_items()
         )
         self.assertTrue("35665485" in self.travis_data.build_jobs)
-        self.assertDictEqual({'branch': u'master',
-            'build': u'485',
+        self.assertDictEqual({'branch': 'master',
+            'build': '485',
             'ci_platform': 'travis',
-            'job': u'485.2',
-            'repo': u'ruleant/getback_gps',
-            'result': u'passed',
+            'job': '485.2',
+            'repo': 'ruleant/getback_gps',
+            'result': 'passed',
             'worker': {'hostname': 'worker-linux-3-2.bb.travis-ci.org',
                 'os': 'travis-linux-7'},
             'started_at': {'day_of_month': '18',
