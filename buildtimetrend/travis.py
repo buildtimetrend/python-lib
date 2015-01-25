@@ -308,7 +308,7 @@ class TravisData(object):
             return False
 
         # read timestamps, calculate stage duration
-        with open(filename, 'rb') as file_stream:
+        with open(filename, 'r') as file_stream:
             self.parse_job_log_stream(file_stream)
 
         return True

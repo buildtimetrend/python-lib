@@ -468,7 +468,7 @@ class TestTravisData(unittest.TestCase):
 
     def test_parse_travis_time_tag(self):
         # read sample lines with timetags
-        with open(TRAVIS_TIMING_TAGS_FILE, 'rb') as f:
+        with open(TRAVIS_TIMING_TAGS_FILE, 'r') as f:
             '''First stage'''
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())
@@ -603,7 +603,7 @@ class TestTravisData(unittest.TestCase):
 
     def test_parse_travis_time_tag_incorrect(self):
         # read sample lines with timetags
-        with open(TRAVIS_INCORRECT_TIMING_TAGS_FILE, 'rb') as f:
+        with open(TRAVIS_INCORRECT_TIMING_TAGS_FILE, 'r') as f:
             '''First stage'''
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())

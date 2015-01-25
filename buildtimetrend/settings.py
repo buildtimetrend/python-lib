@@ -117,7 +117,7 @@ class Settings(object):
             if not check_file(config_file):
                 return False
 
-            with open(config_file, 'rb') as file_stream:
+            with open(config_file, 'r') as file_stream:
                 config = yaml.load(file_stream)
                 self.settings.add_items(config["buildtimetrend"])
 
