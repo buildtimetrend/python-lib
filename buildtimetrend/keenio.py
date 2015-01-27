@@ -285,6 +285,8 @@ def get_avg_buildtime(repo=None, interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     '''
+    logger = get_logger()
+
     if repo is None or not keen_is_readable():
         return -1
 
@@ -298,7 +300,10 @@ def get_avg_buildtime(repo=None, interval=None):
             filters=[get_repo_filter(repo)]
         )
     except requests.ConnectionError:
-        get_logger().error("Connection to Keen.io API failed")
+        logger.error("Connection to Keen.io API failed")
+        return -1
+    except keen.exceptions.KeenApiError, e:
+        logger.error("Error in keenio.get_avg_buildtime() : " + str(e))
         return -1
 
 
@@ -311,6 +316,8 @@ def get_total_build_jobs(repo=None, interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     '''
+    logger = get_logger()
+
     if repo is None or not keen_is_readable():
         return -1
 
@@ -324,7 +331,10 @@ def get_total_build_jobs(repo=None, interval=None):
             filters=[get_repo_filter(repo)]
         )
     except requests.ConnectionError:
-        get_logger().error("Connection to Keen.io API failed")
+        logger.error("Connection to Keen.io API failed")
+        return -1
+    except keen.exceptions.KeenApiError, e:
+        logger.error("Error in keenio.get_total_build_jobs() : " + str(e))
         return -1
 
 
@@ -337,6 +347,8 @@ def get_passed_build_jobs(repo=None, interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     '''
+    logger = get_logger()
+
     if repo is None or not keen_is_readable():
         return -1
 
@@ -357,7 +369,10 @@ def get_passed_build_jobs(repo=None, interval=None):
             ]
         )
     except requests.ConnectionError:
-        get_logger().error("Connection to Keen.io API failed")
+        logger.error("Connection to Keen.io API failed")
+        return -1
+    except keen.exceptions.KeenApiError, e:
+        logger.error("Error in keenio.get_passed_build_jobs() : " + str(e))
         return -1
 
 
@@ -416,6 +431,8 @@ def get_total_builds(repo=None, interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     '''
+    logger = get_logger()
+
     if repo is None or not keen_is_readable():
         return -1
 
@@ -429,7 +446,10 @@ def get_total_builds(repo=None, interval=None):
             filters=[get_repo_filter(repo)]
         )
     except requests.ConnectionError:
-        get_logger().error("Connection to Keen.io API failed")
+        logger.error("Connection to Keen.io API failed")
+        return -1
+    except keen.exceptions.KeenApiError, e:
+        logger.error("Error in keenio.get_total_builds() : " + str(e))
         return -1
 
 
@@ -440,6 +460,8 @@ def get_latest_buildtime(repo=None):
     Parameters :
     - repo : repo name (fe. buildtimetrend/python-lib)
     '''
+    logger = get_logger()
+
     if repo is None or not keen_is_readable():
         return -1
 
@@ -451,7 +473,10 @@ def get_latest_buildtime(repo=None):
             filters=[get_repo_filter(repo)]
         )
     except requests.ConnectionError:
-        get_logger().error("Connection to Keen.io API failed")
+        logger.error("Connection to Keen.io API failed")
+        return -1
+    except keen.exceptions.KeenApiError, e:
+        logger.error("Error in keenio.get_latest_buildtime() : " + str(e))
         return -1
 
     if result is not None and len(result) > 0:
@@ -464,14 +489,19 @@ def get_all_projects():
     '''
     Query Keen.io database and retrieve a list of all projects
     '''
+    logger = get_logger()
+
     if not keen_is_readable():
         return []
 
     try:
         result = keen.select_unique("builds", "build.repo")
     except requests.ConnectionError:
-        get_logger().error("Connection to Keen.io API failed")
+        logger.error("Connection to Keen.io API failed")
         return []
+    except keen.exceptions.KeenApiError, e:
+        logger.error("Error in keenio.get_all_projects() : " + str(e))
+        return -1
 
     if type(result) is list:
         return result
