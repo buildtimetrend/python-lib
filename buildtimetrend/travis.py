@@ -193,6 +193,7 @@ class TravisData(object):
         '''
         self.build_data = {}
         self.build_jobs = {}
+        self.build_config = {}
         self.current_job = Build()
         self.travis_substage = None
         self.repo = repo
@@ -213,12 +214,34 @@ class TravisData(object):
             json.dumps(self.build_data, sort_keys=True, indent=2)
         )
 
+    def get_substage_name(self, command):
+        '''
+        Resolve Travis CI substage name that corresponds to a cli command.
+        Parameters:
+        - command : cli command
+        '''
+        if len(self.build_config) > 0:
+            for stage_name, commands in self.build_config.items():
+                if type(commands) is list and command in commands:
+                    substage_number = commands.index(command) + 1
+                    substage_name = "%s.%s" % (stage_name, substage_number)
+                    get_logger().debug(
+                        "Substage %s corresponds to '%s'",
+                        substage_name, command
+                    )
+                    return substage_name
+
     def process_build_jobs(self):
         '''
         Retrieve Travis CI build job data.
         '''
         if len(self.build_data) > 0 and "builds" in self.build_data:
             for build in self.build_data['builds']:
+                if "config" in build:
+                    self.build_config = build["config"]
+                else:
+                    self.build_config = {}
+
                 if "job_ids" in build:
                     for job_id in build['job_ids']:
                         self.process_build_job(job_id)
@@ -351,6 +374,15 @@ class TravisData(object):
 
                 # when finished : log stage and create a new instance
                 if self.travis_substage.has_finished():
+                    # set substage name, if it is not set
+                    if not self.travis_substage.has_name() and \
+                            self.travis_substage.has_command():
+                        self.travis_substage.set_name(
+                            self.get_substage_name(
+                                self.travis_substage.get_command()
+                            )
+                        )
+
                     # only log complete substages
                     if not self.travis_substage.finished_incomplete:
                         self.current_job.add_stage(self.travis_substage.stage)
@@ -474,7 +506,7 @@ class TravisSubstage(object):
             name = "%s.%s" % (
                 tags_dict['start_stage'], tags_dict['start_substage']
             )
-            result = self.stage.set_name(name)
+            result = self.set_name(name)
 
         return result
 
@@ -623,6 +655,14 @@ class TravisSubstage(object):
         else:
             return ""
 
+    def set_name(self, name):
+        '''
+        Set substage name.
+        Parameters:
+        - name : substage name
+        '''
+        return self.stage.set_name(name)
+
     def has_name(self):
         '''
         Checks if substage has a name
@@ -647,6 +687,15 @@ class TravisSubstage(object):
         return "command" in self.stage.data and \
             self.stage.data["command"] is not None and \
             len(self.stage.data["command"]) > 0
+
+    def get_command(self):
+        '''
+        Return substage command.
+        '''
+        if self.has_command():
+            return self.stage.data["command"]
+        else:
+            return ""
 
     def has_started(self):
         '''
