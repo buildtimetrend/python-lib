@@ -23,6 +23,7 @@ v0.2 (not yet released)
 - issue #17 : add status badges to dashboard
 - [keenio] rename generate_overview_config_file to generate_dashboard_config_file
 - issue #68 : catch KeenApiError
+- issue #46 : use Travis CI build config to assign missing (sub)stage names
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git
