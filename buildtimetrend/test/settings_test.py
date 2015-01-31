@@ -61,6 +61,11 @@ class TestSettings(unittest.TestCase):
 
         set_loglevel("WARNING")
 
+        keen.project_id = None
+        keen.write_key = None
+        keen.read_key = None
+        keen.master_key = None
+
     def test_get_project_info(self):
         self.assertDictEqual(
             self.project_info, self.settings.get_project_info()
@@ -148,6 +153,55 @@ class TestSettings(unittest.TestCase):
         self.assertEquals("7890abcd", keen.master_key)
         self.assertTrue(keen_is_readable())
         self.assertTrue(keen_is_writable())
+
+    def test_load_settings(self):
+        # checking if Keen.io configuration is not set (yet)
+        self.assertEquals(None, keen.project_id)
+        self.assertEquals(None, keen.write_key)
+        self.assertEquals(None, keen.read_key)
+        # TODO change test if master_key is part of the keen module
+        # self.assertEquals(None, keen.master_key)
+
+        scriptname = "script.py"
+        expected_ci = "travis"
+        expected_project_name = "test/project"
+
+        argv = [
+            scriptname,
+            "--ci=%s" % expected_ci,
+            "--repo=%s" % expected_project_name,
+            "argument"
+        ]
+
+        exp_config = os.environ["BUILD_TREND_CONFIGFILE"] = "test/config.js"
+
+        # load settings (config file, env vars and cli parameters)
+        self.assertListEqual(
+            ["argument"],
+            self.settings.load_settings(argv, constants.TEST_SAMPLE_CONFIG_FILE)
+        )
+        self.assertDictEqual(
+            {
+                "project_name": expected_project_name,
+                "ci_platform": expected_ci,
+                "mode_native": True,
+                "mode_keen": False,
+                "loglevel": "INFO",
+                "setting1": "test_value1",
+                "dashboard_sample_configfile": "test/dashboard/config_sample.js",
+                "dashboard_configfile": "test/config.js"
+            },
+            self.settings.settings.get_items())
+
+        # checking if Keen.io configuration is set
+        self.assertEquals("1234", keen.project_id)
+        self.assertEquals("12345678", keen.write_key)
+        self.assertEquals("abcdefg", keen.read_key)
+        self.assertEquals("7890abcd", keen.master_key)
+        self.assertTrue(keen_is_readable())
+        self.assertTrue(keen_is_writable())
+
+        del os.environ["BUILD_TREND_CONFIGFILE"]
 
     def test_env_var_to_settings(self):
         self.assertFalse(self.settings.env_var_to_settings("", ""))
