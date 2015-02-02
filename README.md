@@ -1,5 +1,5 @@
-Buildtime trend
-===============
+Buildtime Trend Python library
+==============================
 
 Visualise what's trending in your build process
 
