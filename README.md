@@ -110,6 +110,8 @@ Contact
 
 Website : http://buildtimetrend.github.io/python-client/
 
+Mailinglist : [Buildtime Trend Community](https://groups.google.com/d/forum/buildtimetrend-dev)
+
 Follow us on [Twitter](https://twitter.com/buildtime_trend), [Github](https://github.com/buildtimetrend/python-lib) and [OpenHub](https://www.openhub.net/p/buildtime-trend).
 
 
