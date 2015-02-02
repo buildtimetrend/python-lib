@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 # pylint: disable=invalid-name,too-few-public-methods
-'''
+"""
 Manages settings of buildtime trend
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
@@ -20,7 +20,7 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
-'''
+"""
 
 import os
 import getopt
@@ -34,19 +34,19 @@ from buildtimetrend.tools import get_logger
 
 
 class Settings(object):
-    '''
+    """
     Settings class is a singleton
     Inspired by
  http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Singleton.html
-    '''
+    """
     class __Settings(object):
-        '''
+        """
         Settings class contains settings and config options
-        '''
+        """
         def __init__(self):
-            '''
+            """
             Initialise class
-            '''
+            """
             self.settings = Collection()
 
             # set loglevel
@@ -64,56 +64,56 @@ class Settings(object):
                              'dashboard/config.js')
 
         def set_project_name(self, name):
-            '''
+            """
             Set project name
             Parameters :
             - name : project name
-            '''
+            """
             self.add_setting("project_name", name)
 
         def get_project_name(self):
-            '''
+            """
             Get project name
-            '''
+            """
             return self.get_setting("project_name")
 
         def add_setting(self, name, value):
-            '''
+            """
             Add a setting
 
             Parameters :
             - name : Setting name
             - value : Setting value
-            '''
+            """
             self.settings.add_item(name, value)
 
         def get_setting(self, name):
-            '''
+            """
             Get a setting value
 
             Parameters :
             - name : Setting name
-            '''
+            """
             return self.settings.get_item(name)
 
         def load_settings(self, argv=None, config_file="config.yml"):
-            '''
+            """
             Load config settings from :
             - configfile
             - environment variables
             - command line arguments
-            '''
+            """
             self.load_config_file(config_file)
             self.load_env_vars()
             return self.process_argv(argv)
 
         def load_config_file(self, config_file):
-            '''
+            """
             Load settings from a config file
 
             Parameters :
             - config_file : name of the config file
-            '''
+            """
             if not check_file(config_file):
                 return False
 
@@ -136,9 +136,9 @@ class Settings(object):
                 return True
 
         def get_project_info(self):
-            '''
+            """
             Get project info as a dictonary
-            '''
+            """
             return {
                 "version": buildtimetrend.VERSION,
                 "schema_version": buildtimetrend.SCHEMA_VERSION,
@@ -146,11 +146,11 @@ class Settings(object):
             }
 
         def process_argv(self, argv):
-            '''
+            """
             Process command line arguments
             returns a list with arguments (non-options) or
             None if options are invalid
-            '''
+            """
             if argv is None:
                 return None
 
@@ -196,22 +196,22 @@ class Settings(object):
             return args
 
         def set_mode(self, mode, value=True):
-            '''
+            """
             Set mode
             Parameters
             mode : keen, native
             value : enable (=True, default) or disable (=False) mode
-            '''
+            """
             if mode == "native":
                 self.add_setting("mode_native", bool(value))
             elif mode == "keen":
                 self.add_setting("mode_keen", bool(value))
 
         def load_env_vars(self):
-            '''
+            """
             Load environment variables and assign their values to
             the corresponding setting value.
-            '''
+            """
 
             # assign environment variable values to setting value
             if self.env_var_to_settings("BTT_LOGLEVEL", "loglevel"):
@@ -227,12 +227,12 @@ class Settings(object):
                 keen.master_key = os.environ["KEEN_MASTER_KEY"]
 
         def env_var_to_settings(self, env_var_name, settings_name):
-            '''
+            """
             Store environment variable value as a setting
             Parameters:
             - env_var_name : Name of the environment variable
             - settings_name : Name of the corresponding settings value
-            '''
+            """
             logger = get_logger()
 
             if env_var_name in os.environ:
@@ -251,15 +251,15 @@ class Settings(object):
     instance = None
 
     def __new__(cls):  # __new__ always a classmethod
-        ''' Create a singleton '''
+        """ Create a singleton """
         if not Settings.instance:
             Settings.instance = Settings.__Settings()
         return Settings.instance
 
     def __getattr__(self, name):
-        ''' Redirect access to get singleton properties '''
+        """ Redirect access to get singleton properties """
         return getattr(self.instance, name)
 
     def __setattr__(self, name):
-        ''' Redirect access to set singleton properties '''
+        """ Redirect access to set singleton properties """
         return setattr(self.instance, name)

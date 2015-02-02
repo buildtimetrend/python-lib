@@ -1,7 +1,7 @@
 # vim: set expandtab sw=4 ts=4:
 # disable pylint message about unused variable 'fig'
 # pylint: disable=unused-variable
-'''
+"""
 Generates a trend (graph) from the buildtimes in buildtimes.xml
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
@@ -21,7 +21,7 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
-'''
+"""
 
 from lxml import etree
 import matplotlib
@@ -33,20 +33,20 @@ from buildtimetrend.tools import check_file
 
 
 class Trend(object):
-    '''
+    """
     Trend class, generates a chart from gathered buildtime data
-    '''
+    """
     def __init__(self):
         self.stages = {}
         self.builds = []
 
     def gather_data(self, result_file):
-        '''
+        """
         Get buildtime data from an xml file
 
         Parameters
         - result_file : xml file containing the buildtime data
-        '''
+        """
         # load buildtimes file
         if check_file(result_file):
             root_xml = etree.parse(result_file).getroot()
@@ -86,9 +86,9 @@ class Trend(object):
         return True
 
     def parse_xml_stages(self, stages, index):
-        '''
+        """
         Parse stages in from xml file
-        '''
+        """
         for stage in stages:
             if (stage.tag == 'stage' and
                     stage.get('name') is not None and
@@ -104,12 +104,12 @@ class Trend(object):
                 self.stages[stage.get('name')] = temp_dict
 
     def generate(self, trend_file):
-        '''
+        """
         Generates the trend chart and saves it as a PNG image using matplotlib
 
         Parameters
         - trend_file : file name to save chart image to
-        '''
+        """
         fig, axes = plt.subplots()
 
         # add data

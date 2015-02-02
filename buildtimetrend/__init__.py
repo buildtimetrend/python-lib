@@ -1,4 +1,4 @@
-'''
+"""
 Buildtime Trend : Gather data, analyse and visualise trends of build processes
 on Continuous Integration platforms
 
@@ -22,7 +22,7 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
-'''
+"""
 from buildtimetrend.tools import set_loglevel
 
 NAME = "buildtimetrend"

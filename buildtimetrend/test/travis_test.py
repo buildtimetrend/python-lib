@@ -469,7 +469,7 @@ class TestTravisData(unittest.TestCase):
     def test_parse_travis_time_tag(self):
         # read sample lines with timetags
         with open(TRAVIS_TIMING_TAGS_FILE, 'r') as f:
-            '''First stage'''
+            """First stage"""
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())
 
@@ -511,7 +511,7 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_started())
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
-            '''Seconds stage'''
+            """Seconds stage"""
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())
 
@@ -544,7 +544,7 @@ class TestTravisData(unittest.TestCase):
             self.assertEquals(1408282901.258724,
                 self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
 
-            '''Third stage'''
+            """Third stage"""
             # new TravisSubstage object was created, and the next stage is started
             self.assertTrue(self.travis_data.travis_substage.has_name())
             self.assertEquals('after_script.3', self.travis_data.travis_substage.get_name())
@@ -572,7 +572,7 @@ class TestTravisData(unittest.TestCase):
             self.assertEquals(1408282901.258724,
                 self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
 
-            '''Fourth stage'''
+            """Fourth stage"""
             # new TravisSubstage object was created, and the next stage is started
             self.assertFalse(self.travis_data.travis_substage.has_name())
             self.assertEquals('timestamp.sh Done', self.travis_data.travis_substage.get_name())
@@ -604,7 +604,7 @@ class TestTravisData(unittest.TestCase):
     def test_parse_travis_time_tag_incorrect(self):
         # read sample lines with timetags
         with open(TRAVIS_INCORRECT_TIMING_TAGS_FILE, 'r') as f:
-            '''First stage'''
+            """First stage"""
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())
 
@@ -634,7 +634,7 @@ class TestTravisData(unittest.TestCase):
             self.assertEquals(None, self.travis_data.current_job.stages.started_at)
             self.assertEquals(None, self.travis_data.current_job.stages.finished_at)
 
-            '''Seconds stage'''
+            """Seconds stage"""
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())
 
@@ -657,7 +657,7 @@ class TestTravisData(unittest.TestCase):
             self.assertEquals(None, self.travis_data.current_job.stages.started_at)
             self.assertEquals(None, self.travis_data.current_job.stages.finished_at)
 
-            '''Third stage'''
+            """Third stage"""
             # new TravisSubstage object was created, and the next stage is started
             self.assertTrue(self.travis_data.travis_substage.has_name())
             self.assertEquals('after_script.3', self.travis_data.travis_substage.get_name())
@@ -682,7 +682,7 @@ class TestTravisData(unittest.TestCase):
             self.assertEquals(None, self.travis_data.current_job.stages.started_at)
             self.assertEquals(None, self.travis_data.current_job.stages.finished_at)
 
-            '''Fourth stage'''
+            """Fourth stage"""
             # new TravisSubstage object was created, and the next stage is started
             self.assertFalse(self.travis_data.travis_substage.has_name())
             self.assertEquals('timestamp.sh Done', self.travis_data.travis_substage.get_name())
@@ -974,7 +974,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.__check_process_command('stage1.substage1')
 
     def __check_process_command(self, expected_command):
-        '''similar test for test_process_command*'''
+        """similar test for test_process_command*"""
         # pass a valid command name
         self.assertTrue(
             self.substage.process_command({'command': 'command1.sh'})
@@ -1095,7 +1095,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_finished())
 
     def test_get_name(self):
-        ''' get_name() returns the name, or the command if name is not set'''
+        """ get_name() returns the name, or the command if name is not set"""
         # set name
         self.substage.stage.set_name("stage.1")
         self.assertEquals("stage.1", self.substage.get_name())
@@ -1105,49 +1105,49 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals("stage.1", self.substage.get_name())
 
     def test_get_name_command(self):
-        ''' get_name() returns the name, or the command if name is not set'''
+        """ get_name() returns the name, or the command if name is not set"""
         # set command
         self.substage.stage.set_command("command1.sh")
         self.assertEquals("command1.sh", self.substage.get_name())
 
     def test_has_name(self):
-        ''' has_name() should return true if name is set'''
+        """ has_name() should return true if name is set"""
         # set name
         self.substage.stage.set_name("stage.1")
         self.assertTrue(self.substage.has_name())
 
     def test_has_timing_hash(self):
-        ''' has_started() should return true if timing_hash is set'''
+        """ has_started() should return true if timing_hash is set"""
         # set substage timing hash
         self.substage.timing_hash = VALID_HASH1
         self.assertTrue(self.substage.has_timing_hash())
 
     def test_has_command(self):
-        ''' has_command() should return true if command is set'''
+        """ has_command() should return true if command is set"""
         # set command
         self.substage.stage.set_command("command1.sh")
         self.assertTrue(self.substage.has_command())
 
     def test_has_started_name(self):
-        ''' has_started() should return true if name is set'''
+        """ has_started() should return true if name is set"""
         # set name
         self.substage.stage.set_name("stage.1")
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_hash(self):
-        ''' has_started() should return true if timing_hash is set'''
+        """ has_started() should return true if timing_hash is set"""
         # set substage hash
         self.substage.timing_hash = VALID_HASH1
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_command(self):
-        ''' has_started() should return true if command is set'''
+        """ has_started() should return true if command is set"""
         # set command
         self.substage.stage.set_command("command1.sh")
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_both(self):
-        ''' has_started() should return true if name or hash is set'''
+        """ has_started() should return true if name or hash is set"""
         # set name
         self.substage.name = "stage.1"
         # set timing hash
@@ -1155,7 +1155,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_started())
 
     def test_has_finished_stage_name(self):
-        ''' has_finished() should return true if stagename was closed'''
+        """ has_finished() should return true if stagename was closed"""
         self.substage.process_start_stage({
             'start_stage': 'stage1', 'start_substage': 'substage1'
         })
@@ -1166,7 +1166,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_finished())
 
     def test_has_finished_timestamp(self):
-        ''' has_finished() should return true if finished timestamp is set'''
+        """ has_finished() should return true if finished timestamp is set"""
         self.substage.process_start_time({'start_hash': VALID_HASH1})
 
         self.assertTrue(self.substage.process_end_time({
@@ -1178,21 +1178,21 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_finished())
 
     def test_has_finished_stage_command(self):
-        ''' has_finished() should return true if command is set'''
+        """ has_finished() should return true if command is set"""
         self.substage.process_command({'command': 'command1.sh'})
         self.assertTrue(self.substage.has_finished())
 
     def test_has_finished_incomplete(self):
-        ''' has_finished() should return true if finished_incomplete is set'''
+        """ has_finished() should return true if finished_incomplete is set"""
         # set finished_incomplete
         self.substage.finished_incomplete = True
         self.assertTrue(self.substage.has_finished())
 
     def test_has_finished(self):
-        '''
+        """
         has_finished() should return true if finished timestamp is set
         or if finished_incomplete is set
-        '''
+        """
         # set finish_timestamp
         self.substage.stage.set_finished_at = constants.TIMESTAMP_FINISHED
         # set finished_incomplete
