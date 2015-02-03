@@ -1,7 +1,7 @@
 # vim: set expandtab sw=4 ts=4:
 # pylint: disable=invalid-name,too-few-public-methods
 """
-Manages settings of buildtime trend
+Manages settings of buildtime Trend.
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
@@ -34,19 +34,20 @@ from buildtimetrend.tools import get_logger
 
 
 class Settings(object):
+
     """
-    Settings class is a singleton
+    Settings class is a singleton.
+
     Inspired by
  http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Singleton.html
     """
+
     class __Settings(object):
-        """
-        Settings class contains settings and config options
-        """
+
+        """ Settings class contains settings and config options. """
+
         def __init__(self):
-            """
-            Initialise class
-            """
+            """ Initialise class. """
             self.settings = Collection()
 
             # set loglevel
@@ -65,21 +66,20 @@ class Settings(object):
 
         def set_project_name(self, name):
             """
-            Set project name
+            Set project name.
+
             Parameters :
             - name : project name
             """
             self.add_setting("project_name", name)
 
         def get_project_name(self):
-            """
-            Get project name
-            """
+            """ Get project name. """
             return self.get_setting("project_name")
 
         def add_setting(self, name, value):
             """
-            Add a setting
+            Add a setting.
 
             Parameters :
             - name : Setting name
@@ -89,7 +89,7 @@ class Settings(object):
 
         def get_setting(self, name):
             """
-            Get a setting value
+            Get a setting value.
 
             Parameters :
             - name : Setting name
@@ -98,7 +98,9 @@ class Settings(object):
 
         def load_settings(self, argv=None, config_file="config.yml"):
             """
-            Load config settings from :
+            Load config settings.
+
+            Settings are retrieved from :
             - configfile
             - environment variables
             - command line arguments
@@ -109,7 +111,7 @@ class Settings(object):
 
         def load_config_file(self, config_file):
             """
-            Load settings from a config file
+            Load settings from a config file.
 
             Parameters :
             - config_file : name of the config file
@@ -136,9 +138,7 @@ class Settings(object):
                 return True
 
         def get_project_info(self):
-            """
-            Get project info as a dictonary
-            """
+            """ Get project info as a dictonary. """
             return {
                 "version": buildtimetrend.VERSION,
                 "schema_version": buildtimetrend.SCHEMA_VERSION,
@@ -147,8 +147,9 @@ class Settings(object):
 
         def process_argv(self, argv):
             """
-            Process command line arguments
-            returns a list with arguments (non-options) or
+            Process command line arguments.
+
+            Returns a list with arguments (non-options) or
             None if options are invalid
             """
             if argv is None:
@@ -197,10 +198,11 @@ class Settings(object):
 
         def set_mode(self, mode, value=True):
             """
-            Set mode
-            Parameters
-            mode : keen, native
-            value : enable (=True, default) or disable (=False) mode
+            Set operating mode.
+
+            Parameters:
+            - mode : keen, native
+            - value : enable (=True, default) or disable (=False) mode
             """
             if mode == "native":
                 self.add_setting("mode_native", bool(value))
@@ -209,8 +211,10 @@ class Settings(object):
 
         def load_env_vars(self):
             """
-            Load environment variables and assign their values to
-            the corresponding setting value.
+            Load environment variables.
+
+            Assign the environment variable values to
+            the corresponding setting.
             """
 
             # assign environment variable values to setting value
@@ -228,7 +232,8 @@ class Settings(object):
 
         def env_var_to_settings(self, env_var_name, settings_name):
             """
-            Store environment variable value as a setting
+            Store environment variable value as a setting.
+
             Parameters:
             - env_var_name : Name of the environment variable
             - settings_name : Name of the corresponding settings value
@@ -251,15 +256,15 @@ class Settings(object):
     instance = None
 
     def __new__(cls):  # __new__ always a classmethod
-        """ Create a singleton """
+        """ Create a singleton. """
         if not Settings.instance:
             Settings.instance = Settings.__Settings()
         return Settings.instance
 
     def __getattr__(self, name):
-        """ Redirect access to get singleton properties """
+        """ Redirect access to get singleton properties. """
         return getattr(self.instance, name)
 
     def __setattr__(self, name):
-        """ Redirect access to set singleton properties """
+        """ Redirect access to set singleton properties. """
         return setattr(self.instance, name)
