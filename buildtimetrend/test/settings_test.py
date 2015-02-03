@@ -208,7 +208,7 @@ class TestSettings(unittest.TestCase):
                 "loglevel": "INFO",
                 "setting1": "test_value1",
                 "dashboard_sample_configfile": "test/dashboard/config_sample.js",
-                "dashboard_configfile": "test/config.js"
+                "dashboard_configfile": exp_config
             },
             self.settings.settings.get_items())
 
