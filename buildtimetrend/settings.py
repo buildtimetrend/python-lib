@@ -77,6 +77,17 @@ class Settings(object):
             """ Get project name. """
             return self.get_setting("project_name")
 
+        def set_client(self, name, version):
+            """
+            Set client name and version.
+
+            Parameters :
+            - name : client name (fe. service, python-client)
+            - version : client version
+            """
+            self.add_setting("client", name)
+            self.add_setting("client_version", version)
+
         def add_setting(self, name, value):
             """
             Add a setting.
@@ -142,6 +153,8 @@ class Settings(object):
             return {
                 "version": buildtimetrend.VERSION,
                 "schema_version": buildtimetrend.SCHEMA_VERSION,
+                "client": str(self.get_setting("client")),
+                "client_version": str(self.get_setting("client_version")),
                 "project_name": str(self.get_project_name())
             }
 

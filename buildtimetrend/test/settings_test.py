@@ -52,6 +52,8 @@ class TestSettings(unittest.TestCase):
         self.project_info = {
             "version": buildtimetrend.VERSION,
             "schema_version": buildtimetrend.SCHEMA_VERSION,
+            "client": 'None',
+            "client_version": 'None',
             "project_name": self.project_name}
 
     def setUp(self):
@@ -82,6 +84,23 @@ class TestSettings(unittest.TestCase):
 
         self.settings.set_project_name("")
         self.assertEquals("", self.settings.get_project_name())
+
+    def test_set_client(self):
+        self.assertEquals(None, self.settings.get_setting("client"))
+        self.assertEquals(None, self.settings.get_setting("client_version"))
+
+        self.settings.set_client("client_name", "0.1")
+        self.assertEquals("client_name", self.settings.get_setting("client"))
+        self.assertEquals("0.1", self.settings.get_setting("client_version"))
+
+        self.assertDictEqual({
+            "version": buildtimetrend.VERSION,
+            "schema_version": buildtimetrend.SCHEMA_VERSION,
+            "client": 'client_name',
+            "client_version": '0.1',
+            "project_name": self.project_name},
+            self.settings.get_project_info()
+        )
 
     def test_get_add_setting(self):
         # setting is not set yet
