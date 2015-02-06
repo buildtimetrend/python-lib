@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 """
-Collection of tool functions
+Collection of supporting functions.
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
@@ -31,7 +31,7 @@ from dateutil.tz import tzutc
 
 def format_timestamp(timestamp):
     """
-    Format a datetime timestamp (UTC) to ISO format (YYYY-MM-DDTHH:MM:SS)
+    Format a datetime timestamp (UTC) to ISO format (YYYY-MM-DDTHH:MM:SS).
 
     Parameters :
     - timestamp : timestamp, seconds since epoch
@@ -42,7 +42,10 @@ def format_timestamp(timestamp):
 
 def split_timestamp(timestamp):
     """
-    Split a timestamp in seconds since epoch in all seperate components :
+    Split a timestamp in seperate components.
+
+    Split a timestamp (expressed in seconds since epoch)
+    in all seperate components :
       year, month, day of month, day of week,
       hour (12 and 24 hour), minute, second
 
@@ -55,12 +58,15 @@ def split_timestamp(timestamp):
 
 def split_isotimestamp(isotimestamp):
     """
-    Split a timestamp in isoformat in all seperate components :
+    Split a ISO formatted timestamp in seperate components.
+
+    Split a timestamp (in ISO format)
+    in all seperate components :
       year, month, day of month, day of week,
       hour (12 and 24 hour), minute, second
 
     Parameters :
-    - isotimestamp : timestamp in isoformat YYYY-MM-DDTHH:MM:SS
+    - isotimestamp : timestamp in ISO format YYYY-MM-DDTHH:MM:SS
     """
     # use dateutil.parser.parse to parse the timestamp
     return split_datetime(parse(isotimestamp, tzinfos={"UTC": +0}))
@@ -68,7 +74,10 @@ def split_isotimestamp(isotimestamp):
 
 def split_datetime(timestamp_datetime):
     """
-    Split a timestamp in datetime format in all seperate components :
+    Split a datetime timestamp in seperate components.
+
+    Split a timestamp (is a datetime class instance)
+    in all seperate components :
       year, month, day of month, day of week,
       hour (12 and 24 hour), minute, second
 
@@ -115,19 +124,21 @@ def split_datetime(timestamp_datetime):
 
 def nano2sec(time):
     """
-    Convert time in nanoseconds to seconds
-    Param time nanoseconds
+    Convert time from nanoseconds to seconds.
+
+    Parameters:
+    - time : time in nanoseconds
     """
     return float(time) / float(1000000000)
 
 
 def check_file(filename):
     """
-    Checks if a file exists.
+    Check if a file exists.
 
     Parameters :
     - filename : file to be checked
-    Returns false if file doesn't exist, true if it exists.
+    Return false if file doesn't exist, true if it exists.
     """
     # load timestamps file
     if not os.path.isfile(filename):
@@ -139,13 +150,13 @@ def check_file(filename):
 
 def file_is_newer(path1, path2):
     """
-    Checks if a file is newer than another file.
+    Check if a file is newer than another file.
 
     Parameters :
     - path1 : path of first file
     - path2 : ipath of second file
-    Returns true if the first file is newer than the second one,
-    returns false if it is older, or if any of the files doesn't exist.
+    Return true if the first file is newer than the second one,
+    return false if it is older, or if any of the files doesn't exist.
     """
     # check if files exist
     if not check_file(path1) or not check_file(path2):
@@ -160,11 +171,13 @@ def file_is_newer(path1, path2):
 
 def check_dict(param_dict, name, key_list=None):
     """
-    Checks if a parameter is a dictionary
-    Param param_dict: parameter that should be a dictonary
-    Param name: name of the parameter
-    Param key_list: list of keys that should be present in the dict
-    Returns true if parameter is a dictionary, throws error when it isn't
+    Check if a parameter is a dictionary.
+
+    Parameters :
+    - param_dict: parameter that should be a dictonary
+    - name: name of the parameter
+    - key_list: list of keys that should be present in the dict
+    Return true if parameter is a dictionary, throws error when it isn't
     """
     if param_dict is None or type(param_dict) is not dict:
         raise TypeError("param %s should be a dictionary" % name)
@@ -180,10 +193,12 @@ def check_dict(param_dict, name, key_list=None):
 
 def keys_in_dict(param_dict, key_list):
     """
-    Checks if a list of keys exist in a dictionary
-    Param param_dict: dictonary that should contain the keys
-    Param key_list: key or list of keys that should be present in the dict
-    Returns true if all keys were found in the dictionary
+    Check if a list of keys exist in a dictionary.
+
+    Parameters :
+    - param_dict: dictonary that should contain the keys
+    - key_list: key or list of keys that should be present in the dict
+    Return true if all keys were found in the dictionary
     """
     if type(key_list) in (str, int):
         return key_list in param_dict
@@ -199,10 +214,12 @@ def keys_in_dict(param_dict, key_list):
 
 def check_list(param_list, name):
     """
-    Checks if a parameter is a list
-    Param param_list: parameter that should be a list
-    Param name: name of the parameter
-    Returns true if parameter is a list, throws error when it isn't
+    Check if a parameter is a list.
+
+    Parameters :
+    - param_list: parameter that should be a list
+    - name: name of the parameter
+    Return true if parameter is a list, throws error when it isn't
     """
     if param_list is None or type(param_list) is not list:
         raise TypeError("param %s should be a list" % name)
@@ -212,10 +229,12 @@ def check_list(param_list, name):
 
 def check_num_string(num_string, name):
     """
-    Checks if a parameter is an integer or numerical string
-    Param num_string: parameter that should be a numerical string
-    Param name: name of the parameter
-    Returns integer of numerical string, throws error when it isn't
+    Check if a parameter is an integer or numerical string.
+
+    Parameters :
+    - num_string: parameter that should be a numerical string
+    - name: name of the parameter
+    Return integer of numerical string, throws error when it isn't
     """
     if num_string is None or type(num_string) not in (str, int):
         raise TypeError(
@@ -226,15 +245,14 @@ def check_num_string(num_string, name):
 
 
 def get_logger():
-    """
-    Returns logger object
-    """
+    """ Return logger object. """
     return logging.getLogger(buildtimetrend.NAME)
 
 
 def set_loglevel(loglevel):
     """
-    Sets loglevel
+    Set loglevel.
+
     Based on example on https://docs.python.org/2/howto/logging.html
 
     Assuming loglevel is bound to the string value obtained from the
@@ -261,7 +279,11 @@ def set_loglevel(loglevel):
 
 def get_repo_slug(repo_owner=None, repo_name=None):
     """
-    Returns repo slug, fe. buildtimetrend/service
+    Return repo slug.
+
+    This function concatenates repo_owner and repo_name,
+    fe. buildtimetrend/service
+
     Parameters :
     - repo_owner : name of the Github repo owner, fe. `buildtimetrend`
     - repo_name : name of the Github repo, fe. `service`
