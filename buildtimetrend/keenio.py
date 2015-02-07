@@ -172,9 +172,9 @@ def add_project_info_dict(payload):
     payload_as_dict["buildtime_trend"] = Settings().get_project_info()
 
     # override timestamp, set to finished_at timestamp
-    if "build" in payload and "finished_at" in payload["build"]:
+    if "job" in payload and "finished_at" in payload["job"]:
         payload_as_dict["keen"] = {
-            "timestamp": payload["build"]["finished_at"]["isotimestamp"]
+            "timestamp": payload["job"]["finished_at"]["isotimestamp"]
         }
 
     return payload_as_dict

@@ -177,7 +177,7 @@ class Build(object):
                 temp["stage"] = copy.deepcopy(stage)
                 # copy values of properties
                 if len(build_properties) > 0:
-                    temp["build"] = build_properties
+                    temp["job"] = build_properties
                 data.append(temp)
 
         return data

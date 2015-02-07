@@ -113,12 +113,12 @@ class TestTools(unittest.TestCase):
         self.assertDictEqual(
                 {"test": "value",
                 "buildtime_trend": self.project_info,
-                "build": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED},
+                "job": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED},
                 "keen": {"timestamp": constants.ISOTIMESTAMP_FINISHED}
             },
             add_project_info_dict(
                 {"test": "value",
-                "build": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED}
+                "job": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED}
             })
         )
 
