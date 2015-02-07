@@ -103,7 +103,7 @@ def keen_io_generate_read_key(repo):
 
     privileges = {
         "filters": [{
-            "property_name": "build.repo",
+            "property_name": "job.repo",
             "operator": "eq",
             "property_value": repo
         }],
@@ -309,8 +309,8 @@ def get_avg_buildtime(repo=None, interval=None):
 
     try:
         return keen.average(
-            "builds",
-            target_property="build.duration",
+            "build_jobs",
+            target_property="job.duration",
             timeframe=timeframe,
             filters=[get_repo_filter(repo)]
         )
@@ -340,8 +340,8 @@ def get_total_build_jobs(repo=None, interval=None):
 
     try:
         return keen.count_unique(
-            "builds",
-            target_property="build.job",
+            "build_jobs",
+            target_property="job.job",
             timeframe=timeframe,
             filters=[get_repo_filter(repo)]
         )
@@ -371,13 +371,13 @@ def get_passed_build_jobs(repo=None, interval=None):
 
     try:
         return keen.count_unique(
-            "builds",
-            target_property="build.job",
+            "build_jobs",
+            target_property="job.job",
             timeframe=timeframe,
             filters=[
                 get_repo_filter(repo),
                 {
-                    "property_name": "build.result",
+                    "property_name": "job.result",
                     "operator": "eq",
                     "property_value": "passed"
                 }
@@ -455,8 +455,8 @@ def get_total_builds(repo=None, interval=None):
 
     try:
         return keen.count_unique(
-            "builds",
-            target_property="build.build",
+            "build_jobs",
+            target_property="job.build",
             timeframe=timeframe,
             filters=[get_repo_filter(repo)]
         )
@@ -482,8 +482,8 @@ def get_latest_buildtime(repo=None):
 
     try:
         result = keen.extraction(
-            "builds",
-            property_names="build.duration",
+            "build_jobs",
+            property_names="job.duration",
             latest=1,
             filters=[get_repo_filter(repo)]
         )
@@ -495,7 +495,7 @@ def get_latest_buildtime(repo=None):
         return -1
 
     if result is not None and len(result) > 0:
-        return result[0]['build']['duration']
+        return result[0]['job']['duration']
 
     return -1
 
@@ -508,7 +508,7 @@ def get_all_projects():
         return []
 
     try:
-        result = keen.select_unique("builds", "build.repo")
+        result = keen.select_unique("jobs", "job.repo")
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         return []
@@ -533,7 +533,7 @@ def get_repo_filter(repo=None):
         return None
 
     return {
-        "property_name": "build.repo",
+        "property_name": "job.repo",
         "operator": "eq",
         "property_value": str(repo)
     }
