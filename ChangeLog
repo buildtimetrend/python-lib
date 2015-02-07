@@ -26,6 +26,7 @@ v0.2 (not yet released)
 - issue #46 : use Travis CI build config to assign missing (sub)stage names
 - [keenio] rename log_build_keen() to send_build_data()
 - [keenio] add send_build_data_service()
+- [keenio] schema change : save build job data in build_jobs.job (was builds.build)
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git
