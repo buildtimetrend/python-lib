@@ -151,7 +151,7 @@ class Settings(object):
         def get_project_info(self):
             """ Get project info as a dictonary. """
             return {
-                "version": buildtimetrend.VERSION,
+                "lib_version": buildtimetrend.VERSION,
                 "schema_version": buildtimetrend.SCHEMA_VERSION,
                 "client": str(self.get_setting("client")),
                 "client_version": str(self.get_setting("client_version")),

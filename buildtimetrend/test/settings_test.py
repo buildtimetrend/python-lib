@@ -50,7 +50,7 @@ class TestSettings(unittest.TestCase):
         self.project_name = buildtimetrend.NAME
 
         self.project_info = {
-            "version": buildtimetrend.VERSION,
+            "lib_version": buildtimetrend.VERSION,
             "schema_version": buildtimetrend.SCHEMA_VERSION,
             "client": 'None',
             "client_version": 'None',
@@ -94,7 +94,7 @@ class TestSettings(unittest.TestCase):
         self.assertEquals("0.1", self.settings.get_setting("client_version"))
 
         self.assertDictEqual({
-            "version": buildtimetrend.VERSION,
+            "lib_version": buildtimetrend.VERSION,
             "schema_version": buildtimetrend.SCHEMA_VERSION,
             "client": 'client_name',
             "client_version": '0.1',
