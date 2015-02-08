@@ -38,7 +38,7 @@ TIME_INTERVALS = {
     'month': {'name': 'month', 'timeframe': 'this_30_days'},
     'year': {'name': 'year', 'timeframe': 'this_52_weeks'}
 }
-
+KEEN_PROJECT_INFO_NAME = "buildtime_trend"
 
 def keen_has_project_id():
     """Check if Keen.io project ID is set."""
@@ -165,7 +165,7 @@ def add_project_info_dict(payload):
 
     payload_as_dict = copy.deepcopy(payload)
 
-    payload_as_dict["buildtime_trend"] = Settings().get_project_info()
+    payload_as_dict[KEEN_PROJECT_INFO_NAME] = Settings().get_project_info()
 
     # override timestamp, set to finished_at timestamp
     if "job" in payload and "finished_at" in payload["job"]:
