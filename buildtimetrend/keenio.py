@@ -102,11 +102,7 @@ def keen_io_generate_read_key(repo):
         master_key = None
 
     privileges = {
-        "filters": [{
-            "property_name": "job.repo",
-            "operator": "eq",
-            "property_value": repo
-        }],
+        "filters": [get_repo_filter(repo)],
         "allowed_operations": ["read"]
     }
 
