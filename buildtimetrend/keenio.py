@@ -40,6 +40,7 @@ TIME_INTERVALS = {
 }
 KEEN_PROJECT_INFO_NAME = "buildtime_trend"
 
+
 def keen_has_project_id():
     """Check if Keen.io project ID is set."""
     if "KEEN_PROJECT_ID" in os.environ or keen.project_id is not None:
