@@ -207,6 +207,11 @@ def get_dashboard_keen_config(repo):
     # initialise config settings
     keen_config = {}
 
+    if repo is None:
+        logger.warning("Keen.io related config settings could not be created,"
+                       " repo is not defined.")
+        return keen_config
+
     if not keen_has_project_id() or not keen_has_master_key():
         logger.warning("Keen.io related config settings could not be created,"
                        " keen.project_id and/or keen.master_key"
