@@ -239,10 +239,6 @@ class Settings(object):
             self.env_var_to_settings("BUILD_TREND_CONFIGFILE",
                                      "dashboard_configfile")
 
-            # TODO remove if master_key is part of the keen module
-            if "KEEN_MASTER_KEY" in os.environ:
-                keen.master_key = os.environ["KEEN_MASTER_KEY"]
-
         def env_var_to_settings(self, env_var_name, settings_name):
             """
             Store environment variable value as a setting.

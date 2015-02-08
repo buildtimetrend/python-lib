@@ -51,12 +51,8 @@ def keen_has_project_id():
 
 def keen_has_master_key():
     """Check if Keen.io Master API key is set."""
-    # TODO remove try if master_key is part of the keen module
-    try:
-        if "KEEN_MASTER_KEY" in os.environ or keen.master_key is not None:
-            return True
-    except AttributeError:
-        get_logger().debug("keen.master_key is not set")
+    if "KEEN_MASTER_KEY" in os.environ or keen.master_key is not None:
+        return True
 
     get_logger().warning("Keen.io Master API Key is not set")
     return False
@@ -95,11 +91,7 @@ def keen_io_generate_read_key(repo):
                        " keen.master_key is not defined.")
         return None
 
-    # TODO remove try if master_key is part of the keen module
-    try:
-        master_key = keen.master_key
-    except AttributeError:
-        master_key = None
+    master_key = keen.master_key
 
     privileges = {
         "filters": [{
