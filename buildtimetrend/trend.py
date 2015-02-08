@@ -24,12 +24,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 from lxml import etree
-import matplotlib
 from buildtimetrend.tools import get_logger
+from buildtimetrend.tools import check_file
+import matplotlib
 # Force matplotlib to not use any Xwindow backend.
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
-from buildtimetrend.tools import check_file
 
 
 class Trend(object):
