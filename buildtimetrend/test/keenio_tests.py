@@ -228,14 +228,14 @@ class TestTools(unittest.TestCase):
         self.assertEqual(None, get_repo_filter(None))
 
         self.assertDictEqual({
-            "property_name": "job.repo",
+            "property_name": "buildtime_trend.project_name",
             "operator": "eq",
             "property_value": "repo/name"},
             get_repo_filter("repo/name")
         )
 
         self.assertDictEqual({
-            "property_name": "job.repo",
+            "property_name": "buildtime_trend.project_name",
             "operator": "eq",
             "property_value": "1234"},
             get_repo_filter(1234)

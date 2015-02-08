@@ -529,7 +529,7 @@ def get_repo_filter(repo=None):
         return None
 
     return {
-        "property_name": "job.repo",
+        "property_name": "%s.project_name" % KEEN_PROJECT_INFO_NAME,
         "operator": "eq",
         "property_value": str(repo)
     }
