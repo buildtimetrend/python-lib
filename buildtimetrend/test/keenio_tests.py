@@ -158,15 +158,11 @@ class TestTools(unittest.TestCase):
     def test_keen_has_project_id_keen_var(self):
         keen.project_id = "1234abcd"
 
-        keen._initialize_client_from_environment()
-
         self.assertTrue(keen_has_project_id())
 
     def test_keen_has_master_key_keen_var(self):
         keen.master_key = "abcd1234"
         keen.project_id = "1234abcd"
-
-        keen._initialize_client_from_environment()
 
         self.assertTrue(keen_has_master_key())
 
@@ -184,13 +180,11 @@ class TestTools(unittest.TestCase):
     def test_keen_is_writable_keen_var(self):
         # only set project id, check should fail
         keen.project_id = "1234abcd"
-        keen._initialize_client_from_environment()
 
         self.assertFalse(keen_is_writable())
 
         # set write_key
         keen.write_key = "1234abcd5678efgh"
-        keen._initialize_client_from_environment()
 
         self.assertTrue(keen_is_writable())
 
@@ -206,12 +200,10 @@ class TestTools(unittest.TestCase):
     def test_keen_is_readable_keen_var(self):
         # only set project id, check should fail
         keen.project_id = "1234abcd"
-        keen._initialize_client_from_environment()
         self.assertFalse(keen_is_readable())
 
         # set read_key
         keen.read_key = "4567abcd5678efgh"
-        keen._initialize_client_from_environment()
         self.assertTrue(keen_is_readable())
 
     def test_keen_is_readable_envir_vars(self):
@@ -222,6 +214,16 @@ class TestTools(unittest.TestCase):
         # set read_key
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
         self.assertTrue(keen_is_readable())
+
+    def test_generate_read_key(self):
+        # should return None if master key is not set
+        self.assertEqual(None, keen_io_generate_read_key(None))
+        self.assertEqual(None, keen_io_generate_read_key("test/project"))
+
+        # set master_key
+        os.environ["KEEN_MASTER_KEY"] = "4567abcd5678efgh"
+        self.assertEqual(str, type(keen_io_generate_read_key(None)))
+        self.assertEqual(str, type(keen_io_generate_read_key("test/project")))
 
     def test_get_repo_filter(self):
         self.assertEqual(None, get_repo_filter())

@@ -146,8 +146,7 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(None, keen.project_id)
         self.assertEquals(None, keen.write_key)
         self.assertEquals(None, keen.read_key)
-        # TODO change test if master_key is part of the keen module
-        # self.assertEquals(None, keen.master_key)
+        self.assertEquals(None, keen.master_key)
 
         # load sample config file
         self.assertTrue(
@@ -178,8 +177,7 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(None, keen.project_id)
         self.assertEquals(None, keen.write_key)
         self.assertEquals(None, keen.read_key)
-        # TODO change test if master_key is part of the keen module
-        # self.assertEquals(None, keen.master_key)
+        self.assertEquals(None, keen.master_key)
 
         scriptname = "script.py"
         expected_ci = "travis"
@@ -244,7 +242,6 @@ class TestSettings(unittest.TestCase):
         # set test environment variables
         exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
         exp_loglevel = os.environ["BTT_LOGLEVEL"] = "INFO"
-        exp_master_key = os.environ["KEEN_MASTER_KEY"] = "4567ghij"
         exp_config = os.environ["BUILD_TREND_CONFIGFILE"] = "test/config.js"
 
         self.settings.load_env_vars()
@@ -253,14 +250,12 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(exp_loglevel, self.settings.get_setting("loglevel"))
         self.assertEquals(exp_account_token,
                           self.settings.get_setting("travis_account_token"))
-        self.assertEquals(exp_master_key, keen.master_key)
         self.assertEquals(exp_config,
                           self.settings.get_setting("dashboard_configfile"))
 
         # reset test environment variables
         del os.environ["BTT_LOGLEVEL"]
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
-        del os.environ["KEEN_MASTER_KEY"]
         del os.environ["BUILD_TREND_CONFIGFILE"]
 
     def test_process_argv(self):
