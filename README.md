@@ -108,7 +108,7 @@ For an overview of who contributed to create Buildtime trend, see [Credits](http
 Contact
 -------
 
-Website : http://buildtimetrend.github.io/python-client/
+Website : https://buildtimetrend.github.io/
 
 Mailinglist : [Buildtime Trend Community](https://groups.google.com/d/forum/buildtimetrend-dev)
 
