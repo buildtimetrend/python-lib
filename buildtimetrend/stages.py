@@ -1,7 +1,9 @@
 # vim: set expandtab sw=4 ts=4:
 """
-Reads timestamps.csv, calculates stage duration and saves the result
-to an xml file
+Stages related classes.
+
+Read timestamps.csv, calculates stage duration and saves the result
+to an xml file.
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
@@ -31,13 +33,16 @@ from lxml import etree
 
 
 class Stages(object):
+
     """
-    Build stages object.
+    Build stages class.
+
     It gathers timestamps from a csv file and calculates stage duration.
     Output stages in xml format.
     """
 
     def __init__(self):
+        """ Initialize instance. """
         self.stages = []
         self.started_at = None
         self.finished_at = None
@@ -45,7 +50,8 @@ class Stages(object):
 
     def set_end_timestamp(self, timestamp):
         """
-        Set end timestamp
+        Set end timestamp.
+
         Parameters:
         - timestamp : end timestamp
         """
@@ -73,7 +79,7 @@ class Stages(object):
         return True
 
     def total_duration(self):
-        """Calculate total duration of all stages"""
+        """ Calculate total duration of all stages. """
         total_duration = 0
         # calculate total duration
         for stage in self.stages:
@@ -82,7 +88,7 @@ class Stages(object):
         return total_duration
 
     def to_xml(self):
-        """Generates xml object from stages dictionary"""
+        """ Return xml object from stages dictionary. """
         root = etree.Element("stages")
 
         for stage in self.stages:
@@ -93,12 +99,12 @@ class Stages(object):
         return root
 
     def to_xml_string(self):
-        """Generates xml string from stages dictionary"""
+        """ Return xml string from stages dictionary. """
         return etree.tostring(self.to_xml(), pretty_print=True)
 
     def parse_timestamps(self, timestamps):
         """
-        Parse timestamps and calculate stage durations
+        Parse timestamps and calculate stage durations.
 
         The timestamp of each stage is used as both the start point of it's
         stage and the endpoint of the previous stage.
@@ -140,7 +146,8 @@ class Stages(object):
 
     def add_stage(self, stage):
         """
-        Add stage
+        Add stage.
+
         param stage Stage instance
         """
         if stage is None or type(stage) is not Stage:
@@ -160,7 +167,8 @@ class Stages(object):
 
     def create_stage(self, name, start_time, end_time):
         """
-        Create a stage
+        Create a stage.
+
         Parameters :
         - name : stage name
         - start_time : start of stage timestamp
@@ -187,9 +195,8 @@ class Stages(object):
 
 
 class Stage(object):
-    """
-    Build stage object.
-    """
+
+    """ Build stage object. """
 
     def __init__(self):
         self.data = {}
@@ -197,7 +204,7 @@ class Stage(object):
         self.set_duration(0)
 
     def set_name(self, name):
-        """Set stage name"""
+        """ Set stage name. """
         if name is None:
             return False
 
@@ -206,7 +213,7 @@ class Stage(object):
         return True
 
     def set_command(self, command):
-        """Set stage command"""
+        """ Set stage command. """
         if command is None:
             return False
 
@@ -214,26 +221,28 @@ class Stage(object):
         return True
 
     def set_started_at(self, timestamp):
-        """Set time when stage was started"""
+        """ Set time when stage was started. """
         return self.set_timestamp("started_at", timestamp)
 
     def set_started_at_nano(self, timestamp):
-        """Set time when stage was started in nanoseconds"""
+        """ Set time when stage was started in nanoseconds. """
         return self.set_timestamp_nano("started_at", timestamp)
 
     def set_finished_at(self, timestamp):
-        """Set time when stage was finished"""
+        """ Set time when stage was finished. """
         return self.set_timestamp("finished_at", timestamp)
 
     def set_finished_at_nano(self, timestamp):
-        """Set time when stage was finished in nanoseconds"""
+        """ Set time when stage was finished in nanoseconds. """
         return self.set_timestamp_nano("finished_at", timestamp)
 
     def set_timestamp(self, name, timestamp):
         """
-        Set timestamp
-        Param name timestamp name
-        Param timestamp seconds since epoch
+        Set timestamp.
+
+        Parameters:
+        - name timestamp name
+        - timestamp seconds since epoch
         """
         if timestamp is not None and name is not None:
             try:
@@ -246,14 +255,16 @@ class Stage(object):
 
     def set_timestamp_nano(self, name, timestamp):
         """
-        Set timestamp in nanoseconds
-        Param name timestamp name
-        Param timestamp nanoseconds since epoch
+        Set timestamp in nanoseconds.
+
+        Parameters:
+        - name timestamp name
+        - timestamp nanoseconds since epoch
         """
         return self.set_timestamp(name, nano2sec(timestamp))
 
     def set_duration(self, duration):
-        """Set stage duration in seconds"""
+        """ Set stage duration in seconds. """
         try:
             duration = float(duration)
             if duration >= 0:
@@ -264,12 +275,12 @@ class Stage(object):
             return False
 
     def set_duration_nano(self, duration):
-        """Set stage duration in nanoseconds"""
+        """ Set stage duration in nanoseconds. """
         try:
             return self.set_duration(nano2sec(duration))
         except (ValueError, TypeError):
             return False
 
     def to_dict(self):
-        """return stages data as dictionary"""
+        """ Return stages data as dictionary. """
         return self.data
