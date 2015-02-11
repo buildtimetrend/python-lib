@@ -24,7 +24,7 @@ setup(
     author="Dieter Adriaenssens",
     author_email="ruleant@users.sourceforge.net",
     description="Visualise what's trending in your build process",
-    url="http://ruleant.github.io/buildtime-trend/",
+    url="http://buildtimetrend.github.io/",
     license="AGPLv3+",
     keywords=["trends", "charts", "build", "ci", "timing data"],
     classifiers=[
