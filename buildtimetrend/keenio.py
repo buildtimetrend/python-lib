@@ -86,12 +86,12 @@ def keen_io_generate_read_key(repo):
     """
     logger = get_logger()
 
-    if keen_has_master_key() is None:
+    if not keen_has_master_key():
         logger.warning("Keen.io Read Key was not created,"
                        " keen.master_key is not defined.")
         return None
 
-    master_key = keen.master_key
+    master_key = keen.master_key or os.environ.get("KEEN_MASTER_KEY")
 
     privileges = {
         "filters": [{
