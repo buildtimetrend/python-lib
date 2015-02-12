@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # vim: set expandtab sw=4 ts=4:
 """
-Setup file, specifying dependencies, package name and version,
+Setup file.
+
+Specify dependencies, package name and version,
 and other meta data.
 
 This file is part of buildtimetrend/python-lib
