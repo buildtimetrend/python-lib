@@ -30,7 +30,7 @@ from buildtimetrend.tools import split_isotimestamp
 
 
 class Build(object):
-    
+
     """ Gather Build related data. """
 
     def __init__(self, csv_filename=None, end_timestamp=None):
@@ -130,7 +130,7 @@ class Build(object):
     def load_property_from_settings(self, property_name, setting_name=None):
         """
         Load the value of a setting and set it as a build property.
-        
+
         Parameters
         - property_name : name of the build property
         - setting_name : name of the setting (takes property_name if not set)
