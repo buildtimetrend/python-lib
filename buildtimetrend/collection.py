@@ -26,16 +26,16 @@ from buildtimetrend.tools import check_dict
 
 
 class Collection(object):
-    """
-    Dictionary based collection object.
-    """
+    
+    """ Dictionary based collection object. """
 
     def __init__(self):
+        """ Initialize instance. """
         self.items = {}
 
     def add_item(self, name, value):
         """
-        Add an item to the collection
+        Add an item to the collection.
 
         Parameters :
         - name : Item name
@@ -45,7 +45,7 @@ class Collection(object):
 
     def get_item(self, name):
         """
-        Get an item from a collection
+        Get an item from a collection.
 
         Parameters :
         - name : Item name
@@ -56,17 +56,12 @@ class Collection(object):
             return None
 
     def get_size(self):
-        """
-        Get an item from a collection
-
-        Parameters :
-        - name : Item name
-        """
+        """ Get collection size. """
         return len(self.items)
 
     def add_items(self, items_dict):
         """
-        Add items as a dictionary to the collection
+        Add items as a dictionary to the collection.
 
         Parameters:
         - items_dict : dictionary with items
@@ -76,8 +71,6 @@ class Collection(object):
             self.items.update(items_dict)
 
     def get_items(self):
-        """
-        Return items collection as dictionary
-        """
+        """ Return items collection as dictionary. """
         # copy values of items collection
         return copy.deepcopy(self.items)
