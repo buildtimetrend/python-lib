@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 """
-Stages related classes.
+Build stage related classes.
 
 Read timestamps.csv, calculates stage duration and saves the result
 to an xml file.
@@ -61,7 +61,7 @@ class Stages(object):
 
     def read_csv(self, csv_filename):
         """
-        Gathers timestamps from a csv file and calculates stage duration.
+        Gather timestamps from a csv file and calculate stage duration.
 
         Parameters :
         - csv_filename : csv filename containing timestamps
@@ -146,7 +146,7 @@ class Stages(object):
 
     def add_stage(self, stage):
         """
-        Add stage.
+        Add a stage.
 
         param stage Stage instance
         """
@@ -167,7 +167,7 @@ class Stages(object):
 
     def create_stage(self, name, start_time, end_time):
         """
-        Create a stage.
+        Create and add a stage.
 
         Parameters :
         - name : stage name
@@ -199,6 +199,7 @@ class Stage(object):
     """ Build stage object. """
 
     def __init__(self):
+        """ Initialize instance. """
         self.data = {}
         self.set_name("")
         self.set_duration(0)
