@@ -1,9 +1,12 @@
 """
-Buildtime Trend : Gather data, analyse and visualise trends of build processes
-on Continuous Integration platforms
+Buildtime Trend python library.
 
-Buildtime trend library, to parse input files with timestamps,
-analyse them, store the results and other supporting tools.
+Features :
+- parse input files with timestamps,
+- retrieve and parse Travis CI build logfiles
+- analyse the data
+- store the results in XML format or Keen.io database
+- other supporting tools
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
