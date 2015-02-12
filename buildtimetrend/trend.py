@@ -2,7 +2,7 @@
 # disable pylint message about unused variable 'fig'
 # pylint: disable=unused-variable
 """
-Generates a trend (graph) from the buildtimes in buildtimes.xml
+Generate a chart from the gathered buildtime data.
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
@@ -33,16 +33,17 @@ from matplotlib import pyplot as plt
 
 
 class Trend(object):
-    """
-    Trend class, generates a chart from gathered buildtime data
-    """
+
+    """ Trend class, generate a chart from gathered buildtime data. """
+    
     def __init__(self):
+        """ Initialize instance. """
         self.stages = {}
         self.builds = []
 
     def gather_data(self, result_file):
         """
-        Get buildtime data from an xml file
+        Get buildtime data from an xml file.
 
         Parameters
         - result_file : xml file containing the buildtime data
@@ -86,9 +87,7 @@ class Trend(object):
         return True
 
     def parse_xml_stages(self, stages, index):
-        """
-        Parse stages in from xml file
-        """
+        """ Parse stages in from xml file. """
         for stage in stages:
             if (stage.tag == 'stage' and
                     stage.get('name') is not None and
@@ -105,7 +104,7 @@ class Trend(object):
 
     def generate(self, trend_file):
         """
-        Generates the trend chart and saves it as a PNG image using matplotlib
+        Generate the trend chart and save it as a PNG image using matplotlib.
 
         Parameters
         - trend_file : file name to save chart image to
