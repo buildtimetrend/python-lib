@@ -1,7 +1,7 @@
 # vim: set expandtab sw=4 ts=4:
 # pylint: disable=invalid-name,too-few-public-methods
 """
-Manages settings of buildtime Trend.
+Manage Buildtime Trend settings.
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
@@ -229,7 +229,6 @@ class Settings(object):
             Assign the environment variable values to
             the corresponding setting.
             """
-
             # assign environment variable values to setting value
             if self.env_var_to_settings("BTT_LOGLEVEL", "loglevel"):
                 set_loglevel(self.get_setting("loglevel"))
