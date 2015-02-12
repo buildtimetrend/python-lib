@@ -26,7 +26,7 @@ from buildtimetrend.tools import check_dict
 
 
 class Collection(object):
-    
+
     """ Dictionary based collection object. """
 
     def __init__(self):
