@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 """
-Gathers build related data.
+Gather build related data.
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
@@ -30,11 +30,11 @@ from buildtimetrend.tools import split_isotimestamp
 
 
 class Build(object):
-    """
-    Gathers Build related data.
-    """
+    
+    """ Gather Build related data. """
 
     def __init__(self, csv_filename=None, end_timestamp=None):
+        """ Initialize instance. """
         self.properties = Collection()
         self.stages = Stages()
         if end_timestamp is not None:
@@ -44,7 +44,7 @@ class Build(object):
 
     def add_stages(self, stages):
         """
-        Add a Stages instance
+        Add a Stages instance.
 
         Parameters :
         - stages : Stages instance
@@ -54,7 +54,7 @@ class Build(object):
 
     def add_stage(self, stage):
         """
-        Add a Stage instance
+        Add a Stage instance.
 
         Parameters :
         - stage : Stage instance
@@ -63,7 +63,7 @@ class Build(object):
 
     def add_property(self, name, value):
         """
-        Add a build property
+        Add a build property.
 
         Parameters :
         - name : Property name
@@ -73,7 +73,7 @@ class Build(object):
 
     def get_property(self, name):
         """
-        Get a build property value
+        Get a build property value.
 
         Parameters :
         - name : Property name
@@ -81,9 +81,7 @@ class Build(object):
         return self.properties.get_item(name)
 
     def get_properties(self):
-        """
-        Return build properties
-        """
+        """ Return build properties. """
         # copy values of properties
         data = self.properties.get_items()
 
@@ -121,9 +119,7 @@ class Build(object):
         self.add_property("finished_at", split_isotimestamp(isotimestamp))
 
     def load_properties_from_settings(self):
-        """
-        Load build properties from settings.
-        """
+        """ Load build properties from settings. """
         self.load_property_from_settings("build")
         self.load_property_from_settings("job")
         self.load_property_from_settings("branch")
@@ -133,7 +129,8 @@ class Build(object):
 
     def load_property_from_settings(self, property_name, setting_name=None):
         """
-        Load the value of a setting and set it as a build property
+        Load the value of a setting and set it as a build property.
+        
         Parameters
         - property_name : name of the build property
         - setting_name : name of the setting (takes property_name if not set)
@@ -147,9 +144,7 @@ class Build(object):
             self.add_property(property_name, value)
 
     def to_dict(self):
-        """
-        Return object as dictionary
-        """
+        """ Return object as dictionary. """
         # get build properties
         data = self.get_properties()
 
@@ -160,9 +155,7 @@ class Build(object):
         return data
 
     def stages_to_list(self):
-        """
-        Return list of stages, all containing the build properties
-        """
+        """ Return list of stages, all containing the build properties. """
         if type(self.stages) is Stages:
             # create list to be returned
             data = []
@@ -183,7 +176,7 @@ class Build(object):
         return data
 
     def to_xml(self):
-        """Generates xml object of Build instance"""
+        """ Generate XML object of a Build instance. """
         root = etree.Element("build")
 
         # add properties
@@ -197,5 +190,5 @@ class Build(object):
         return root
 
     def to_xml_string(self):
-        """Generates xml string of Build instance"""
+        """ Generate XML string of a Build instance. """
         return etree.tostring(self.to_xml(), pretty_print=True)
