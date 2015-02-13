@@ -35,7 +35,7 @@ from matplotlib import pyplot as plt
 class Trend(object):
 
     """ Trend class, generate a chart from gathered buildtime data. """
-    
+
     def __init__(self):
         """ Initialize instance. """
         self.stages = {}
