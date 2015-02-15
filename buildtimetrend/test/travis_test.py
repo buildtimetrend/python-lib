@@ -393,6 +393,7 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(0, len(self.travis_data.current_job.stages.stages))
 
     def test_parse_valid_job_log(self):
+        self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a logfile with 4 stages
         self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_TIMING_TAGS_FILE))
         self.assertEquals(4, len(self.travis_data.current_job.stages.stages))
@@ -409,6 +410,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
 
     def test_parse_incorrect_job_log(self):
+        self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a logfile with 2 incomplete stages and 2 valid stages
         self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_INCORRECT_TIMING_TAGS_FILE))
         self.assertEquals(2, len(self.travis_data.current_job.stages.stages))
@@ -423,11 +425,13 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
 
     def test_parse_valid_job_log_travis_sample(self):
+        self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a sample Travis CI logfile
         self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_LOG_FILE))
         self._check_travis_log()
 
     def test_parse_travis_log(self):
+        self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # retrieve and check Travis CI logfile
         self.travis_data.parse_job_log(32774630)
         self._check_travis_log()

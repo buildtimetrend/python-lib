@@ -367,10 +367,11 @@ class TravisData(object):
         - stream : stream of job log file
         """
         self.travis_substage = TravisSubstage()
+        check_timing_tags = self.has_timing_tags()
 
         for line in stream:
             # parse Travis CI timing tags
-            if 'travis_' in line:
+            if check_timing_tags and 'travis_' in line:
                 self.parse_travis_time_tag(line)
             # parse Travis CI worker tag
             if 'Using worker:' in line:
