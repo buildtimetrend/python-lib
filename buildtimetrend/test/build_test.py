@@ -253,6 +253,58 @@ class TestBuild(unittest.TestCase):
              'repo': "test/project"},
             self.build.get_properties())
 
+    def test_set_duration(self):
+        self.build.add_property("duration", 20)
+        self.assertDictEqual({'duration': 20}, self.build.get_properties())
+
+        # read and parse sample file
+        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+
+        # test dict
+        self.assertDictEqual(
+            {'duration': 17,
+            'started_at': constants.SPLIT_TIMESTAMP1,
+            'finished_at': constants.SPLIT_TIMESTAMP4,
+            'stages':
+            [{'duration': 2,
+              'finished_at': constants.SPLIT_TIMESTAMP2,
+              'name': 'stage1',
+              'started_at': constants.SPLIT_TIMESTAMP1},
+             {'duration': 5,
+              'finished_at': constants.SPLIT_TIMESTAMP3,
+              'name': 'stage2',
+              'started_at': constants.SPLIT_TIMESTAMP2},
+             {'duration': 10,
+              'finished_at': constants.SPLIT_TIMESTAMP4,
+              'name': 'stage3',
+              'started_at': constants.SPLIT_TIMESTAMP3}]
+            },
+            self.build.to_dict())
+
+        # setting duration, overrides total stage duration
+        self.build.add_property("duration", 20)
+
+        # test dict
+        self.assertDictEqual(
+            {'duration': 20,
+            'started_at': constants.SPLIT_TIMESTAMP1,
+            'finished_at': constants.SPLIT_TIMESTAMP4,
+            'stages':
+            [{'duration': 2,
+              'finished_at': constants.SPLIT_TIMESTAMP2,
+              'name': 'stage1',
+              'started_at': constants.SPLIT_TIMESTAMP1},
+             {'duration': 5,
+              'finished_at': constants.SPLIT_TIMESTAMP3,
+              'name': 'stage2',
+              'started_at': constants.SPLIT_TIMESTAMP2},
+             {'duration': 10,
+              'finished_at': constants.SPLIT_TIMESTAMP4,
+              'name': 'stage3',
+              'started_at': constants.SPLIT_TIMESTAMP3}]
+            },
+            self.build.to_dict())
+
     def test_to_dict(self):
         # read and parse sample file
         self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)

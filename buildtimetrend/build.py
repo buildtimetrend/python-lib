@@ -86,7 +86,10 @@ class Build(object):
         data = self.properties.get_items()
 
         # add total duration
-        data["duration"] = self.stages.total_duration()
+        # use total stage duration if it is defined
+        # else, calculate duration from stage duration
+        if not "duration" in data:
+            data["duration"] = self.stages.total_duration()
 
         # add started_at of first stage if it is defined
         # and if it is not set in properties
