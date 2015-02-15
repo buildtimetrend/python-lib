@@ -238,6 +238,7 @@ class TestTravisData(unittest.TestCase):
             'job': '158.1',
             'repo': 'buildtimetrend/python-lib',
             'result': 'passed',
+            'duration': 102.0,
             'worker': {'hostname': 'worker-linux-11-2.bb.travis-ci.org',
                 'os': 'travis-linux-9'},
             'started_at': {'day_of_month': '08',

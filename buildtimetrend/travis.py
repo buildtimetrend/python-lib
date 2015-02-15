@@ -322,6 +322,11 @@ class TravisData(object):
         self.current_job.set_started_at(job_data['job']['started_at'])
         self.current_job.set_finished_at(job_data['job']['finished_at'])
 
+        # calculate job duration from start and finished timestamps
+        # if no timing tags are available
+        if not self.has_timing_tags():
+            self.current_job.add_property("duration", self.get_job_duration())
+
     def get_job_log(self, job_id):
         """
         Retrieve Travis CI job log.
