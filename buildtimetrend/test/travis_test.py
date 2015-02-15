@@ -726,6 +726,18 @@ class TestTravisData(unittest.TestCase):
             'os': 'travis-linux-11'},
             self.travis_data.current_job.get_property("worker"))
 
+    def test_has_timing_tags(self):
+        """
+        has_timing_tags() should be true if build was
+        started at 2014-07-30 or after.
+        """
+        self.assertFalse(self.travis_data.has_timing_tags())
+
+        self.travis_data.current_job.set_started_at("2014-07-29T16:30:00Z")
+        self.assertFalse(self.travis_data.has_timing_tags())
+
+        self.travis_data.current_job.set_started_at("2014-07-30T16:30:00Z")
+        self.assertTrue(self.travis_data.has_timing_tags())
 
 class TestTravisSubstage(unittest.TestCase):
     def setUp(self):
