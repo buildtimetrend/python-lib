@@ -28,6 +28,7 @@ v0.2 (not yet released)
 - [keenio] add send_build_data_service()
 - [keenio] schema change : save build job data in build_jobs.job (was builds.build)
 - schema change : version is renamed to lib_version in project_info
+- issue #50 : only check timing tags for builds after they were introduced on Travis CI
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git

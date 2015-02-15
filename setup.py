@@ -14,7 +14,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="buildtimetrend",
-    version="0.2.dev30",
+    version="0.2.dev31",
     packages=find_packages(),
     install_requires=['keen>=0.3.9', 'lxml', 'pyyaml', 'python-dateutil'],
     tests_require=['nose', 'coveralls'],
