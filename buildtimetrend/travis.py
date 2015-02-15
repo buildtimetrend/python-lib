@@ -471,6 +471,18 @@ class TravisData(object):
         # 1407369600 is epoch timestamp of 2014-08-07T00:00:00Z
         return started_at["timestamp_seconds"] > 1407369600
 
+    def get_job_duration(self):
+        """ Calculate build job duration. """
+        started_at = self.current_job.get_property("started_at")
+        finished_at = self.current_job.get_property("finished_at")
+        if started_at is None or "timestamp_seconds" not in started_at or \
+                finished_at is None or "timestamp_seconds" not in finished_at:
+            return 0.0
+
+        timestamp_start = float(started_at["timestamp_seconds"])
+        timestamp_end = float(finished_at["timestamp_seconds"])
+        return timestamp_end - timestamp_start
+
     def get_started_at(self):
         """ Retrieve timestamp when build was started. """
         if len(self.build_data) > 0:

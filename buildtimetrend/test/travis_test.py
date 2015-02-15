@@ -743,6 +743,26 @@ class TestTravisData(unittest.TestCase):
         self.travis_data.current_job.set_started_at("2014-08-07T16:30:00Z")
         self.assertTrue(self.travis_data.has_timing_tags())
 
+    def test_get_job_duration(self):
+        """
+        Calculate job duration.
+        """
+        self.assertAlmostEqual(0.0, self.travis_data.get_job_duration(), 0)
+
+        self.travis_data.current_job.set_started_at("2014-07-30T16:30:00Z")
+        self.assertAlmostEqual(0.0, self.travis_data.get_job_duration(), 0)
+
+        self.travis_data.current_job.set_finished_at("2014-07-30T16:31:00Z")
+        self.assertAlmostEqual(60.0, self.travis_data.get_job_duration(), 0)
+
+        self.travis_data.current_job.set_finished_at("2014-07-30T16:31:00.123Z")
+        self.assertAlmostEqual(60.123, self.travis_data.get_job_duration(), 3)
+
+        # reset current_job and only set finished timestamp
+        self.travis_data.current_job = Build()
+        self.travis_data.current_job.set_finished_at("2014-07-30T16:31:00.123Z")
+        self.assertAlmostEqual(0.0, self.travis_data.get_job_duration(), 0)
+
 class TestTravisSubstage(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
