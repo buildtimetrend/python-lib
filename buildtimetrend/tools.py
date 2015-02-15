@@ -68,6 +68,9 @@ def split_isotimestamp(isotimestamp):
     Parameters :
     - isotimestamp : timestamp in ISO format YYYY-MM-DDTHH:MM:SS
     """
+    if isotimestamp is None or type(isotimestamp) not in (str, unicode):
+        raise TypeError("param %s should be an isotimestamp formatted string" %
+                        'isotimestamp')
     # use dateutil.parser.parse to parse the timestamp
     return split_datetime(parse(isotimestamp, tzinfos={"UTC": +0}))
 

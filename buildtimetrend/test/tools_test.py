@@ -54,10 +54,23 @@ class TestTools(unittest.TestCase):
         )
 
     def test_split_isotimestamp(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, split_isotimestamp)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, split_isotimestamp, None)
+        self.assertRaises(TypeError, split_isotimestamp, 1234)
+        self.assertRaises(ValueError, split_isotimestamp, "string")
+
         # test 0 timestamp (epoch) in UTC
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH,
             split_isotimestamp("1970-01-01T00:00:00Z")
+        )
+
+        self.assertDictEqual(
+            constants.SPLIT_TIMESTAMP_EPOCH,
+            split_isotimestamp(u"1970-01-01T00:00:00Z")
         )
 
         # test 0 timestamp (epoch), without timezone
