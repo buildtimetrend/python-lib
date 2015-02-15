@@ -740,7 +740,7 @@ class TestTravisData(unittest.TestCase):
         self.travis_data.current_job.set_started_at("2014-07-29T16:30:00Z")
         self.assertFalse(self.travis_data.has_timing_tags())
 
-        self.travis_data.current_job.set_started_at("2014-07-30T16:30:00Z")
+        self.travis_data.current_job.set_started_at("2014-08-07T16:30:00Z")
         self.assertTrue(self.travis_data.has_timing_tags())
 
 class TestTravisSubstage(unittest.TestCase):

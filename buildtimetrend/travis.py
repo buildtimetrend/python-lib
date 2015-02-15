@@ -461,15 +461,15 @@ class TravisData(object):
         """
         Check if Travis CI job log has timing tags.
 
-        Timing tags were introduced on Travis CI starting 2014-07-30,
+        Timing tags were introduced on Travis CI starting 2014-08-07,
         check if started_at is more recent.
         """
         started_at = self.current_job.get_property("started_at")
         if started_at is None or "timestamp_seconds" not in started_at:
             return False
 
-        # 1406678400 is epoch timestamp of 2014-07-30T00:00:00Z
-        return started_at["timestamp_seconds"] > 1406678400
+        # 1407369600 is epoch timestamp of 2014-08-07T00:00:00Z
+        return started_at["timestamp_seconds"] > 1407369600
 
     def get_started_at(self):
         """ Retrieve timestamp when build was started. """
