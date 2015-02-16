@@ -10,6 +10,13 @@ script:
   - nosetests --with-coverage --cover-package=buildtimetrend
 after_script:
   - coveralls
+deploy:
+  provider: pypi
+  user: Dieter.Adriaenssens
+  on:
+    tags: true
+  password:
+    secure: UGQmcX4npYdLhCJqJDxWLBvUVSZCYnvlqpvcSsDy6KC8ASwfK6lZh5pRmX/Z1dXDxKynsofJEyAJW9GrkUO7/9xx+r19/UzXbvQ1TS93NP47fNkXc3/ceCRH5gM2hGoQZKUJTL/hnX+aDKAb4c/L76kg+psptANu6iJMnC6yVY4=
 notifications:
   webhooks:
     # parse Travis CI log and send result to Keen.io, using Builtime Trend Service
