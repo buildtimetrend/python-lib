@@ -4,8 +4,10 @@ Buildtime Trend Python library
 Visualise what's trending in your build process
 
 [![Buildtime trend](http://img.shields.io/badge/release-v0.2-blue.svg)](https://github.com/ruleant/buildtime-trend/releases/latest)
-[![Latest Version](https://pypip.in/version/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
 [![Buildtime trend](http://img.shields.io/badge/dev-v0.3.dev-blue.svg)](https://github.com/ruleant/buildtime-trend/zipball/master)
+[![Latest Version](https://pypip.in/version/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
+[![Downloads](https://pypip.in/download/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
+[![Supported Python versions](https://pypip.in/py_versions/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
 
 [![Build Status](https://travis-ci.org/buildtimetrend/python-lib.svg?branch=master)](https://travis-ci.org/buildtimetrend/python-lib)
 [![Coverage Status](https://coveralls.io/repos/buildtimetrend/python-lib/badge.png?branch=master)](https://coveralls.io/r/buildtimetrend/python-lib?branch=master)
