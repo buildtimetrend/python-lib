@@ -14,7 +14,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="buildtimetrend",
-    version="0.2.dev33",
+    version="0.2",
     packages=find_packages(),
     install_requires=['keen>=0.3.9', 'lxml', 'pyyaml', 'python-dateutil'],
     tests_require=['nose', 'coveralls'],
@@ -30,7 +30,7 @@ setup(
     license="AGPLv3+",
     keywords=["trends", "charts", "build", "ci", "timing data"],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
         "Intended Audience :: Developers",
