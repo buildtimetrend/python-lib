@@ -1,27 +1,31 @@
 # vim: set expandtab sw=4 ts=4:
-#
-# Generates a trend (graph) from the buildtimes in buildtimes.xml
-#
-# Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
-#
-# This file is part of buildtime-trend
-# <https://github.com/ruleant/buildtime-trend/>
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
+# disable pylint message about unused variable 'fig'
+# pylint: disable=unused-variable
+"""
+Generate a chart from the gathered buildtime data.
 
-import os
+Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
+
+This file is part of buildtimetrend/python-lib
+<https://github.com/buildtimetrend/python-lib/>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+"""
+
 from lxml import etree
+from buildtimetrend.tools import get_logger
+from buildtimetrend.tools import check_file
 import matplotlib
 # Force matplotlib to not use any Xwindow backend.
 matplotlib.use('Agg')
@@ -29,36 +33,41 @@ from matplotlib import pyplot as plt
 
 
 class Trend(object):
+
+    """ Trend class, generate a chart from gathered buildtime data. """
+
     def __init__(self):
+        """ Initialize instance. """
         self.stages = {}
         self.builds = []
 
     def gather_data(self, result_file):
+        """
+        Get buildtime data from an xml file.
+
+        Parameters
+        - result_file : xml file containing the buildtime data
+        """
         # load buildtimes file
-        if os.path.isfile(result_file):
+        if check_file(result_file):
             root_xml = etree.parse(result_file).getroot()
         else:
-            print 'File doesn\'t exist : {}'.format(result_file)
             return False
 
         index = 0
         # print content of buildtimes file
         for build_xml in root_xml:
-            build_id = "#%d" % (index + 1)
-            build_summary = "Build ID : "
-            if build_xml.get('build') is None:
-                build_summary += "unknown"
-            else:
-                build_summary += build_xml.get('build')
-                build_summary += ", Job : "
-                if build_xml.get('job') is None:
-                    build_id = build_xml.get('build')
-                    build_summary += "unknown"
-                else:
-                    build_summary += build_xml.get('job')
-                    build_id = build_xml.get('job')
+            build_id = build_xml.get('build')
+            job_id = build_xml.get('job')
 
-            self.builds.append(build_id)
+            if job_id is None and build_id is None:
+                build_name = "#%d" % (index + 1)
+            elif job_id is not None:
+                build_name = job_id
+            else:
+                build_name = build_id
+
+            self.builds.append(build_name)
 
             # add 0 to each existing stage, to make sure that
             # the indexes of each value
@@ -70,25 +79,36 @@ class Trend(object):
             # add duration of each stage to stages list
             for build_child in build_xml:
                 if build_child.tag == 'stages':
-                    build_summary += ", stages : " + str(len(build_child))
-                    for stage in build_child:
-                        if (stage.tag == 'stage' and
-                                stage.get('name') is not None and
-                                stage.get('duration') is not None):
-                            if stage.get('name') in self.stages:
-                                temp_dict = self.stages[stage.get('name')]
-                            else:
-                                # when a new stage is added,
-                                # create list with zeros,
-                                # one for each existing build
-                                temp_dict = [0]*(index + 1)
-                            temp_dict[index] = int(stage.get('duration'))
-                            self.stages[stage.get('name')] = temp_dict
-            print build_summary
+                    stage_count = len(build_child)
+                    self.parse_xml_stages(build_child, index)
+            get_logger().debug("Build ID : %s, Job : %s, stages : %d",
+                               build_id, job_id, stage_count)
             index += 1
         return True
 
+    def parse_xml_stages(self, stages, index):
+        """ Parse stages in from xml file. """
+        for stage in stages:
+            if (stage.tag == 'stage' and
+                    stage.get('name') is not None and
+                    stage.get('duration') is not None):
+                if stage.get('name') in self.stages:
+                    temp_dict = self.stages[stage.get('name')]
+                else:
+                    # when a new stage is added,
+                    # create list with zeros,
+                    # one for each existing build
+                    temp_dict = [0] * (index + 1)
+                temp_dict[index] = float(stage.get('duration'))
+                self.stages[stage.get('name')] = temp_dict
+
     def generate(self, trend_file):
+        """
+        Generate the trend chart and save it as a PNG image using matplotlib.
+
+        Parameters
+        - trend_file : file name to save chart image to
+        """
         fig, axes = plt.subplots()
 
         # add data

@@ -1,82 +1,95 @@
-'''
-vim: set expandtab sw=4 ts=4:
+# vim: set expandtab sw=4 ts=4:
+"""
+Gather build related data.
 
-Gathers build related data.
+Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
-Copyright (C) 2014 Dieter Adriaenssens <ruleant@users.sourceforge.net>
-
-This file is part of buildtime-trend
-<https://github.com/ruleant/buildtime-trend/>
+This file is part of buildtimetrend/python-lib
+<https://github.com/buildtimetrend/python-lib/>
 
 This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
+it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU General Public License
+You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
-'''
+"""
 
 import copy
 from lxml import etree
+from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stages
+from buildtimetrend.collection import Collection
+from buildtimetrend.tools import split_isotimestamp
 
 
 class Build(object):
-    '''
-    Gathers Build related data.
-    '''
 
-    def __init__(self, csv_filename=None):
-        self.properties = {}
+    """ Gather Build related data. """
+
+    def __init__(self, csv_filename=None, end_timestamp=None):
+        """ Initialize instance. """
+        self.properties = Collection()
         self.stages = Stages()
+        if end_timestamp is not None:
+            self.stages.set_end_timestamp(end_timestamp)
         if csv_filename is not None:
             self.stages.read_csv(csv_filename)
 
     def add_stages(self, stages):
-        '''
-        Add a Stages instance
+        """
+        Add a Stages instance.
 
         Parameters :
         - stages : Stages instance
-        '''
+        """
         if stages is not None and type(stages) is Stages:
             self.stages = stages
 
+    def add_stage(self, stage):
+        """
+        Add a Stage instance.
+
+        Parameters :
+        - stage : Stage instance
+        """
+        self.stages.add_stage(stage)
+
     def add_property(self, name, value):
-        '''
-        Add a build property
+        """
+        Add a build property.
 
         Parameters :
         - name : Property name
         - value : Property value
-        '''
-        self.properties[name] = value
+        """
+        self.properties.add_item(name, value)
 
     def get_property(self, name):
-        '''
-        Add a build property
+        """
+        Get a build property value.
 
         Parameters :
         - name : Property name
-        '''
-        if name in self.properties:
-            return self.properties[name]
+        """
+        return self.properties.get_item(name)
 
     def get_properties(self):
-        '''
-        Return build properties
-        '''
+        """ Return build properties. """
         # copy values of properties
-        data = copy.deepcopy(self.properties)
+        data = self.properties.get_items()
 
         # add total duration
-        data["duration"] = self.stages.total_duration()
+        # use total stage duration if it is defined
+        # else, calculate duration from stage duration
+        if not "duration" in data:
+            data["duration"] = self.stages.total_duration()
 
         # add started_at of first stage if it is defined
         # and if it is not set in properties
@@ -90,10 +103,51 @@ class Build(object):
 
         return data
 
+    def set_started_at(self, isotimestamp):
+        """
+        Set timestamp when build started.
+
+        Parameters :
+        - isotimestamp : timestamp in iso format when build started
+        """
+        self.add_property("started_at", split_isotimestamp(isotimestamp))
+
+    def set_finished_at(self, isotimestamp):
+        """
+        Set timestamp when build finished.
+
+        Parameters :
+        - isotimestamp : timestamp in iso format when build started
+        """
+        self.add_property("finished_at", split_isotimestamp(isotimestamp))
+
+    def load_properties_from_settings(self):
+        """ Load build properties from settings. """
+        self.load_property_from_settings("build")
+        self.load_property_from_settings("job")
+        self.load_property_from_settings("branch")
+        self.load_property_from_settings("ci_platform")
+        self.load_property_from_settings("result")
+        self.add_property("repo", Settings().get_project_name())
+
+    def load_property_from_settings(self, property_name, setting_name=None):
+        """
+        Load the value of a setting and set it as a build property.
+
+        Parameters
+        - property_name : name of the build property
+        - setting_name : name of the setting (takes property_name if not set)
+        """
+        if setting_name is None:
+            setting_name = property_name
+
+        value = Settings().get_setting(setting_name)
+
+        if value is not None:
+            self.add_property(property_name, value)
+
     def to_dict(self):
-        '''
-        Return object as dictionary
-        '''
+        """ Return object as dictionary. """
         # get build properties
         data = self.get_properties()
 
@@ -104,9 +158,7 @@ class Build(object):
         return data
 
     def stages_to_list(self):
-        '''
-        Return list of stages, all containing the build properties
-        '''
+        """ Return list of stages, all containing the build properties. """
         if type(self.stages) is Stages:
             # create list to be returned
             data = []
@@ -121,18 +173,18 @@ class Build(object):
                 temp["stage"] = copy.deepcopy(stage)
                 # copy values of properties
                 if len(build_properties) > 0:
-                    temp["build"] = build_properties
+                    temp["job"] = build_properties
                 data.append(temp)
 
         return data
 
     def to_xml(self):
-        '''Generates xml object of Build instance'''
+        """ Generate XML object of a Build instance. """
         root = etree.Element("build")
 
         # add properties
-        for key in self.properties:
-            root.set(str(key), str(self.properties[key]))
+        for key in self.properties.get_items():
+            root.set(str(key), str(self.properties.get_item(key)))
 
         # add stages
         if type(self.stages) is Stages:
@@ -141,5 +193,5 @@ class Build(object):
         return root
 
     def to_xml_string(self):
-        '''Generates xml string of Build instance'''
+        """ Generate XML string of a Build instance. """
         return etree.tostring(self.to_xml(), pretty_print=True)

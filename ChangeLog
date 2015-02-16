@@ -1,3 +1,35 @@
+v0.2 (not yet released)
+- issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script
+- issue #28 : improve documentation on assigning Keen.io access keys
+- issue #30 : add timestamp event names that cause analysis to end
+- issue #19 : update Keen.io charts using query request refresh function
+- issue #26 : add chart displaying builds per time of day or day of week
+- issue #44 : Display buildtime averages of different timeframes in the same chart
+- replace print statements by logging methods
+- issue #34 : Parse Travis CI logfile to retrieve timing info
+- issue #24 : Assign Travis CI started and finished timestamps to build job
+- method keenio.keen_io_writable() renamed to keenio.keen_is_writable()
+- method keenio.keen_io_readable() renamed to keenio.keen_is_readable()
+- issue #55 : get_logger() returns buildtimetrend logger object
+- issue #15 : use Keen.io dashboard template for trends dashboard
+- issue #58 : split project in a library (current project) and a client, see https://github.com/buildtimetrend/python-client
+- change license to GNU Affero General Public License v3 or later (AGPLv3+)
+- issue #6 : create Settings class
+- issue #7 : populate Settings class with Travis CI environment variables
+- issue #60 : check if API result contains builds
+- issue #33 : add microseconds when logging a timestamp
+- set loglevel with environment variable BTT_LOGLEVEL and config file setting
+- issue #67 : check if Travis CI notification payload is unicode
+- issue #17 : add status badges to dashboard
+- [keenio] rename generate_overview_config_file to generate_dashboard_config_file
+- issue #68 : catch KeenApiError
+- issue #46 : use Travis CI build config to assign missing (sub)stage names
+- [keenio] rename log_build_keen() to send_build_data()
+- [keenio] add send_build_data_service()
+- [keenio] schema change : save build job data in build_jobs.job (was builds.build)
+- schema change : version is renamed to lib_version in project_info
+- issue #50 : only check timing tags for builds after they were introduced on Travis CI
+
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git
 

@@ -1,28 +1,24 @@
 language: python
 python:
   - "2.7"
-env:
-  global:
-    - secure: "dR5giy/zGN6FmS4rlJ+RTSwKrbcMSxP9TJ4uW3eT7SpcAHBLPmW1/46vMAVGlHSqjdW0w+DxRjxrLMmo9g3ZZsqFExiXM19W2sbyAuwiAa2WLDTL3IdEdw/wCJm9W1usrRB/oGQjsBvkTzzXlobLXUTcADhUfBSj6XjMiduSAsA="
-    - secure: "Nm5w1CTqlWlX4qtpd+p+4NzoTV0/DMQHz4cNSAqYlufi/Cr9iQNiEk9Bsp/bh5UMe7EHTDztW5iABbzURhlOfHLVf3wkinATVX3ijzjPJcjVDyY4j2XU8oEszr2hqLl0u8VXUbQSJHzov75Ocuw6b0Oa334HLSyrDszqKaE5VEo="
-    - secure: "fa1MLxplPA2TDXrYYq5DCGA5PAAxXhz1FDyDwLSzIPayKzeefLod87nSBz7vsFsfqBastw8p6lXzBihRFHGy3o2HCWCOccd5GVDK50BdcccWTOvVHkgW1a99NgsMsRTjUlWnVcDe2PuVuzCRbnvSuA9ruKtcVhJguXihf1sWVw8="
-    - secure: "m0LrdbOoKpCXFNDD8NjFU5jeYcKabXJQPo/lR3CUnAB4J+q+76DA7dpHGPyYdW2QuC8hXE04hN4B+I6gu4iMKC+1cWdunYp2gSt+ZWtDDHLZ84nrKmhwiBoSVXZhPqm5Tggv+D5A7PPElqzih1IITaq64Fqh0aOb/jhXy4l6lnY="
-before_install:
-  # initialise buildtime-trend scripts
-  - source ./init.sh
+# enable building on container-based infrastructure
+sudo: false
 install:
-  - timestamp.sh install
-  - CFLAGS="-O0" pip install -r requirements.txt
-  - CFLAGS="-O0" pip install -r requirements-native.txt
-  - CFLAGS="-O0" pip install -r requirements-tests.txt
+  - CFLAGS="-O0" pip install -e .[native]
+  - CFLAGS="-O0" pip install coveralls
 script:
-  - timestamp.sh tests
   - nosetests --with-coverage --cover-package=buildtimetrend
-after_success:
-  - timestamp.sh coveralls
+after_script:
   - coveralls
-  # synchronise buildtime-trend result with gh-pages
-  - sync-buildtime-trend-with-gh-pages.sh -m native
-after_failure:
-  # synchronise buildtime-trend result with gh-pages
-  - sync-buildtime-trend-with-gh-pages.sh -m native
+deploy:
+  provider: pypi
+  user: Dieter.Adriaenssens
+  on:
+    tags: true
+  password:
+    secure: UGQmcX4npYdLhCJqJDxWLBvUVSZCYnvlqpvcSsDy6KC8ASwfK6lZh5pRmX/Z1dXDxKynsofJEyAJW9GrkUO7/9xx+r19/UzXbvQ1TS93NP47fNkXc3/ceCRH5gM2hGoQZKUJTL/hnX+aDKAb4c/L76kg+psptANu6iJMnC6yVY4=
+notifications:
+  webhooks:
+    # parse Travis CI log and send result to Keen.io, using Builtime Trend Service
+    - http://buildtimetrend-dev.herokuapp.com/travis
+    - http://buildtimetrend.herokuapp.com/travis

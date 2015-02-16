@@ -2,6 +2,9 @@ timestamps.csv
 buildtimes.xml
 trend.png
 config.js
+config.yml
+config_service.yml
+newer_file.tmp
 *.py[cod]
 
 # C extensions
@@ -30,6 +33,7 @@ pip-log.txt
 .coverage
 .tox
 nosetests.xml
+.noseids
 
 # Translations
 *.mo
@@ -38,3 +42,11 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+### vim ###
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
