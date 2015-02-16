@@ -35,8 +35,22 @@ Visualise trends of build processes on Continuous Integration platforms by gathe
   - builds per branch
   - build duration per time of day/day of week
 
+Usage
+-----
+
+The [Buildtime Trend Python client](https://github.com/buildtimetrend/python-client) and [Buildtime Trend as a Service](https://github.com/buildtimetrend/service) depend on this library.
+It is recommended to use this library with either of them, have a look at their documentation on how to use them.
+
 How to get it?
 --------------
+
+If you want to use this library directly, there are several ways of getting it.
+
+Buildtimetrend library is registered in PyPI, to install, use :
+
+```bash
+pip install buildtimetrend
+```
 
 The [latest version](https://github.com/buildtimetrend/python-lib/releases/latest) is available for download as zip and tarball on GitHub. Unzip and copy to the desired directory.
 
@@ -77,10 +91,6 @@ pip install lxml
 pip install 'matplotlib>=1.2.0'
 ```
 
-Usage
------
-
-The [Buildtime Trend Python client](https://github.com/buildtimetrend/python-client) and [Buildtime Trend as a Service](https://github.com/buildtimetrend/service) are using this library, have a look at their documentation on how to use them.
 
 Store build time data in xml (native mode)
 ------------------------------------------
