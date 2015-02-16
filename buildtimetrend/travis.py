@@ -469,7 +469,7 @@ class TravisData(object):
         Timing tags were introduced on Travis CI starting 2014-08-07,
         check if started_at is more recent.
         """
-        started_at = self.current_job.get_property("started_at")
+        started_at = self.current_job.get_started_at()
         if started_at is None or "timestamp_seconds" not in started_at:
             return False
 

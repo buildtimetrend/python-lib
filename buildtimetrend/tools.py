@@ -52,8 +52,27 @@ def split_timestamp(timestamp):
     Parameters :
     - timestamp : timestamp, seconds since epoch
     """
-    dt_utc = datetime.utcfromtimestamp(timestamp).replace(tzinfo=tzutc())
-    return split_datetime(dt_utc)
+    return split_datetime(timestamp2datetime(timestamp))
+
+
+def timestamp2datetime(timestamp):
+    """
+    Convert epoch timestamp into a datetime object.
+
+    Parameters :
+    - timestamp : timestamp in seconds since epoch
+    """
+    return datetime.utcfromtimestamp(timestamp).replace(tzinfo=tzutc())
+
+
+def timestamp2iso(timestamp):
+    """
+    Convert epoch timestamp into an ISO timestamp formatted string.
+
+    Parameters :
+    - timestamp : timestamp in seconds since epoch
+    """
+    return timestamp2datetime(timestamp).isoformat()
 
 
 def split_isotimestamp(isotimestamp):

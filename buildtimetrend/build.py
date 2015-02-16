@@ -96,10 +96,16 @@ class Build(object):
         if self.stages.started_at is not None and "started_at" not in data:
             data["started_at"] = self.stages.started_at
 
+        if "started_at" in data:
+            data["started_at"] = split_isotimestamp(data["started_at"])
+
         # add finished_at of last stage if it is defined
         # and if it is not set in properties
         if self.stages.finished_at is not None and "finished_at" not in data:
             data["finished_at"] = self.stages.finished_at
+
+        if "finished_at" in data:
+            data["finished_at"] = split_isotimestamp(data["finished_at"])
 
         return data
 
@@ -110,7 +116,13 @@ class Build(object):
         Parameters :
         - isotimestamp : timestamp in iso format when build started
         """
-        self.add_property("started_at", split_isotimestamp(isotimestamp))
+        self.add_property("started_at", isotimestamp)
+
+    def get_started_at(self):
+        """
+        Return timestamp when build started.
+        """
+        return split_isotimestamp(self.get_property("started_at"))
 
     def set_finished_at(self, isotimestamp):
         """
@@ -119,7 +131,13 @@ class Build(object):
         Parameters :
         - isotimestamp : timestamp in iso format when build started
         """
-        self.add_property("finished_at", split_isotimestamp(isotimestamp))
+        self.add_property("finished_at", isotimestamp)
+
+    def get_finished_at(self):
+        """
+        Return timestamp when build finished.
+        """
+        return split_isotimestamp(self.get_property("finished_at"))
 
     def load_properties_from_settings(self):
         """ Load build properties from settings. """

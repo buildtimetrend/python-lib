@@ -26,7 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import csv
 from buildtimetrend.tools import get_logger
-from buildtimetrend.tools import split_timestamp
+from buildtimetrend.tools import timestamp2iso
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import nano2sec
 from lxml import etree
@@ -247,7 +247,7 @@ class Stage(object):
         """
         if timestamp is not None and name is not None:
             try:
-                self.data[name] = split_timestamp(timestamp)
+                self.data[name] = timestamp2iso(timestamp)
                 return True
             except TypeError:
                 return False
