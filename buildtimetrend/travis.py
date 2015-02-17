@@ -245,6 +245,9 @@ class TravisData(object):
                 if "config" in build:
                     self.build_config = build["config"]
                 else:
+                    get_logger().warning(
+                        "Travis CI build config is not set"
+                    )
                     self.build_config = {}
 
                 if "job_ids" in build:
