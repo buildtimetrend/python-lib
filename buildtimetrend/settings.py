@@ -39,8 +39,7 @@ class Settings(object):
     Settings class is a singleton.
 
     Inspired by
-    http://python-3-patterns-idioms-test.readthedocs.org/ \
-    en/latest/Singleton.html
+    http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Singleton.html
     """
 
     class __Settings(object):
