@@ -10,11 +10,12 @@ This file is part of buildtimetrend/python-lib
 <https://github.com/buildtimetrend/python-lib>
 """
 from setuptools import setup, find_packages
+import buildtimetrend
 
 
 setup(
-    name="buildtimetrend",
-    version="0.3.dev1",
+    name=buildtimetrend.NAME,
+    version=buildtimetrend.VERSION,
     packages=find_packages(),
     install_requires=['keen>=0.3.9', 'lxml', 'pyyaml', 'python-dateutil'],
     tests_require=['nose', 'coveralls'],
