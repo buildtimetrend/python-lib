@@ -29,8 +29,8 @@ import keen
 import buildtimetrend
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
-from buildtimetrend.tools import set_loglevel
-from buildtimetrend.tools import get_logger
+from buildtimetrend import set_loglevel
+from buildtimetrend import get_logger
 
 
 class Settings(object):

@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 import csv
-from buildtimetrend.tools import get_logger
+from buildtimetrend import get_logger
 from buildtimetrend.tools import split_timestamp
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import nano2sec

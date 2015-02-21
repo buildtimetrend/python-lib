@@ -24,7 +24,7 @@ import os
 import json
 import re
 from hashlib import sha256
-from buildtimetrend.tools import get_logger
+from buildtimetrend import get_logger
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string

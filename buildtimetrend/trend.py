@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 from lxml import etree
-from buildtimetrend.tools import get_logger
+from buildtimetrend import get_logger
 from buildtimetrend.tools import check_file
 import matplotlib
 # Force matplotlib to not use any Xwindow backend.

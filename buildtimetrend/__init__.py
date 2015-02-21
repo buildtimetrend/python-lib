@@ -26,12 +26,45 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
-from buildtimetrend.tools import set_loglevel
+import logging
 
 NAME = "buildtimetrend"
 VERSION = "0.3.dev"
 SCHEMA_VERSION = "2"
 USER_AGENT = "%s/%s" % (NAME, VERSION)
+
+
+def get_logger():
+    """ Return logger object. """
+    return logging.getLogger(NAME)
+
+
+def set_loglevel(loglevel):
+    """
+    Set loglevel.
+
+    Based on example on https://docs.python.org/2/howto/logging.html
+
+    Assuming loglevel is bound to the string value obtained from the
+    command line argument. Convert to upper case to allow the user to
+    specify --log=DEBUG or --log=debug
+    """
+    if loglevel is None or type(loglevel) is not str:
+        raise TypeError("param %s should be a string" % 'loglevel')
+
+    numeric_level = getattr(logging, loglevel.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+
+    # create handler
+    log_handler = logging.StreamHandler()
+    log_handler.setLevel(numeric_level)
+
+    # setup logger
+    logger = get_logger()
+    logger.setLevel(numeric_level)
+    logger.addHandler(log_handler)
+    logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
 
 
 set_loglevel("WARNING")

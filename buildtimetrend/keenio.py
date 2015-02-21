@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 import os
-from buildtimetrend.tools import get_logger
+from buildtimetrend import get_logger
 import copy
 import keen
 import requests
