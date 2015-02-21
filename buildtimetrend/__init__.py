@@ -68,3 +68,4 @@ def set_loglevel(loglevel):
 
 
 set_loglevel("WARNING")
+logger = get_logger()

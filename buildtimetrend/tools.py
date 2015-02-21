@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 import os
-from buildtimetrend import get_logger
+from buildtimetrend import logger
 from datetime import datetime
 from dateutil.parser import parse
 from dateutil.tz import tzutc
@@ -144,7 +144,7 @@ def check_file(filename):
     """
     # load timestamps file
     if not os.path.isfile(filename):
-        get_logger().critical('File doesn\'t exist : %s', filename)
+        logger.critical('File doesn\'t exist : %s', filename)
         return False
 
     return True

@@ -24,7 +24,7 @@ import os
 import json
 import re
 from hashlib import sha256
-from buildtimetrend import get_logger
+from buildtimetrend import logger
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string
@@ -108,7 +108,6 @@ def process_notification_payload(payload):
     Parameters:
     - payload : Travis CI notification payload
     """
-    logger = get_logger()
     settings = Settings()
 
     if payload is None:
@@ -156,8 +155,6 @@ def check_authorization(repo, auth_header):
     - repo : git repo name
     - auth_header : Travis CI notification Authorization header
     """
-    logger = get_logger()
-
     # get Travis account token from Settings
     token = Settings().get_setting("travis_account_token")
 
@@ -214,7 +211,7 @@ class TravisData(object):
         self.build_data = self.json_request(request)
 
         # log build_data
-        get_logger().debug(
+        logger.debug(
             "Build #%s data : %s",
             str(self.build_id),
             json.dumps(self.build_data, sort_keys=True, indent=2)
@@ -232,7 +229,7 @@ class TravisData(object):
                 if type(commands) is list and command in commands:
                     substage_number = commands.index(command) + 1
                     substage_name = "%s.%s" % (stage_name, substage_number)
-                    get_logger().debug(
+                    logger.debug(
                         "Substage %s corresponds to '%s'",
                         substage_name, command
                     )
@@ -245,7 +242,7 @@ class TravisData(object):
                 if "config" in build:
                     self.build_config = build["config"]
                 else:
-                    get_logger().warning(
+                    logger.warning(
                         "Travis CI build config is not set"
                     )
                     self.build_config = {}
@@ -287,7 +284,7 @@ class TravisData(object):
         job_data = self.json_request(request)
 
         # log job_data
-        get_logger().debug(
+        logger.debug(
             "Job #%s data : %s",
             str(job_id),
             json.dumps(job_data, sort_keys=True, indent=2)
@@ -339,7 +336,7 @@ class TravisData(object):
         """
         request = 'jobs/%s/log' % str(job_id)
         request_url = self.api_url + request
-        get_logger().info("Request build job log : %s", request_url)
+        logger.info("Request build job log : %s", request_url)
         return urlopen(request_url)
 
     def parse_job_log(self, job_id):
@@ -398,7 +395,7 @@ class TravisData(object):
             self.travis_substage = TravisSubstage()
 
         escaped_line = line.replace('\x0d', '*').replace('\x1b', 'ESC')
-        get_logger().debug('line : %s', escaped_line)
+        logger.debug('line : %s', escaped_line)
 
         # parse Travis CI timing tags
         for parse_string in TRAVIS_LOG_PARSE_TIMING_STRINGS:
@@ -429,7 +426,7 @@ class TravisData(object):
         Parameters:
         - line : line from logfile containing Travis CI tags
         """
-        get_logger().debug('line : %s', line)
+        logger.debug('line : %s', line)
 
         # parse Travis CI worker tags
         result = re.search(TRAVIS_LOG_PARSE_WORKER_STRING, line)
@@ -442,7 +439,7 @@ class TravisData(object):
         # if it contains all required tags
         tag_list = list({'hostname', 'os'})
         if check_dict(worker_tags, "worker_tags", tag_list):
-            get_logger().debug("Worker tags : %s", worker_tags)
+            logger.debug("Worker tags : %s", worker_tags)
             self.current_job.add_property("worker", worker_tags)
 
     def json_request(self, json_request):
@@ -558,7 +555,6 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logger = get_logger()
         logger.debug("Start stage : %s", tags_dict)
 
         result = False
@@ -585,7 +581,6 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'start_hash'):
             return False
 
-        logger = get_logger()
         logger.debug("Start time : %s", tags_dict)
 
         if self.has_timing_hash():
@@ -609,7 +604,6 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'command'):
             return False
 
-        logger = get_logger()
         logger.debug("Command : %s", tags_dict)
 
         result = False
@@ -640,7 +634,6 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logger = get_logger()
         logger.debug("End time : %s", tags_dict)
 
         result = False
@@ -690,7 +683,6 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logger = get_logger()
         logger.debug("End stage : %s", tags_dict)
 
         # construct substage name

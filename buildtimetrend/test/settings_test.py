@@ -21,7 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.settings import *
-from buildtimetrend import get_logger
+from buildtimetrend import logger
 from buildtimetrend import set_loglevel
 from buildtimetrend.collection import Collection
 from buildtimetrend.keenio import keen_is_writable
@@ -259,8 +259,6 @@ class TestSettings(unittest.TestCase):
         del os.environ["BUILD_TREND_CONFIGFILE"]
 
     def test_process_argv(self):
-        logger = get_logger()
-
         scriptname = "script.py"
 
         expected_ci = "travis"

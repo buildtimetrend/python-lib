@@ -30,7 +30,7 @@ import buildtimetrend
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
 from buildtimetrend import set_loglevel
-from buildtimetrend import get_logger
+from buildtimetrend import logger
 
 
 class Settings(object):
@@ -246,8 +246,6 @@ class Settings(object):
             - env_var_name : Name of the environment variable
             - settings_name : Name of the corresponding settings value
             """
-            logger = get_logger()
-
             if env_var_name in os.environ:
                 self.add_setting(settings_name, os.environ[env_var_name])
                 logger.debug(

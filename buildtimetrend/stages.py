@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 import csv
-from buildtimetrend import get_logger
+from buildtimetrend import logger
 from buildtimetrend.tools import split_timestamp
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import nano2sec
@@ -56,7 +56,7 @@ class Stages(object):
         - timestamp : end timestamp
         """
         if type(timestamp) in (int, float) and timestamp > 0:
-            get_logger().info("Set end_timestamp : %f", timestamp)
+            logger.info("Set end_timestamp : %f", timestamp)
             self.end_timestamp = timestamp
 
     def read_csv(self, csv_filename):
@@ -181,7 +181,7 @@ class Stages(object):
 
         # calculate duration from start and end timestamp
         duration = end_time - start_time
-        get_logger().info('Duration %s : %fs', name, duration)
+        logger.info('Duration %s : %fs', name, duration)
 
         # create stage
         stage = Stage()
@@ -210,7 +210,7 @@ class Stage(object):
             return False
 
         self.data["name"] = str(name)
-        get_logger().info("Set name : %s", name)
+        logger.info("Set name : %s", name)
         return True
 
     def set_command(self, command):
