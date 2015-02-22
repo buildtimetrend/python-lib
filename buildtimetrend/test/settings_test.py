@@ -42,6 +42,7 @@ DEFAULT_SETTINGS = {
     "dashboard_configfile": "dashboard/config.js"
 }
 
+
 class TestSettings(unittest.TestCase):
     @classmethod
     def setUpClass(self):
@@ -159,7 +160,8 @@ class TestSettings(unittest.TestCase):
                 "mode_keen": False,
                 "loglevel": "INFO",
                 "setting1": "test_value1",
-                "dashboard_sample_configfile": "test/dashboard/config_sample.js",
+                "dashboard_sample_configfile":
+                constants.DASHBOARD_SAMPLE_CONFIG_FILE,
                 "dashboard_configfile": "test/dashboard/config.js"
             },
             self.settings.settings.get_items())
@@ -195,7 +197,8 @@ class TestSettings(unittest.TestCase):
         # load settings (config file, env vars and cli parameters)
         self.assertListEqual(
             ["argument"],
-            self.settings.load_settings(argv, constants.TEST_SAMPLE_CONFIG_FILE)
+            self.settings.load_settings(argv,
+                                        constants.TEST_SAMPLE_CONFIG_FILE)
         )
         self.assertDictEqual(
             {
@@ -205,7 +208,8 @@ class TestSettings(unittest.TestCase):
                 "mode_keen": False,
                 "loglevel": "INFO",
                 "setting1": "test_value1",
-                "dashboard_sample_configfile": "test/dashboard/config_sample.js",
+                "dashboard_sample_configfile":
+                constants.DASHBOARD_SAMPLE_CONFIG_FILE,
                 "dashboard_configfile": exp_config
             },
             self.settings.settings.get_items())
