@@ -82,7 +82,7 @@ class Trend(object):
                     stage_count = len(build_child)
                     self.parse_xml_stages(build_child, index)
             logger.debug("Build ID : %s, Job : %s, stages : %d",
-                               build_id, job_id, stage_count)
+                         build_id, job_id, stage_count)
             index += 1
         return True
 

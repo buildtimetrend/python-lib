@@ -385,8 +385,7 @@ def get_pct_passed_build_jobs(repo=None, interval=None):
     total_jobs = get_total_build_jobs(repo, interval)
     passed_jobs = get_passed_build_jobs(repo, interval)
 
-    logger.debug("passed/total build jobs : %d/%d",
-                       passed_jobs, total_jobs)
+    logger.debug("passed/total build jobs : %d/%d", passed_jobs, total_jobs)
 
     # calculate percentage if at least one job was executed
     # passed is a valid number (not -1)
