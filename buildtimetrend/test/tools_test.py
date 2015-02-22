@@ -107,7 +107,9 @@ class TestTools(unittest.TestCase):
         )
 
         # test timestamp
-        timestamp_dt = datetime.utcfromtimestamp(constants.TIMESTAMP_TESTDATE).replace(tzinfo=tzutc())
+        timestamp_dt = datetime.utcfromtimestamp(constants.TIMESTAMP_TESTDATE)
+        timestamp_dt = timestamp_dt.replace(tzinfo=tzutc())
+
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_TESTDATE,
             split_datetime(timestamp_dt)
