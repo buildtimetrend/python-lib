@@ -477,6 +477,37 @@ def get_latest_buildtime(repo=None):
     return -1
 
 
+def has_build_id(repo=None, build_id=None):
+    """
+    Check if build_id exists in Keen.io database.
+
+    Parameters :
+    - repo : repo name (fe. buildtimetrend/python-lib)
+    - build_id : ID of the build
+    """
+    if repo is None or build_id is None:
+        logger.error("Repo or build_id is not set")
+        raise ValueError
+    if not keen_is_readable():
+        raise SystemError
+
+    try:
+        count = keen.count(
+            "build_jobs",
+            filters=[get_repo_filter(repo),{
+                "property_name": "job.build",
+                "operator": "eq",
+                "property_value": str(build_id)}]
+        )
+        return count > 0
+    except requests.ConnectionError:
+        logger.error("Connection to Keen.io API failed")
+        raise requests.ConnectionError
+    except keen.exceptions.KeenApiError, msg:
+        logger.error("Error in keenio.has_build_id : " + str(msg))
+        raise keen.exceptions.KeenApiError
+
+
 def get_all_projects():
     """Query Keen.io database and retrieve a list of all projects."""
     if not keen_is_readable():
