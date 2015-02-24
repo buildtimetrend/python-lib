@@ -1,22 +1,26 @@
-Buildtime trend
-===============
+Buildtime Trend Python library
+==============================
 
 Visualise what's trending in your build process
 
-[![Buildtime trend](http://img.shields.io/badge/release-v0.1.2-blue.svg)](https://github.com/ruleant/buildtime-trend/releases/latest)
-[![Buildtime trend](http://img.shields.io/badge/dev-v0.2--dev-blue.svg)](https://github.com/ruleant/buildtime-trend/zipball/master)
+[![Buildtime Trend Python library](http://img.shields.io/badge/release-v0.2-blue.svg)](https://github.com/buildtimetrend/python-lib/releases/latest)
+[![Buildtime Trend Python library (dev)](http://img.shields.io/badge/dev-v0.3.dev-blue.svg)](https://github.com/buildtimetrend/python-lib/zipball/master)
+[![Latest Version](https://pypip.in/version/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
+[![Downloads](https://pypip.in/download/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
+[![Supported Python versions](https://pypip.in/py_versions/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
+
 [![Build Status](https://travis-ci.org/buildtimetrend/python-lib.svg?branch=master)](https://travis-ci.org/buildtimetrend/python-lib)
 [![Coverage Status](https://coveralls.io/repos/buildtimetrend/python-lib/badge.png?branch=master)](https://coveralls.io/r/buildtimetrend/python-lib?branch=master)
 [![Code Health](https://landscape.io/github/buildtimetrend/python-lib/master/landscape.png)](https://landscape.io/github/buildtimetrend/python-lib/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/?branch=master)
 [![Codacy Badge](https://www.codacy.com/project/badge/38e1a8fcf164434f87389a693368d0f2)](https://www.codacy.com/public/ruleant/python-lib)
 
-[![Buildtime trend](https://buildtimetrend-service.herokuapp.com/badge/buildtimetrend/python-lib/latest)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
-[![Total builds](https://buildtimetrend-service.herokuapp.com/badge/buildtimetrend/python-lib/builds/month)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
-[![Percentage passed build jobs](https://buildtimetrend-service.herokuapp.com/badge/buildtimetrend/python-lib/passed/month)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
+[![Buildtime trend](https://buildtimetrend-dev.herokuapp.com/badge/buildtimetrend/python-lib/latest)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
+[![Total builds](https://buildtimetrend-dev.herokuapp.com/badge/buildtimetrend/python-lib/builds/month)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
+[![Percentage passed build jobs](https://buildtimetrend-dev.herokuapp.com/badge/buildtimetrend/python-lib/passed/month)](http://ruleant.github.io/buildtime-trend/buildtime-trend/)
 
 [![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg)](http://stackshare.io/ruleant/buildtime-trend)
-[![status](https://sourcegraph.com/api/repos/github.com/ruleant/buildtime-trend/badges/status.png)](https://sourcegraph.com/github.com/ruleant/buildtime-trend)
+[![status](https://sourcegraph.com/api/repos/github.com/buildtimetrend/python-lib/.badges/status.svg)](https://sourcegraph.com/github.com/buildtimetrend/python-lib)
 
 
 Features
@@ -35,8 +39,22 @@ Visualise trends of build processes on Continuous Integration platforms by gathe
   - builds per branch
   - build duration per time of day/day of week
 
+Usage
+-----
+
+The [Buildtime Trend Python client](https://github.com/buildtimetrend/python-client) and [Buildtime Trend as a Service](https://github.com/buildtimetrend/service) depend on this library.
+It is recommended to use this library with either of them, have a look at their documentation on how to use them.
+
 How to get it?
 --------------
+
+If you want to use this library directly, there are several ways of getting it.
+
+Buildtimetrend library is registered in PyPI, to install, use :
+
+```bash
+pip install buildtimetrend
+```
 
 The [latest version](https://github.com/buildtimetrend/python-lib/releases/latest) is available for download as zip and tarball on GitHub. Unzip and copy to the desired directory.
 
@@ -44,11 +62,12 @@ If you prefer to use git, several options are available :
 
 - development version : `git clone https://github.com/buildtimetrend/python-lib.git`
 - latest release : `git clone https://github.com/buildtimetrend/python-lib.git --branch release`
-- a specific release : `git clone https://github.com/buildtimetrend/python-lib.git --branch v0.1.2`
+- a specific release : `git clone https://github.com/buildtimetrend/python-lib.git --branch v0.2`
 
 Dependencies
 ------------
 
+- `python` : Python 2.7
 - `keen` : client for storing build time data as events in Keen.io
 - `python-dateutil` : for formatting datetime objects
 - `lxml` : python wrapper for libxml2 and libxslt
@@ -76,10 +95,6 @@ pip install lxml
 pip install 'matplotlib>=1.2.0'
 ```
 
-Usage
------
-
-The [Buildtime Trend client](https://github.com/buildtimetrend/python-client) and [Buildtime Trend service](https://github.com/buildtimetrend/service) are using this library, have a look at their documentation on how to use them.
 
 Store build time data in xml (native mode)
 ------------------------------------------
@@ -107,7 +122,9 @@ For an overview of who contributed to create Buildtime trend, see [Credits](http
 Contact
 -------
 
-Website : http://buildtimetrend.github.io/python-client/
+Website : https://buildtimetrend.github.io/
+
+Mailinglist : [Buildtime Trend Community](https://groups.google.com/d/forum/buildtimetrend-dev)
 
 Follow us on [Twitter](https://twitter.com/buildtime_trend), [Github](https://github.com/buildtimetrend/python-lib) and [OpenHub](https://www.openhub.net/p/buildtime-trend).
 

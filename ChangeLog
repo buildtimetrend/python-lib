@@ -1,4 +1,7 @@
-v0.2 (not yet released)
+v0.3 (not yet released)
+- move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut
+
+v0.2 (released on 16Feb2015)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script
 - issue #28 : improve documentation on assigning Keen.io access keys
 - issue #30 : add timestamp event names that cause analysis to end
@@ -22,6 +25,13 @@ v0.2 (not yet released)
 - issue #67 : check if Travis CI notification payload is unicode
 - issue #17 : add status badges to dashboard
 - [keenio] rename generate_overview_config_file to generate_dashboard_config_file
+- issue #68 : catch KeenApiError
+- issue #46 : use Travis CI build config to assign missing (sub)stage names
+- [keenio] rename log_build_keen() to send_build_data()
+- [keenio] add send_build_data_service()
+- [keenio] schema change : save build job data in build_jobs.job (was builds.build)
+- schema change : version is renamed to lib_version in project_info
+- issue #50 : only check timing tags for builds after they were introduced on Travis CI
 
 v0.1.2 (released on 6Aug2014)
 - improve Travis CI example : pull released version from git

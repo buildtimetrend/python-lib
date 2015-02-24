@@ -1,5 +1,5 @@
 # vim: set expandtab sw=4 ts=4:
-'''
+"""
 Interface to Travis CI API.
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
@@ -19,12 +19,12 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
-'''
+"""
 import os
 import json
 import re
 from hashlib import sha256
-from buildtimetrend.tools import get_logger
+from buildtimetrend import logger
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string
@@ -55,10 +55,12 @@ TRAVIS_LOG_PARSE_WORKER_STRING = r'Using worker:\ (?P<hostname>.*):(?P<os>.*)'
 
 
 def load_travis_env_vars():
-    '''
+    """
+    Load Travis CI environment variables.
+
     Load Travis CI environment variables and assign their values to
     the corresponding setting value.
-    '''
+    """
     if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
         settings = Settings()
 
@@ -81,11 +83,12 @@ def load_travis_env_vars():
 
 
 def convert_build_result(result):
-    '''
-    Convert Travis build result to a more readable value
+    """
+    Convert Travis build result to a more readable value.
+
     Parameters:
     - result : numerical build result
-    '''
+    """
     result = check_num_string(result, "result")
 
     if result is 0:
@@ -99,10 +102,12 @@ def convert_build_result(result):
 
 
 def process_notification_payload(payload):
-    '''
-    Load payload from Travis notification
-    '''
-    logger = get_logger()
+    """
+    Load payload from Travis notification.
+
+    Parameters:
+    - payload : Travis CI notification payload
+    """
     settings = Settings()
 
     if payload is None:
@@ -135,8 +140,9 @@ def process_notification_payload(payload):
 
 
 def check_authorization(repo, auth_header):
-    '''
+    """
     Check if Travis CI notification has a correct Authorization header.
+
     This check is enabled if travis_account_token is defined in settings.
 
     More information on the Authorization header :
@@ -148,9 +154,7 @@ def check_authorization(repo, auth_header):
     Parameters:
     - repo : git repo name
     - auth_header : Travis CI notification Authorization header
-    '''
-    logger = get_logger()
-
+    """
     # get Travis account token from Settings
     token = Settings().get_setting("travis_account_token")
 
@@ -181,18 +185,20 @@ def check_authorization(repo, auth_header):
 
 
 class TravisData(object):
-    '''
-    Gather data from Travis CI using the API
-    '''
+
+    """ Gather data from Travis CI using the API. """
 
     def __init__(self, repo, build_id):
-        '''
+        """
         Retrieve Travis CI build data using the API.
-        Param repo : github repository slug (fe. buildtimetrend/python-lib)
-        Param build_id : Travis CI build id (fe. 158)
-        '''
+
+        Parameters:
+        - repo : github repository slug (fe. buildtimetrend/python-lib)
+        - build_id : Travis CI build id (fe. 158)
+        """
         self.build_data = {}
         self.build_jobs = {}
+        self.build_config = {}
         self.current_job = Build()
         self.travis_substage = None
         self.repo = repo
@@ -200,35 +206,58 @@ class TravisData(object):
         self.build_id = str(build_id)
 
     def get_build_data(self):
-        '''
-        Retrieve Travis CI build data.
-        '''
+        """ Retrieve Travis CI build data. """
         request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
         self.build_data = self.json_request(request)
 
         # log build_data
-        get_logger().debug(
+        logger.debug(
             "Build #%s data : %s",
             str(self.build_id),
             json.dumps(self.build_data, sort_keys=True, indent=2)
         )
 
+    def get_substage_name(self, command):
+        """
+        Resolve Travis CI substage name that corresponds to a cli command.
+
+        Parameters:
+        - command : cli command
+        """
+        if len(self.build_config) > 0:
+            for stage_name, commands in self.build_config.items():
+                if type(commands) is list and command in commands:
+                    substage_number = commands.index(command) + 1
+                    substage_name = "%s.%s" % (stage_name, substage_number)
+                    logger.debug(
+                        "Substage %s corresponds to '%s'",
+                        substage_name, command
+                    )
+                    return substage_name
+
     def process_build_jobs(self):
-        '''
-        Retrieve Travis CI build job data.
-        '''
+        """ Retrieve Travis CI build job data. """
         if len(self.build_data) > 0 and "builds" in self.build_data:
             for build in self.build_data['builds']:
+                if "config" in build:
+                    self.build_config = build["config"]
+                else:
+                    logger.warning(
+                        "Travis CI build config is not set"
+                    )
+                    self.build_config = {}
+
                 if "job_ids" in build:
                     for job_id in build['job_ids']:
                         self.process_build_job(job_id)
 
     def process_build_job(self, job_id):
-        '''
+        """
         Retrieve Travis CI build job data.
+
         Parameters:
         - job_id : ID of the job to process
-        '''
+        """
         if job_id is None:
             return
 
@@ -245,14 +274,17 @@ class TravisData(object):
         self.current_job = Build()
 
     def get_job_data(self, job_id):
-        '''
+        """
         Retrieve Travis CI job data.
-        '''
+
+        Parameters:
+        - job_id : ID of the job to process
+        """
         request = 'jobs/%s' % str(job_id)
         job_data = self.json_request(request)
 
         # log job_data
-        get_logger().debug(
+        logger.debug(
             "Job #%s data : %s",
             str(job_id),
             json.dumps(job_data, sort_keys=True, indent=2)
@@ -261,14 +293,19 @@ class TravisData(object):
         return job_data
 
     def process_job_data(self, job_data):
-        '''
-        Process Job/build data and set build/job properties:
+        """
+        Process Job/build data.
+
+        Set build/job properties :
         - Build/job ID
         - build result : passed, failed, errored
         - git repo
         - git branch
         - CI platform : Travis
-        '''
+
+        Parameters:
+        - job_data : dictionary with Travis CI job data
+        """
         self.current_job.add_property(
             "build",
             # buildnumber is part before "." of job number
@@ -285,29 +322,40 @@ class TravisData(object):
         self.current_job.set_started_at(job_data['job']['started_at'])
         self.current_job.set_finished_at(job_data['job']['finished_at'])
 
+        # calculate job duration from start and finished timestamps
+        # if no timing tags are available
+        if not self.has_timing_tags():
+            self.current_job.add_property("duration", self.get_job_duration())
+
     def get_job_log(self, job_id):
-        '''
+        """
         Retrieve Travis CI job log.
-        '''
+
+        Parameters:
+        - job_id : ID of the job to process
+        """
         request = 'jobs/%s/log' % str(job_id)
         request_url = self.api_url + request
-        get_logger().info("Request build job log : %s", request_url)
+        logger.info("Request build job log : %s", request_url)
         return urlopen(request_url)
 
     def parse_job_log(self, job_id):
-        '''
+        """
         Parse Travis CI job log.
-        '''
+
+        Parameters:
+        - job_id : ID of the job to process
+        """
         self.parse_job_log_stream(self.get_job_log(job_id))
 
     def parse_job_log_file(self, filename):
-        '''
+        """
         Open a Travis CI log file and parse it.
 
         Parameters :
         - filename : filename of Travis CI log
         Returns false if file doesn't exist, true if it was read successfully.
-        '''
+        """
         # load timestamps file
         if not check_file(filename):
             return False
@@ -319,29 +367,35 @@ class TravisData(object):
         return True
 
     def parse_job_log_stream(self, stream):
-        '''
+        """
         Parse Travis CI job log stream.
-        '''
+
+        Parameters:
+        - stream : stream of job log file
+        """
         self.travis_substage = TravisSubstage()
+        check_timing_tags = self.has_timing_tags()
 
         for line in stream:
             # parse Travis CI timing tags
-            if 'travis_' in line:
+            if check_timing_tags and 'travis_' in line:
                 self.parse_travis_time_tag(line)
             # parse Travis CI worker tag
             if 'Using worker:' in line:
                 self.parse_travis_worker_tag(line)
 
     def parse_travis_time_tag(self, line):
-        '''
-        Parse and process Travis CI timing tags
-        Param line : line from logfile containing Travis CI tags
-        '''
+        """
+        Parse and process Travis CI timing tags.
+
+        Parameters:
+        - line : line from logfile containing Travis CI tags
+        """
         if self.travis_substage is None:
             self.travis_substage = TravisSubstage()
 
         escaped_line = line.replace('\x0d', '*').replace('\x1b', 'ESC')
-        get_logger().debug('line : %s', escaped_line)
+        logger.debug('line : %s', escaped_line)
 
         # parse Travis CI timing tags
         for parse_string in TRAVIS_LOG_PARSE_TIMING_STRINGS:
@@ -351,17 +405,28 @@ class TravisData(object):
 
                 # when finished : log stage and create a new instance
                 if self.travis_substage.has_finished():
+                    # set substage name, if it is not set
+                    if not self.travis_substage.has_name() and \
+                            self.travis_substage.has_command():
+                        self.travis_substage.set_name(
+                            self.get_substage_name(
+                                self.travis_substage.get_command()
+                            )
+                        )
+
                     # only log complete substages
                     if not self.travis_substage.finished_incomplete:
                         self.current_job.add_stage(self.travis_substage.stage)
                     self.travis_substage = TravisSubstage()
 
     def parse_travis_worker_tag(self, line):
-        '''
-        Parse and process Travis CI worker tag
-        Param line : line from logfile containing Travis CI tags
-        '''
-        get_logger().debug('line : %s', line)
+        """
+        Parse and process Travis CI worker tag.
+
+        Parameters:
+        - line : line from logfile containing Travis CI tags
+        """
+        logger.debug('line : %s', line)
 
         # parse Travis CI worker tags
         result = re.search(TRAVIS_LOG_PARSE_WORKER_STRING, line)
@@ -374,13 +439,16 @@ class TravisData(object):
         # if it contains all required tags
         tag_list = list({'hostname', 'os'})
         if check_dict(worker_tags, "worker_tags", tag_list):
-            get_logger().debug("Worker tags : %s", worker_tags)
+            logger.debug("Worker tags : %s", worker_tags)
             self.current_job.add_property("worker", worker_tags)
 
     def json_request(self, json_request):
-        '''
+        """
         Retrieve Travis CI data using API.
-        '''
+
+        Parameters:
+        - json_request : json_request to be sent to API
+        """
         req = Request(
             self.api_url + json_request,
             None,
@@ -394,19 +462,41 @@ class TravisData(object):
 
         return json.load(result)
 
+    def has_timing_tags(self):
+        """
+        Check if Travis CI job log has timing tags.
+
+        Timing tags were introduced on Travis CI starting 2014-08-07,
+        check if started_at is more recent.
+        """
+        started_at = self.current_job.get_property("started_at")
+        if started_at is None or "timestamp_seconds" not in started_at:
+            return False
+
+        # 1407369600 is epoch timestamp of 2014-08-07T00:00:00Z
+        return started_at["timestamp_seconds"] > 1407369600
+
+    def get_job_duration(self):
+        """ Calculate build job duration. """
+        started_at = self.current_job.get_property("started_at")
+        finished_at = self.current_job.get_property("finished_at")
+        if started_at is None or "timestamp_seconds" not in started_at or \
+                finished_at is None or "timestamp_seconds" not in finished_at:
+            return 0.0
+
+        timestamp_start = float(started_at["timestamp_seconds"])
+        timestamp_end = float(finished_at["timestamp_seconds"])
+        return timestamp_end - timestamp_start
+
     def get_started_at(self):
-        '''
-        Retrieve timestamp when build was started.
-        '''
+        """ Retrieve timestamp when build was started. """
         if len(self.build_data) > 0:
             return self.build_data['builds'][0]['started_at']
         else:
             return None
 
     def get_finished_at(self):
-        '''
-        Retrieve timestamp when build finished.
-        '''
+        """ Retrieve timestamp when build finished. """
         if len(self.build_data) > 0:
             return self.build_data['builds'][0]['finished_at']
         else:
@@ -414,26 +504,27 @@ class TravisData(object):
 
 
 class TravisSubstage(object):
-    '''
-    Travis CI substage object, is constructed by feeding parsed tags
-    from Travis CI logfile
-    '''
+
+    """
+    Travis CI substage object.
+
+    It is constructed by feeding parsed tags from Travis CI logfile.
+    """
 
     def __init__(self):
-        '''
-        Initialise Travis CI Substage object
-        '''
+        """ Initialise Travis CI Substage object. """
         self.stage = Stage()
         self.timing_hash = ""
         self.finished_incomplete = False
         self.finished = False
 
     def process_parsed_tags(self, tags_dict):
-        '''
-        Processes parsed tags and calls the corresponding handler method
+        """
+        Process parsed tags and calls the corresponding handler method.
+
         Parameters:
         - tags_dict : dictionary with parsed tags
-        '''
+        """
         result = False
 
         # check if parameter tags_dict is a dictionary
@@ -452,18 +543,18 @@ class TravisSubstage(object):
         return result
 
     def process_start_stage(self, tags_dict):
-        '''
-        Processes parsed start_stage tags
+        """
+        Process parsed start_stage tags.
+
         Parameters:
         - tags_dict : dictionary with parsed tags
-        '''
+        """
         # check if parameter tags_dict is a dictionary and
         # if it contains all required tags
         tag_list = list({'start_stage', 'start_substage'})
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logger = get_logger()
         logger.debug("Start stage : %s", tags_dict)
 
         result = False
@@ -474,22 +565,22 @@ class TravisSubstage(object):
             name = "%s.%s" % (
                 tags_dict['start_stage'], tags_dict['start_substage']
             )
-            result = self.stage.set_name(name)
+            result = self.set_name(name)
 
         return result
 
     def process_start_time(self, tags_dict):
-        '''
-        Processes parsed start_time tags
+        """
+        Process parsed start_time tags.
+
         Parameters:
         - tags_dict : dictionary with parsed tags
-        '''
+        """
         # check if parameter tags_dict is a dictionary and
         # if it contains all required tags
         if not check_dict(tags_dict, "tags_dict", 'start_hash'):
             return False
 
-        logger = get_logger()
         logger.debug("Start time : %s", tags_dict)
 
         if self.has_timing_hash():
@@ -502,17 +593,17 @@ class TravisSubstage(object):
         return True
 
     def process_command(self, tags_dict):
-        '''
-        Processes parsed command tag
+        """
+        Process parsed command tag.
+
         Parameters:
         - tags_dict : dictionary with parsed tags
-        '''
+        """
         # check if parameter tags_dict is a dictionary and
         # if it contains all required tags
         if not check_dict(tags_dict, "tags_dict", 'command'):
             return False
 
-        logger = get_logger()
         logger.debug("Command : %s", tags_dict)
 
         result = False
@@ -526,11 +617,12 @@ class TravisSubstage(object):
         return result
 
     def process_end_time(self, tags_dict):
-        '''
-        Processes parsed end_time tags
+        """
+        Process parsed end_time tags.
+
         Parameters:
         - tags_dict : dictionary with parsed tags
-        '''
+        """
         # check if parameter tags_dict is a dictionary and
         # if it contains all required tags
         tag_list = list({
@@ -542,7 +634,6 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logger = get_logger()
         logger.debug("End time : %s", tags_dict)
 
         result = False
@@ -580,18 +671,18 @@ class TravisSubstage(object):
         return result
 
     def process_end_stage(self, tags_dict):
-        '''
-        Processes parsed end_stage tags
+        """
+        Process parsed end_stage tags.
+
         Parameters:
         - tags_dict : dictionary with parsed tags
-        '''
+        """
         # check if parameter tags_dict is a dictionary and
         # if it contains all required tags
         tag_list = list({'end_stage', 'end_substage'})
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logger = get_logger()
         logger.debug("End stage : %s", tags_dict)
 
         # construct substage name
@@ -613,9 +704,11 @@ class TravisSubstage(object):
         return True
 
     def get_name(self):
-        '''
-        Return substage name, if it is not set, return the command
-        '''
+        """
+        Return substage name.
+
+        If name is not set, return the command.
+        """
         if self.has_name():
             return self.stage.data["name"]
         elif self.has_command():
@@ -623,46 +716,67 @@ class TravisSubstage(object):
         else:
             return ""
 
+    def set_name(self, name):
+        """
+        Set substage name.
+
+        Parameters:
+        - name : substage name
+        """
+        return self.stage.set_name(name)
+
     def has_name(self):
-        '''
-        Checks if substage has a name
+        """
+        Check if substage has a name.
+
         Returns true if substage has a name
-        '''
+        """
         return "name" in self.stage.data and \
             self.stage.data["name"] is not None and \
             len(self.stage.data["name"]) > 0
 
     def has_timing_hash(self):
-        '''
-        Checks if substage has a timing hash
+        """
+        Check if substage has a timing hash.
+
         Returns true if substage has a timing hash
-        '''
+        """
         return self.timing_hash is not None and len(self.timing_hash) > 0
 
     def has_command(self):
-        '''
-        Checks if a command is set for substage
+        """
+        Check if a command is set for substage.
+
         Returns true if a command is set
-        '''
+        """
         return "command" in self.stage.data and \
             self.stage.data["command"] is not None and \
             len(self.stage.data["command"]) > 0
 
+    def get_command(self):
+        """ Return substage command. """
+        if self.has_command():
+            return self.stage.data["command"]
+        else:
+            return ""
+
     def has_started(self):
-        '''
-        Checks if substage has started
+        """
+        Check if substage has started.
+
         Returns true if substage has started
-        '''
+        """
         return self.has_name() or self.has_timing_hash() or self.has_command()
 
     def has_finished(self):
-        '''
-        Checks if substage has finished.
+        """
+        Check if substage has finished.
+
         A substage is finished, if either the finished_timestamp is set,
         or if finished is (because of an error in parsing the tags).
 
         Returns true if substage has finished
-        '''
+        """
         return self.finished_incomplete or \
             self.has_name() and self.finished or \
             not self.has_name() and self.has_timing_hash() and \

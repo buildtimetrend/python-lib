@@ -1,8 +1,8 @@
 # vim: set expandtab sw=4 ts=4:
 # disable pylint message about unused variable 'fig'
 # pylint: disable=unused-variable
-'''
-Generates a trend (graph) from the buildtimes in buildtimes.xml
+"""
+Generate a chart from the gathered buildtime data.
 
 Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
@@ -21,32 +21,33 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
-'''
+"""
 
 from lxml import etree
+from buildtimetrend import logger
+from buildtimetrend.tools import check_file
 import matplotlib
-from buildtimetrend.tools import get_logger
 # Force matplotlib to not use any Xwindow backend.
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
-from buildtimetrend.tools import check_file
 
 
 class Trend(object):
-    '''
-    Trend class, generates a chart from gathered buildtime data
-    '''
+
+    """ Trend class, generate a chart from gathered buildtime data. """
+
     def __init__(self):
+        """ Initialize instance. """
         self.stages = {}
         self.builds = []
 
     def gather_data(self, result_file):
-        '''
-        Get buildtime data from an xml file
+        """
+        Get buildtime data from an xml file.
 
         Parameters
         - result_file : xml file containing the buildtime data
-        '''
+        """
         # load buildtimes file
         if check_file(result_file):
             root_xml = etree.parse(result_file).getroot()
@@ -80,15 +81,13 @@ class Trend(object):
                 if build_child.tag == 'stages':
                     stage_count = len(build_child)
                     self.parse_xml_stages(build_child, index)
-            get_logger().info("Build ID : %s, Job : %s, stages : %d",
-                              build_id, job_id, stage_count)
+            logger.debug("Build ID : %s, Job : %s, stages : %d",
+                         build_id, job_id, stage_count)
             index += 1
         return True
 
     def parse_xml_stages(self, stages, index):
-        '''
-        Parse stages in from xml file
-        '''
+        """ Parse stages in from xml file. """
         for stage in stages:
             if (stage.tag == 'stage' and
                     stage.get('name') is not None and
@@ -104,12 +103,12 @@ class Trend(object):
                 self.stages[stage.get('name')] = temp_dict
 
     def generate(self, trend_file):
-        '''
-        Generates the trend chart and saves it as a PNG image using matplotlib
+        """
+        Generate the trend chart and save it as a PNG image using matplotlib.
 
         Parameters
         - trend_file : file name to save chart image to
-        '''
+        """
         fig, axes = plt.subplots()
 
         # add data

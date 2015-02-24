@@ -21,8 +21,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.settings import *
-from buildtimetrend.tools import get_logger
-from buildtimetrend.tools import set_loglevel
+from buildtimetrend import logger
+from buildtimetrend import set_loglevel
 from buildtimetrend.collection import Collection
 from buildtimetrend.keenio import keen_is_writable
 from buildtimetrend.keenio import keen_is_readable
@@ -42,6 +42,7 @@ DEFAULT_SETTINGS = {
     "dashboard_configfile": "dashboard/config.js"
 }
 
+
 class TestSettings(unittest.TestCase):
     @classmethod
     def setUpClass(self):
@@ -50,8 +51,10 @@ class TestSettings(unittest.TestCase):
         self.project_name = buildtimetrend.NAME
 
         self.project_info = {
-            "version": buildtimetrend.VERSION,
+            "lib_version": buildtimetrend.VERSION,
             "schema_version": buildtimetrend.SCHEMA_VERSION,
+            "client": 'None',
+            "client_version": 'None',
             "project_name": self.project_name}
 
     def setUp(self):
@@ -60,6 +63,11 @@ class TestSettings(unittest.TestCase):
             self.settings.__init__()
 
         set_loglevel("WARNING")
+
+        keen.project_id = None
+        keen.write_key = None
+        keen.read_key = None
+        keen.master_key = None
 
     def test_get_project_info(self):
         self.assertDictEqual(
@@ -77,6 +85,23 @@ class TestSettings(unittest.TestCase):
 
         self.settings.set_project_name("")
         self.assertEquals("", self.settings.get_project_name())
+
+    def test_set_client(self):
+        self.assertEquals(None, self.settings.get_setting("client"))
+        self.assertEquals(None, self.settings.get_setting("client_version"))
+
+        self.settings.set_client("client_name", "0.1")
+        self.assertEquals("client_name", self.settings.get_setting("client"))
+        self.assertEquals("0.1", self.settings.get_setting("client_version"))
+
+        self.assertDictEqual({
+            "lib_version": buildtimetrend.VERSION,
+            "schema_version": buildtimetrend.SCHEMA_VERSION,
+            "client": 'client_name',
+            "client_version": '0.1',
+            "project_name": self.project_name},
+            self.settings.get_project_info()
+        )
 
     def test_get_add_setting(self):
         # setting is not set yet
@@ -122,8 +147,7 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(None, keen.project_id)
         self.assertEquals(None, keen.write_key)
         self.assertEquals(None, keen.read_key)
-        # TODO change test if master_key is part of the keen module
-        # self.assertEquals(None, keen.master_key)
+        self.assertEquals(None, keen.master_key)
 
         # load sample config file
         self.assertTrue(
@@ -136,7 +160,8 @@ class TestSettings(unittest.TestCase):
                 "mode_keen": False,
                 "loglevel": "INFO",
                 "setting1": "test_value1",
-                "dashboard_sample_configfile": "test/dashboard/config_sample.js",
+                "dashboard_sample_configfile":
+                constants.DASHBOARD_SAMPLE_CONFIG_FILE,
                 "dashboard_configfile": "test/dashboard/config.js"
             },
             self.settings.settings.get_items())
@@ -148,6 +173,56 @@ class TestSettings(unittest.TestCase):
         self.assertEquals("7890abcd", keen.master_key)
         self.assertTrue(keen_is_readable())
         self.assertTrue(keen_is_writable())
+
+    def test_load_settings(self):
+        # checking if Keen.io configuration is not set (yet)
+        self.assertEquals(None, keen.project_id)
+        self.assertEquals(None, keen.write_key)
+        self.assertEquals(None, keen.read_key)
+        self.assertEquals(None, keen.master_key)
+
+        scriptname = "script.py"
+        expected_ci = "travis"
+        expected_project_name = "test/project"
+
+        argv = [
+            scriptname,
+            "--ci=%s" % expected_ci,
+            "--repo=%s" % expected_project_name,
+            "argument"
+        ]
+
+        exp_config = os.environ["BUILD_TREND_CONFIGFILE"] = "test/config.js"
+
+        # load settings (config file, env vars and cli parameters)
+        self.assertListEqual(
+            ["argument"],
+            self.settings.load_settings(argv,
+                                        constants.TEST_SAMPLE_CONFIG_FILE)
+        )
+        self.assertDictEqual(
+            {
+                "project_name": expected_project_name,
+                "ci_platform": expected_ci,
+                "mode_native": True,
+                "mode_keen": False,
+                "loglevel": "INFO",
+                "setting1": "test_value1",
+                "dashboard_sample_configfile":
+                constants.DASHBOARD_SAMPLE_CONFIG_FILE,
+                "dashboard_configfile": exp_config
+            },
+            self.settings.settings.get_items())
+
+        # checking if Keen.io configuration is set
+        self.assertEquals("1234", keen.project_id)
+        self.assertEquals("12345678", keen.write_key)
+        self.assertEquals("abcdefg", keen.read_key)
+        self.assertEquals("7890abcd", keen.master_key)
+        self.assertTrue(keen_is_readable())
+        self.assertTrue(keen_is_writable())
+
+        del os.environ["BUILD_TREND_CONFIGFILE"]
 
     def test_env_var_to_settings(self):
         self.assertFalse(self.settings.env_var_to_settings("", ""))
@@ -171,7 +246,6 @@ class TestSettings(unittest.TestCase):
         # set test environment variables
         exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
         exp_loglevel = os.environ["BTT_LOGLEVEL"] = "INFO"
-        exp_master_key = os.environ["KEEN_MASTER_KEY"] = "4567ghij"
         exp_config = os.environ["BUILD_TREND_CONFIGFILE"] = "test/config.js"
 
         self.settings.load_env_vars()
@@ -180,19 +254,15 @@ class TestSettings(unittest.TestCase):
         self.assertEquals(exp_loglevel, self.settings.get_setting("loglevel"))
         self.assertEquals(exp_account_token,
                           self.settings.get_setting("travis_account_token"))
-        self.assertEquals(exp_master_key, keen.master_key)
         self.assertEquals(exp_config,
                           self.settings.get_setting("dashboard_configfile"))
 
         # reset test environment variables
         del os.environ["BTT_LOGLEVEL"]
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
-        del os.environ["KEEN_MASTER_KEY"]
         del os.environ["BUILD_TREND_CONFIGFILE"]
 
     def test_process_argv(self):
-        logger = get_logger()
-
         scriptname = "script.py"
 
         expected_ci = "travis"

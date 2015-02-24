@@ -26,7 +26,6 @@ from buildtimetrend.settings import Settings
 import os
 import unittest
 import constants
-import logging
 
 
 class TestTools(unittest.TestCase):
@@ -54,10 +53,23 @@ class TestTools(unittest.TestCase):
         )
 
     def test_split_isotimestamp(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, split_isotimestamp)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, split_isotimestamp, None)
+        self.assertRaises(TypeError, split_isotimestamp, 1234)
+        self.assertRaises(ValueError, split_isotimestamp, "string")
+
         # test 0 timestamp (epoch) in UTC
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH,
             split_isotimestamp("1970-01-01T00:00:00Z")
+        )
+
+        self.assertDictEqual(
+            constants.SPLIT_TIMESTAMP_EPOCH,
+            split_isotimestamp(u"1970-01-01T00:00:00Z")
         )
 
         # test 0 timestamp (epoch), without timezone
@@ -95,7 +107,9 @@ class TestTools(unittest.TestCase):
         )
 
         # test timestamp
-        timestamp_dt = datetime.utcfromtimestamp(constants.TIMESTAMP_TESTDATE).replace(tzinfo=tzutc())
+        timestamp_dt = datetime.utcfromtimestamp(constants.TIMESTAMP_TESTDATE)
+        timestamp_dt = timestamp_dt.replace(tzinfo=tzutc())
+
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_TESTDATE,
             split_datetime(timestamp_dt)
@@ -260,41 +274,6 @@ class TestTools(unittest.TestCase):
         self.assertEquals(1, check_num_string("1", "name"))
         self.assertEquals(-1, check_num_string("-1", "name"))
         self.assertEquals(2, check_num_string("2", "name"))
-
-    def test_set_loglevel(self):
-        logger = logging.getLogger(buildtimetrend.NAME)
-        # test default loglevel
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
-
-        # test setting loglevel to INFO
-        set_loglevel("INFO")
-        self.assertEquals(logging.INFO, logger.getEffectiveLevel())
-
-        # test setting loglevel to DEBUG
-        set_loglevel("DEBUG")
-        self.assertEquals(logging.DEBUG, logger.getEffectiveLevel())
-
-        # test setting loglevel to ERROR
-        set_loglevel("ERROR")
-        self.assertEquals(logging.ERROR, logger.getEffectiveLevel())
-
-        # test setting loglevel to CRITICAL
-        set_loglevel("CRITICAL")
-        self.assertEquals(logging.CRITICAL, logger.getEffectiveLevel())
-
-        # test setting loglevel to WARNING
-        set_loglevel("WARNING")
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
-
-        # error is thrown when called without parameters
-        self.assertRaises(TypeError, set_loglevel)
-
-        # error is thrown when called with an invalid parameter
-        self.assertRaises(TypeError, set_loglevel, None)
-        self.assertRaises(ValueError, set_loglevel, "invalid")
-
-        # passing invalid tags should not change log level
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
 
     def test_get_repo_slug(self):
         self.assertEquals(None, get_repo_slug())
