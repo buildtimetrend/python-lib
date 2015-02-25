@@ -494,10 +494,12 @@ def has_build_id(repo=None, build_id=None):
     try:
         count = keen.count(
             "build_jobs",
-            filters=[get_repo_filter(repo),{
-                "property_name": "job.build",
-                "operator": "eq",
-                "property_value": str(build_id)}]
+            filters=[get_repo_filter(repo),
+                {
+                    "property_name": "job.build",
+                    "operator": "eq",
+                    "property_value": str(build_id)
+                }]
         )
         return count > 0
     except requests.ConnectionError:
