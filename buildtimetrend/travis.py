@@ -259,7 +259,7 @@ class TravisData(object):
         - job_id : ID of the job to process
         """
         if job_id is None:
-            return
+            return None
 
         # retrieve job data from Travis CI
         job_data = self.get_job_data(job_id)
@@ -272,6 +272,9 @@ class TravisData(object):
         self.build_jobs[str(job_id)] = self.current_job
         # create new build job instance
         self.current_job = Build()
+
+        # return processed build job
+        return self.build_jobs[str(job_id)]
 
     def get_job_data(self, job_id):
         """
