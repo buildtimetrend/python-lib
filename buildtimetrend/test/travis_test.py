@@ -291,7 +291,9 @@ class TestTravisData(unittest.TestCase):
     def test_process_build_jobs(self):
         # retrieve data from Travis API
         self.travis_data.get_build_data()
-        self.travis_data.process_build_jobs()
+        for build_job in self.travis_data.process_build_jobs():
+            self.assertDictEqual(DICT_BUILD_158,
+                build_job.properties.get_items())
         self.assertEquals(1, len(self.travis_data.build_jobs))
         self.assertDictEqual(DICT_BUILD_158,
             self.travis_data.build_jobs["29404875"].properties.get_items()
@@ -302,7 +304,8 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(0, len(self.travis_data.build_jobs))
         # retrieve data from Travis API
         self.travis_data.get_build_data()
-        self.travis_data.process_build_jobs()
+        for build_job in self.travis_data.process_build_jobs():
+            pass
         self.assertEquals(2, len(self.travis_data.build_jobs))
         self.assertTrue("35665484" in self.travis_data.build_jobs)
         self.assertDictEqual({'branch': 'master',

@@ -236,7 +236,11 @@ class TravisData(object):
                     return substage_name
 
     def process_build_jobs(self):
-        """ Retrieve Travis CI build job data. """
+        """
+        Retrieve Travis CI build job data.
+
+        Method is a generator, iterate result to get each processed build job.
+        """
         if len(self.build_data) > 0 and "builds" in self.build_data:
             for build in self.build_data['builds']:
                 if "config" in build:
@@ -249,7 +253,7 @@ class TravisData(object):
 
                 if "job_ids" in build:
                     for job_id in build['job_ids']:
-                        self.process_build_job(job_id)
+                        yield self.process_build_job(job_id)
 
     def process_build_job(self, job_id):
         """
