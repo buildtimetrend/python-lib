@@ -41,6 +41,152 @@ VALID_HASH2 = '1234abce'
 INVALID_HASH = 'abcd1234'
 DURATION_NANO = 11000000000
 DURATION_SEC = 11.0
+DICT_BUILD_158 = {
+    'branch': 'master',
+    'build': '158',
+    'ci_platform': 'travis',
+    'job': '158.1',
+    'repo': 'buildtimetrend/python-lib',
+    'result': 'passed',
+    'duration': 102.0,
+    'worker': {
+        'hostname': 'worker-linux-11-2.bb.travis-ci.org',
+        'os': 'travis-linux-9'
+    },
+    'started_at': {
+        'day_of_month': '08',
+        'day_of_week': '2',
+        'day_of_week_full_en': 'Tuesday',
+        'day_of_week_short_en': 'Tue',
+        'hour_12': '11',
+        'hour_24': '11',
+        'hour_ampm': 'AM',
+        'isotimestamp': '2014-07-08T11:18:13+00:00',
+        'microsecond': '000000',
+        'minute': '18',
+        'month': '07',
+        'month_full_en': 'July',
+        'month_short_en': 'Jul',
+        'second': '13',
+        'timestamp_seconds': 1404818293.0,
+        'timezone': 'UTC',
+        'timezone_offset': '+0000',
+        'year': '2014'
+    },
+    'finished_at': {
+        'day_of_month': '08',
+        'day_of_week': '2',
+        'day_of_week_full_en': 'Tuesday',
+        'day_of_week_short_en': 'Tue',
+        'hour_12': '11',
+        'hour_24': '11',
+        'hour_ampm': 'AM',
+        'isotimestamp': '2014-07-08T11:19:55+00:00',
+        'microsecond': '000000',
+        'minute': '19',
+        'month': '07',
+        'month_full_en': 'July',
+        'month_short_en': 'Jul',
+        'second': '55',
+        'timestamp_seconds': 1404818395.0,
+        'timezone': 'UTC',
+        'timezone_offset': '+0000',
+        'year': '2014'
+    }
+}
+DICT_BUILD_485 = [
+{
+    'branch': 'master',
+    'build': '485',
+    'ci_platform': 'travis',
+    'job': '485.1',
+    'repo': 'ruleant/getback_gps',
+    'result': 'passed',
+    'worker': {
+        'hostname': 'worker-linux-7-1.bb.travis-ci.org',
+        'os': 'travis-linux-7'},
+    'started_at': {'day_of_month': '18',
+        'day_of_week': '4',
+        'day_of_week_full_en': 'Thursday',
+        'day_of_week_short_en': 'Thu',
+        'hour_12': '07',
+        'hour_24': '19',
+        'hour_ampm': 'PM',
+        'isotimestamp': '2014-09-18T19:14:46+00:00',
+        'microsecond': '000000',
+        'minute': '14',
+        'month': '09',
+        'month_full_en': 'September',
+        'month_short_en': 'Sep',
+        'second': '46',
+        'timestamp_seconds': 1411067686.0,
+        'timezone': 'UTC',
+        'timezone_offset': '+0000',
+        'year': '2014'},
+    'finished_at': {'day_of_month': '18',
+        'day_of_week': '4',
+        'day_of_week_full_en': 'Thursday',
+        'day_of_week_short_en': 'Thu',
+        'hour_12': '07',
+        'hour_24': '19',
+        'hour_ampm': 'PM',
+        'isotimestamp': '2014-09-18T19:20:12+00:00',
+        'microsecond': '000000',
+        'minute': '20',
+        'month': '09',
+        'month_full_en': 'September',
+        'month_short_en': 'Sep',
+        'second': '12',
+        'timestamp_seconds': 1411068012.0,
+        'timezone': 'UTC',
+        'timezone_offset': '+0000',
+        'year': '2014'}},
+{
+    'branch': 'master',
+    'build': '485',
+    'ci_platform': 'travis',
+    'job': '485.2',
+    'repo': 'ruleant/getback_gps',
+    'result': 'passed',
+    'worker': {'hostname': 'worker-linux-3-2.bb.travis-ci.org',
+        'os': 'travis-linux-7'},
+    'started_at': {'day_of_month': '18',
+        'day_of_week': '4',
+        'day_of_week_full_en': 'Thursday',
+        'day_of_week_short_en': 'Thu',
+        'hour_12': '07',
+        'hour_24': '19',
+        'hour_ampm': 'PM',
+        'isotimestamp': '2014-09-18T19:16:17+00:00',
+        'microsecond': '000000',
+        'minute': '16',
+        'month': '09',
+        'month_full_en': 'September',
+        'month_short_en': 'Sep',
+        'second': '17',
+        'timestamp_seconds': 1411067777.0,
+        'timezone': 'UTC',
+        'timezone_offset': '+0000',
+        'year': '2014'},
+    'finished_at': {'day_of_month': '18',
+        'day_of_week': '4',
+        'day_of_week_full_en': 'Thursday',
+        'day_of_week_short_en': 'Thu',
+        'hour_12': '07',
+        'hour_24': '19',
+        'hour_ampm': 'PM',
+        'isotimestamp': '2014-09-18T19:24:19+00:00',
+        'microsecond': '000000',
+        'minute': '24',
+        'month': '09',
+        'month_full_en': 'September',
+        'month_short_en': 'Sep',
+        'second': '19',
+        'timestamp_seconds': 1411068259.0,
+        'timezone': 'UTC',
+        'timezone_offset': '+0000',
+        'year': '2014'}}
+]
 
 
 class TestTravis(unittest.TestCase):
@@ -218,8 +364,16 @@ class TestTravisData(unittest.TestCase):
     def test_process_no_build_job(self):
         self.assertRaises(TypeError, self.travis_data.process_build_job)
 
-        self.travis_data.process_build_job(None)
+        self.assertEquals(None, self.travis_data.process_build_job(None))
         self.assertEquals(0, len(self.travis_data.build_jobs))
+
+    def test_process_build_job(self):
+        build_job = self.travis_data.process_build_job("29404875")
+        self.assertDictEqual(DICT_BUILD_158, build_job.properties.get_items())
+        self.assertEquals(1, len(self.travis_data.build_jobs))
+        self.assertDictEqual(DICT_BUILD_158,
+            self.travis_data.build_jobs["29404875"].properties.get_items()
+        )
 
     def test_process_no_build_jobs(self):
         # retrieve empty Travis API result
@@ -230,54 +384,11 @@ class TestTravisData(unittest.TestCase):
     def test_process_build_jobs(self):
         # retrieve data from Travis API
         self.travis_data.get_build_data()
-        self.travis_data.process_build_jobs()
+        for build_job in self.travis_data.process_build_jobs():
+            self.assertDictEqual(DICT_BUILD_158,
+                build_job.properties.get_items())
         self.assertEquals(1, len(self.travis_data.build_jobs))
-        self.assertDictEqual({'branch': 'master',
-            'build': '158',
-            'ci_platform': 'travis',
-            'job': '158.1',
-            'repo': 'buildtimetrend/python-lib',
-            'result': 'passed',
-            'duration': 102.0,
-            'worker': {'hostname': 'worker-linux-11-2.bb.travis-ci.org',
-                'os': 'travis-linux-9'},
-            'started_at': {'day_of_month': '08',
-                'day_of_week': '2',
-                'day_of_week_full_en': 'Tuesday',
-                'day_of_week_short_en': 'Tue',
-                'hour_12': '11',
-                'hour_24': '11',
-                'hour_ampm': 'AM',
-                'isotimestamp': '2014-07-08T11:18:13+00:00',
-                'microsecond': '000000',
-                'minute': '18',
-                'month': '07',
-                'month_full_en': 'July',
-                'month_short_en': 'Jul',
-                'second': '13',
-                'timestamp_seconds': 1404818293.0,
-                'timezone': 'UTC',
-                'timezone_offset': '+0000',
-                'year': '2014'},
-            'finished_at': {'day_of_month': '08',
-                'day_of_week': '2',
-                'day_of_week_full_en': 'Tuesday',
-                'day_of_week_short_en': 'Tue',
-                'hour_12': '11',
-                'hour_24': '11',
-                'hour_ampm': 'AM',
-                'isotimestamp': '2014-07-08T11:19:55+00:00',
-                'microsecond': '000000',
-                'minute': '19',
-                'month': '07',
-                'month_full_en': 'July',
-                'month_short_en': 'Jul',
-                'second': '55',
-                'timestamp_seconds': 1404818395.0,
-                'timezone': 'UTC',
-                'timezone_offset': '+0000',
-                'year': '2014'}
-            },
+        self.assertDictEqual(DICT_BUILD_158,
             self.travis_data.build_jobs["29404875"].properties.get_items()
         )
 
@@ -286,102 +397,23 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(0, len(self.travis_data.build_jobs))
         # retrieve data from Travis API
         self.travis_data.get_build_data()
-        self.travis_data.process_build_jobs()
+
+        i = 0
+        for build_job in self.travis_data.process_build_jobs():
+            self.assertDictEqual(
+                DICT_BUILD_485[i], build_job.properties.get_items()
+            )
+            i += 1
+
         self.assertEquals(2, len(self.travis_data.build_jobs))
         self.assertTrue("35665484" in self.travis_data.build_jobs)
-        self.assertDictEqual({'branch': 'master',
-            'build': '485',
-            'ci_platform': 'travis',
-            'job': '485.1',
-            'repo': 'ruleant/getback_gps',
-            'result': 'passed',
-            'worker': {'hostname': 'worker-linux-7-1.bb.travis-ci.org',
-                'os': 'travis-linux-7'},
-            'started_at': {'day_of_month': '18',
-                'day_of_week': '4',
-                'day_of_week_full_en': 'Thursday',
-                'day_of_week_short_en': 'Thu',
-                'hour_12': '07',
-                'hour_24': '19',
-                'hour_ampm': 'PM',
-                'isotimestamp': '2014-09-18T19:14:46+00:00',
-                'microsecond': '000000',
-                'minute': '14',
-                'month': '09',
-                'month_full_en': 'September',
-                'month_short_en': 'Sep',
-                'second': '46',
-                'timestamp_seconds': 1411067686.0,
-                'timezone': 'UTC',
-                'timezone_offset': '+0000',
-                'year': '2014'},
-            'finished_at': {'day_of_month': '18',
-                'day_of_week': '4',
-                'day_of_week_full_en': 'Thursday',
-                'day_of_week_short_en': 'Thu',
-                'hour_12': '07',
-                'hour_24': '19',
-                'hour_ampm': 'PM',
-                'isotimestamp': '2014-09-18T19:20:12+00:00',
-                'microsecond': '000000',
-                'minute': '20',
-                'month': '09',
-                'month_full_en': 'September',
-                'month_short_en': 'Sep',
-                'second': '12',
-                'timestamp_seconds': 1411068012.0,
-                'timezone': 'UTC',
-                'timezone_offset': '+0000',
-                'year': '2014'}
-            },
+        self.assertDictEqual(
+            DICT_BUILD_485[0],
             self.travis_data.build_jobs["35665484"].properties.get_items()
         )
         self.assertTrue("35665485" in self.travis_data.build_jobs)
-        self.assertDictEqual({'branch': 'master',
-            'build': '485',
-            'ci_platform': 'travis',
-            'job': '485.2',
-            'repo': 'ruleant/getback_gps',
-            'result': 'passed',
-            'worker': {'hostname': 'worker-linux-3-2.bb.travis-ci.org',
-                'os': 'travis-linux-7'},
-            'started_at': {'day_of_month': '18',
-                'day_of_week': '4',
-                'day_of_week_full_en': 'Thursday',
-                'day_of_week_short_en': 'Thu',
-                'hour_12': '07',
-                'hour_24': '19',
-                'hour_ampm': 'PM',
-                'isotimestamp': '2014-09-18T19:16:17+00:00',
-                'microsecond': '000000',
-                'minute': '16',
-                'month': '09',
-                'month_full_en': 'September',
-                'month_short_en': 'Sep',
-                'second': '17',
-                'timestamp_seconds': 1411067777.0,
-                'timezone': 'UTC',
-                'timezone_offset': '+0000',
-                'year': '2014'},
-            'finished_at': {'day_of_month': '18',
-                'day_of_week': '4',
-                'day_of_week_full_en': 'Thursday',
-                'day_of_week_short_en': 'Thu',
-                'hour_12': '07',
-                'hour_24': '19',
-                'hour_ampm': 'PM',
-                'isotimestamp': '2014-09-18T19:24:19+00:00',
-                'microsecond': '000000',
-                'minute': '24',
-                'month': '09',
-                'month_full_en': 'September',
-                'month_short_en': 'Sep',
-                'second': '19',
-                'timestamp_seconds': 1411068259.0,
-                'timezone': 'UTC',
-                'timezone_offset': '+0000',
-                'year': '2014'}
-            },
+        self.assertDictEqual(
+            DICT_BUILD_485[1],
             self.travis_data.build_jobs["35665485"].properties.get_items()
         )
 
