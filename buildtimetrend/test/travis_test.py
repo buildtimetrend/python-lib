@@ -201,6 +201,7 @@ DICT_BUILD_485 = [
 ]
 
 JOB_DATA_C = '{"job":{"id":54285508,"repository_id":1181026,"repository_slug":"pyca/cryptography","build_id":54285507,"commit_id":15573583,"log_id":37201812,"number":"5501.1","config":{"language":"c","os":"osx","compiler":"clang","env":"TOXENV=py26","install":["./.travis/install.sh"],"script":["./.travis/run.sh"],"after_success":["source ~/.venv/bin/activate && coveralls"],"notifications":{"irc":{"channels":["irc.freenode.org#cryptography-dev"],"use_notice":true,"skip_join":true},"webhooks":["https://buildtimetrend.herokuapp.com/travis"]},".result":"configured"},"state":"passed","started_at":"2015-03-13T18:48:17Z","finished_at":"2015-03-13T19:01:54Z","queue":"builds.mac_osx","allow_failure":false,"tags":null,"annotation_ids":[]},"commit":{"id":15573583,"sha":"27be222667f9c4d9d7be383a9dd1f0cf1012daba","branch":"master","message":"support DER encoded EC private key serialization","committed_at":"2015-03-13T18:33:06Z","author_name":"Paul Kehrer","author_email":"paul.l.kehrer@gmail.com","committer_name":"Paul Kehrer","committer_email":"paul.l.kehrer@gmail.com","compare_url":"https://github.com/pyca/cryptography/pull/1755"},"annotations":[]}'
+JOB_DATA_PYTHON = '{"job":{"id":54287645,"repository_id":1988445,"repository_slug":"buildtimetrend/python-lib","build_id":54287644,"commit_id":15574122,"log_id":37203465,"number":"536.1","config":{"language":"python","python":"2.7","sudo":false,"install":["CFLAGS=-O0 pip install -e .[native]","CFLAGS=-O0 pip install coveralls"],"script":["nosetests --with-coverage --cover-package=buildtimetrend"],"after_script":["coveralls"],"notifications":{"webhooks":["https://buildtimetrend-dev.herokuapp.com/travis","https://buildtimetrend.herokuapp.com/travis"]},".result":"configured","os":"linux","addons":{}},"state":"passed","started_at":"2015-03-13T18:50:00Z","finished_at":"2015-03-13T18:51:22Z","queue":"builds.docker","allow_failure":false,"tags":null,"annotation_ids":[]},"commit":{"id":15574122,"sha":"4055a820f0ac3cce2b59e2223316d9f32852ca4c","branch":"master","message":"fix coding style","committed_at":"2015-03-13T18:49:19Z","author_name":"Dieter Adriaenssens","author_email":"ruleant@users.sourceforge.net","committer_name":"Dieter Adriaenssens","committer_email":"ruleant@users.sourceforge.net","compare_url":"https://github.com/buildtimetrend/python-lib/compare/4903560d1840...4055a820f0ac"},"annotations":[]}'
 
 class TestTravis(unittest.TestCase):
     def setUp(self):
@@ -438,6 +439,16 @@ class TestTravisData(unittest.TestCase):
                 'os': 'osx',
                 'parameters': 'TOXENV=py26',
                 'summary': 'osx c TOXENV=py26'}
+            },
+            self.travis_data.current_job.properties.get_items())
+
+    def test_get_build_matrix_python(self):
+        self.travis_data.set_build_matrix(json.loads(JOB_DATA_PYTHON))
+        self.assertDictEqual(
+            {'build_matrix': {
+                'os': 'linux',
+                'language': 'python',
+                'summary': 'linux python'}
             },
             self.travis_data.current_job.properties.get_items())
 
