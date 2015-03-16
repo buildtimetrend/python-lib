@@ -310,6 +310,7 @@ class TravisData(object):
         - git repo
         - git branch
         - CI platform : Travis
+        - build matrix (language, language version, compiler, ...)
 
         Parameters:
         - job_data : dictionary with Travis CI job data
@@ -328,7 +329,32 @@ class TravisData(object):
         self.current_job.add_property("ci_platform", 'travis')
         self.current_job.add_property("result", job_data['job']['state'])
 
+        self.set_build_matrix(job_data)
+
+        self.current_job.set_started_at(job_data['job']['started_at'])
+        self.current_job.set_finished_at(job_data['job']['finished_at'])
+
+        # calculate job duration from start and finished timestamps
+        # if no timing tags are available
+        if not self.has_timing_tags():
+            self.current_job.add_property("duration", self.get_job_duration())
+
+    def set_build_matrix(self, job_data):
+        """
+        Retrieve build matrix data from job data and store in properties.
+
+        Properties :
+        - language
+        - language version (if applicable)
+        - compiler (if applicable)
+        - operating system
+        - environment parameters
+
+        Parameters:
+        - job_data : dictionary with Travis CI job data
+        """
         build_matrix = Collection()
+
         build_matrix.add_item(
             "language",
             job_data['job']['config']['language']
@@ -344,15 +370,8 @@ class TravisData(object):
             "summary",
             " ".join(build_matrix.get_items().values())
         )
+
         self.current_job.add_property("build_matrix", build_matrix.get_items())
-
-        self.current_job.set_started_at(job_data['job']['started_at'])
-        self.current_job.set_finished_at(job_data['job']['finished_at'])
-
-        # calculate job duration from start and finished timestamps
-        # if no timing tags are available
-        if not self.has_timing_tags():
-            self.current_job.add_property("duration", self.get_job_duration())
 
     def get_job_log(self, job_id):
         """
