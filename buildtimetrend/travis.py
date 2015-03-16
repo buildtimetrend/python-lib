@@ -363,7 +363,7 @@ class TravisData(object):
             build_matrix.add_item("os", job_data['job']['config']['os'])
         if 'env' in job_data['job']['config']:
             build_matrix.add_item(
-                "build_matrix_env",
+                "parameters",
                 job_data['job']['config']['env']
             )
         build_matrix.add_item(

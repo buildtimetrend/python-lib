@@ -200,6 +200,7 @@ DICT_BUILD_485 = [
         'year': '2014'}}
 ]
 
+JOB_DATA_C = '{"job":{"id":54285508,"repository_id":1181026,"repository_slug":"pyca/cryptography","build_id":54285507,"commit_id":15573583,"log_id":37201812,"number":"5501.1","config":{"language":"c","os":"osx","compiler":"clang","env":"TOXENV=py26","install":["./.travis/install.sh"],"script":["./.travis/run.sh"],"after_success":["source ~/.venv/bin/activate && coveralls"],"notifications":{"irc":{"channels":["irc.freenode.org#cryptography-dev"],"use_notice":true,"skip_join":true},"webhooks":["https://buildtimetrend.herokuapp.com/travis"]},".result":"configured"},"state":"passed","started_at":"2015-03-13T18:48:17Z","finished_at":"2015-03-13T19:01:54Z","queue":"builds.mac_osx","allow_failure":false,"tags":null,"annotation_ids":[]},"commit":{"id":15573583,"sha":"27be222667f9c4d9d7be383a9dd1f0cf1012daba","branch":"master","message":"support DER encoded EC private key serialization","committed_at":"2015-03-13T18:33:06Z","author_name":"Paul Kehrer","author_email":"paul.l.kehrer@gmail.com","committer_name":"Paul Kehrer","committer_email":"paul.l.kehrer@gmail.com","compare_url":"https://github.com/pyca/cryptography/pull/1755"},"annotations":[]}'
 
 class TestTravis(unittest.TestCase):
     def setUp(self):
@@ -428,6 +429,17 @@ class TestTravisData(unittest.TestCase):
             DICT_BUILD_485[1],
             self.travis_data.build_jobs["35665485"].properties.get_items()
         )
+
+    def test_get_build_matrix_c(self):
+        self.travis_data.set_build_matrix(json.loads(JOB_DATA_C))
+        self.assertDictEqual(
+            {'build_matrix': {
+                'language': 'c',
+                'os': 'osx',
+                'parameters': 'TOXENV=py26',
+                'summary': 'osx c TOXENV=py26'}
+            },
+            self.travis_data.current_job.properties.get_items())
 
     def test_nofile(self):
         # number of stages should be zero when file doesn't exist
