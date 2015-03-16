@@ -53,8 +53,10 @@ DICT_BUILD_158 = {
         'hostname': 'worker-linux-11-2.bb.travis-ci.org',
         'os': 'travis-linux-9'
     },
-    'build_matrix': 'python',
-    'language': 'python',
+    'build_matrix': {
+        'summary': 'python',
+        'language': 'python'
+    },
     'started_at': {
         'day_of_month': '08',
         'day_of_week': '2',
@@ -107,8 +109,10 @@ DICT_BUILD_485 = [
     'worker': {
         'hostname': 'worker-linux-7-1.bb.travis-ci.org',
         'os': 'travis-linux-7'},
-    'build_matrix': 'java',
-    'language': 'java',
+    'build_matrix': {
+        'summary': 'java',
+        'language': 'java'
+    },
     'started_at': {'day_of_month': '18',
         'day_of_week': '4',
         'day_of_week_full_en': 'Thursday',
@@ -154,8 +158,10 @@ DICT_BUILD_485 = [
     'result': 'passed',
     'worker': {'hostname': 'worker-linux-3-2.bb.travis-ci.org',
         'os': 'travis-linux-7'},
-    'build_matrix': 'java',
-    'language': 'java',
+    'build_matrix': {
+        'summary': 'java',
+        'language': 'java'
+    },
     'started_at': {'day_of_month': '18',
         'day_of_week': '4',
         'day_of_week_full_en': 'Thursday',

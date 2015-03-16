@@ -32,6 +32,7 @@ from buildtimetrend.tools import get_repo_slug
 from buildtimetrend.build import Build
 from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stage
+from buildtimetrend.collection import Collection
 import buildtimetrend
 try:
     # For Python 3.0 and later
@@ -327,21 +328,23 @@ class TravisData(object):
         self.current_job.add_property("ci_platform", 'travis')
         self.current_job.add_property("result", job_data['job']['state'])
 
-        self.current_job.add_property(
+        build_matrix = Collection()
+        build_matrix.add_item(
             "language",
             job_data['job']['config']['language']
         )
-        build_matrix = job_data['job']['config']['language']
         if 'os' in job_data['job']['config']:
-            self.current_job.add_property("os", job_data['job']['config']['os'])
-            build_matrix += " " + job_data['job']['config']['os']
+            build_matrix.add_item("os", job_data['job']['config']['os'])
         if 'env' in job_data['job']['config']:
-            self.current_job.add_property(
+            build_matrix.add_item(
                 "build_matrix_env",
                 job_data['job']['config']['env']
             )
-            build_matrix += " " + job_data['job']['config']['env']
-        self.current_job.add_property("build_matrix", build_matrix)
+        build_matrix.add_item(
+            "summary",
+            " ".join(build_matrix.get_items().values())
+        )
+        self.current_job.add_property("build_matrix", build_matrix.get_items())
 
         self.current_job.set_started_at(job_data['job']['started_at'])
         self.current_job.set_finished_at(job_data['job']['finished_at'])
