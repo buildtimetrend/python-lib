@@ -54,8 +54,9 @@ DICT_BUILD_158 = {
         'os': 'travis-linux-9'
     },
     'build_matrix': {
-        'summary': 'python',
-        'language': 'python'
+        'summary': '2.7 python',
+        'language': 'python',
+        'language_version': '2.7'
     },
     'started_at': {
         'day_of_month': '08',
@@ -449,7 +450,8 @@ class TestTravisData(unittest.TestCase):
             {'build_matrix': {
                 'os': 'linux',
                 'language': 'python',
-                'summary': 'linux python'}
+                'language_version': '2.7',
+                'summary': '2.7 linux python'}
             },
             self.travis_data.current_job.properties.get_items())
 

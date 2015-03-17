@@ -355,10 +355,16 @@ class TravisData(object):
         """
         build_matrix = Collection()
 
-        build_matrix.add_item(
-            "language",
-            job_data['job']['config']['language']
-        )
+        language = job_data['job']['config']['language']
+        build_matrix.add_item("language", language)
+
+        # set language version
+        if language in ['d', 'dart', 'go', 'perl', 'php', 'python', 'rust'] and \
+                language in job_data['job']['config']:
+            build_matrix.add_item(
+                "language_version", job_data['job']['config'][language]
+            )
+
         if 'os' in job_data['job']['config']:
             build_matrix.add_item("os", job_data['job']['config']['os'])
         if 'env' in job_data['job']['config']:
@@ -366,6 +372,8 @@ class TravisData(object):
                 "parameters",
                 job_data['job']['config']['env']
             )
+
+        # concatenate all properties in as summary field
         build_matrix.add_item(
             "summary",
             " ".join(build_matrix.get_items().values())
