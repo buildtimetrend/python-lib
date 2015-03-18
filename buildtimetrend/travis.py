@@ -376,7 +376,7 @@ class TravisData(object):
         # concatenate all properties in as summary field
         build_matrix.add_item(
             "summary",
-            " ".join(build_matrix.get_items().values())
+            " ".join(build_matrix.get_key_sorted_items().values())
         )
 
         self.current_job.add_property("build_matrix", build_matrix.get_items())

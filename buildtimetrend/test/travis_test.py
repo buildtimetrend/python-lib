@@ -54,7 +54,7 @@ DICT_BUILD_158 = {
         'os': 'travis-linux-9'
     },
     'build_matrix': {
-        'summary': '2.7 python',
+        'summary': 'python 2.7',
         'language': 'python',
         'language_version': '2.7'
     },
@@ -440,7 +440,7 @@ class TestTravisData(unittest.TestCase):
                 'language': 'c',
                 'os': 'osx',
                 'parameters': 'TOXENV=py26',
-                'summary': 'osx c TOXENV=py26'}
+                'summary': 'c osx TOXENV=py26'}
             },
             self.travis_data.current_job.properties.get_items())
 
@@ -451,7 +451,7 @@ class TestTravisData(unittest.TestCase):
                 'os': 'linux',
                 'language': 'python',
                 'language_version': '2.7',
-                'summary': '2.7 linux python'}
+                'summary': 'python 2.7 linux'}
             },
             self.travis_data.current_job.properties.get_items())
 
