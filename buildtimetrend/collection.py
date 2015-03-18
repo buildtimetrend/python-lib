@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 import copy
+from collections import OrderedDict
 from buildtimetrend.tools import check_dict
 
 
@@ -74,3 +75,7 @@ class Collection(object):
         """ Return items collection as dictionary. """
         # copy values of items collection
         return copy.deepcopy(self.items)
+
+    def get_key_sorted_items(self):
+        """ Return items as an ordered dictionary, sorted on key. """
+        return OrderedDict(sorted(self.items.items()))
