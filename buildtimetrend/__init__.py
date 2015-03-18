@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import logging
 
 NAME = "buildtimetrend"
-VERSION = "0.3.dev4"
+VERSION = "0.3.dev5"
 SCHEMA_VERSION = "2"
 USER_AGENT = "%s/%s" % (NAME, VERSION)
 
