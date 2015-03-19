@@ -365,6 +365,8 @@ class TravisData(object):
                 "language_version", job_data['job']['config'][language]
             )
 
+        if 'compiler' in job_data['job']['config']:
+            build_matrix.add_item("compiler", job_data['job']['config']['compiler'])
         if 'os' in job_data['job']['config']:
             build_matrix.add_item("os", job_data['job']['config']['os'])
         if 'env' in job_data['job']['config']:

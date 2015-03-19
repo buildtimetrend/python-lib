@@ -437,10 +437,11 @@ class TestTravisData(unittest.TestCase):
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_C))
         self.assertDictEqual(
             {'build_matrix': {
+                'compiler': 'clang',
                 'language': 'c',
                 'os': 'osx',
                 'parameters': 'TOXENV=py26',
-                'summary': 'c osx TOXENV=py26'}
+                'summary': 'clang c osx TOXENV=py26'}
             },
             self.travis_data.current_job.properties.get_items())
 
