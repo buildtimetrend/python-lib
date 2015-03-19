@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import logging
 
 NAME = "buildtimetrend"
-VERSION = "0.3.dev4"
+VERSION = "0.3.dev5"
 SCHEMA_VERSION = "2"
 USER_AGENT = "%s/%s" % (NAME, VERSION)
 
@@ -60,12 +60,14 @@ def set_loglevel(loglevel):
     log_handler = logging.StreamHandler()
     log_handler.setLevel(numeric_level)
 
+    # remove default log handlers
+    logger.handlers = []
+
     # setup logger
-    logger = get_logger()
     logger.setLevel(numeric_level)
     logger.addHandler(log_handler)
     logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
 
 
-set_loglevel("WARNING")
 logger = get_logger()
+set_loglevel("WARNING")

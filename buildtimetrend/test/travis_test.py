@@ -53,6 +53,11 @@ DICT_BUILD_158 = {
         'hostname': 'worker-linux-11-2.bb.travis-ci.org',
         'os': 'travis-linux-9'
     },
+    'build_matrix': {
+        'summary': 'python 2.7',
+        'language': 'python',
+        'language_version': '2.7'
+    },
     'started_at': {
         'day_of_month': '08',
         'day_of_week': '2',
@@ -105,6 +110,10 @@ DICT_BUILD_485 = [
     'worker': {
         'hostname': 'worker-linux-7-1.bb.travis-ci.org',
         'os': 'travis-linux-7'},
+    'build_matrix': {
+        'summary': 'java',
+        'language': 'java'
+    },
     'started_at': {'day_of_month': '18',
         'day_of_week': '4',
         'day_of_week_full_en': 'Thursday',
@@ -150,6 +159,10 @@ DICT_BUILD_485 = [
     'result': 'passed',
     'worker': {'hostname': 'worker-linux-3-2.bb.travis-ci.org',
         'os': 'travis-linux-7'},
+    'build_matrix': {
+        'summary': 'java',
+        'language': 'java'
+    },
     'started_at': {'day_of_month': '18',
         'day_of_week': '4',
         'day_of_week_full_en': 'Thursday',
@@ -188,6 +201,9 @@ DICT_BUILD_485 = [
         'year': '2014'}}
 ]
 
+JOB_DATA_C = '{"job":{"id":54285508,"repository_id":1181026,"repository_slug":"pyca/cryptography","build_id":54285507,"commit_id":15573583,"log_id":37201812,"number":"5501.1","config":{"language":"c","os":"osx","compiler":"clang","env":"TOXENV=py26","install":["./.travis/install.sh"],"script":["./.travis/run.sh"],"after_success":["source ~/.venv/bin/activate && coveralls"],"notifications":{"irc":{"channels":["irc.freenode.org#cryptography-dev"],"use_notice":true,"skip_join":true},"webhooks":["https://buildtimetrend.herokuapp.com/travis"]},".result":"configured"},"state":"passed","started_at":"2015-03-13T18:48:17Z","finished_at":"2015-03-13T19:01:54Z","queue":"builds.mac_osx","allow_failure":false,"tags":null,"annotation_ids":[]},"commit":{"id":15573583,"sha":"27be222667f9c4d9d7be383a9dd1f0cf1012daba","branch":"master","message":"support DER encoded EC private key serialization","committed_at":"2015-03-13T18:33:06Z","author_name":"Paul Kehrer","author_email":"paul.l.kehrer@gmail.com","committer_name":"Paul Kehrer","committer_email":"paul.l.kehrer@gmail.com","compare_url":"https://github.com/pyca/cryptography/pull/1755"},"annotations":[]}'
+JOB_DATA_PYTHON = '{"job":{"id":54287645,"repository_id":1988445,"repository_slug":"buildtimetrend/python-lib","build_id":54287644,"commit_id":15574122,"log_id":37203465,"number":"536.1","config":{"language":"python","python":"2.7","sudo":false,"install":["CFLAGS=-O0 pip install -e .[native]","CFLAGS=-O0 pip install coveralls"],"script":["nosetests --with-coverage --cover-package=buildtimetrend"],"after_script":["coveralls"],"notifications":{"webhooks":["https://buildtimetrend-dev.herokuapp.com/travis","https://buildtimetrend.herokuapp.com/travis"]},".result":"configured","os":"linux","addons":{}},"state":"passed","started_at":"2015-03-13T18:50:00Z","finished_at":"2015-03-13T18:51:22Z","queue":"builds.docker","allow_failure":false,"tags":null,"annotation_ids":[]},"commit":{"id":15574122,"sha":"4055a820f0ac3cce2b59e2223316d9f32852ca4c","branch":"master","message":"fix coding style","committed_at":"2015-03-13T18:49:19Z","author_name":"Dieter Adriaenssens","author_email":"ruleant@users.sourceforge.net","committer_name":"Dieter Adriaenssens","committer_email":"ruleant@users.sourceforge.net","compare_url":"https://github.com/buildtimetrend/python-lib/compare/4903560d1840...4055a820f0ac"},"annotations":[]}'
+JOB_DATA_JAVA = '{"job":{"id":35665484,"repository_id":1390431,"repository_slug":"ruleant/getback_gps","build_id":35665483,"commit_id":10254925,"log_id":23344586,"number":"485.1","config":{"language":"java","jdk":"openjdk7","before_install":["cd $HOME","if [[ -d buildtime-trend/.git ]]; then cd buildtime-trend; git pull; cd ..; else git clone https://github.com/ruleant/buildtime-trend.git; fi","source buildtime-trend/init.sh","mvn -v","timestamp.sh install_libs","sudo apt-get update -qq","sudo apt-get install -qq libstdc++6:i386 lib32z1 python-pip","timestamp.sh install_python_libs","sudo CFLAGS=-O0 pip install -r ${BUILD_TREND_HOME}/requirements.txt","timestamp.sh install_android_sdk","wget http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz","tar -zxf android-sdk_r23.0.2-linux.tgz","export ANDROID_HOME=`pwd`/android-sdk-linux","export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools","echo y | android update sdk -a --filter tools,platform-tools,build-tools-20.0.0,android-20 --no-ui --force","$TRAVIS_BUILD_DIR/.utility/deploy-sdk-to-m2-repo.sh","cd $TRAVIS_BUILD_DIR","timestamp.sh build"],"script":["timestamp.sh test","mvn test -B"],"after_success":["timestamp.sh coverage","mvn clean test cobertura:cobertura coveralls:cobertura -B","timestamp.sh update_javadoc","mvn clean install javadoc:javadoc -DskipTests=true",".utility/copy-javadoc-to-gh-pages.sh"],"after_script":["timestamp.sh end","sync-buildtime-trend-with-gh-pages.sh"],"addons":{},".result":"configured","global_env":"GH_TOKEN=[secure] COVERITY_SCAN_TOKEN=[secure] KEEN_PROJECT_ID=[secure] KEEN_WRITE_KEY=[secure] KEEN_MASTER_KEY=[secure]"},"state":"passed","started_at":"2014-09-18T19:14:46Z","finished_at":"2014-09-18T19:20:12Z","queue":"builds.linux","allow_failure":false,"tags":null,"annotation_ids":[]},"commit":{"id":10254925,"sha":"0c3b9d9d710f299e20c7afa88cf4f1f53ae8e965","branch":"master","message":"wrap long line","committed_at":"2014-09-18T19:13:10Z","author_name":"Dieter Adriaenssens","author_email":"ruleant@users.sourceforge.net","committer_name":"Dieter Adriaenssens","committer_email":"ruleant@users.sourceforge.net","compare_url":"https://github.com/ruleant/getback_gps/compare/436484c2fd6a...0c3b9d9d710f"},"annotations":[]}'
 
 class TestTravis(unittest.TestCase):
     def setUp(self):
@@ -417,6 +433,38 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.build_jobs["35665485"].properties.get_items()
         )
 
+    def test_get_build_matrix_c(self):
+        self.travis_data.set_build_matrix(json.loads(JOB_DATA_C))
+        self.assertDictEqual(
+            {'build_matrix': {
+                'compiler': 'clang',
+                'language': 'c',
+                'os': 'osx',
+                'parameters': 'TOXENV=py26',
+                'summary': 'clang c osx TOXENV=py26'}
+            },
+            self.travis_data.current_job.properties.get_items())
+
+    def test_get_build_matrix_python(self):
+        self.travis_data.set_build_matrix(json.loads(JOB_DATA_PYTHON))
+        self.assertDictEqual(
+            {'build_matrix': {
+                'os': 'linux',
+                'language': 'python',
+                'language_version': '2.7',
+                'summary': 'python 2.7 linux'}
+            },
+            self.travis_data.current_job.properties.get_items())
+
+    def test_get_build_matrix_java(self):
+        self.travis_data.set_build_matrix(json.loads(JOB_DATA_JAVA))
+        self.assertDictEqual(
+            {'build_matrix': {
+                'language': 'java',
+                'summary': 'java'}
+            },
+            self.travis_data.current_job.properties.get_items())
+
     def test_nofile(self):
         # number of stages should be zero when file doesn't exist
         self.assertFalse(self.travis_data.parse_job_log_file('nofile.csv'))
@@ -536,14 +584,20 @@ class TestTravisData(unittest.TestCase):
             self.assertEquals(3.650939474, self.travis_data.current_job.stages.stages[0]["duration"])
 
             # check build started and finished timestamps
-            self.assertEquals(1408282890.843066,
-                self.travis_data.current_job.stages.started_at["timestamp_seconds"])
-            self.assertEquals(1408282894.494005,
-                self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282890.843066,
+                self.travis_data.current_job.stages
+                    .started_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282894.494005,
+                self.travis_data.current_job.stages
+                    .finished_at["timestamp_seconds"])
 
             # new TravisSubstage object was created
             self.assertFalse(self.travis_data.travis_substage.has_name())
-            self.assertFalse(self.travis_data.travis_substage.has_timing_hash())
+            self.assertFalse(
+                self.travis_data.travis_substage.has_timing_hash()
+            )
             self.assertFalse(self.travis_data.travis_substage.has_command())
             self.assertFalse(self.travis_data.travis_substage.has_started())
             self.assertFalse(self.travis_data.travis_substage.has_finished())
@@ -553,9 +607,13 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.parse_travis_time_tag(f.next())
 
             # stage 'after_script.2' is started, but is not finished
-            self.assertEquals(1, len(self.travis_data.current_job.stages.stages))
+            self.assertEquals(
+                1, len(self.travis_data.current_job.stages.stages)
+            )
             self.assertTrue(self.travis_data.travis_substage.has_name())
-            self.assertEquals('after_script.2', self.travis_data.travis_substage.get_name())
+            self.assertEquals(
+                'after_script.2', self.travis_data.travis_substage.get_name()
+            )
             self.assertTrue(self.travis_data.travis_substage.has_timing_hash())
             self.assertTrue(self.travis_data.travis_substage.has_command())
             self.assertTrue(self.travis_data.travis_substage.has_started())
@@ -564,28 +622,49 @@ class TestTravisData(unittest.TestCase):
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())
 
-            # stage 'after_script.2' is finished, and is added to Stages object
-            self.assertEquals(2, len(self.travis_data.current_job.stages.stages))
+            # stage 'after_script.2' is finished,
+            # and is added to Stages object
+            self.assertEquals(
+                2, len(self.travis_data.current_job.stages.stages))
 
-            self.assertEquals('after_script.2', self.travis_data.current_job.stages.stages[1]["name"])
-            self.assertEquals('coveralls', self.travis_data.current_job.stages.stages[1]["command"])
-            self.assertEquals(1408282896.480782,
-                self.travis_data.current_job.stages.stages[1]["started_at"]["timestamp_seconds"])
-            self.assertEquals(1408282901.258724,
-                self.travis_data.current_job.stages.stages[1]["finished_at"]["timestamp_seconds"])
-            self.assertEquals(4.777942342, self.travis_data.current_job.stages.stages[1]["duration"])
+            self.assertEquals(
+                'after_script.2',
+                self.travis_data.current_job.stages.stages[1]["name"])
+            self.assertEquals(
+                'coveralls',
+                self.travis_data.current_job.stages.stages[1]["command"])
+            self.assertEquals(
+                1408282896.480782,
+                self.travis_data.current_job.stages
+                    .stages[1]["started_at"]["timestamp_seconds"])
+            self.assertEquals(
+                1408282901.258724,
+                self.travis_data.current_job.stages
+                    .stages[1]["finished_at"]["timestamp_seconds"])
+            self.assertEquals(
+                4.777942342,
+                self.travis_data.current_job.stages.stages[1]["duration"])
 
             # check build started and finished timestamps
-            self.assertEquals(1408282890.843066,
-                self.travis_data.current_job.stages.started_at["timestamp_seconds"])
-            self.assertEquals(1408282901.258724,
-                self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282890.843066,
+                self.travis_data.current_job.stages
+                    .started_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282901.258724,
+                self.travis_data.current_job.stages
+                    .finished_at["timestamp_seconds"])
 
             """Third stage"""
-            # new TravisSubstage object was created, and the next stage is started
+            # new TravisSubstage object was created,
+            # and the next stage is started
             self.assertTrue(self.travis_data.travis_substage.has_name())
-            self.assertEquals('after_script.3', self.travis_data.travis_substage.get_name())
-            self.assertFalse(self.travis_data.travis_substage.has_timing_hash())
+            self.assertEquals(
+                'after_script.3', self.travis_data.travis_substage.get_name()
+            )
+            self.assertFalse(
+                self.travis_data.travis_substage.has_timing_hash()
+            )
             self.assertTrue(self.travis_data.travis_substage.has_command())
             self.assertTrue(self.travis_data.travis_substage.has_started())
             self.assertFalse(self.travis_data.travis_substage.has_finished())
@@ -594,25 +673,46 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.parse_travis_time_tag(f.next())
 
             # stage 'after_script.3' is finished, and is added to Stages object
-            self.assertEquals(3, len(self.travis_data.current_job.stages.stages))
+            self.assertEquals(
+                3, len(self.travis_data.current_job.stages.stages)
+            )
 
-            self.assertEquals('after_script.3', self.travis_data.current_job.stages.stages[2]["name"])
-            self.assertEquals('echo $TRAVIS_TEST_RESULT', self.travis_data.current_job.stages.stages[2]["command"])
-            self.assertFalse('started_at' in self.travis_data.current_job.stages.stages[2])
-            self.assertFalse('finished_at' in self.travis_data.current_job.stages.stages[2])
-            self.assertEquals(0, self.travis_data.current_job.stages.stages[2]["duration"])
+            self.assertEquals(
+                'after_script.3',
+                self.travis_data.current_job.stages.stages[2]["name"]
+            )
+            self.assertEquals(
+                'echo $TRAVIS_TEST_RESULT',
+                self.travis_data.current_job.stages.stages[2]["command"]
+            )
+            self.assertFalse(
+                'started_at' in self.travis_data.current_job.stages.stages[2]
+            )
+            self.assertFalse(
+                'finished_at' in self.travis_data.current_job.stages.stages[2]
+            )
+            self.assertEquals(
+                0, self.travis_data.current_job.stages.stages[2]["duration"])
 
             # check build started and finished timestamps, they don't change
             # because this stage doesn't having timing info
-            self.assertEquals(1408282890.843066,
-                self.travis_data.current_job.stages.started_at["timestamp_seconds"])
-            self.assertEquals(1408282901.258724,
-                self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282890.843066,
+                self.travis_data.current_job.stages
+                    .started_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282901.258724,
+                self.travis_data.current_job.stages
+                    .finished_at["timestamp_seconds"])
 
             """Fourth stage"""
-            # new TravisSubstage object was created, and the next stage is started
+            # new TravisSubstage object was created,
+            # and the next stage is started
             self.assertFalse(self.travis_data.travis_substage.has_name())
-            self.assertEquals('timestamp.sh Done', self.travis_data.travis_substage.get_name())
+            self.assertEquals(
+                'timestamp.sh Done',
+                self.travis_data.travis_substage.get_name()
+            )
             self.assertTrue(self.travis_data.travis_substage.has_timing_hash())
             self.assertTrue(self.travis_data.travis_substage.has_command())
             self.assertTrue(self.travis_data.travis_substage.has_started())
@@ -621,22 +721,37 @@ class TestTravisData(unittest.TestCase):
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())
 
-            # stage 'timestamp.sh Done' is finished, and is added to Stages object
-            self.assertEquals(4, len(self.travis_data.current_job.stages.stages))
+            # stage 'timestamp.sh Done' is finished,
+            # and is added to Stages object
+            self.assertEquals(
+                4, len(self.travis_data.current_job.stages.stages))
 
-            self.assertEquals('', self.travis_data.current_job.stages.stages[3]["name"])
-            self.assertEquals('timestamp.sh Done', self.travis_data.current_job.stages.stages[3]["command"])
-            self.assertEquals(1408282901.278676,
-                self.travis_data.current_job.stages.stages[3]["started_at"]["timestamp_seconds"])
-            self.assertEquals(1408282901.287937,
-                self.travis_data.current_job.stages.stages[3]["finished_at"]["timestamp_seconds"])
-            self.assertEquals(0.009261320, self.travis_data.current_job.stages.stages[3]["duration"])
+            self.assertEquals(
+                '', self.travis_data.current_job.stages.stages[3]["name"])
+            self.assertEquals(
+                'timestamp.sh Done',
+                self.travis_data.current_job.stages.stages[3]["command"])
+            self.assertEquals(
+                1408282901.278676,
+                self.travis_data.current_job.stages
+                    .stages[3]["started_at"]["timestamp_seconds"])
+            self.assertEquals(
+                1408282901.287937,
+                self.travis_data.current_job.stages
+                    .stages[3]["finished_at"]["timestamp_seconds"])
+            self.assertEquals(
+                0.009261320,
+                self.travis_data.current_job.stages.stages[3]["duration"])
 
             # check build started and finished timestamps
-            self.assertEquals(1408282890.843066,
-                self.travis_data.current_job.stages.started_at["timestamp_seconds"])
-            self.assertEquals(1408282901.287937,
-                self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282890.843066,
+                self.travis_data.current_job.stages
+                    .started_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282901.287937,
+                self.travis_data.current_job.stages
+                    .finished_at["timestamp_seconds"])
 
     def test_parse_travis_time_tag_incorrect(self):
         # read sample lines with timetags
@@ -682,7 +797,8 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.parse_travis_time_tag(f.next())
 
             # stage 'after_script.2' is started, but is not finished
-            self.assertEquals(0, len(self.travis_data.current_job.stages.stages))
+            self.assertEquals(
+                0, len(self.travis_data.current_job.stages.stages))
             self.assertTrue(self.travis_data.travis_substage.has_name())
             self.assertEquals('after_script.2',
                               self.travis_data.travis_substage.get_name())
@@ -743,11 +859,14 @@ class TestTravisData(unittest.TestCase):
                 self.travis_data.current_job.stages.stages[0]["duration"])
 
             # build started and finished timestamps are not set
-            self.assertEquals(None, self.travis_data.current_job.stages.started_at)
-            self.assertEquals(None, self.travis_data.current_job.stages.finished_at)
+            self.assertEquals(
+                None, self.travis_data.current_job.stages.started_at)
+            self.assertEquals(
+                None, self.travis_data.current_job.stages.finished_at)
 
             """Fourth stage"""
-            # new TravisSubstage object was created, and the next stage is started
+            # new TravisSubstage object was created,
+            # and the next stage is started
             self.assertFalse(self.travis_data.travis_substage.has_name())
             self.assertEquals(
                 'timestamp.sh Done',
@@ -760,26 +879,39 @@ class TestTravisData(unittest.TestCase):
             # read next log file line
             self.travis_data.parse_travis_time_tag(f.next())
 
-            # stage 'timestamp.sh Done' is finished, and is added to Stages object
-            self.assertEquals(2, len(self.travis_data.current_job.stages.stages))
+            # stage 'timestamp.sh Done' is finished,
+            # and is added to Stages object
+            self.assertEquals(
+                2, len(self.travis_data.current_job.stages.stages)
+            )
 
-            self.assertEquals('', self.travis_data.current_job.stages.stages[1]["name"])
+            self.assertEquals(
+                '', self.travis_data.current_job.stages.stages[1]["name"]
+            )
             self.assertEquals(
                 'timestamp.sh Done',
                 self.travis_data.current_job.stages.stages[1]["command"])
-            self.assertEquals(1408282901.278676,
-                self.travis_data.current_job.stages.stages[1]["started_at"]["timestamp_seconds"])
-            self.assertEquals(1408282901.287937,
-                self.travis_data.current_job.stages.stages[1]["finished_at"]["timestamp_seconds"])
+            self.assertEquals(
+                1408282901.278676,
+                self.travis_data.current_job.stages
+                    .stages[1]["started_at"]["timestamp_seconds"])
+            self.assertEquals(
+                1408282901.287937,
+                self.travis_data.current_job.stages
+                    .stages[1]["finished_at"]["timestamp_seconds"])
             self.assertEquals(
                 0.009261320,
                 self.travis_data.current_job.stages.stages[1]["duration"])
 
             # check build started and finished timestamps
-            self.assertEquals(1408282901.278676,
-                self.travis_data.current_job.stages.started_at["timestamp_seconds"])
-            self.assertEquals(1408282901.287937,
-                self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282901.278676,
+                self.travis_data.current_job.stages
+                    .started_at["timestamp_seconds"])
+            self.assertEquals(
+                1408282901.287937,
+                self.travis_data.current_job.stages
+                    .finished_at["timestamp_seconds"])
 
     def test_parse_travis_worker_tag(self):
         # pass empty string
@@ -794,9 +926,13 @@ class TestTravisData(unittest.TestCase):
 
         # pass correct string
         self.travis_data.parse_travis_worker_tag(TRAVIS_LOG_WORKER)
-        self.assertDictEqual({'hostname': 'worker-linux-12-1.bb.travis-ci.org',
-            'os': 'travis-linux-11'},
-            self.travis_data.current_job.get_property("worker"))
+        self.assertDictEqual(
+            {
+                'hostname': 'worker-linux-12-1.bb.travis-ci.org',
+                'os': 'travis-linux-11'
+            },
+            self.travis_data.current_job.get_property("worker")
+        )
 
     def test_has_timing_tags(self):
         """
@@ -834,6 +970,7 @@ class TestTravisData(unittest.TestCase):
             "2014-07-30T16:31:00.123Z"
         )
         self.assertAlmostEqual(0.0, self.travis_data.get_job_duration(), 0)
+
 
 class TestTravisSubstage(unittest.TestCase):
     def setUp(self):

@@ -69,7 +69,7 @@ class TestTools(unittest.TestCase):
 
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH,
-            split_isotimestamp(u"1970-01-01T00:00:00Z")
+            split_isotimestamp("1970-01-01T00:00:00Z")
         )
 
         # test 0 timestamp (epoch), without timezone
