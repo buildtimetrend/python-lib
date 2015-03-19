@@ -60,6 +60,9 @@ def set_loglevel(loglevel):
     log_handler = logging.StreamHandler()
     log_handler.setLevel(numeric_level)
 
+    # remove default log handlers
+    logger.handlers = []
+
     # setup logger
     logger.setLevel(numeric_level)
     logger.addHandler(log_handler)
