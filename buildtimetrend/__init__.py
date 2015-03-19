@@ -63,6 +63,7 @@ def set_loglevel(loglevel):
     # setup logger
     logger.setLevel(numeric_level)
     logger.addHandler(log_handler)
+    logger.propagate = False
     logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
 
 
