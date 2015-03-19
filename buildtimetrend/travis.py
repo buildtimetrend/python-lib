@@ -361,11 +361,9 @@ class TravisData(object):
         build_matrix.add_item("language", language)
 
         # set language version
-        if language in ['d', 'dart', 'go', 'perl', 'php', 'python', 'rust'] and \
-                language in job_config:
-            build_matrix.add_item(
-                "language_version", job_config[language]
-            )
+        # ('d', 'dart', 'go', 'perl', 'php', 'python', 'rust')
+        if language in job_config:
+            build_matrix.add_item("language_version", job_config[language])
 
         if 'compiler' in job_config:
             build_matrix.add_item("compiler", job_config['compiler'])
