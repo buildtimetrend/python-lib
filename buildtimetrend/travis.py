@@ -124,9 +124,9 @@ def process_notification_payload(payload):
     logger.info("Travis Payload : %r.", json_payload)
 
     # get repo name from payload
-    if ("repository" in json_payload
-            and "owner_name" in json_payload["repository"]
-            and "name" in json_payload["repository"]):
+    if ("repository" in json_payload and
+            "owner_name" in json_payload["repository"] and
+            "name" in json_payload["repository"]):
 
         repo = get_repo_slug(json_payload["repository"]["owner_name"],
                              json_payload["repository"]["name"])
