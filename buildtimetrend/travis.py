@@ -365,12 +365,10 @@ class TravisData(object):
         if language in job_config:
             build_matrix.add_item("language_version", job_config[language])
 
-        if 'compiler' in job_config:
-            build_matrix.add_item("compiler", job_config['compiler'])
-        if 'os' in job_config:
-            build_matrix.add_item("os", job_config['os'])
-        if 'env' in job_config:
-            build_matrix.add_item("parameters", job_config['env'])
+        parameters = {'compiler': 'compiler', 'os': 'os', 'env': 'parameters'}
+        for parameter, name in parameters.items():
+            if parameter in job_config:
+                build_matrix.add_item(name, job_config[parameter])
 
         # concatenate all properties in as summary field
         build_matrix.add_item(
