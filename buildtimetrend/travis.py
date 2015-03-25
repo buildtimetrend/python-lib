@@ -365,9 +365,19 @@ class TravisData(object):
         if language in job_config:
             build_matrix.add_item("language_version", job_config[language])
 
+        # language specific build matrix parameters
         parameters = {
-            'jdk': 'jdk',
-            'compiler': 'compiler',
+            'ghc': 'ghc', # Haskell
+            'jdk': 'jdk', # Java, Android, Groovy, Ruby, Scala
+            'lein': 'lein', # Clojure
+            'mono': 'mono', # C#, F#, Visual Basic
+            'node_js': 'node_js', # Javascript
+            'otp_release': 'otp_release', # Erlang
+            'rvm': 'rvm', # Ruby, Objective-C
+            'gemfile': 'gemfile', # Ruby, Objective-C
+            'xcode_sdk': 'xcode_sdk', # Objective-C
+            'xcode_scheme': 'xcode_scheme', # Objective-C
+            'compiler': 'compiler', # C, C++
             'os': 'os',
             'env': 'parameters'
         }
