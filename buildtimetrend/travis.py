@@ -365,7 +365,12 @@ class TravisData(object):
         if language in job_config:
             build_matrix.add_item("language_version", job_config[language])
 
-        parameters = {'compiler': 'compiler', 'os': 'os', 'env': 'parameters'}
+        parameters = {
+            'jdk': 'jdk',
+            'compiler': 'compiler',
+            'os': 'os',
+            'env': 'parameters'
+        }
         for parameter, name in parameters.items():
             if parameter in job_config:
                 build_matrix.add_item(name, job_config[parameter])

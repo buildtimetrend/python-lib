@@ -111,7 +111,8 @@ DICT_BUILD_485 = [
         'hostname': 'worker-linux-7-1.bb.travis-ci.org',
         'os': 'travis-linux-7'},
     'build_matrix': {
-        'summary': 'java',
+        'jdk': 'openjdk7',
+        'summary': 'openjdk7 java',
         'language': 'java'
     },
     'started_at': {'day_of_month': '18',
@@ -160,7 +161,8 @@ DICT_BUILD_485 = [
     'worker': {'hostname': 'worker-linux-3-2.bb.travis-ci.org',
         'os': 'travis-linux-7'},
     'build_matrix': {
-        'summary': 'java',
+        'jdk': 'oraclejdk8',
+        'summary': 'oraclejdk8 java',
         'language': 'java'
     },
     'started_at': {'day_of_month': '18',
@@ -460,8 +462,9 @@ class TestTravisData(unittest.TestCase):
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_JAVA))
         self.assertDictEqual(
             {'build_matrix': {
+                'jdk': 'openjdk7',
                 'language': 'java',
-                'summary': 'java'}
+                'summary': 'openjdk7 java'}
             },
             self.travis_data.current_job.properties.get_items())
 
