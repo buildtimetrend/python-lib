@@ -35,7 +35,7 @@ USER_AGENT = "%s/%s" % (NAME, VERSION)
 
 
 def get_logger():
-    """ Return logger object. """
+    """Return logger object."""
     return logging.getLogger(NAME)
 
 

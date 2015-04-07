@@ -44,10 +44,10 @@ class Settings(object):
 
     class __Settings(object):
 
-        """ Settings class contains settings and config options. """
+        """Settings class contains settings and config options."""
 
         def __init__(self):
-            """ Initialise class. """
+            """Initialise class."""
             self.settings = Collection()
 
             # set loglevel
@@ -74,7 +74,7 @@ class Settings(object):
             self.add_setting("project_name", name)
 
         def get_project_name(self):
-            """ Get project name. """
+            """Get project name."""
             return self.get_setting("project_name")
 
         def set_client(self, name, version):
@@ -149,7 +149,7 @@ class Settings(object):
                 return True
 
         def get_project_info(self):
-            """ Get project info as a dictonary. """
+            """Get project info as a dictonary."""
             return {
                 "lib_version": buildtimetrend.VERSION,
                 "schema_version": buildtimetrend.SCHEMA_VERSION,
@@ -262,15 +262,15 @@ class Settings(object):
     instance = None
 
     def __new__(cls):  # __new__ always a classmethod
-        """ Create a singleton. """
+        """Create a singleton."""
         if not Settings.instance:
             Settings.instance = Settings.__Settings()
         return Settings.instance
 
     def __getattr__(self, name):
-        """ Redirect access to get singleton properties. """
+        """Redirect access to get singleton properties."""
         return getattr(self.instance, name)
 
     def __setattr__(self, name):
-        """ Redirect access to set singleton properties. """
+        """Redirect access to set singleton properties."""
         return setattr(self.instance, name)

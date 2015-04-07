@@ -187,7 +187,7 @@ def check_authorization(repo, auth_header):
 
 class TravisData(object):
 
-    """ Gather data from Travis CI using the API. """
+    """Gather data from Travis CI using the API."""
 
     def __init__(self, repo, build_id):
         """
@@ -207,7 +207,7 @@ class TravisData(object):
         self.build_id = str(build_id)
 
     def get_build_data(self):
-        """ Retrieve Travis CI build data. """
+        """Retrieve Travis CI build data."""
         request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
         self.build_data = self.json_request(request)
 
@@ -543,7 +543,7 @@ class TravisData(object):
         return started_at["timestamp_seconds"] > 1407369600
 
     def get_job_duration(self):
-        """ Calculate build job duration. """
+        """Calculate build job duration."""
         started_at = self.current_job.get_property("started_at")
         finished_at = self.current_job.get_property("finished_at")
         if started_at is None or "timestamp_seconds" not in started_at or \
@@ -555,14 +555,14 @@ class TravisData(object):
         return timestamp_end - timestamp_start
 
     def get_started_at(self):
-        """ Retrieve timestamp when build was started. """
+        """Retrieve timestamp when build was started."""
         if len(self.build_data) > 0:
             return self.build_data['builds'][0]['started_at']
         else:
             return None
 
     def get_finished_at(self):
-        """ Retrieve timestamp when build finished. """
+        """Retrieve timestamp when build finished."""
         if len(self.build_data) > 0:
             return self.build_data['builds'][0]['finished_at']
         else:
@@ -578,7 +578,7 @@ class TravisSubstage(object):
     """
 
     def __init__(self):
-        """ Initialise Travis CI Substage object. """
+        """Initialise Travis CI Substage object."""
         self.stage = Stage()
         self.timing_hash = ""
         self.finished_incomplete = False
@@ -820,7 +820,7 @@ class TravisSubstage(object):
             len(self.stage.data["command"]) > 0
 
     def get_command(self):
-        """ Return substage command. """
+        """Return substage command."""
         if self.has_command():
             return self.stage.data["command"]
         else:
