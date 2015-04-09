@@ -479,34 +479,70 @@ class TestTravisData(unittest.TestCase):
     def test_parse_valid_job_log(self):
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a logfile with 4 stages
-        self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_TIMING_TAGS_FILE))
+        self.assertTrue(
+            self.travis_data.parse_job_log_file(TRAVIS_TIMING_TAGS_FILE)
+        )
         self.assertEquals(4, len(self.travis_data.current_job.stages.stages))
 
-        self.assertEquals('install.4', self.travis_data.current_job.stages.stages[0]["name"])
-        self.assertEquals('after_script.2', self.travis_data.current_job.stages.stages[1]["name"])
-        self.assertEquals('after_script.3', self.travis_data.current_job.stages.stages[2]["name"])
-        self.assertEquals('', self.travis_data.current_job.stages.stages[3]["name"])
+        self.assertEquals(
+            'install.4',
+            self.travis_data.current_job.stages.stages[0]["name"]
+        )
+        self.assertEquals(
+            'after_script.2',
+            self.travis_data.current_job.stages.stages[1]["name"]
+        )
+        self.assertEquals(
+            'after_script.3',
+            self.travis_data.current_job.stages.stages[2]["name"]
+        )
+        self.assertEquals(
+            '',
+            self.travis_data.current_job.stages.stages[3]["name"]
+        )
 
         # check build started and finished timestamps
-        self.assertEquals(1408282890.843066,
-            self.travis_data.current_job.stages.started_at["timestamp_seconds"])
-        self.assertEquals(1408282901.287937,
-            self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
+        self.assertEquals(
+            1408282890.843066,
+            self.travis_data.current_job.stages
+                .started_at["timestamp_seconds"]
+        )
+        self.assertEquals(
+            1408282901.287937,
+            self.travis_data.current_job.stages
+                .finished_at["timestamp_seconds"]
+        )
 
     def test_parse_incorrect_job_log(self):
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a logfile with 2 incomplete stages and 2 valid stages
-        self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_INCORRECT_TIMING_TAGS_FILE))
+        self.assertTrue(
+            self.travis_data.parse_job_log_file(
+                TRAVIS_INCORRECT_TIMING_TAGS_FILE
+            )
+        )
         self.assertEquals(2, len(self.travis_data.current_job.stages.stages))
 
-        self.assertEquals('after_script.3', self.travis_data.current_job.stages.stages[0]["name"])
-        self.assertEquals('', self.travis_data.current_job.stages.stages[1]["name"])
+        self.assertEquals(
+            'after_script.3',
+            self.travis_data.current_job.stages.stages[0]["name"]
+        )
+        self.assertEquals(
+            '',
+            self.travis_data.current_job.stages.stages[1]["name"]
+        )
 
         # check build started and finished timestamps
-        self.assertEquals(1408282901.278676,
-            self.travis_data.current_job.stages.started_at["timestamp_seconds"])
-        self.assertEquals(1408282901.287937,
-            self.travis_data.current_job.stages.finished_at["timestamp_seconds"])
+        self.assertEquals(
+            1408282901.278676,
+            self.travis_data.current_job.stages
+                .started_at["timestamp_seconds"]
+        )
+        self.assertEquals(
+            1408282901.287937,
+            self.travis_data.current_job.stage
+                .finished_at["timestamp_seconds"]
+        )
 
     def test_parse_valid_job_log_travis_sample(self):
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
