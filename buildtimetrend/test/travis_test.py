@@ -540,7 +540,7 @@ class TestTravisData(unittest.TestCase):
         )
         self.assertEquals(
             1408282901.287937,
-            self.travis_data.current_job.stage
+            self.travis_data.current_job.stages
                 .finished_at["timestamp_seconds"]
         )
 
