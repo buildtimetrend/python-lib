@@ -1346,6 +1346,12 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEquals(VALID_HASH1, self.substage.timing_hash)
         self.assertFalse(self.substage.has_finished())
 
+    def test_get_command(self):
+        self.assertEquals("", self.substage.get_command())
+
+        self.substage.stage.set_command("command5.sh")
+        self.assertEquals("command5.sh", self.substage.get_command())
+
     def test_process_command(self):
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(self.substage.process_command({'invalid': 'param'}))
