@@ -282,5 +282,5 @@ class TestTools(unittest.TestCase):
         self.assertEquals(None, get_repo_slug(None, None))
 
         self.assertEquals("abcd/efgh", get_repo_slug("abcd", "efgh"))
-        self.assertEquals("abcd/efgh", get_repo_slug("Abcd", "eFgh"))
+        self.assertEquals("Abcd/eFgh", get_repo_slug("Abcd", "eFgh"))
         self.assertEquals("123/456", get_repo_slug(123, 456))
