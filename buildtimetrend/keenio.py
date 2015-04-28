@@ -514,7 +514,10 @@ def get_all_projects():
         return []
 
     try:
-        result = keen.select_unique("build_jobs", "buildtime_trend.project_name")
+        result = keen.select_unique(
+            "build_jobs",
+            "buildtime_trend.project_name"
+        )
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         return []
