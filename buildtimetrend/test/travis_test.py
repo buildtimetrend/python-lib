@@ -29,10 +29,13 @@ import constants
 import unittest
 
 TRAVIS_TIMING_TAGS_FILE = "buildtimetrend/test/test_sample_travis_time_tags"
-TRAVIS_INCORRECT_TIMING_TAGS_FILE = "buildtimetrend/test/test_sample_travis_time_tags_incorrect"
+TRAVIS_INCORRECT_TIMING_TAGS_FILE = \
+    "buildtimetrend/test/test_sample_travis_time_tags_incorrect"
 TRAVIS_LOG_FILE = "buildtimetrend/test/test_sample_travis_log"
-TRAVIS_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org:travis-linux-11"
-TRAVIS_INCOMPLETE_LOG_WORKER = "Using worker: worker-linux-12-1.bb.travis-ci.org"
+TRAVIS_LOG_WORKER = \
+    "Using worker: worker-linux-12-1.bb.travis-ci.org:travis-linux-11"
+TRAVIS_INCOMPLETE_LOG_WORKER = \
+    "Using worker: worker-linux-12-1.bb.travis-ci.org"
 
 TEST_REPO = 'buildtimetrend/python-lib'
 TEST_BUILD = '158'
@@ -240,7 +243,8 @@ class TestTravis(unittest.TestCase):
             expected_build = os.environ["TRAVIS_BUILD_NUMBER"] = "123"
             expected_job = os.environ["TRAVIS_JOB_NUMBER"] = "123.1"
             expected_branch = os.environ["TRAVIS_BRANCH"] = "branch1"
-            expected_project_name = os.environ["TRAVIS_REPO_SLUG"] = "test/project"
+            expected_project_name = \
+                os.environ["TRAVIS_REPO_SLUG"] = "test/project"
 
         # setup Travis test result
         if "TRAVIS_TEST_RESULT" in os.environ:
@@ -313,7 +317,8 @@ class TestTravis(unittest.TestCase):
 
         # test with string
         process_notification_payload(
-            '{"number": "%s", "repository": {"owner_name": "%s", "name": "%s"}}'
+            '{"number": "%s", "repository": ' \
+            '{"owner_name": "%s", "name": "%s"}}'
             % (expected_build, expected_owner, expected_repo)
         )
 
@@ -322,7 +327,10 @@ class TestTravis(unittest.TestCase):
 
         # test with unicode string
         process_notification_payload(
-            unicode('{"number": "%s", "repository": {"owner_name": "%s", "name": "%s"}}')
+            unicode(
+                '{"number": "%s", "repository": ' \
+                '{"owner_name": "%s", "name": "%s"}}'
+            )
             % (expected_build, expected_owner, expected_repo)
         )
 
@@ -361,9 +369,15 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals(None, self.travis_data.travis_substage)
         self.assertEquals(0, len(self.travis_data.build_jobs))
         self.assertEquals(0, len(self.travis_data.current_job.stages.stages))
-        self.assertEquals(0, self.travis_data.current_job.properties.get_size())
+        self.assertEquals(
+            0,
+            self.travis_data.current_job.properties.get_size()
+        )
         self.assertEquals(None, self.travis_data.current_job.stages.started_at)
-        self.assertEquals(None, self.travis_data.current_job.stages.finished_at)
+        self.assertEquals(
+            None,
+            self.travis_data.current_job.stages.finished_at
+        )
 
     def test_gather_data(self):
         # retrieve data from Travis API
