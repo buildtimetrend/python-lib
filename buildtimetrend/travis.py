@@ -185,6 +185,47 @@ def check_authorization(repo, auth_header):
         return False
 
 
+class TravisOrgConnector(object):
+
+    """Connects to Travis.org API."""
+
+    def __init__(self):
+        """Constructor."""
+        self.api_url = TRAVIS_ORG_API_URL
+
+    def download_job_log(self, job_id):
+        """
+        Retrieve Travis CI job log.
+
+        Parameters:
+        - job_id : ID of the job to process
+        """
+        request = 'jobs/%s/log' % str(job_id)
+        request_url = self.api_url + request
+        logger.info("Request build job log : %s", request_url)
+        return urlopen(request_url)
+
+    def json_request(self, json_request):
+        """
+        Retrieve Travis CI data using API.
+
+        Parameters:
+        - json_request : json_request to be sent to API
+        """
+        req = Request(
+            self.api_url + json_request,
+            None,
+            {
+                'user-agent': buildtimetrend.USER_AGENT,
+                'accept': 'application/vnd.travis-ci.2+json'
+            }
+        )
+        opener = build_opener()
+        result = opener.open(req)
+
+        return json.load(result)
+
+
 class TravisData(object):
 
     """Gather data from Travis CI using the API."""
@@ -203,13 +244,13 @@ class TravisData(object):
         self.current_job = Build()
         self.travis_substage = None
         self.repo = repo
-        self.api_url = TRAVIS_ORG_API_URL
+        self.connector = TravisOrgConnector()
         self.build_id = str(build_id)
 
     def get_build_data(self):
         """Retrieve Travis CI build data."""
         request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
-        self.build_data = self.json_request(request)
+        self.build_data = self.connector.json_request(request)
 
         # log build_data
         logger.debug(
@@ -289,7 +330,7 @@ class TravisData(object):
         - job_id : ID of the job to process
         """
         request = 'jobs/%s' % str(job_id)
-        job_data = self.json_request(request)
+        job_data = self.connector.json_request(request)
 
         # log job_data
         logger.debug(
@@ -393,18 +434,6 @@ class TravisData(object):
 
         self.current_job.add_property("build_matrix", build_matrix.get_items())
 
-    def get_job_log(self, job_id):
-        """
-        Retrieve Travis CI job log.
-
-        Parameters:
-        - job_id : ID of the job to process
-        """
-        request = 'jobs/%s/log' % str(job_id)
-        request_url = self.api_url + request
-        logger.info("Request build job log : %s", request_url)
-        return urlopen(request_url)
-
     def parse_job_log(self, job_id):
         """
         Parse Travis CI job log.
@@ -412,7 +441,7 @@ class TravisData(object):
         Parameters:
         - job_id : ID of the job to process
         """
-        self.parse_job_log_stream(self.get_job_log(job_id))
+        self.parse_job_log_stream(self.connector.download_job_log(job_id))
 
     def parse_job_log_file(self, filename):
         """
@@ -507,26 +536,6 @@ class TravisData(object):
         if check_dict(worker_tags, "worker_tags", tag_list):
             logger.debug("Worker tags : %s", worker_tags)
             self.current_job.add_property("worker", worker_tags)
-
-    def json_request(self, json_request):
-        """
-        Retrieve Travis CI data using API.
-
-        Parameters:
-        - json_request : json_request to be sent to API
-        """
-        req = Request(
-            self.api_url + json_request,
-            None,
-            {
-                'user-agent': buildtimetrend.USER_AGENT,
-                'accept': 'application/vnd.travis-ci.2+json'
-            }
-        )
-        opener = build_opener()
-        result = opener.open(req)
-
-        return json.load(result)
 
     def has_timing_tags(self):
         """
