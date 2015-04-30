@@ -215,14 +215,14 @@ JOB_DATA_JAVA = '{"job":{"id":35665484,"repository_id":1390431,"repository_slug"
 class TestTravis(unittest.TestCase):
     def setUp(self):
         # reinit settings singleton
-        self.settings = get_settings()
+        self.settings = Settings()
 
     def test_novalue(self):
         self.assertRaises(TypeError, convert_build_result)
         self.assertRaises(TypeError, convert_build_result, None)
 
     def test_load_travis_env_vars(self):
-        settings = get_settings()
+        settings = Settings()
 
         self.assertEquals(None, settings.get_setting("ci_platform"))
         self.assertEquals(None, settings.get_setting("build"))
@@ -255,7 +255,7 @@ class TestTravis(unittest.TestCase):
             reset_travis_result = True
         os.environ["TRAVIS_TEST_RESULT"] = "0"
 
-        load_travis_env_vars()
+        load_travis_env_vars(settings)
 
         self.assertEquals("travis", settings.get_setting("ci_platform"))
         self.assertEquals(expected_build, settings.get_setting("build"))
@@ -265,7 +265,7 @@ class TestTravis(unittest.TestCase):
         self.assertEquals("passed", settings.get_setting("result"))
 
         os.environ["TRAVIS_TEST_RESULT"] = "1"
-        load_travis_env_vars()
+        load_travis_env_vars(settings)
         self.assertEquals("failed", settings.get_setting("result"))
 
         # reset test Travis vars

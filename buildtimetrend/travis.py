@@ -31,6 +31,7 @@ from buildtimetrend.tools import check_num_string
 from buildtimetrend.tools import get_repo_slug
 from buildtimetrend.build import Build
 from buildtimetrend.settings import get_settings
+from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stage
 from buildtimetrend.collection import Collection
 import buildtimetrend
@@ -55,16 +56,20 @@ TRAVIS_LOG_PARSE_TIMING_STRINGS = [
 TRAVIS_LOG_PARSE_WORKER_STRING = r'Using worker:\ (?P<hostname>.*):(?P<os>.*)'
 
 
-def load_travis_env_vars():
+def load_travis_env_vars(settings=None):
     """
     Load Travis CI environment variables.
 
     Load Travis CI environment variables and assign their values to
     the corresponding setting value.
+
+    Parameters:
+    - settings : Settings instance
     """
-    if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
+    if settings is None or type(settings) is not Settings:
         settings = get_settings()
 
+    if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
         # set ci_platform setting to "travis"
         settings.add_setting("ci_platform", "travis")
 
