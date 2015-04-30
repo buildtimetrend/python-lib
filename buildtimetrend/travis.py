@@ -107,14 +107,16 @@ def convert_build_result(result):
     return build_result
 
 
-def process_notification_payload(payload):
+def process_notification_payload(payload, settings=None):
     """
     Load payload from Travis notification.
 
     Parameters:
     - payload : Travis CI notification payload
+    - settings : Settings instance
     """
-    settings = get_settings()
+    if settings is None or type(settings) is not Settings:
+        settings = get_settings()
 
     if payload is None:
         logger.warning("Travis notification payload is not set")

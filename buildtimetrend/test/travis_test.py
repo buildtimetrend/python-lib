@@ -303,11 +303,11 @@ class TestTravis(unittest.TestCase):
         self.assertRaises(ValueError, process_notification_payload, "")
         self.assertRaises(ValueError, process_notification_payload, "no_json")
 
-        process_notification_payload(None)
+        process_notification_payload(None, settings)
         self.assertEquals(None, settings.get_setting("build"))
         self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
 
-        process_notification_payload(123)
+        process_notification_payload(123, settings)
         self.assertEquals(None, settings.get_setting("build"))
         self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
 
@@ -320,7 +320,8 @@ class TestTravis(unittest.TestCase):
         process_notification_payload(
             '{"number": "%s", "repository": ' \
             '{"owner_name": "%s", "name": "%s"}}'
-            % (expected_build, expected_owner, expected_repo)
+            % (expected_build, expected_owner, expected_repo),
+            settings
         )
 
         self.assertEquals(expected_build, settings.get_setting("build"))
@@ -332,7 +333,8 @@ class TestTravis(unittest.TestCase):
                 '{"number": "%s", "repository": ' \
                 '{"owner_name": "%s", "name": "%s"}}'
             )
-            % (expected_build, expected_owner, expected_repo)
+            % (expected_build, expected_owner, expected_repo),
+            settings
         )
 
         self.assertEquals(expected_build, settings.get_setting("build"))
