@@ -21,7 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import buildtimetrend
-from buildtimetrend.settings import Settings
+from buildtimetrend.settings import get_settings
 from buildtimetrend.build import Build
 from buildtimetrend.stages import Stage
 from buildtimetrend.stages import Stages
@@ -234,7 +234,7 @@ class TestBuild(unittest.TestCase):
             {'duration': 0, "repo": buildtimetrend.NAME},
             self.build.get_properties())
 
-        settings = Settings()
+        settings = get_settings()
         settings.add_setting("ci_platform", "travis")
         settings.add_setting("build", "123")
         settings.add_setting("job", "123.1")

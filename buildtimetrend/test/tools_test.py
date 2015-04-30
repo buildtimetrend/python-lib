@@ -22,7 +22,7 @@
 
 import buildtimetrend
 from buildtimetrend.tools import *
-from buildtimetrend.settings import Settings
+from buildtimetrend.settings import get_settings
 import os
 import unittest
 import constants
@@ -30,7 +30,7 @@ import constants
 
 class TestTools(unittest.TestCase):
     def setUp(self):
-        self.project_info = Settings().get_project_info()
+        self.project_info = get_settings().get_project_info()
         self.maxDiff = None
 
     def test_format_timestamp(self):

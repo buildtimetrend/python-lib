@@ -21,7 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.keenio import *
-from buildtimetrend.settings import Settings
+from buildtimetrend.settings import get_settings
 import os
 import keen
 import unittest
@@ -36,7 +36,7 @@ class TestTools(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
-        self.project_info = Settings().get_project_info()
+        self.project_info = get_settings().get_project_info()
         self.maxDiff = None
 
         # copy Keen.io environment variables

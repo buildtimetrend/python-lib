@@ -27,7 +27,7 @@ import copy
 import keen
 import requests
 from keen import scoped_keys
-from buildtimetrend.settings import Settings
+from buildtimetrend.settings import get_settings
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_list
@@ -156,7 +156,7 @@ def add_project_info_dict(payload):
 
     payload_as_dict = copy.deepcopy(payload)
 
-    payload_as_dict[KEEN_PROJECT_INFO_NAME] = Settings().get_project_info()
+    payload_as_dict[KEEN_PROJECT_INFO_NAME] = get_settings().get_project_info()
 
     # override timestamp, set to finished_at timestamp
     if "job" in payload and "finished_at" in payload["job"]:
@@ -267,7 +267,7 @@ def generate_dashboard_config_file(repo):
     config_string = get_dashboard_config(repo)
 
     # write config file
-    config_file = Settings().get_setting("dashboard_configfile")
+    config_file = get_settings().get_setting("dashboard_configfile")
     with open(config_file, 'w') as outfile:
         outfile.write(config_string)
 

@@ -59,8 +59,7 @@ class TestSettings(unittest.TestCase):
 
     def setUp(self):
         # reinit settings singleton
-        if self.settings is not None:
-            self.settings.__init__()
+        self.settings = Settings()
 
         set_loglevel("WARNING")
 

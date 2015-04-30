@@ -30,7 +30,7 @@ from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string
 from buildtimetrend.tools import get_repo_slug
 from buildtimetrend.build import Build
-from buildtimetrend.settings import Settings
+from buildtimetrend.settings import get_settings
 from buildtimetrend.stages import Stage
 from buildtimetrend.collection import Collection
 import buildtimetrend
@@ -63,7 +63,7 @@ def load_travis_env_vars():
     the corresponding setting value.
     """
     if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
-        settings = Settings()
+        settings = get_settings()
 
         # set ci_platform setting to "travis"
         settings.add_setting("ci_platform", "travis")
@@ -109,7 +109,7 @@ def process_notification_payload(payload):
     Parameters:
     - payload : Travis CI notification payload
     """
-    settings = Settings()
+    settings = get_settings()
 
     if payload is None:
         logger.warning("Travis notification payload is not set")
@@ -157,7 +157,7 @@ def check_authorization(repo, auth_header):
     - auth_header : Travis CI notification Authorization header
     """
     # get Travis account token from Settings
-    token = Settings().get_setting("travis_account_token")
+    token = get_settings().get_setting("travis_account_token")
 
     # return True if token is not set
     if token is None:

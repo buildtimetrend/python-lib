@@ -33,244 +33,231 @@ from buildtimetrend import set_loglevel
 from buildtimetrend import logger
 
 
+settings = None
+
+
 class Settings(object):
 
-    """
-    Settings class is a singleton.
+    """Settings class contains settings and config options."""
 
-    Inspired by
-    http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Singleton.html
-    """
+    def __init__(self):
+        """Initialise class."""
+        self.settings = Collection()
 
-    class __Settings(object):
+        # set loglevel
+        self.add_setting("loglevel", "WARNING")
 
-        """Settings class contains settings and config options."""
+        # set default project name
+        self.set_project_name(buildtimetrend.NAME)
 
-        def __init__(self):
-            """Initialise class."""
-            self.settings = Collection()
+        # set modes
+        self.set_mode("native", False)
+        self.set_mode("keen", True)
 
-            # set loglevel
-            self.add_setting("loglevel", "WARNING")
+        # set default paths
+        self.add_setting('dashboard_configfile',
+                         'dashboard/config.js')
 
-            # set default project name
-            self.set_project_name(buildtimetrend.NAME)
+    def set_project_name(self, name):
+        """
+        Set project name.
 
-            # set modes
-            self.set_mode("native", False)
-            self.set_mode("keen", True)
+        Parameters :
+        - name : project name
+        """
+        self.add_setting("project_name", name)
 
-            # set default paths
-            self.add_setting('dashboard_configfile',
-                             'dashboard/config.js')
+    def get_project_name(self):
+        """Get project name."""
+        return self.get_setting("project_name")
 
-        def set_project_name(self, name):
-            """
-            Set project name.
+    def set_client(self, name, version):
+        """
+        Set client name and version.
 
-            Parameters :
-            - name : project name
-            """
-            self.add_setting("project_name", name)
+        Parameters :
+        - name : client name (fe. service, python-client)
+        - version : client version
+        """
+        self.add_setting("client", name)
+        self.add_setting("client_version", version)
 
-        def get_project_name(self):
-            """Get project name."""
-            return self.get_setting("project_name")
+    def add_setting(self, name, value):
+        """
+        Add a setting.
 
-        def set_client(self, name, version):
-            """
-            Set client name and version.
+        Parameters :
+        - name : Setting name
+        - value : Setting value
+        """
+        self.settings.add_item(name, value)
 
-            Parameters :
-            - name : client name (fe. service, python-client)
-            - version : client version
-            """
-            self.add_setting("client", name)
-            self.add_setting("client_version", version)
+    def get_setting(self, name):
+        """
+        Get a setting value.
 
-        def add_setting(self, name, value):
-            """
-            Add a setting.
+        Parameters :
+        - name : Setting name
+        """
+        return self.settings.get_item(name)
 
-            Parameters :
-            - name : Setting name
-            - value : Setting value
-            """
-            self.settings.add_item(name, value)
+    def load_settings(self, argv=None, config_file="config.yml"):
+        """
+        Load config settings.
 
-        def get_setting(self, name):
-            """
-            Get a setting value.
+        Settings are retrieved from :
+        - configfile
+        - environment variables
+        - command line arguments
+        """
+        self.load_config_file(config_file)
+        self.load_env_vars()
+        return self.process_argv(argv)
 
-            Parameters :
-            - name : Setting name
-            """
-            return self.settings.get_item(name)
+    def load_config_file(self, config_file):
+        """
+        Load settings from a config file.
 
-        def load_settings(self, argv=None, config_file="config.yml"):
-            """
-            Load config settings.
+        Parameters :
+        - config_file : name of the config file
+        """
+        if not check_file(config_file):
+            return False
 
-            Settings are retrieved from :
-            - configfile
-            - environment variables
-            - command line arguments
-            """
-            self.load_config_file(config_file)
-            self.load_env_vars()
-            return self.process_argv(argv)
+        with open(config_file, 'r') as file_stream:
+            config = yaml.load(file_stream)
+            self.settings.add_items(config["buildtimetrend"])
 
-        def load_config_file(self, config_file):
-            """
-            Load settings from a config file.
+            set_loglevel(self.get_setting("loglevel"))
 
-            Parameters :
-            - config_file : name of the config file
-            """
-            if not check_file(config_file):
-                return False
+            # set Keen.io settings
+            if "keen" in config:
+                if "project_id" in config["keen"]:
+                    keen.project_id = config["keen"]["project_id"]
+                if "write_key" in config["keen"]:
+                    keen.write_key = config["keen"]["write_key"]
+                if "read_key" in config["keen"]:
+                    keen.read_key = config["keen"]["read_key"]
+                if "master_key" in config["keen"]:
+                    keen.master_key = config["keen"]["master_key"]
+            return True
 
-            with open(config_file, 'r') as file_stream:
-                config = yaml.load(file_stream)
-                self.settings.add_items(config["buildtimetrend"])
+    def get_project_info(self):
+        """Get project info as a dictonary."""
+        return {
+            "lib_version": buildtimetrend.VERSION,
+            "schema_version": buildtimetrend.SCHEMA_VERSION,
+            "client": str(self.get_setting("client")),
+            "client_version": str(self.get_setting("client_version")),
+            "project_name": str(self.get_project_name())
+        }
 
-                set_loglevel(self.get_setting("loglevel"))
+    def process_argv(self, argv):
+        """
+        Process command line arguments.
 
-                # set Keen.io settings
-                if "keen" in config:
-                    if "project_id" in config["keen"]:
-                        keen.project_id = config["keen"]["project_id"]
-                    if "write_key" in config["keen"]:
-                        keen.write_key = config["keen"]["write_key"]
-                    if "read_key" in config["keen"]:
-                        keen.read_key = config["keen"]["read_key"]
-                    if "master_key" in config["keen"]:
-                        keen.master_key = config["keen"]["master_key"]
-                return True
+        Returns a list with arguments (non-options) or
+        None if options are invalid
+        """
+        if argv is None:
+            return None
 
-        def get_project_info(self):
-            """Get project info as a dictonary."""
-            return {
-                "lib_version": buildtimetrend.VERSION,
-                "schema_version": buildtimetrend.SCHEMA_VERSION,
-                "client": str(self.get_setting("client")),
-                "client_version": str(self.get_setting("client_version")),
-                "project_name": str(self.get_project_name())
-            }
+        usage_string = '%s -h --log=<log_level> --build=<buildID>' \
+            ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
+            ' --ci=<ci_platform> --result=<build_result>' \
+            ' --mode=<storage_mode>' % \
+            argv[0]
 
-        def process_argv(self, argv):
-            """
-            Process command line arguments.
+        options = {
+            "--build": "build",
+            "--job": "job",
+            "--branch": "branch",
+            "--ci": "ci_platform",
+            "--result": "result"
+        }
 
-            Returns a list with arguments (non-options) or
-            None if options are invalid
-            """
-            if argv is None:
-                return None
+        try:
+            opts, args = getopt.getopt(
+                argv[1:], "h", [
+                    "log=",
+                    "build=", "job=", "branch=", "repo=",
+                    "ci=", "result=", "mode=", "help"]
+            )
+        except getopt.GetoptError:
+            print(usage_string)
+            return None
 
-            usage_string = '%s -h --log=<log_level> --build=<buildID>' \
-                ' --job=<jobID> --branch=<branchname> --repo=<repo_slug>' \
-                ' --ci=<ci_platform> --result=<build_result>' \
-                ' --mode=<storage_mode>' % \
-                argv[0]
-
-            options = {
-                "--build": "build",
-                "--job": "job",
-                "--branch": "branch",
-                "--ci": "ci_platform",
-                "--result": "result"
-            }
-
-            try:
-                opts, args = getopt.getopt(
-                    argv[1:], "h", [
-                        "log=",
-                        "build=", "job=", "branch=", "repo=",
-                        "ci=", "result=", "mode=", "help"]
-                )
-            except getopt.GetoptError:
+        # check options
+        for opt, arg in opts:
+            if opt in ('-h', "--help"):
                 print(usage_string)
                 return None
+            elif opt == "--log":
+                set_loglevel(arg)
+            elif opt in options:
+                self.add_setting(options[opt], arg)
+            elif opt == "--repo":
+                self.set_project_name(arg)
+            elif opt == "--mode":
+                self.set_mode(arg)
 
-            # check options
-            for opt, arg in opts:
-                if opt in ('-h', "--help"):
-                    print(usage_string)
-                    return None
-                elif opt == "--log":
-                    set_loglevel(arg)
-                elif opt in options:
-                    self.add_setting(options[opt], arg)
-                elif opt == "--repo":
-                    self.set_project_name(arg)
-                elif opt == "--mode":
-                    self.set_mode(arg)
+        return args
 
-            return args
+    def set_mode(self, mode, value=True):
+        """
+        Set operating mode.
 
-        def set_mode(self, mode, value=True):
-            """
-            Set operating mode.
+        Parameters:
+        - mode : keen, native
+        - value : enable (=True, default) or disable (=False) mode
+        """
+        if mode == "native":
+            self.add_setting("mode_native", bool(value))
+        elif mode == "keen":
+            self.add_setting("mode_keen", bool(value))
 
-            Parameters:
-            - mode : keen, native
-            - value : enable (=True, default) or disable (=False) mode
-            """
-            if mode == "native":
-                self.add_setting("mode_native", bool(value))
-            elif mode == "keen":
-                self.add_setting("mode_keen", bool(value))
+    def load_env_vars(self):
+        """
+        Load environment variables.
 
-        def load_env_vars(self):
-            """
-            Load environment variables.
+        Assign the environment variable values to
+        the corresponding setting.
+        """
+        # assign environment variable values to setting value
+        if self.env_var_to_settings("BTT_LOGLEVEL", "loglevel"):
+            set_loglevel(self.get_setting("loglevel"))
 
-            Assign the environment variable values to
-            the corresponding setting.
-            """
-            # assign environment variable values to setting value
-            if self.env_var_to_settings("BTT_LOGLEVEL", "loglevel"):
-                set_loglevel(self.get_setting("loglevel"))
+        self.env_var_to_settings("TRAVIS_ACCOUNT_TOKEN",
+                                 "travis_account_token")
+        self.env_var_to_settings("BUILD_TREND_CONFIGFILE",
+                                 "dashboard_configfile")
 
-            self.env_var_to_settings("TRAVIS_ACCOUNT_TOKEN",
-                                     "travis_account_token")
-            self.env_var_to_settings("BUILD_TREND_CONFIGFILE",
-                                     "dashboard_configfile")
+    def env_var_to_settings(self, env_var_name, settings_name):
+        """
+        Store environment variable value as a setting.
 
-        def env_var_to_settings(self, env_var_name, settings_name):
-            """
-            Store environment variable value as a setting.
+        Parameters:
+        - env_var_name : Name of the environment variable
+        - settings_name : Name of the corresponding settings value
+        """
+        if env_var_name in os.environ:
+            self.add_setting(settings_name, os.environ[env_var_name])
+            logger.debug(
+                "Setting %s was set to %s",
+                settings_name, os.environ[env_var_name])
+            return True
+        else:
+            logger.debug(
+                "Setting %s was not set,"
+                " environment variable %s doesn't exist",
+                settings_name, env_var_name)
+            return False
 
-            Parameters:
-            - env_var_name : Name of the environment variable
-            - settings_name : Name of the corresponding settings value
-            """
-            if env_var_name in os.environ:
-                self.add_setting(settings_name, os.environ[env_var_name])
-                logger.debug(
-                    "Setting %s was set to %s",
-                    settings_name, os.environ[env_var_name])
-                return True
-            else:
-                logger.debug(
-                    "Setting %s was not set,"
-                    " environment variable %s doesn't exist",
-                    settings_name, env_var_name)
-                return False
 
-    instance = None
+def get_settings():
+    global settings
 
-    def __new__(cls):  # __new__ always a classmethod
-        """Create a singleton."""
-        if not Settings.instance:
-            Settings.instance = Settings.__Settings()
-        return Settings.instance
+    if settings == None:
+        settings = Settings()
 
-    def __getattr__(self, name):
-        """Redirect access to get singleton properties."""
-        return getattr(self.instance, name)
-
-    def __setattr__(self, name):
-        """Redirect access to set singleton properties."""
-        return setattr(self.instance, name)
+    return settings

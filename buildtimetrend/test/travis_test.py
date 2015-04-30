@@ -24,6 +24,7 @@ import os
 import buildtimetrend
 from buildtimetrend.travis import *
 from buildtimetrend.settings import Settings
+from buildtimetrend.settings import get_settings
 from buildtimetrend.tools import get_repo_slug
 import constants
 import unittest
@@ -214,14 +215,14 @@ JOB_DATA_JAVA = '{"job":{"id":35665484,"repository_id":1390431,"repository_slug"
 class TestTravis(unittest.TestCase):
     def setUp(self):
         # reinit settings singleton
-        Settings().__init__()
+        self.settings = get_settings()
 
     def test_novalue(self):
         self.assertRaises(TypeError, convert_build_result)
         self.assertRaises(TypeError, convert_build_result, None)
 
     def test_load_travis_env_vars(self):
-        settings = Settings()
+        settings = get_settings()
 
         self.assertEquals(None, settings.get_setting("ci_platform"))
         self.assertEquals(None, settings.get_setting("build"))
@@ -341,7 +342,7 @@ class TestTravis(unittest.TestCase):
         self.assertTrue(check_authorization(None, None))
 
         # set account token
-        Settings().add_setting("travis_account_token", "co44eCtT0k3n")
+        get_settings().add_setting("travis_account_token", "co44eCtT0k3n")
 
         # test incorrect values
         self.assertFalse(check_authorization(None, None))

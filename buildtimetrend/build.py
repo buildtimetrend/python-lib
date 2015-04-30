@@ -23,7 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import copy
 from lxml import etree
-from buildtimetrend.settings import Settings
+from buildtimetrend.settings import get_settings
 from buildtimetrend.stages import Stages
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import split_isotimestamp
@@ -128,7 +128,7 @@ class Build(object):
         self.load_property_from_settings("branch")
         self.load_property_from_settings("ci_platform")
         self.load_property_from_settings("result")
-        self.add_property("repo", Settings().get_project_name())
+        self.add_property("repo", get_settings().get_project_name())
 
     def load_property_from_settings(self, property_name, setting_name=None):
         """
@@ -141,7 +141,7 @@ class Build(object):
         if setting_name is None:
             setting_name = property_name
 
-        value = Settings().get_setting(setting_name)
+        value = get_settings().get_setting(setting_name)
 
         if value is not None:
             self.add_property(property_name, value)
