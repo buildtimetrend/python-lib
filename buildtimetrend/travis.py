@@ -202,7 +202,7 @@ class TravisConnector(object):
         """
         request = 'jobs/%s/log' % str(job_id)
         logger.info("Request build job log #%s", str(job_id))
-        return _handle_request(request)
+        return self._handle_request(request)
 
     def json_request(self, json_request):
         """
@@ -211,7 +211,7 @@ class TravisConnector(object):
         Parameters:
         - json_request : json_request to be sent to API
         """
-        result = _handle_request(json_request)
+        result = self._handle_request(json_request)
 
         return json.load(result)
 
