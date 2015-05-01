@@ -212,8 +212,19 @@ class TravisConnector(object):
         Parameters:
         - json_request : json_request to be sent to API
         """
+        result = _handle_request(json_request)
+
+        return json.load(result)
+
+    def _handle_request(self, request):
+        """
+        Retrieve Travis CI data using API.
+
+        Parameters:
+        - request : request to be sent to API
+        """
         req = Request(
-            self.api_url + json_request,
+            self.api_url + request,
             None,
             {
                 'user-agent': buildtimetrend.USER_AGENT,
@@ -221,9 +232,7 @@ class TravisConnector(object):
             }
         )
         opener = build_opener()
-        result = opener.open(req)
-
-        return json.load(result)
+        return opener.open(req)
 
 
 class TravisOrgConnector(TravisConnector):
