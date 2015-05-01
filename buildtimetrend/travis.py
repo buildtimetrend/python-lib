@@ -201,9 +201,8 @@ class TravisConnector(object):
         - job_id : ID of the job to process
         """
         request = 'jobs/%s/log' % str(job_id)
-        request_url = self.api_url + request
-        logger.info("Request build job log : %s", request_url)
-        return urlopen(request_url)
+        logger.info("Request build job log #%s", str(job_id))
+        return _handle_request(request)
 
     def json_request(self, json_request):
         """
@@ -223,8 +222,10 @@ class TravisConnector(object):
         Parameters:
         - request : request to be sent to API
         """
+        request_url = self.api_url + request
+
         req = Request(
-            self.api_url + request,
+            request_url,
             None,
             {
                 'user-agent': buildtimetrend.USER_AGENT,
@@ -232,6 +233,7 @@ class TravisConnector(object):
             }
         )
         opener = build_opener()
+        logger.info("Request from Travis CI API : %s", request_url)
         return opener.open(req)
 
 
