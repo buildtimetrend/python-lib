@@ -239,13 +239,14 @@ class TravisData(object):
 
     """Gather data from Travis CI using the API."""
 
-    def __init__(self, repo, build_id):
+    def __init__(self, repo, build_id, connector=None):
         """
         Retrieve Travis CI build data using the API.
 
         Parameters:
         - repo : github repository slug (fe. buildtimetrend/python-lib)
         - build_id : Travis CI build id (fe. 158)
+        - connector : Travis Connector instance
         """
         self.build_data = {}
         self.build_jobs = {}
@@ -253,8 +254,13 @@ class TravisData(object):
         self.current_job = Build()
         self.travis_substage = None
         self.repo = repo
-        self.connector = TravisOrgConnector()
         self.build_id = str(build_id)
+        # set TravisConnector if it is defined
+        if connector is not None and type(connector) is TravisConnector:
+            self.connector = connector
+        # use Travis Org connector by default
+        else:
+            self.connector = TravisOrgConnector()
 
     def get_build_data(self):
         """Retrieve Travis CI build data."""
