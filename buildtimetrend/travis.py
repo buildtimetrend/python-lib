@@ -185,13 +185,13 @@ def check_authorization(repo, auth_header):
         return False
 
 
-class TravisOrgConnector(object):
+class TravisConnector(object):
 
-    """Connects to Travis.org API."""
+    """Abstract class to connects to Travis CI API."""
 
     def __init__(self):
         """Constructor."""
-        self.api_url = TRAVIS_ORG_API_URL
+        self.api_url = None
 
     def download_job_log(self, job_id):
         """
@@ -224,6 +224,15 @@ class TravisOrgConnector(object):
         result = opener.open(req)
 
         return json.load(result)
+
+
+class TravisOrgConnector(TravisConnector):
+
+    """Connects to Travis.org API."""
+
+    def __init__(self):
+        """Constructor."""
+        self.api_url = TRAVIS_ORG_API_URL
 
 
 class TravisData(object):
