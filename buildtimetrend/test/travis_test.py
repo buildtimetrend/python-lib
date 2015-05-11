@@ -379,6 +379,17 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.stages.finished_at
         )
 
+    def test_connector_parameter(self):
+        self.assertEquals(TRAVIS_ORG_API_URL, self.travis_data.connector.api_url)
+
+        self.travis_data = TravisData(TEST_REPO, TEST_BUILD, 1234)
+        self.assertEquals(TRAVIS_ORG_API_URL, self.travis_data.connector.api_url)
+
+        custom_connector = TravisConnector()
+        custom_connector.api_url = "http://test.url.com/"
+        self.travis_data = TravisData(TEST_REPO, TEST_BUILD, custom_connector)
+        self.assertEquals("http://test.url.com/", self.travis_data.connector.api_url)
+
     def test_gather_data(self):
         # retrieve data from Travis API
         self.travis_data.get_build_data()
