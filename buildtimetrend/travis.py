@@ -234,7 +234,7 @@ class TravisConnector(object):
         request_url = self.api_url + request
 
         request_params = self.request_params.copy()
-        if (params is not None and check_dict(params, "params")):
+        if params is not None and check_dict(params, "params"):
             request_params.update(params)
 
         req = Request(
