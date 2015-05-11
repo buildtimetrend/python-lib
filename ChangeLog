@@ -2,7 +2,7 @@ v0.3 (not yet released)
 - move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut
 - issue #76 : check if build exists in Keen.io datastore
 - TravisData.process_build_logs() returns a generator
-- create a TravisConnector class and move methods json_request and download_job_log there
+- issue #85 : create a TravisConnector class and move methods json_request and download_job_log there
 
 v0.2 (released on 16Feb2015)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script
