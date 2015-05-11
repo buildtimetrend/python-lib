@@ -192,6 +192,9 @@ class TravisConnector(object):
     def __init__(self):
         """Constructor."""
         self.api_url = None
+        self.request_params = {
+            'user-agent': buildtimetrend.USER_AGENT
+        }
 
     def download_job_log(self, job_id):
         """
@@ -211,26 +214,33 @@ class TravisConnector(object):
         Parameters:
         - json_request : json_request to be sent to API
         """
-        result = self._handle_request(json_request)
+        result = self._handle_request(
+            json_request,
+            {
+                'accept': 'application/vnd.travis-ci.2+json'
+            }
+        )
 
         return json.load(result)
 
-    def _handle_request(self, request):
+    def _handle_request(self, request, params=None):
         """
         Retrieve Travis CI data using API.
 
         Parameters:
         - request : request to be sent to API
+        - params : HTTP request parameters
         """
         request_url = self.api_url + request
+
+        request_params = self.request_params.copy()
+        if (params is not None and check_dict(params, "params")):
+            request_params.update(params)
 
         req = Request(
             request_url,
             None,
-            {
-                'user-agent': buildtimetrend.USER_AGENT,
-                'accept': 'application/vnd.travis-ci.2+json'
-            }
+            request_params
         )
         opener = build_opener()
         logger.info("Request from Travis CI API : %s", request_url)
