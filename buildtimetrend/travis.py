@@ -243,6 +243,7 @@ class TravisOrgConnector(TravisConnector):
 
     def __init__(self):
         """Constructor."""
+        super(TravisOrgConnector, self).__init__()
         self.api_url = TRAVIS_ORG_API_URL
 
 
