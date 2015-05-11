@@ -36,10 +36,10 @@ from buildtimetrend.collection import Collection
 import buildtimetrend
 try:
     # For Python 3.0 and later
-    from urllib.request import urlopen, Request, build_opener
+    from urllib.request import Request, build_opener
 except ImportError:
     # Fall back to Python 2's urllib2
-    from urllib2 import urlopen, Request, build_opener
+    from urllib2 import Request, build_opener
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
