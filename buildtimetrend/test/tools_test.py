@@ -202,14 +202,19 @@ class TestTools(unittest.TestCase):
         self.assertTrue(check_dict({"string": "test"}, "name"))
 
         # should return true if key is found in dictionary
-        self.assertTrue(check_dict({"string": "test"}, "string"))
+        self.assertTrue(check_dict({"string": "test"}, "name", "string"))
         self.assertTrue(check_dict(
             {"string": "test", 7: "test"},
+            "name",
             list({7, "string"})
         ))
 
         # should return false if key is not found in dictionary
-        self.assertTrue(check_dict({"string": "test"}, "name"))
+        self.assertFalse(check_dict(
+            {"string": "test"},
+            "name",
+            list({7})
+        ))
 
     def test_keys_in_dict(self):
         # empty dict and empty key_list should return true
