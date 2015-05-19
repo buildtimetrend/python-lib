@@ -170,6 +170,15 @@ def file_is_newer(path1, path2):
     # check modification times
     return (mtime1 - mtime2) > 0
 
+def is_dict(param_dict):
+    """
+    Return true if a parameter is a dictionary.
+
+    Parameters :
+    - param_dict: parameter that should be a dictonary
+    Return true if parameter is a dictionary.
+    """
+    return param_dict is not None and type(param_dict) is dict
 
 def check_dict(param_dict, name, key_list=None):
     """
@@ -181,7 +190,7 @@ def check_dict(param_dict, name, key_list=None):
     - key_list: list of keys that should be present in the dict
     Return true if parameter is a dictionary, throws error when it isn't
     """
-    if param_dict is None or type(param_dict) is not dict:
+    if not is_dict(param_dict):
         raise TypeError("param %s should be a dictionary" % name)
 
     # check if key_list is defined
