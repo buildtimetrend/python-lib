@@ -181,6 +181,14 @@ class TestTools(unittest.TestCase):
             NEWER_FILE)
         )
 
+    def test_is_dict(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, is_dict)
+
+        self.assertFalse(is_dict(None))
+        self.assertFalse(is_dict("not_a_dict"))
+        self.assertTrue(is_dict({"string": "test"}))
+
     def test_check_dict(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, check_dict)
