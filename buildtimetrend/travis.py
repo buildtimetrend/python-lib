@@ -447,7 +447,7 @@ class TravisData(object):
                     " ".join(job_config[language]["components"])
                 )
             else:
-                build_matrix.add_item("language_version", job_config[language])
+                build_matrix.add_item("language_version", str(job_config[language]))
 
         # language specific build matrix parameters
         parameters = {
@@ -467,7 +467,7 @@ class TravisData(object):
         }
         for parameter, name in parameters.items():
             if parameter in job_config:
-                build_matrix.add_item(name, job_config[parameter])
+                build_matrix.add_item(name, str(job_config[parameter]))
 
         # concatenate all properties in a summary field
         matrix_params = build_matrix.get_key_sorted_items().values()
