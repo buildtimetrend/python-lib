@@ -29,6 +29,7 @@ import keen
 import buildtimetrend
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
+from buildtimetrend.tools import is_dict
 from buildtimetrend import set_loglevel
 from buildtimetrend import logger
 
@@ -132,7 +133,9 @@ class Settings(object):
 
             with open(config_file, 'r') as file_stream:
                 config = yaml.load(file_stream)
-                self.settings.add_items(config["buildtimetrend"])
+                if "buildtimetrend" in config and \
+                        is_dict(config["buildtimetrend"]):
+                    self.settings.add_items(config["buildtimetrend"])
 
                 set_loglevel(self.get_setting("loglevel"))
 
