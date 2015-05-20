@@ -447,7 +447,10 @@ class TravisData(object):
                     " ".join(job_config[language]["components"])
                 )
             else:
-                build_matrix.add_item("language_version", str(job_config[language]))
+                build_matrix.add_item(
+                    "language_version",
+                    str(job_config[language])
+                )
 
         # language specific build matrix parameters
         parameters = {
