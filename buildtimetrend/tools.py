@@ -170,6 +170,7 @@ def file_is_newer(path1, path2):
     # check modification times
     return (mtime1 - mtime2) > 0
 
+
 def is_dict(param_dict):
     """
     Return true if a parameter is a dictionary.
@@ -179,6 +180,7 @@ def is_dict(param_dict):
     Return true if parameter is a dictionary.
     """
     return param_dict is not None and type(param_dict) is dict
+
 
 def check_dict(param_dict, name, key_list=None):
     """
