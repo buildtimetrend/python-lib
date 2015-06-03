@@ -21,9 +21,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
+import cgi
 from buildtimetrend import logger
 from buildtimetrend.settings import Settings
-
+from buildtimetrend.keenio import has_build_id
+from buildtimetrend.keenio import keen_is_writable
 
 def is_repo_allowed(repo):
     """
@@ -83,3 +85,32 @@ def format_duration(duration):
             format_string = "{:d}h {:s}".format(hours, format_string)
 
     return format_string
+
+
+def check_process_parameters(repo, build):
+    """
+    Process setup parameters.
+
+    Check parameters (repo and build)
+    Returns error message, None when all parameters are fine.
+    """
+    if repo is None or build is None:
+        logger.warning("Repo or build number are not set")
+        return "Repo or build are not set, format : " \
+            "/travis/<repo_owner>/<repo_name>/<build>"
+
+    # check if repo is allowed
+    if not is_repo_allowed(repo):
+        return "Project '%s' is not allowed." % cgi.escape(repo)
+
+    if not keen_is_writable():
+        return "Keen IO write key not set, no data was sent"
+
+    try:
+        if has_build_id(repo, build):
+            return "Build #%s of project %s already exists in database" % \
+                (cgi.escape(build), cgi.escape(repo))
+    except:
+        return "Error checking if build exists"
+
+    return None
