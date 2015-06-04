@@ -27,6 +27,7 @@ from buildtimetrend.settings import Settings
 from buildtimetrend.keenio import has_build_id
 from buildtimetrend.keenio import keen_is_writable
 
+
 def is_repo_allowed(repo):
     """
     Check if repo is allowed.
