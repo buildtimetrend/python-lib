@@ -4,6 +4,7 @@ v0.3 (not yet released)
 - TravisData.process_build_logs() returns a generator
 - issue #85 : create a TravisConnector class and move methods json_request and download_job_log there
 - move is_repo_allowed(), check_process_parameters() and format_duration() from service to library
+- service.format_duration() rounds to full seconds
 
 v0.2 (released on 16Feb2015)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script

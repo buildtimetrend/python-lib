@@ -72,9 +72,12 @@ def format_duration(duration):
     if type(duration) not in (float, int) or duration < 0:
         return "unknown"
 
+    # round up
+    duration = int(duration + .5)
+
     seconds = duration % 60
     duration = duration / 60
-    format_string = "{:.1f}s".format(seconds)
+    format_string = "{:d}s".format(seconds)
 
     if duration >= 1:
         minutes = int(duration % 60)

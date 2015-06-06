@@ -100,23 +100,26 @@ class TestService(unittest.TestCase):
         self.assertEquals("unknown", format_duration("string"))
         self.assertEquals("unknown", format_duration(-1))
 
-        self.assertEquals("0.0s", format_duration(0))
-        self.assertEquals("1.0s", format_duration(1))
-        self.assertEquals("1.6s", format_duration(1.6))
-        self.assertEquals("1.6s", format_duration(1.63))
-        self.assertEquals("1.7s", format_duration(1.67))
+        self.assertEquals("0s", format_duration(0))
+        self.assertEquals("1s", format_duration(1))
+        self.assertEquals("1s", format_duration(1.4))
+        self.assertEquals("2s", format_duration(1.9))
+        self.assertEquals("2s", format_duration(2.1))
 
-        self.assertEquals("59.7s", format_duration(59.7))
-        self.assertEquals("1m 0.0s", format_duration(60))
-        self.assertEquals("1m 0.3s", format_duration(60.3))
-        self.assertEquals("1m 1.0s", format_duration(61))
+        self.assertEquals("59s", format_duration(59.1))
+        self.assertEquals("1m 0s", format_duration(59.7))
+        self.assertEquals("1m 0s", format_duration(60))
+        self.assertEquals("1m 0s", format_duration(60.3))
+        self.assertEquals("1m 1s", format_duration(60.6))
+        self.assertEquals("1m 1s", format_duration(61))
 
-        self.assertEquals("59m 59.7s", format_duration(3599.7))
-        self.assertEquals("1h 0m 0.0s", format_duration(3600))
-        self.assertEquals("1h 0m 0.3s", format_duration(3600.3))
-        self.assertEquals("1h 0m 1.0s", format_duration(3601))
+        self.assertEquals("59m 59s", format_duration(3599.3))
+        self.assertEquals("1h 0m 0s", format_duration(3599.7))
+        self.assertEquals("1h 0m 0s", format_duration(3600))
+        self.assertEquals("1h 0m 0s", format_duration(3600.3))
+        self.assertEquals("1h 0m 1s", format_duration(3601))
 
-        self.assertEquals("2h 5m 0.0s", format_duration(7500))
+        self.assertEquals("2h 5m 0s", format_duration(7500))
 
     def test_check_process_parameters(self):
         # repo or build is not set
