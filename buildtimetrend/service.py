@@ -88,7 +88,7 @@ def format_duration(duration):
     return format_string
 
 
-def check_process_parameters(repo, build):
+def check_process_parameters(repo=None, build=None):
     """
     Process setup parameters.
 
