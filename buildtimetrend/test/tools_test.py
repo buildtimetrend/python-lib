@@ -249,27 +249,27 @@ class TestTools(unittest.TestCase):
         self.assertFalse(keys_in_dict({7: "test"}, "string"))
         self.assertFalse(keys_in_dict({"string": "test"}, list({7, "string"})))
 
-    def test_check_list(self):
+    def test_is_list(self):
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, check_list)
+        self.assertRaises(TypeError, is_list)
 
         # error is thrown when called with an invalid parameter
         with self.assertRaises(TypeError) as cm:
-            check_list(None, "name")
+            is_list(None, "name")
         self.assertEqual("param name should be a list", str(cm.exception))
 
         with self.assertRaises(TypeError) as cm:
-            check_list("string", "string_name")
+            is_list("string", "string_name")
         self.assertEqual(
             "param string_name should be a list", str(cm.exception)
         )
 
         # should return false if parameter is not a list (and name is not set)
-        self.assertFalse(check_list(None))
-        self.assertFalse(check_list("string"))
+        self.assertFalse(is_list(None))
+        self.assertFalse(is_list("string"))
 
         # should return true if parameter is a list
-        self.assertTrue(check_list(["string", "test"], "name"))
+        self.assertTrue(is_list(["string", "test"], "name"))
 
 
     def test_num_string(self):

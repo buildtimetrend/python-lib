@@ -30,7 +30,7 @@ from keen import scoped_keys
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
-from buildtimetrend.tools import check_list
+from buildtimetrend.tools import is_list
 
 
 TIME_INTERVALS = {
@@ -173,7 +173,7 @@ def add_project_info_list(payload):
 
     Param payload: list of dictionaries
     """
-    if not check_list(payload, "payload"):
+    if not is_list(payload, "payload"):
         return None
 
     payload_as_list = []
