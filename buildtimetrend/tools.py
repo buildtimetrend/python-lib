@@ -182,9 +182,17 @@ def is_dict(param_dict):
     return param_dict is not None and type(param_dict) is dict
 
 
-def check_dict(param_dict, name, key_list=None):
+def check_dict(param_dict, name=None, key_list=None):
     """
     Check if a parameter is a dictionary.
+
+    Returns True if it is a dictionary, false if it isn't,
+    or if parameter 'name' is specified,
+    an Error is raised with the name in the message.
+
+    If key_list is defined,
+    true is returned if the keys in key_list exits in the dictionary,
+    false if they don't all exist.
 
     Parameters :
     - param_dict: parameter that should be a dictonary
@@ -193,7 +201,10 @@ def check_dict(param_dict, name, key_list=None):
     Return true if parameter is a dictionary, throws error when it isn't
     """
     if not is_dict(param_dict):
-        raise TypeError("param %s should be a dictionary" % name)
+        if name is None:
+            return False
+        else:
+            raise TypeError("param %s should be a dictionary" % name)
 
     # check if key_list is defined
     if key_list is None:

@@ -209,6 +209,10 @@ class TestTools(unittest.TestCase):
         # should return true if parameter is a dictionary
         self.assertTrue(check_dict({"string": "test"}, "name"))
 
+        # should return false if parameter is not a list (and name is not set)
+        self.assertFalse(check_dict(None))
+        self.assertFalse(check_dict("string"))
+
         # should return true if key is found in dictionary
         self.assertTrue(check_dict({"string": "test"}, "name", "string"))
         self.assertTrue(check_dict(
