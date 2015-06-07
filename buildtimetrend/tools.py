@@ -215,7 +215,7 @@ def keys_in_dict(param_dict, key_list):
     """
     if type(key_list) in (str, int):
         return key_list in param_dict
-    elif not check_list(key_list, "key_list"):
+    elif not check_list(key_list):
         return False
 
     for key in key_list:
@@ -225,9 +225,13 @@ def keys_in_dict(param_dict, key_list):
     return True
 
 
-def check_list(param_list, name):
+def check_list(param_list, name=None):
     """
     Check if a parameter is a list.
+
+    Returns True if it is a list, false if it isn't,
+    or if parameter 'name' is specified,
+    an Error is raised with the name in the message.
 
     Parameters :
     - param_list: parameter that should be a list
@@ -235,7 +239,10 @@ def check_list(param_list, name):
     Return true if parameter is a list, throws error when it isn't
     """
     if param_list is None or type(param_list) is not list:
-        raise TypeError("param %s should be a list" % name)
+        if name is None:
+            return False
+        else:
+            raise TypeError("param %s should be a list" % name)
 
     return True
 

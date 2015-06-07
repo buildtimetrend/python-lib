@@ -241,6 +241,9 @@ class TestTools(unittest.TestCase):
             list({7, "string"})
         ))
 
+        # passing something else than a list should return true
+        self.assertFalse(keys_in_dict({"string": "test"}, {}))
+
         # missing keys
         self.assertFalse(keys_in_dict({"string": "test"}, 7))
         self.assertFalse(keys_in_dict({7: "test"}, "string"))
@@ -261,8 +264,13 @@ class TestTools(unittest.TestCase):
             "param string_name should be a list", str(cm.exception)
         )
 
+        # should return false if parameter is not a list (and name is not set)
+        self.assertFalse(check_list(None))
+        self.assertFalse(check_list("string"))
+
         # should return true if parameter is a list
         self.assertTrue(check_list(["string", "test"], "name"))
+
 
     def test_num_string(self):
         self.assertRaises(TypeError, check_num_string)
