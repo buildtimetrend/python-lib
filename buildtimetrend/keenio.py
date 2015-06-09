@@ -158,11 +158,17 @@ def add_project_info_dict(payload):
 
     payload_as_dict[KEEN_PROJECT_INFO_NAME] = Settings().get_project_info()
 
-    # override timestamp, set to finished_at timestamp
-    if "job" in payload and "finished_at" in payload["job"]:
-        payload_as_dict["keen"] = {
-            "timestamp": payload["job"]["finished_at"]["isotimestamp"]
-        }
+    if "job" in payload:
+        # override project_name, set to build_job repo
+        if "repo" in payload["job"]:
+            payload_as_dict[KEEN_PROJECT_INFO_NAME]["project_name"] = \
+                payload["job"]["repo"]
+
+        # override timestamp, set to finished_at timestamp
+        if "finished_at" in payload["job"]:
+            payload_as_dict["keen"] = {
+                "timestamp": payload["job"]["finished_at"]["isotimestamp"]
+            }
 
     return payload_as_dict
 
