@@ -6,6 +6,9 @@ buildtimetrend:
     loglevel: "WARNING" # possible values : "DEBUG", "INFO", "WARNING", "ERROR"
     dashboard_sample_configfile: "path/to/config_sample.js"
     dashboard_configfile: "path/to/config.js"
+    task_queue:
+        backend: "" # fe. amqp, redis, ...
+        broker_url: "" # format : transport://userid:password@hostname:port/virtual_host
 
 # Keen.io connection settings
 keen:
