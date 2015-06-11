@@ -7,6 +7,9 @@ buildtimetrend:
     loglevel: "INFO"
     dashboard_sample_configfile: "test/dashboard/config_sample.js"
     dashboard_configfile: "test/dashboard/config.js"
+    task_queue:
+        backend: "amqp"
+        broker_url: "amqp://user@localhost"
 
 # Keen.io connection settings
 keen:

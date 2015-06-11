@@ -162,7 +162,11 @@ class TestSettings(unittest.TestCase):
                 "setting1": "test_value1",
                 "dashboard_sample_configfile":
                 constants.DASHBOARD_SAMPLE_CONFIG_FILE,
-                "dashboard_configfile": "test/dashboard/config.js"
+                "dashboard_configfile": "test/dashboard/config.js",
+                "task_queue": {
+                    "backend": "amqp",
+                    "broker_url": "amqp://user@localhost"
+                }
             },
             self.settings.settings.get_items())
 
@@ -210,7 +214,11 @@ class TestSettings(unittest.TestCase):
                 "setting1": "test_value1",
                 "dashboard_sample_configfile":
                 constants.DASHBOARD_SAMPLE_CONFIG_FILE,
-                "dashboard_configfile": exp_config
+                "dashboard_configfile": exp_config,
+                "task_queue": {
+                    "backend": "amqp",
+                    "broker_url": "amqp://user@localhost"
+                }
             },
             self.settings.settings.get_items())
 
