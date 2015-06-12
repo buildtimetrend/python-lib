@@ -241,6 +241,15 @@ class Settings(object):
             self.env_var_to_settings("BUILD_TREND_CONFIGFILE",
                                      "dashboard_configfile")
 
+            if "BTT_AMQP_URL" in os.environ:
+                self.add_setting(
+                    "task_queue",
+                    {
+                        "backend": "amqp",
+                        "broker_url": os.environ["BTT_AMQP_URL"]
+                    }
+                )
+
         def env_var_to_settings(self, env_var_name, settings_name):
             """
             Store environment variable value as a setting.

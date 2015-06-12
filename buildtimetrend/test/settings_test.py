@@ -254,6 +254,7 @@ class TestSettings(unittest.TestCase):
         # set test environment variables
         exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
         exp_loglevel = os.environ["BTT_LOGLEVEL"] = "INFO"
+        exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:1234"
         exp_config = os.environ["BUILD_TREND_CONFIGFILE"] = "test/config.js"
 
         self.settings.load_env_vars()
@@ -264,9 +265,14 @@ class TestSettings(unittest.TestCase):
                           self.settings.get_setting("travis_account_token"))
         self.assertEquals(exp_config,
                           self.settings.get_setting("dashboard_configfile"))
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_amqp},
+            self.settings.get_setting("task_queue")
+        )
 
         # reset test environment variables
         del os.environ["BTT_LOGLEVEL"]
+        del os.environ["BTT_AMQP_URL"]
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
         del os.environ["BUILD_TREND_CONFIGFILE"]
 
