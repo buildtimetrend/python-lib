@@ -280,7 +280,7 @@ class TestSettings(unittest.TestCase):
         # set test environment variables
         exp_redisgreen = os.environ["REDISGREEN_URL"] = "redis://test@hostname:4567"
 
-        self.settings.load_env_vars()
+        self.settings.load_env_vars_task_queue()
 
         # test environment variables
         self.assertDictEqual(
@@ -291,7 +291,7 @@ class TestSettings(unittest.TestCase):
         # set test environment variables
         exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:2345"
 
-        self.settings.load_env_vars()
+        self.settings.load_env_vars_task_queue()
 
         # test environment variables
         self.assertDictEqual(

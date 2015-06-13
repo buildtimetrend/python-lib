@@ -27,6 +27,7 @@ import getopt
 import yaml
 import keen
 import buildtimetrend
+from collections import OrderedDict
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import is_dict
@@ -241,24 +242,33 @@ class Settings(object):
             self.env_var_to_settings("BUILD_TREND_CONFIGFILE",
                                      "dashboard_configfile")
 
-            # load taks queue env variables,
-            # first match is loaded, others are ignored.
-            if "BTT_AMQP_URL" in os.environ:
-                self.add_setting(
-                    "task_queue",
-                    {
-                        "backend": "amqp",
-                        "broker_url": os.environ["BTT_AMQP_URL"]
-                    }
-                )
-            elif "REDISGREEN_URL" in os.environ:
-                self.add_setting(
-                    "task_queue",
-                    {
-                        "backend": "redis",
-                        "broker_url": os.environ["REDISGREEN_URL"]
-                    }
-                )
+            # load task queue environment variables
+            self.load_env_vars_task_queue()
+
+        def load_env_vars_task_queue(self):
+            """
+            Load task queue environment variables.
+
+            The environment variable that matches first is loaded,
+            other variables are ignored.
+            """
+            # prepare list of env vars, in order of priority
+            queue_env_vars = OrderedDict()
+            queue_env_vars["BTT_AMQP_URL"] = "amqp"
+            queue_env_vars["REDISGREEN_URL"] = "redis"
+
+            # loop over list of env vars, loading first match
+            for env_var in queue_env_vars.keys():
+                if env_var in os.environ:
+                    self.add_setting(
+                        "task_queue",
+                        {
+                            "backend": queue_env_vars[env_var],
+                            "broker_url": os.environ[env_var]
+                        }
+                    )
+                    # exit loop on first match
+                    break
 
         def env_var_to_settings(self, env_var_name, settings_name):
             """
