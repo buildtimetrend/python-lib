@@ -276,6 +276,33 @@ class TestSettings(unittest.TestCase):
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
         del os.environ["BUILD_TREND_CONFIGFILE"]
 
+    def test_load_env_vars_task_queue(self):
+        # set test environment variables
+        exp_redisgreen = os.environ["REDISGREEN_URL"] = "redis://test@hostname:4567"
+
+        self.settings.load_env_vars()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "redis", "broker_url": exp_redisgreen},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
+        exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:2345"
+
+        self.settings.load_env_vars()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_amqp},
+            self.settings.get_setting("task_queue")
+        )
+
+        # reset test environment variables
+        del os.environ["BTT_AMQP_URL"]
+        del os.environ["REDISGREEN_URL"]
+
     def test_process_argv(self):
         scriptname = "script.py"
 
