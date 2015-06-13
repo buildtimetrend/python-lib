@@ -289,6 +289,28 @@ class TestSettings(unittest.TestCase):
         )
 
         # set test environment variables
+        exp_cloudamqp = os.environ["CLOUDAMQP_URL"] = "amqp://guest:guest@localhost"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_cloudamqp},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
+        exp_redis = os.environ["BTT_REDIS_URL"] = "redis://test@hostname:3456"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "redis", "broker_url": exp_redis},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
         exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:2345"
 
         self.settings.load_env_vars_task_queue()
@@ -299,8 +321,19 @@ class TestSettings(unittest.TestCase):
             self.settings.get_setting("task_queue")
         )
 
-        # reset test environment variables
+        # remove first task queue url, second should be loaded
         del os.environ["BTT_AMQP_URL"]
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "redis", "broker_url": exp_redis},
+            self.settings.get_setting("task_queue")
+        )
+
+        # reset test environment variables
+        del os.environ["BTT_REDIS_URL"]
+        del os.environ["CLOUDAMQP_URL"]
         del os.environ["REDISGREEN_URL"]
 
     def test_process_argv(self):

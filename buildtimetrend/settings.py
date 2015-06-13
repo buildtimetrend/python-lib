@@ -255,6 +255,8 @@ class Settings(object):
             # prepare list of env vars, in order of priority
             queue_env_vars = OrderedDict()
             queue_env_vars["BTT_AMQP_URL"] = "amqp"
+            queue_env_vars["BTT_REDIS_URL"] = "redis"
+            queue_env_vars["CLOUDAMQP_URL"] = "amqp"
             queue_env_vars["REDISGREEN_URL"] = "redis"
 
             # loop over list of env vars, loading first match
