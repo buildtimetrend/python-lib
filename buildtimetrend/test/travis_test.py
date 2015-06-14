@@ -303,11 +303,11 @@ class TestTravis(unittest.TestCase):
         self.assertRaises(ValueError, process_notification_payload, "")
         self.assertRaises(ValueError, process_notification_payload, "no_json")
 
-        process_notification_payload(None)
+        self.assertEquals(None, process_notification_payload(None))
         self.assertEquals(None, settings.get_setting("build"))
         self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
 
-        process_notification_payload(123)
+        self.assertEquals(None, process_notification_payload(123))
         self.assertEquals(None, settings.get_setting("build"))
         self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
 
@@ -317,22 +317,43 @@ class TestTravis(unittest.TestCase):
         expected_project_name = get_repo_slug(expected_owner, expected_repo)
 
         # test with string
-        process_notification_payload(
-            '{"number": "%s", "repository": ' \
-            '{"owner_name": "%s", "name": "%s"}}'
-            % (expected_build, expected_owner, expected_repo)
+        self.assertDictEqual(
+            {"repo": expected_project_name, "build": expected_build},
+            process_notification_payload(
+                '{"number": "%s", "repository": ' \
+                '{"owner_name": "%s", "name": "%s"}}'
+                % (expected_build, expected_owner, expected_repo)
+            )
         )
 
         self.assertEquals(expected_build, settings.get_setting("build"))
         self.assertEquals(expected_project_name, settings.get_project_name())
 
-        # test with unicode string
-        process_notification_payload(
-            unicode(
-                '{"number": "%s", "repository": ' \
-                '{"owner_name": "%s", "name": "%s"}}'
+        # test with string, only containing repo info
+        self.assertDictEqual(
+            {"repo": expected_project_name},
+            process_notification_payload(
+                '{"repository": {"owner_name": "%s", "name": "%s"}}'
+                % (expected_owner, expected_repo)
             )
-            % (expected_build, expected_owner, expected_repo)
+        )
+
+        # test with string, only containing build info
+        self.assertDictEqual(
+            {"build": expected_build},
+            process_notification_payload('{"number": "%s"}' % expected_build)
+        )
+
+        # test with unicode string
+        self.assertDictEqual(
+            {"repo": expected_project_name, "build": expected_build},
+            process_notification_payload(
+                unicode(
+                    '{"number": "%s", "repository": ' \
+                    '{"owner_name": "%s", "name": "%s"}}'
+                )
+                % (expected_build, expected_owner, expected_repo)
+            )
         )
 
         self.assertEquals(expected_build, settings.get_setting("build"))
