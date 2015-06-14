@@ -107,7 +107,7 @@ def process_notification_payload(payload):
     Extract repo slug and build number from Travis notification payload.
 
     Returns a dictionary with "repo" and "build" information,
-    or None if the payload could not be processed.
+    or an empty dictionary if the payload could not be processed.
 
     Deprecated behaviour : Currently the repo and build information are
     also stored in the "settings" object,
@@ -117,20 +117,20 @@ def process_notification_payload(payload):
     - payload : Travis CI notification payload
     """
     settings = Settings()
+    parameters = {}
 
     if payload is None:
         logger.warning("Travis notification payload is not set")
-        return None
+        return parameters
 
     if not type(payload) in (str, unicode):
         logger.warning("Travis notification payload is incorrect :"
                        " (unicode) string expected, got %s", type(payload))
-        return None
+        return parameters
 
     json_payload = json.loads(payload)
     logger.info("Travis Payload : %r.", json_payload)
 
-    parameters = {}
     # get repo name from payload
     if ("repository" in json_payload and
             "owner_name" in json_payload["repository"] and

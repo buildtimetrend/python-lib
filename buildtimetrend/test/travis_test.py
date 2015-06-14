@@ -303,11 +303,11 @@ class TestTravis(unittest.TestCase):
         self.assertRaises(ValueError, process_notification_payload, "")
         self.assertRaises(ValueError, process_notification_payload, "no_json")
 
-        self.assertEquals(None, process_notification_payload(None))
+        self.assertDictEqual({}, process_notification_payload(None))
         self.assertEquals(None, settings.get_setting("build"))
         self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
 
-        self.assertEquals(None, process_notification_payload(123))
+        self.assertDictEqual({}, process_notification_payload(123))
         self.assertEquals(None, settings.get_setting("build"))
         self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
 
