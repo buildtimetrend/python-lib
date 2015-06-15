@@ -95,6 +95,22 @@ def check_process_parameters(repo=None, build=None):
     """
     Process setup parameters.
 
+    Deprecated : functionality is split into
+    validate_travis_request() and validate_task_parameters()
+
+    Check parameters (repo and build)
+    Returns error message, None when all parameters are fine
+    """
+    ret_val = validate_travis_request(repo, build)
+    if ret_val is not None:
+        return ret_val
+    return validate_task_parameters(repo, build)
+
+
+def validate_travis_request(repo=None, build=None):
+    """
+    Validate repo and build parameters of travis web request.
+
     Check parameters (repo and build)
     Returns error message, None when all parameters are fine.
     """
@@ -107,6 +123,16 @@ def check_process_parameters(repo=None, build=None):
     if not is_repo_allowed(repo):
         return "Project '%s' is not allowed." % cgi.escape(repo)
 
+    return None
+
+
+def validate_task_parameters(repo=None, build=None):
+    """
+    Validate repo and build parameters of process_travis_buildlog().
+
+    Check parameters (repo and build)
+    Returns error message, None when all parameters are fine.
+    """
     if not keen_is_writable():
         return "Keen IO write key not set, no data was sent"
 
