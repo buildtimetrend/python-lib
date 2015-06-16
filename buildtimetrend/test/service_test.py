@@ -41,6 +41,12 @@ class TestService(unittest.TestCase):
         if self.settings is not None:
             self.settings.__init__()
 
+        # reset Keen.io settings
+        keen.project_id = None
+        keen.write_key = None
+        keen.read_key = None
+        keen.master_key = None
+
     def test_is_repo_allowed(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, is_repo_allowed)
