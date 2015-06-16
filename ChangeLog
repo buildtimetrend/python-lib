@@ -7,6 +7,7 @@ v0.3 (not yet released)
 - service.format_duration() rounds to full seconds
 - check_list() renamed to is_list(), with 'name' as an optional parameter
 - keenio.add_project_info_dict() : override project_name in event header with build_job repo
+- check_process_parameters() is split into validate_travis_request() and validate_task_parameters()
 
 v0.2 (released on 16Feb2015)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script

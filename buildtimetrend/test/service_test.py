@@ -24,6 +24,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 from buildtimetrend.service import is_repo_allowed
 from buildtimetrend.service import format_duration
 from buildtimetrend.service import check_process_parameters
+from buildtimetrend.service import validate_travis_request
+from buildtimetrend.service import validate_task_parameters
 from buildtimetrend.settings import Settings
 import unittest
 import keen
@@ -151,4 +153,37 @@ class TestService(unittest.TestCase):
         error_msg = "Error checking if build exists"
         self.assertTrue(
             check_process_parameters("user/repo", 1234) in (None, error_msg)
+        )
+
+    def test_validate_travis_request(self):
+        # repo or build is not set
+        no_repo_build = "Repo or build are not set, format : " \
+            "/travis/<repo_owner>/<repo_name>/<build>"
+
+        self.assertEquals(no_repo_build, validate_travis_request())
+        self.assertEquals(no_repo_build, validate_travis_request("user/repo"))
+        self.assertEquals(no_repo_build, validate_travis_request(None, 1234))
+
+        # repo is not allowed
+        # set denied repo
+        self.settings.add_setting("denied_repo", {"test1"})
+        self.assertEquals(
+            "Project 'user/test1' is not allowed.",
+            validate_travis_request("user/test1", 1234)
+        )
+
+    def test_validate_task_parameters(self):
+        # Keen.io write key is not set
+        self.assertEquals(
+            "Keen IO write key not set, no data was sent",
+            validate_task_parameters("user/repo", 1234)
+        )
+
+        # TODO complete test when has_build_id() can be mocked
+        # set keen project ID and write key
+        keen.project_id = "1234abcd"
+        keen.write_key = "1234abcd5678efgh"
+        error_msg = "Error checking if build exists"
+        self.assertTrue(
+            validate_task_parameters("user/repo", 1234) in (None, error_msg)
         )
