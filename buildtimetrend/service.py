@@ -140,9 +140,9 @@ def validate_task_parameters(repo=None, build=None):
         if has_build_id(repo, build):
             return "Build #%s of project %s already exists in database" % \
                 (cgi.escape(build), cgi.escape(repo))
-    except:
-        logger.error("Error checking if build exists")
+    except Exception, msg:
         # Raise last exception again
-        raise
+        logger.error("Error checking if build exists : %s", msg)
+        raise Exception("Error checking if build exists.")
 
     return None

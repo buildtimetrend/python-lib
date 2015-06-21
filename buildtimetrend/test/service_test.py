@@ -156,11 +156,10 @@ class TestService(unittest.TestCase):
         # set keen project ID and write key
         keen.project_id = "1234abcd"
         keen.write_key = "1234abcd5678efgh"
-        self.assertRaises(
-            SystemError,
-            validate_task_parameters,
-            "user/repo",
-            1234
+        with self.assertRaises(Exception) as exc:
+            validate_task_parameters("user/repo", 1234)
+        self.assertEqual(
+            "Error checking if build exists.", str(exc.exception)
         )
 
     def test_validate_travis_request(self):
@@ -191,9 +190,8 @@ class TestService(unittest.TestCase):
         # set keen project ID and write key
         keen.project_id = "1234abcd"
         keen.write_key = "1234abcd5678efgh"
-        self.assertRaises(
-            SystemError,
-            validate_task_parameters,
-            "user/repo",
-            1234
+        with self.assertRaises(Exception) as exc:
+            validate_task_parameters("user/repo", 1234)
+        self.assertEqual(
+            "Error checking if build exists.", str(exc.exception)
         )
