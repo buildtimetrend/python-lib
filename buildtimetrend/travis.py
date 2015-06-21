@@ -37,9 +37,10 @@ import buildtimetrend
 try:
     # For Python 3.0 and later
     from urllib.request import Request, build_opener
+    from urllib.error import HTTPError, URLError
 except ImportError:
     # Fall back to Python 2's urllib2
-    from urllib2 import Request, build_opener
+    from urllib2 import Request, build_opener, HTTPError, URLError
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
@@ -297,9 +298,17 @@ class TravisData(object):
             self.connector = TravisOrgConnector()
 
     def get_build_data(self):
-        """Retrieve Travis CI build data."""
+        """
+        Retrieve Travis CI build data.
+
+        Returns true if retrieving data was succesful, false on error.
+        """
         request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
-        self.build_data = self.connector.json_request(request)
+        try:
+            self.build_data = self.connector.json_request(request)
+        except (HTTPError, URLError), msg:
+            logger.error("Error getting build data from Travis CI: %s", msg)
+            return False
 
         # log build_data
         logger.debug(
@@ -307,6 +316,8 @@ class TravisData(object):
             str(self.build_id),
             json.dumps(self.build_data, sort_keys=True, indent=2)
         )
+
+        return True
 
     def get_substage_name(self, command):
         """

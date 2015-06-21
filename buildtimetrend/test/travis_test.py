@@ -414,7 +414,7 @@ class TestTravisData(unittest.TestCase):
 
     def test_gather_data(self):
         # retrieve data from Travis API
-        self.travis_data.get_build_data()
+        self.assertTrue(self.travis_data.get_build_data())
         self.assertTrue(len(self.travis_data.build_data) > 0)
 
         # retrieve start time
