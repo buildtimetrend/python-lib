@@ -36,10 +36,11 @@ from buildtimetrend.collection import Collection
 import buildtimetrend
 try:
     # For Python 3.0 and later
-    from urllib.request import urlopen, Request, build_opener
+    from urllib.request import Request, build_opener
+    from urllib.error import HTTPError, URLError
 except ImportError:
     # Fall back to Python 2's urllib2
-    from urllib2 import urlopen, Request, build_opener
+    from urllib2 import Request, build_opener, HTTPError, URLError
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
@@ -104,21 +105,29 @@ def convert_build_result(result):
 
 def process_notification_payload(payload):
     """
-    Load payload from Travis notification.
+    Extract repo slug and build number from Travis notification payload.
+
+    Returns a dictionary with "repo" and "build" information,
+    or an empty dictionary if the payload could not be processed.
+
+    Deprecated behaviour : Currently the repo and build information are
+    also stored in the "settings" object,
+    but this will be removed in the near future.
 
     Parameters:
     - payload : Travis CI notification payload
     """
     settings = Settings()
+    parameters = {}
 
     if payload is None:
         logger.warning("Travis notification payload is not set")
-        return
+        return parameters
 
     if not type(payload) in (str, unicode):
         logger.warning("Travis notification payload is incorrect :"
                        " (unicode) string expected, got %s", type(payload))
-        return
+        return parameters
 
     json_payload = json.loads(payload)
     logger.info("Travis Payload : %r.", json_payload)
@@ -133,11 +142,15 @@ def process_notification_payload(payload):
 
         logger.info("Build repo : %s", repo)
         settings.set_project_name(repo)
+        parameters["repo"] = repo
 
     # get build number from payload
     if "number" in json_payload:
         logger.info("Build number : %s", str(json_payload["number"]))
         settings.add_setting('build', json_payload['number'])
+        parameters["build"] = json_payload['number']
+
+    return parameters
 
 
 def check_authorization(repo, auth_header):
@@ -185,17 +198,90 @@ def check_authorization(repo, auth_header):
         return False
 
 
+class TravisConnector(object):
+
+    """Abstract class to connects to Travis CI API."""
+
+    def __init__(self):
+        """Constructor."""
+        self.api_url = None
+        self.request_params = {
+            'user-agent': buildtimetrend.USER_AGENT
+        }
+
+    def download_job_log(self, job_id):
+        """
+        Retrieve Travis CI job log.
+
+        Parameters:
+        - job_id : ID of the job to process
+        """
+        request = 'jobs/%s/log' % str(job_id)
+        logger.info("Request build job log #%s", str(job_id))
+        return self._handle_request(request)
+
+    def json_request(self, json_request):
+        """
+        Retrieve Travis CI data using API.
+
+        Parameters:
+        - json_request : json_request to be sent to API
+        """
+        result = self._handle_request(
+            json_request,
+            {
+                'accept': 'application/vnd.travis-ci.2+json'
+            }
+        )
+
+        return json.load(result)
+
+    def _handle_request(self, request, params=None):
+        """
+        Retrieve Travis CI data using API.
+
+        Parameters:
+        - request : request to be sent to API
+        - params : HTTP request parameters
+        """
+        request_url = self.api_url + request
+
+        request_params = self.request_params.copy()
+        if params is not None and check_dict(params, "params"):
+            request_params.update(params)
+
+        req = Request(
+            request_url,
+            None,
+            request_params
+        )
+        opener = build_opener()
+        logger.info("Request from Travis CI API : %s", request_url)
+        return opener.open(req)
+
+
+class TravisOrgConnector(TravisConnector):
+
+    """Connects to Travis.org API."""
+
+    def __init__(self):
+        """Constructor."""
+        super(TravisOrgConnector, self).__init__()
+        self.api_url = TRAVIS_ORG_API_URL
+
+
 class TravisData(object):
 
-    """ Gather data from Travis CI using the API. """
+    """Gather data from Travis CI using the API."""
 
-    def __init__(self, repo, build_id):
+    def __init__(self, repo, build_id, connector=None):
         """
         Retrieve Travis CI build data using the API.
 
         Parameters:
         - repo : github repository slug (fe. buildtimetrend/python-lib)
         - build_id : Travis CI build id (fe. 158)
+        - connector : Travis Connector instance
         """
         self.build_data = {}
         self.build_jobs = {}
@@ -203,13 +289,26 @@ class TravisData(object):
         self.current_job = Build()
         self.travis_substage = None
         self.repo = repo
-        self.api_url = TRAVIS_ORG_API_URL
         self.build_id = str(build_id)
+        # set TravisConnector if it is defined
+        if connector is not None and type(connector) is TravisConnector:
+            self.connector = connector
+        # use Travis Org connector by default
+        else:
+            self.connector = TravisOrgConnector()
 
     def get_build_data(self):
-        """ Retrieve Travis CI build data. """
+        """
+        Retrieve Travis CI build data.
+
+        Returns true if retrieving data was succesful, false on error.
+        """
         request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
-        self.build_data = self.json_request(request)
+        try:
+            self.build_data = self.connector.json_request(request)
+        except (HTTPError, URLError), msg:
+            logger.error("Error getting build data from Travis CI: %s", msg)
+            return False
 
         # log build_data
         logger.debug(
@@ -217,6 +316,8 @@ class TravisData(object):
             str(self.build_id),
             json.dumps(self.build_data, sort_keys=True, indent=2)
         )
+
+        return True
 
     def get_substage_name(self, command):
         """
@@ -289,7 +390,7 @@ class TravisData(object):
         - job_id : ID of the job to process
         """
         request = 'jobs/%s' % str(job_id)
-        job_data = self.json_request(request)
+        job_data = self.connector.json_request(request)
 
         # log job_data
         logger.debug(
@@ -363,34 +464,49 @@ class TravisData(object):
         # set language version
         # ('d', 'dart', 'go', 'perl', 'php', 'python', 'rust')
         if language in job_config:
-            build_matrix.add_item("language_version", job_config[language])
+            if language == "android":
+                build_matrix.add_item(
+                    "language_components",
+                    " ".join(job_config[language]["components"])
+                )
+            else:
+                build_matrix.add_item(
+                    "language_version",
+                    str(job_config[language])
+                )
 
-        if 'compiler' in job_config:
-            build_matrix.add_item("compiler", job_config['compiler'])
-        if 'os' in job_config:
-            build_matrix.add_item("os", job_config['os'])
-        if 'env' in job_config:
-            build_matrix.add_item("parameters", job_config['env'])
+        # language specific build matrix parameters
+        parameters = {
+            'ghc': 'ghc',  # Haskell
+            'jdk': 'jdk',  # Java, Android, Groovy, Ruby, Scala
+            'lein': 'lein',  # Clojure
+            'mono': 'mono',  # C#, F#, Visual Basic
+            'node_js': 'node_js',  # Javascript
+            'otp_release': 'otp_release',  # Erlang
+            'rvm': 'rvm',  # Ruby, Objective-C
+            'gemfile': 'gemfile',  # Ruby, Objective-C
+            'xcode_sdk': 'xcode_sdk',  # Objective-C
+            'xcode_scheme': 'xcode_scheme',  # Objective-C
+            'compiler': 'compiler',  # C, C++
+            'os': 'os',
+            'env': 'parameters'
+        }
+        for parameter, name in parameters.items():
+            if parameter in job_config:
+                build_matrix.add_item(name, str(job_config[parameter]))
 
-        # concatenate all properties in as summary field
-        build_matrix.add_item(
-            "summary",
-            " ".join(build_matrix.get_key_sorted_items().values())
-        )
+        # concatenate all properties in a summary field
+        matrix_params = build_matrix.get_key_sorted_items().values()
+        try:
+            summary = " ".join(matrix_params)
+            build_matrix.add_item("summary", summary)
+        except TypeError, msg:
+            logger.error(
+                "Error parsing build matrix properties : %s, message : %s",
+                matrix_params, str(msg)
+            )
 
         self.current_job.add_property("build_matrix", build_matrix.get_items())
-
-    def get_job_log(self, job_id):
-        """
-        Retrieve Travis CI job log.
-
-        Parameters:
-        - job_id : ID of the job to process
-        """
-        request = 'jobs/%s/log' % str(job_id)
-        request_url = self.api_url + request
-        logger.info("Request build job log : %s", request_url)
-        return urlopen(request_url)
 
     def parse_job_log(self, job_id):
         """
@@ -399,7 +515,7 @@ class TravisData(object):
         Parameters:
         - job_id : ID of the job to process
         """
-        self.parse_job_log_stream(self.get_job_log(job_id))
+        self.parse_job_log_stream(self.connector.download_job_log(job_id))
 
     def parse_job_log_file(self, filename):
         """
@@ -495,26 +611,6 @@ class TravisData(object):
             logger.debug("Worker tags : %s", worker_tags)
             self.current_job.add_property("worker", worker_tags)
 
-    def json_request(self, json_request):
-        """
-        Retrieve Travis CI data using API.
-
-        Parameters:
-        - json_request : json_request to be sent to API
-        """
-        req = Request(
-            self.api_url + json_request,
-            None,
-            {
-                'user-agent': buildtimetrend.USER_AGENT,
-                'accept': 'application/vnd.travis-ci.2+json'
-            }
-        )
-        opener = build_opener()
-        result = opener.open(req)
-
-        return json.load(result)
-
     def has_timing_tags(self):
         """
         Check if Travis CI job log has timing tags.
@@ -530,7 +626,7 @@ class TravisData(object):
         return started_at["timestamp_seconds"] > 1407369600
 
     def get_job_duration(self):
-        """ Calculate build job duration. """
+        """Calculate build job duration."""
         started_at = self.current_job.get_property("started_at")
         finished_at = self.current_job.get_property("finished_at")
         if started_at is None or "timestamp_seconds" not in started_at or \
@@ -542,14 +638,14 @@ class TravisData(object):
         return timestamp_end - timestamp_start
 
     def get_started_at(self):
-        """ Retrieve timestamp when build was started. """
+        """Retrieve timestamp when build was started."""
         if len(self.build_data) > 0:
             return self.build_data['builds'][0]['started_at']
         else:
             return None
 
     def get_finished_at(self):
-        """ Retrieve timestamp when build finished. """
+        """Retrieve timestamp when build finished."""
         if len(self.build_data) > 0:
             return self.build_data['builds'][0]['finished_at']
         else:
@@ -565,7 +661,7 @@ class TravisSubstage(object):
     """
 
     def __init__(self):
-        """ Initialise Travis CI Substage object. """
+        """Initialise Travis CI Substage object."""
         self.stage = Stage()
         self.timing_hash = ""
         self.finished_incomplete = False
@@ -807,7 +903,7 @@ class TravisSubstage(object):
             len(self.stage.data["command"]) > 0
 
     def get_command(self):
-        """ Return substage command. """
+        """Return substage command."""
         if self.has_command():
             return self.stage.data["command"]
         else:

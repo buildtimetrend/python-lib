@@ -31,10 +31,10 @@ from buildtimetrend.tools import split_isotimestamp
 
 class Build(object):
 
-    """ Gather Build related data. """
+    """Gather Build related data."""
 
     def __init__(self, csv_filename=None, end_timestamp=None):
-        """ Initialize instance. """
+        """Initialize instance."""
         self.properties = Collection()
         self.stages = Stages()
         if end_timestamp is not None:
@@ -81,7 +81,7 @@ class Build(object):
         return self.properties.get_item(name)
 
     def get_properties(self):
-        """ Return build properties. """
+        """Return build properties."""
         # copy values of properties
         data = self.properties.get_items()
 
@@ -122,7 +122,7 @@ class Build(object):
         self.add_property("finished_at", split_isotimestamp(isotimestamp))
 
     def load_properties_from_settings(self):
-        """ Load build properties from settings. """
+        """Load build properties from settings."""
         self.load_property_from_settings("build")
         self.load_property_from_settings("job")
         self.load_property_from_settings("branch")
@@ -147,7 +147,7 @@ class Build(object):
             self.add_property(property_name, value)
 
     def to_dict(self):
-        """ Return object as dictionary. """
+        """Return object as dictionary."""
         # get build properties
         data = self.get_properties()
 
@@ -158,7 +158,7 @@ class Build(object):
         return data
 
     def stages_to_list(self):
-        """ Return list of stages, all containing the build properties. """
+        """Return list of stages, all containing the build properties."""
         if type(self.stages) is Stages:
             # create list to be returned
             data = []
@@ -179,7 +179,7 @@ class Build(object):
         return data
 
     def to_xml(self):
-        """ Generate XML object of a Build instance. """
+        """Generate XML object of a Build instance."""
         root = etree.Element("build")
 
         # add properties
@@ -193,5 +193,5 @@ class Build(object):
         return root
 
     def to_xml_string(self):
-        """ Generate XML string of a Build instance. """
+        """Generate XML string of a Build instance."""
         return etree.tostring(self.to_xml(), pretty_print=True)

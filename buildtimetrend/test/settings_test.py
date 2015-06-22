@@ -162,7 +162,11 @@ class TestSettings(unittest.TestCase):
                 "setting1": "test_value1",
                 "dashboard_sample_configfile":
                 constants.DASHBOARD_SAMPLE_CONFIG_FILE,
-                "dashboard_configfile": "test/dashboard/config.js"
+                "dashboard_configfile": "test/dashboard/config.js",
+                "task_queue": {
+                    "backend": "amqp",
+                    "broker_url": "amqp://user@localhost"
+                }
             },
             self.settings.settings.get_items())
 
@@ -210,7 +214,11 @@ class TestSettings(unittest.TestCase):
                 "setting1": "test_value1",
                 "dashboard_sample_configfile":
                 constants.DASHBOARD_SAMPLE_CONFIG_FILE,
-                "dashboard_configfile": exp_config
+                "dashboard_configfile": exp_config,
+                "task_queue": {
+                    "backend": "amqp",
+                    "broker_url": "amqp://user@localhost"
+                }
             },
             self.settings.settings.get_items())
 
@@ -246,6 +254,7 @@ class TestSettings(unittest.TestCase):
         # set test environment variables
         exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
         exp_loglevel = os.environ["BTT_LOGLEVEL"] = "INFO"
+        exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:1234"
         exp_config = os.environ["BUILD_TREND_CONFIGFILE"] = "test/config.js"
 
         self.settings.load_env_vars()
@@ -256,11 +265,76 @@ class TestSettings(unittest.TestCase):
                           self.settings.get_setting("travis_account_token"))
         self.assertEquals(exp_config,
                           self.settings.get_setting("dashboard_configfile"))
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_amqp},
+            self.settings.get_setting("task_queue")
+        )
 
         # reset test environment variables
         del os.environ["BTT_LOGLEVEL"]
+        del os.environ["BTT_AMQP_URL"]
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
         del os.environ["BUILD_TREND_CONFIGFILE"]
+
+    def test_load_env_vars_task_queue(self):
+        # set test environment variables
+        exp_redisgreen = os.environ["REDISGREEN_URL"] = "redis://test@hostname:4567"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "redis", "broker_url": exp_redisgreen},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
+        exp_cloudamqp = os.environ["CLOUDAMQP_URL"] = "amqp://guest:guest@localhost"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_cloudamqp},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
+        exp_redis = os.environ["BTT_REDIS_URL"] = "redis://test@hostname:3456"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "redis", "broker_url": exp_redis},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
+        exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:2345"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_amqp},
+            self.settings.get_setting("task_queue")
+        )
+
+        # remove first task queue url, second should be loaded
+        del os.environ["BTT_AMQP_URL"]
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "redis", "broker_url": exp_redis},
+            self.settings.get_setting("task_queue")
+        )
+
+        # reset test environment variables
+        del os.environ["BTT_REDIS_URL"]
+        del os.environ["CLOUDAMQP_URL"]
+        del os.environ["REDISGREEN_URL"]
 
     def test_process_argv(self):
         scriptname = "script.py"

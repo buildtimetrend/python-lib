@@ -181,6 +181,14 @@ class TestTools(unittest.TestCase):
             NEWER_FILE)
         )
 
+    def test_is_dict(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, is_dict)
+
+        self.assertFalse(is_dict(None))
+        self.assertFalse(is_dict("not_a_dict"))
+        self.assertTrue(is_dict({"string": "test"}))
+
     def test_check_dict(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, check_dict)
@@ -201,15 +209,24 @@ class TestTools(unittest.TestCase):
         # should return true if parameter is a dictionary
         self.assertTrue(check_dict({"string": "test"}, "name"))
 
+        # should return false if parameter is not a list (and name is not set)
+        self.assertFalse(check_dict(None))
+        self.assertFalse(check_dict("string"))
+
         # should return true if key is found in dictionary
-        self.assertTrue(check_dict({"string": "test"}, "string"))
+        self.assertTrue(check_dict({"string": "test"}, "name", "string"))
         self.assertTrue(check_dict(
             {"string": "test", 7: "test"},
+            "name",
             list({7, "string"})
         ))
 
         # should return false if key is not found in dictionary
-        self.assertTrue(check_dict({"string": "test"}, "name"))
+        self.assertFalse(check_dict(
+            {"string": "test"},
+            "name",
+            list({7})
+        ))
 
     def test_keys_in_dict(self):
         # empty dict and empty key_list should return true
@@ -228,28 +245,36 @@ class TestTools(unittest.TestCase):
             list({7, "string"})
         ))
 
+        # passing something else than a list should return true
+        self.assertFalse(keys_in_dict({"string": "test"}, {}))
+
         # missing keys
         self.assertFalse(keys_in_dict({"string": "test"}, 7))
         self.assertFalse(keys_in_dict({7: "test"}, "string"))
         self.assertFalse(keys_in_dict({"string": "test"}, list({7, "string"})))
 
-    def test_check_list(self):
+    def test_is_list(self):
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, check_list)
+        self.assertRaises(TypeError, is_list)
 
         # error is thrown when called with an invalid parameter
         with self.assertRaises(TypeError) as cm:
-            check_list(None, "name")
+            is_list(None, "name")
         self.assertEqual("param name should be a list", str(cm.exception))
 
         with self.assertRaises(TypeError) as cm:
-            check_list("string", "string_name")
+            is_list("string", "string_name")
         self.assertEqual(
             "param string_name should be a list", str(cm.exception)
         )
 
+        # should return false if parameter is not a list (and name is not set)
+        self.assertFalse(is_list(None))
+        self.assertFalse(is_list("string"))
+
         # should return true if parameter is a list
-        self.assertTrue(check_list(["string", "test"], "name"))
+        self.assertTrue(is_list(["string", "test"], "name"))
+
 
     def test_num_string(self):
         self.assertRaises(TypeError, check_num_string)
@@ -282,5 +307,5 @@ class TestTools(unittest.TestCase):
         self.assertEquals(None, get_repo_slug(None, None))
 
         self.assertEquals("abcd/efgh", get_repo_slug("abcd", "efgh"))
-        self.assertEquals("abcd/efgh", get_repo_slug("Abcd", "eFgh"))
+        self.assertEquals("Abcd/eFgh", get_repo_slug("Abcd", "eFgh"))
         self.assertEquals("123/456", get_repo_slug(123, 456))

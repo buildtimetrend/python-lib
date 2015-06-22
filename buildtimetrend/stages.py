@@ -42,7 +42,7 @@ class Stages(object):
     """
 
     def __init__(self):
-        """ Initialize instance. """
+        """Initialize instance."""
         self.stages = []
         self.started_at = None
         self.finished_at = None
@@ -79,7 +79,7 @@ class Stages(object):
         return True
 
     def total_duration(self):
-        """ Calculate total duration of all stages. """
+        """Calculate total duration of all stages."""
         total_duration = 0
         # calculate total duration
         for stage in self.stages:
@@ -88,7 +88,7 @@ class Stages(object):
         return total_duration
 
     def to_xml(self):
-        """ Return xml object from stages dictionary. """
+        """Return xml object from stages dictionary."""
         root = etree.Element("stages")
 
         for stage in self.stages:
@@ -99,7 +99,7 @@ class Stages(object):
         return root
 
     def to_xml_string(self):
-        """ Return xml string from stages dictionary. """
+        """Return xml string from stages dictionary."""
         return etree.tostring(self.to_xml(), pretty_print=True)
 
     def parse_timestamps(self, timestamps):
@@ -196,16 +196,16 @@ class Stages(object):
 
 class Stage(object):
 
-    """ Build stage object. """
+    """Build stage object."""
 
     def __init__(self):
-        """ Initialize instance. """
+        """Initialize instance."""
         self.data = {}
         self.set_name("")
         self.set_duration(0)
 
     def set_name(self, name):
-        """ Set stage name. """
+        """Set stage name."""
         if name is None:
             return False
 
@@ -214,7 +214,7 @@ class Stage(object):
         return True
 
     def set_command(self, command):
-        """ Set stage command. """
+        """Set stage command."""
         if command is None:
             return False
 
@@ -222,19 +222,19 @@ class Stage(object):
         return True
 
     def set_started_at(self, timestamp):
-        """ Set time when stage was started. """
+        """Set time when stage was started."""
         return self.set_timestamp("started_at", timestamp)
 
     def set_started_at_nano(self, timestamp):
-        """ Set time when stage was started in nanoseconds. """
+        """Set time when stage was started in nanoseconds."""
         return self.set_timestamp_nano("started_at", timestamp)
 
     def set_finished_at(self, timestamp):
-        """ Set time when stage was finished. """
+        """Set time when stage was finished."""
         return self.set_timestamp("finished_at", timestamp)
 
     def set_finished_at_nano(self, timestamp):
-        """ Set time when stage was finished in nanoseconds. """
+        """Set time when stage was finished in nanoseconds."""
         return self.set_timestamp_nano("finished_at", timestamp)
 
     def set_timestamp(self, name, timestamp):
@@ -265,7 +265,7 @@ class Stage(object):
         return self.set_timestamp(name, nano2sec(timestamp))
 
     def set_duration(self, duration):
-        """ Set stage duration in seconds. """
+        """Set stage duration in seconds."""
         try:
             duration = float(duration)
             if duration >= 0:
@@ -276,12 +276,12 @@ class Stage(object):
             return False
 
     def set_duration_nano(self, duration):
-        """ Set stage duration in nanoseconds. """
+        """Set stage duration in nanoseconds."""
         try:
             return self.set_duration(nano2sec(duration))
         except (ValueError, TypeError):
             return False
 
     def to_dict(self):
-        """ Return stages data as dictionary. """
+        """Return stages data as dictionary."""
         return self.data

@@ -34,10 +34,10 @@ from matplotlib import pyplot as plt
 
 class Trend(object):
 
-    """ Trend class, generate a chart from gathered buildtime data. """
+    """Trend class, generate a chart from gathered buildtime data."""
 
     def __init__(self):
-        """ Initialize instance. """
+        """Initialize instance."""
         self.stages = {}
         self.builds = []
 
@@ -87,7 +87,7 @@ class Trend(object):
         return True
 
     def parse_xml_stages(self, stages, index):
-        """ Parse stages in from xml file. """
+        """Parse stages in from xml file."""
         for stage in stages:
             if (stage.tag == 'stage' and
                     stage.get('name') is not None and

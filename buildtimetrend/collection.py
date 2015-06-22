@@ -28,10 +28,10 @@ from buildtimetrend.tools import check_dict
 
 class Collection(object):
 
-    """ Dictionary based collection object. """
+    """Dictionary based collection object."""
 
     def __init__(self):
-        """ Initialize instance. """
+        """Initialize instance."""
         self.items = {}
 
     def add_item(self, name, value):
@@ -57,7 +57,7 @@ class Collection(object):
             return None
 
     def get_size(self):
-        """ Get collection size. """
+        """Get collection size."""
         return len(self.items)
 
     def add_items(self, items_dict):
@@ -72,10 +72,10 @@ class Collection(object):
             self.items.update(items_dict)
 
     def get_items(self):
-        """ Return items collection as dictionary. """
+        """Return items collection as dictionary."""
         # copy values of items collection
         return copy.deepcopy(self.items)
 
     def get_key_sorted_items(self):
-        """ Return items as an ordered dictionary, sorted on key. """
+        """Return items as an ordered dictionary, sorted on key."""
         return OrderedDict(sorted(self.items.items()))

@@ -171,9 +171,28 @@ def file_is_newer(path1, path2):
     return (mtime1 - mtime2) > 0
 
 
-def check_dict(param_dict, name, key_list=None):
+def is_dict(param_dict):
+    """
+    Return true if a parameter is a dictionary.
+
+    Parameters :
+    - param_dict: parameter that should be a dictonary
+    Return true if parameter is a dictionary.
+    """
+    return param_dict is not None and type(param_dict) is dict
+
+
+def check_dict(param_dict, name=None, key_list=None):
     """
     Check if a parameter is a dictionary.
+
+    Returns True if it is a dictionary, false if it isn't,
+    or if parameter 'name' is specified,
+    an Error is raised with the name in the message.
+
+    If key_list is defined,
+    true is returned if the keys in key_list exits in the dictionary,
+    false if they don't all exist.
 
     Parameters :
     - param_dict: parameter that should be a dictonary
@@ -181,8 +200,11 @@ def check_dict(param_dict, name, key_list=None):
     - key_list: list of keys that should be present in the dict
     Return true if parameter is a dictionary, throws error when it isn't
     """
-    if param_dict is None or type(param_dict) is not dict:
-        raise TypeError("param %s should be a dictionary" % name)
+    if not is_dict(param_dict):
+        if name is None:
+            return False
+        else:
+            raise TypeError("param %s should be a dictionary" % name)
 
     # check if key_list is defined
     if key_list is None:
@@ -204,7 +226,7 @@ def keys_in_dict(param_dict, key_list):
     """
     if type(key_list) in (str, int):
         return key_list in param_dict
-    elif not check_list(key_list, "key_list"):
+    elif not is_list(key_list):
         return False
 
     for key in key_list:
@@ -214,9 +236,13 @@ def keys_in_dict(param_dict, key_list):
     return True
 
 
-def check_list(param_list, name):
+def is_list(param_list, name=None):
     """
     Check if a parameter is a list.
+
+    Returns True if it is a list, false if it isn't,
+    or if parameter 'name' is specified,
+    an Error is raised with the name in the message.
 
     Parameters :
     - param_list: parameter that should be a list
@@ -224,7 +250,10 @@ def check_list(param_list, name):
     Return true if parameter is a list, throws error when it isn't
     """
     if param_list is None or type(param_list) is not list:
-        raise TypeError("param %s should be a list" % name)
+        if name is None:
+            return False
+        else:
+            raise TypeError("param %s should be a list" % name)
 
     return True
 
@@ -258,6 +287,6 @@ def get_repo_slug(repo_owner=None, repo_name=None):
     - repo_name : name of the Github repo, fe. `service`
     """
     if repo_owner is not None and repo_name is not None:
-        return "%s/%s" % (str(repo_owner).lower(), str(repo_name).lower())
+        return "%s/%s" % (str(repo_owner), str(repo_name))
     else:
         return None

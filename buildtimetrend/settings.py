@@ -27,8 +27,10 @@ import getopt
 import yaml
 import keen
 import buildtimetrend
+from collections import OrderedDict
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
+from buildtimetrend.tools import is_dict
 from buildtimetrend import set_loglevel
 from buildtimetrend import logger
 
@@ -44,10 +46,10 @@ class Settings(object):
 
     class __Settings(object):
 
-        """ Settings class contains settings and config options. """
+        """Settings class contains settings and config options."""
 
         def __init__(self):
-            """ Initialise class. """
+            """Initialise class."""
             self.settings = Collection()
 
             # set loglevel
@@ -74,7 +76,7 @@ class Settings(object):
             self.add_setting("project_name", name)
 
         def get_project_name(self):
-            """ Get project name. """
+            """Get project name."""
             return self.get_setting("project_name")
 
         def set_client(self, name, version):
@@ -132,7 +134,9 @@ class Settings(object):
 
             with open(config_file, 'r') as file_stream:
                 config = yaml.load(file_stream)
-                self.settings.add_items(config["buildtimetrend"])
+                if "buildtimetrend" in config and \
+                        is_dict(config["buildtimetrend"]):
+                    self.settings.add_items(config["buildtimetrend"])
 
                 set_loglevel(self.get_setting("loglevel"))
 
@@ -149,7 +153,7 @@ class Settings(object):
                 return True
 
         def get_project_info(self):
-            """ Get project info as a dictonary. """
+            """Get project info as a dictonary."""
             return {
                 "lib_version": buildtimetrend.VERSION,
                 "schema_version": buildtimetrend.SCHEMA_VERSION,
@@ -238,6 +242,36 @@ class Settings(object):
             self.env_var_to_settings("BUILD_TREND_CONFIGFILE",
                                      "dashboard_configfile")
 
+            # load task queue environment variables
+            self.load_env_vars_task_queue()
+
+        def load_env_vars_task_queue(self):
+            """
+            Load task queue environment variables.
+
+            The environment variable that matches first is loaded,
+            other variables are ignored.
+            """
+            # prepare list of env vars, in order of priority
+            queue_env_vars = OrderedDict()
+            queue_env_vars["BTT_AMQP_URL"] = "amqp"
+            queue_env_vars["BTT_REDIS_URL"] = "redis"
+            queue_env_vars["CLOUDAMQP_URL"] = "amqp"
+            queue_env_vars["REDISGREEN_URL"] = "redis"
+
+            # loop over list of env vars, loading first match
+            for env_var in queue_env_vars.keys():
+                if env_var in os.environ:
+                    self.add_setting(
+                        "task_queue",
+                        {
+                            "backend": queue_env_vars[env_var],
+                            "broker_url": os.environ[env_var]
+                        }
+                    )
+                    # exit loop on first match
+                    break
+
         def env_var_to_settings(self, env_var_name, settings_name):
             """
             Store environment variable value as a setting.
@@ -262,15 +296,15 @@ class Settings(object):
     instance = None
 
     def __new__(cls):  # __new__ always a classmethod
-        """ Create a singleton. """
+        """Create a singleton."""
         if not Settings.instance:
             Settings.instance = Settings.__Settings()
         return Settings.instance
 
     def __getattr__(self, name):
-        """ Redirect access to get singleton properties. """
+        """Redirect access to get singleton properties."""
         return getattr(self.instance, name)
 
     def __setattr__(self, name):
-        """ Redirect access to set singleton properties. """
+        """Redirect access to set singleton properties."""
         return setattr(self.instance, name)
