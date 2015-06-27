@@ -34,9 +34,9 @@ from buildtimetrend.tools import is_list
 
 
 TIME_INTERVALS = {
-    'week': {'name': 'week', 'timeframe': 'this_7_days'},
-    'month': {'name': 'month', 'timeframe': 'this_30_days'},
-    'year': {'name': 'year', 'timeframe': 'this_52_weeks'}
+    'week': {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 24 * 3600},
+    'month': {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 24 * 3600},
+    'year': {'name': 'year', 'timeframe': 'this_52_weeks', 'max_age': 7 * 24 * 3600}
 }
 KEEN_PROJECT_INFO_NAME = "buildtime_trend"
 
@@ -297,13 +297,14 @@ def get_avg_buildtime(repo=None, interval=None):
     if repo is None or not keen_is_readable():
         return -1
 
-    timeframe = check_time_interval(interval)['timeframe']
+    interval_data = check_time_interval(interval)
 
     try:
         return keen.average(
             "build_jobs",
             target_property="job.duration",
-            timeframe=timeframe,
+            timeframe=interval_data['timeframe'],
+            max_age=interval_data['max_age'],
             filters=[get_repo_filter(repo)]
         )
     except requests.ConnectionError:
@@ -326,13 +327,14 @@ def get_total_build_jobs(repo=None, interval=None):
     if repo is None or not keen_is_readable():
         return -1
 
-    timeframe = check_time_interval(interval)['timeframe']
+    interval_data = check_time_interval(interval)
 
     try:
         return keen.count_unique(
             "build_jobs",
             target_property="job.job",
-            timeframe=timeframe,
+            timeframe=interval_data['timeframe'],
+            max_age=interval_data['max_age'],
             filters=[get_repo_filter(repo)]
         )
     except requests.ConnectionError:
@@ -355,13 +357,14 @@ def get_passed_build_jobs(repo=None, interval=None):
     if repo is None or not keen_is_readable():
         return -1
 
-    timeframe = check_time_interval(interval)['timeframe']
+    interval_data = check_time_interval(interval)
 
     try:
         return keen.count_unique(
             "build_jobs",
             target_property="job.job",
-            timeframe=timeframe,
+            timeframe=interval_data['timeframe'],
+            max_age=interval_data['max_age'],
             filters=[
                 get_repo_filter(repo),
                 {
@@ -436,13 +439,14 @@ def get_total_builds(repo=None, interval=None):
     if repo is None or not keen_is_readable():
         return -1
 
-    timeframe = check_time_interval(interval)['timeframe']
+    interval_data = check_time_interval(interval)
 
     try:
         return keen.count_unique(
             "build_jobs",
             target_property="job.build",
-            timeframe=timeframe,
+            timeframe=interval_data['timeframe'],
+            max_age=interval_data['max_age'],
             filters=[get_repo_filter(repo)]
         )
     except requests.ConnectionError:
