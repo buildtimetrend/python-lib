@@ -300,6 +300,17 @@ class TestSettings(unittest.TestCase):
         )
 
         # set test environment variables
+        exp_bigwig = os.environ["RABBITMQ_BIGWIG_URL"] = "amqp://guest:guest@bigwig"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_bigwig},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
         exp_redis = os.environ["BTT_REDIS_URL"] = "redis://test@hostname:3456"
 
         self.settings.load_env_vars_task_queue()
@@ -333,6 +344,7 @@ class TestSettings(unittest.TestCase):
 
         # reset test environment variables
         del os.environ["BTT_REDIS_URL"]
+        del os.environ["RABBITMQ_BIGWIG_URL"]
         del os.environ["CLOUDAMQP_URL"]
         del os.environ["REDISGREEN_URL"]
 

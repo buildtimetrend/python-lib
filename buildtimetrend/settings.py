@@ -256,6 +256,7 @@ class Settings(object):
             queue_env_vars = OrderedDict()
             queue_env_vars["BTT_AMQP_URL"] = "amqp"
             queue_env_vars["BTT_REDIS_URL"] = "redis"
+            queue_env_vars["RABBITMQ_BIGWIG_URL"] = "amqp"
             queue_env_vars["CLOUDAMQP_URL"] = "amqp"
             queue_env_vars["REDISGREEN_URL"] = "redis"
 
