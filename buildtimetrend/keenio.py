@@ -93,9 +93,11 @@ def keen_io_generate_read_key(repo):
     master_key = keen.master_key or os.environ.get("KEEN_MASTER_KEY")
 
     privileges = {
-        "filters": [get_repo_filter(repo)],
         "allowed_operations": ["read"]
     }
+
+    if repo is not None:
+        privileges["filters"] = [get_repo_filter(repo)]
 
     logger.info("Keen.io Read Key is created for %s", repo)
     return scoped_keys.encrypt(master_key, privileges)
@@ -200,11 +202,6 @@ def get_dashboard_keen_config(repo):
     """
     # initialise config settings
     keen_config = {}
-
-    if repo is None:
-        logger.warning("Keen.io related config settings could not be created,"
-                       " repo is not defined.")
-        return keen_config
 
     if not keen_has_project_id() or not keen_has_master_key():
         logger.warning("Keen.io related config settings could not be created,"
