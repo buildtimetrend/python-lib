@@ -86,6 +86,7 @@ class TestTools(unittest.TestCase):
 
         self.assertFalse(keen_has_project_id())
         self.assertFalse(keen_has_master_key())
+        self.assertFalse(keen_has_read_key())
         self.assertFalse(keen_is_writable())
         self.assertFalse(keen_is_readable())
 
@@ -196,6 +197,16 @@ class TestTools(unittest.TestCase):
         # set write_key
         os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
         self.assertTrue(keen_is_writable())
+
+    def test_keen_has_read_key_keen_var(self):
+        # set read_key
+        keen.read_key = "4567abcd5678efgh"
+        self.assertTrue(keen_has_read_key())
+
+    def test_keen_has_read_key_envir_vars(self):
+        # set read_key
+        os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
+        self.assertTrue(keen_has_read_key())
 
     def test_keen_is_readable_keen_var(self):
         # only set project id, check should fail

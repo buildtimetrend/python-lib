@@ -59,6 +59,15 @@ def keen_has_master_key():
     return False
 
 
+def keen_has_read_key():
+    """Check if Keen.io Read key is set."""
+    if "KEEN_READ_KEY" in os.environ or keen.read_key is not None:
+        return True
+
+    logger.warning("Keen.io Read Key is not set")
+    return False
+
+
 def keen_is_writable():
     """Check if login keys for Keen IO API are set, to allow writing."""
     if (keen_has_project_id() and
@@ -71,8 +80,7 @@ def keen_is_writable():
 
 def keen_is_readable():
     """Check if login keys for Keen IO API are set, to allow reading."""
-    if (keen_has_project_id() and
-            "KEEN_READ_KEY" in os.environ or keen.read_key is not None):
+    if (keen_has_project_id() and keen_has_read_key()):
         return True
 
     logger.warning("Keen.io Read Key is not set")
