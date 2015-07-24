@@ -225,6 +225,14 @@ class TestTools(unittest.TestCase):
         self.assertEqual(str, type(keen_io_generate_read_key(None)))
         self.assertEqual(str, type(keen_io_generate_read_key("test/project")))
 
+    def test_generate_write_key(self):
+        # should return None if master key is not set
+        self.assertEqual(None, keen_io_generate_write_key())
+
+        # set master_key
+        os.environ["KEEN_MASTER_KEY"] = "4567abcd5678efgh"
+        self.assertEqual(str, type(keen_io_generate_write_key()))
+
     def test_get_repo_filter(self):
         self.assertEqual(None, get_repo_filter())
         self.assertEqual(None, get_repo_filter(None))

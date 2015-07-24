@@ -9,6 +9,7 @@ v0.3 (not yet released)
 - keenio.add_project_info_dict() : override project_name in event header with build_job repo
 - check_process_parameters() is split into validate_travis_request() and validate_task_parameters()
 - issue #69 : use Keen.io query caching to speed up badge generation
+- add keen_io_generate_write_key()
 
 v0.2 (released on 16Feb2015)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script
