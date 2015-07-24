@@ -34,9 +34,9 @@ from buildtimetrend.tools import is_list
 
 
 TIME_INTERVALS = {
-    'week': {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 24 * 3600},
-    'month': {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 24 * 3600},
-    'year': {'name': 'year', 'timeframe': 'this_52_weeks', 'max_age': 7 * 24 * 3600}
+    'week': {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
+    'month': {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 600},
+    'year': {'name': 'year', 'timeframe': 'this_52_weeks', 'max_age': 1800}
 }
 KEEN_PROJECT_INFO_NAME = "buildtime_trend"
 

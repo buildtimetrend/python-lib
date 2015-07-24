@@ -254,43 +254,43 @@ class TestTools(unittest.TestCase):
     def test_check_time_interval(self):
         # empty or undefined defaults to 'week'
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 86400},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval()
         )
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 86400},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval(None)
         )
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 86400},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval(1234)
         )
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 86400},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval([])
         )
 
         # valid entries : week, month, year
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 86400},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval("week")
         )
         self.assertDictEqual(
-            {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 86400},
+            {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 600},
             check_time_interval("month")
         )
         self.assertDictEqual(
-            {'name': 'year', 'timeframe': 'this_52_weeks', 'max_age': 604800},
+            {'name': 'year', 'timeframe': 'this_52_weeks', 'max_age': 1800},
             check_time_interval("year")
         )
 
         # valid entries are case insensitive
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 86400},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval("wEEk")
         )
         self.assertDictEqual(
-            {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 86400},
+            {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 600},
             check_time_interval("moNth")
         )
 
