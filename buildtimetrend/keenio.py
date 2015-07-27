@@ -79,7 +79,7 @@ def keen_has_read_key():
 
 def keen_is_writable():
     """Check if login keys for Keen IO API are set, to allow writing."""
-    if (keen_has_project_id() and keen_has_write_key()):
+    if keen_has_project_id() and keen_has_write_key():
         return True
 
     logger.warning("Keen.io Write Key is not set")
@@ -88,7 +88,7 @@ def keen_is_writable():
 
 def keen_is_readable():
     """Check if login keys for Keen IO API are set, to allow reading."""
-    if (keen_has_project_id() and keen_has_read_key()):
+    if keen_has_project_id() and keen_has_read_key():
         return True
 
     logger.warning("Keen.io Read Key is not set")
