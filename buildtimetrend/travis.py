@@ -420,6 +420,7 @@ class TravisData(object):
         - git branch
         - CI platform : Travis
         - build matrix (language, language version, compiler, ...)
+        - build_trigger : push, pull_request
 
         Parameters:
         - job_data : dictionary with Travis CI job data
@@ -439,6 +440,14 @@ class TravisData(object):
         self.current_job.add_property("result", job_data['job']['state'])
 
         self.set_build_matrix(job_data)
+
+        if len(self.current_build_data) > 0:
+            if "event_type" in self.current_build_data:
+                # build trigger (push or pull_request)
+                self.current_job.add_property(
+                    "build_trigger",
+                    self.current_build_data["event_type"]
+                )
 
         self.current_job.set_started_at(job_data['job']['started_at'])
         self.current_job.set_finished_at(job_data['job']['finished_at'])
