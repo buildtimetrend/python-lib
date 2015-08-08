@@ -83,6 +83,28 @@ def load_travis_env_vars():
                 convert_build_result(os.environ["TRAVIS_TEST_RESULT"])
             )
 
+        if "TRAVIS_PULL_REQUEST" in os.environ and \
+                not os.environ["TRAVIS_PULL_REQUEST"] == "false":
+            settings.add_setting("build_trigger", "pull_request")
+            settings.add_setting(
+                "pull_request",
+                {
+                    'is_pull_request': True,
+                    'title': "unknown",
+                    'number': os.environ["TRAVIS_PULL_REQUEST"]
+                }
+            )
+        else:
+            settings.add_setting("build_trigger", "push")
+            settings.add_setting(
+                "pull_request",
+                {
+                    'is_pull_request': False,
+                    'title': None,
+                    'number': None
+                }
+            )
+
 
 def convert_build_result(result):
     """
@@ -421,6 +443,7 @@ class TravisData(object):
         - CI platform : Travis
         - build matrix (language, language version, compiler, ...)
         - build_trigger : push, pull_request
+        - pull_request (is_pull_request, title, number)
 
         Parameters:
         - job_data : dictionary with Travis CI job data
@@ -430,7 +453,6 @@ class TravisData(object):
             # buildnumber is part before "." of job number
             job_data['job']['number'].split(".")[0]
         )
-        - pull_request (is_pull_request, title, number)
         self.current_job.add_property("job", job_data['job']['number'])
         self.current_job.add_property("branch", job_data['commit']['branch'])
         self.current_job.add_property(

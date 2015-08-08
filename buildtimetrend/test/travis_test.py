@@ -314,6 +314,8 @@ class TestTravis(unittest.TestCase):
         self.assertEquals(None, settings.get_setting("job"))
         self.assertEquals(None, settings.get_setting("branch"))
         self.assertEquals(None, settings.get_setting("result"))
+        self.assertEquals(None, settings.get_setting("build_trigger"))
+        self.assertEquals(None, settings.get_setting("pull_request"))
         self.assertEquals(buildtimetrend.NAME, settings.get_project_name())
 
         #setup Travis env vars
@@ -323,6 +325,7 @@ class TestTravis(unittest.TestCase):
             expected_job = os.environ["TRAVIS_JOB_NUMBER"]
             expected_branch = os.environ["TRAVIS_BRANCH"]
             expected_project_name = os.environ["TRAVIS_REPO_SLUG"]
+            copy_pull_request = os.environ["TRAVIS_PULL_REQUEST"]
         else:
             reset_travis_vars = True
             os.environ["TRAVIS"] = "true"
@@ -348,10 +351,43 @@ class TestTravis(unittest.TestCase):
         self.assertEquals(expected_branch, settings.get_setting("branch"))
         self.assertEquals(expected_project_name, settings.get_project_name())
         self.assertEquals("passed", settings.get_setting("result"))
+        self.assertEquals("push", settings.get_setting("build_trigger"))
+        self.assertDictEqual(
+            {
+                'is_pull_request': False,
+                'title': None,
+                'number': None
+            },
+            settings.get_setting("pull_request")
+        )
 
         os.environ["TRAVIS_TEST_RESULT"] = "1"
+        # build is a pull request
+        expected_pull_request = os.environ["TRAVIS_PULL_REQUEST"] = "123"
         load_travis_env_vars()
         self.assertEquals("failed", settings.get_setting("result"))
+        self.assertEquals("pull_request", settings.get_setting("build_trigger"))
+        self.assertDictEqual(
+            {
+                'is_pull_request': True,
+                'title': "unknown",
+                'number': expected_pull_request
+            },
+            settings.get_setting("pull_request")
+        )
+
+        # build is not a pull request
+        os.environ["TRAVIS_PULL_REQUEST"] = "false"
+        load_travis_env_vars()
+        self.assertEquals("push", settings.get_setting("build_trigger"))
+        self.assertDictEqual(
+            {
+                'is_pull_request': False,
+                'title': None,
+                'number': None
+            },
+            settings.get_setting("pull_request")
+        )
 
         # reset test Travis vars
         if reset_travis_vars:
@@ -360,6 +396,9 @@ class TestTravis(unittest.TestCase):
             del os.environ["TRAVIS_JOB_NUMBER"]
             del os.environ["TRAVIS_BRANCH"]
             del os.environ["TRAVIS_REPO_SLUG"]
+            del os.environ["TRAVIS_PULL_REQUEST"]
+        else:
+            os.environ["TRAVIS_PULL_REQUEST"] = copy_pull_request
 
         # reset Travis test result
         if reset_travis_result:
