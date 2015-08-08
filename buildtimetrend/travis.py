@@ -430,6 +430,7 @@ class TravisData(object):
             # buildnumber is part before "." of job number
             job_data['job']['number'].split(".")[0]
         )
+        - pull_request (is_pull_request, title, number)
         self.current_job.add_property("job", job_data['job']['number'])
         self.current_job.add_property("branch", job_data['commit']['branch'])
         self.current_job.add_property(
@@ -448,6 +449,24 @@ class TravisData(object):
                     "build_trigger",
                     self.current_build_data["event_type"]
                 )
+
+            # pull_request
+            pull_request_data = {}
+            if "pull_request" in self.current_build_data:
+                pull_request_data["is_pull_request"] = \
+                    self.current_build_data["pull_request"]
+            else:
+                pull_request_data["is_pull_request"] = False
+
+            if "pull_request_title" in self.current_build_data:
+                pull_request_data["title"] = \
+                    self.current_build_data["pull_request_title"]
+
+            if "pull_request_number" in self.current_build_data:
+                pull_request_data["number"] = \
+                    self.current_build_data["pull_request_number"]
+
+            self.current_job.add_property("pull_request", pull_request_data)
 
         self.current_job.set_started_at(job_data['job']['started_at'])
         self.current_job.set_finished_at(job_data['job']['finished_at'])

@@ -103,7 +103,14 @@ DICT_JOB_158_1 = {
     }
 }
 DICT_BUILD_158 = DICT_JOB_158_1.copy()
-DICT_BUILD_158.update({'build_trigger': "push"})
+DICT_BUILD_158.update({
+    'build_trigger': "push",
+    'pull_request': {
+        'is_pull_request': False,
+        'title': None,
+        'number': None
+    }
+})
 DICT_BUILD_485 = [
 {
     'branch': 'master',
@@ -113,6 +120,11 @@ DICT_BUILD_485 = [
     'repo': 'ruleant/getback_gps',
     'result': 'passed',
     'build_trigger': "push",
+    'pull_request': {
+        'is_pull_request': False,
+        'title': None,
+        'number': None
+    },
     'worker': {
         'hostname': 'worker-linux-7-1.bb.travis-ci.org',
         'os': 'travis-linux-7'},
@@ -165,6 +177,11 @@ DICT_BUILD_485 = [
     'repo': 'ruleant/getback_gps',
     'result': 'passed',
     'build_trigger': "push",
+    'pull_request': {
+        'is_pull_request': False,
+        'title': None,
+        'number': None
+    },
     'worker': {'hostname': 'worker-linux-3-2.bb.travis-ci.org',
         'os': 'travis-linux-7'},
     'build_matrix': {
@@ -217,6 +234,11 @@ DICT_BUILD_504 = {
     'repo': 'buildtimetrend/python-lib',
     'result': 'passed',
     'build_trigger': "pull_request",
+    'pull_request': {
+        'is_pull_request': True,
+        'title': "Keen master key",
+        'number': 78
+    },
     'worker': {
         'hostname': 'worker-linux-docker-77651b58.prod.travis-ci.org',
         'os': 'travis-linux-7'
