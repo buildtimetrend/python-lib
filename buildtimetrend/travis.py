@@ -319,7 +319,7 @@ class TravisData(object):
         else:
             self.connector = TravisOrgConnector()
 
-    def get_builds_data(self):
+    def get_build_data(self):
         """
         Retrieve Travis CI build data.
 
