@@ -286,7 +286,6 @@ class TravisData(object):
         self.builds_data = {}
         self.build_jobs = {}
         self.current_build_data = {}
-        self.build_config = {}
         self.current_job = Build()
         self.travis_substage = None
         self.repo = repo
@@ -327,8 +326,17 @@ class TravisData(object):
         Parameters:
         - command : cli command
         """
-        if len(self.build_config) > 0:
-            for stage_name, commands in self.build_config.items():
+        if len(self.current_build_data) > 0 and \
+                "config" in self.current_build_data:
+            build_config = self.current_build_data["config"]
+        else:
+            logger.warning(
+                "Travis CI build config is not set"
+            )
+            return ""
+
+        if len(build_config) > 0:
+            for stage_name, commands in build_config.items():
                 if type(commands) is list and command in commands:
                     substage_number = commands.index(command) + 1
                     substage_name = "%s.%s" % (stage_name, substage_number)
@@ -337,6 +345,8 @@ class TravisData(object):
                         substage_name, command
                     )
                     return substage_name
+
+        return ""
 
     def process_build_jobs(self):
         """
@@ -347,14 +357,6 @@ class TravisData(object):
         if len(self.builds_data) > 0 and "builds" in self.builds_data:
             for build in self.builds_data['builds']:
                 self.current_build_data = build
-
-                if "config" in build:
-                    self.build_config = build["config"]
-                else:
-                    logger.warning(
-                        "Travis CI build config is not set"
-                    )
-                    self.build_config = {}
 
                 if "job_ids" in build:
                     for job_id in build['job_ids']:
