@@ -385,7 +385,7 @@ class TestTravisData(unittest.TestCase):
 
     def test_novalue(self):
          # data should be empty
-        self.assertEquals(0, len(self.travis_data.build_data))
+        self.assertEquals(0, len(self.travis_data.builds_data))
         self.assertEquals(None, self.travis_data.get_started_at())
         self.assertEquals(None, self.travis_data.get_finished_at())
         self.assertEquals(None, self.travis_data.travis_substage)
@@ -414,8 +414,8 @@ class TestTravisData(unittest.TestCase):
 
     def test_gather_data(self):
         # retrieve data from Travis API
-        self.assertTrue(self.travis_data.get_build_data())
-        self.assertTrue(len(self.travis_data.build_data) > 0)
+        self.assertTrue(self.travis_data.get_builds_data())
+        self.assertTrue(len(self.travis_data.builds_data) > 0)
 
         # retrieve start time
         self.assertEquals(
@@ -443,13 +443,13 @@ class TestTravisData(unittest.TestCase):
 
     def test_process_no_build_jobs(self):
         # retrieve empty Travis API result
-        self.travis_data.build_data = {"builds": [], "commits": []}
+        self.travis_data.builds_data = {"builds": [], "commits": []}
         self.travis_data.process_build_jobs()
         self.assertEquals(0, len(self.travis_data.build_jobs))
 
     def test_process_build_jobs(self):
         # retrieve data from Travis API
-        self.travis_data.get_build_data()
+        self.travis_data.get_builds_data()
         for build_job in self.travis_data.process_build_jobs():
             self.assertDictEqual(DICT_BUILD_158,
                 build_job.properties.get_items())
@@ -462,7 +462,7 @@ class TestTravisData(unittest.TestCase):
         self.travis_data = TravisData('ruleant/getback_gps', 485)
         self.assertEquals(0, len(self.travis_data.build_jobs))
         # retrieve data from Travis API
-        self.travis_data.get_build_data()
+        self.travis_data.get_builds_data()
 
         i = 0
         for build_job in self.travis_data.process_build_jobs():

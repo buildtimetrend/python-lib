@@ -283,7 +283,7 @@ class TravisData(object):
         - build_id : Travis CI build id (fe. 158)
         - connector : Travis Connector instance
         """
-        self.build_data = {}
+        self.builds_data = {}
         self.build_jobs = {}
         self.build_config = {}
         self.current_job = Build()
@@ -297,7 +297,7 @@ class TravisData(object):
         else:
             self.connector = TravisOrgConnector()
 
-    def get_build_data(self):
+    def get_builds_data(self):
         """
         Retrieve Travis CI build data.
 
@@ -305,16 +305,16 @@ class TravisData(object):
         """
         request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
         try:
-            self.build_data = self.connector.json_request(request)
+            self.builds_data = self.connector.json_request(request)
         except (HTTPError, URLError), msg:
             logger.error("Error getting build data from Travis CI: %s", msg)
             return False
 
-        # log build_data
+        # log builds_data
         logger.debug(
             "Build #%s data : %s",
             str(self.build_id),
-            json.dumps(self.build_data, sort_keys=True, indent=2)
+            json.dumps(self.builds_data, sort_keys=True, indent=2)
         )
 
         return True
@@ -343,8 +343,8 @@ class TravisData(object):
 
         Method is a generator, iterate result to get each processed build job.
         """
-        if len(self.build_data) > 0 and "builds" in self.build_data:
-            for build in self.build_data['builds']:
+        if len(self.builds_data) > 0 and "builds" in self.builds_data:
+            for build in self.builds_data['builds']:
                 if "config" in build:
                     self.build_config = build["config"]
                 else:
@@ -639,15 +639,15 @@ class TravisData(object):
 
     def get_started_at(self):
         """Retrieve timestamp when build was started."""
-        if len(self.build_data) > 0:
-            return self.build_data['builds'][0]['started_at']
+        if len(self.builds_data) > 0:
+            return self.builds_data['builds'][0]['started_at']
         else:
             return None
 
     def get_finished_at(self):
         """Retrieve timestamp when build finished."""
-        if len(self.build_data) > 0:
-            return self.build_data['builds'][0]['finished_at']
+        if len(self.builds_data) > 0:
+            return self.builds_data['builds'][0]['finished_at']
         else:
             return None
 
