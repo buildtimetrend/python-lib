@@ -285,6 +285,7 @@ class TravisData(object):
         """
         self.builds_data = {}
         self.build_jobs = {}
+        self.current_build_data = {}
         self.build_config = {}
         self.current_job = Build()
         self.travis_substage = None
@@ -345,6 +346,8 @@ class TravisData(object):
         """
         if len(self.builds_data) > 0 and "builds" in self.builds_data:
             for build in self.builds_data['builds']:
+                self.current_build_data = build
+
                 if "config" in build:
                     self.build_config = build["config"]
                 else:
@@ -356,6 +359,9 @@ class TravisData(object):
                 if "job_ids" in build:
                     for job_id in build['job_ids']:
                         yield self.process_build_job(job_id)
+
+            # reset current_build_data after builds are processed
+            self.current_build_data = {}
 
     def process_build_job(self, job_id):
         """
