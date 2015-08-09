@@ -83,27 +83,38 @@ def load_travis_env_vars():
                 convert_build_result(os.environ["TRAVIS_TEST_RESULT"])
             )
 
-        if "TRAVIS_PULL_REQUEST" in os.environ and \
-                not os.environ["TRAVIS_PULL_REQUEST"] == "false":
-            settings.add_setting("build_trigger", "pull_request")
-            settings.add_setting(
-                "pull_request",
-                {
-                    'is_pull_request': True,
-                    'title': "unknown",
-                    'number': os.environ["TRAVIS_PULL_REQUEST"]
-                }
-            )
-        else:
-            settings.add_setting("build_trigger", "push")
-            settings.add_setting(
-                "pull_request",
-                {
-                    'is_pull_request': False,
-                    'title': None,
-                    'number': None
-                }
-            )
+        load_travis_pull_request_env_vars(settings)
+
+
+def load_travis_pull_request_env_vars(settings):
+    """
+    Load Travis CI pull request environment variable.
+
+    Load Travis CI pull request environment variables
+    and assign their values to the corresponding setting value.
+    """
+    if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true" and \
+            "TRAVIS_PULL_REQUEST" in os.environ and \
+            not os.environ["TRAVIS_PULL_REQUEST"] == "false":
+        settings.add_setting("build_trigger", "pull_request")
+        settings.add_setting(
+            "pull_request",
+            {
+                'is_pull_request': True,
+                'title': "unknown",
+                'number': os.environ["TRAVIS_PULL_REQUEST"]
+            }
+        )
+    else:
+        settings.add_setting("build_trigger", "push")
+        settings.add_setting(
+            "pull_request",
+            {
+                'is_pull_request': False,
+                'title': None,
+                'number': None
+            }
+        )
 
 
 def convert_build_result(result):
