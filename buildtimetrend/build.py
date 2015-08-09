@@ -127,6 +127,8 @@ class Build(object):
         self.load_property_from_settings("job")
         self.load_property_from_settings("branch")
         self.load_property_from_settings("ci_platform")
+        self.load_property_from_settings("build_trigger")
+        self.load_property_from_settings("pull_request")
         self.load_property_from_settings("result")
         self.add_property("repo", Settings().get_project_name())
 

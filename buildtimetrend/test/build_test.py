@@ -240,6 +240,14 @@ class TestBuild(unittest.TestCase):
         settings.add_setting("job", "123.1")
         settings.add_setting("branch", "branch1")
         settings.add_setting("result", "passed")
+        settings.add_setting("build_trigger", "push")
+        settings.add_setting(
+            "pull_request",
+            {
+                "is_pull_request": False,
+                "title": None,
+                "number": None
+            }
         settings.set_project_name("test/project")
 
         self.build.load_properties_from_settings()
@@ -250,6 +258,13 @@ class TestBuild(unittest.TestCase):
              'job': "123.1",
              'branch': "branch1",
              'result': "passed",
+             'build_trigger': "push",
+             'pull_request':
+                {
+                    "is_pull_request": False,
+                    "title": None,
+                    "number": None
+                },
              'repo': "test/project"},
             self.build.get_properties())
 
