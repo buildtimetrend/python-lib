@@ -475,31 +475,7 @@ class TravisData(object):
 
         self.set_build_matrix(job_data)
 
-        if len(self.current_build_data) > 0:
-            if "event_type" in self.current_build_data:
-                # build trigger (push or pull_request)
-                self.current_job.add_property(
-                    "build_trigger",
-                    self.current_build_data["event_type"]
-                )
-
-            # pull_request
-            pull_request_data = {}
-            if "pull_request" in self.current_build_data:
-                pull_request_data["is_pull_request"] = \
-                    self.current_build_data["pull_request"]
-            else:
-                pull_request_data["is_pull_request"] = False
-
-            if "pull_request_title" in self.current_build_data:
-                pull_request_data["title"] = \
-                    self.current_build_data["pull_request_title"]
-
-            if "pull_request_number" in self.current_build_data:
-                pull_request_data["number"] = \
-                    self.current_build_data["pull_request_number"]
-
-            self.current_job.add_property("pull_request", pull_request_data)
+        self.process_pull_request_data()
 
         self.current_job.set_started_at(job_data['job']['started_at'])
         self.current_job.set_finished_at(job_data['job']['finished_at'])
@@ -576,6 +552,34 @@ class TravisData(object):
             )
 
         self.current_job.add_property("build_matrix", build_matrix.get_items())
+
+    def process_pull_request_data(self):
+        """ Retrieve pull request data from Travis CI API."""
+        if len(self.current_build_data) > 0:
+            if "event_type" in self.current_build_data:
+                # build trigger (push or pull_request)
+                self.current_job.add_property(
+                    "build_trigger",
+                    self.current_build_data["event_type"]
+                )
+
+            # pull_request
+            pull_request_data = {}
+            if "pull_request" in self.current_build_data:
+                pull_request_data["is_pull_request"] = \
+                    self.current_build_data["pull_request"]
+            else:
+                pull_request_data["is_pull_request"] = False
+
+            if "pull_request_title" in self.current_build_data:
+                pull_request_data["title"] = \
+                    self.current_build_data["pull_request_title"]
+
+            if "pull_request_number" in self.current_build_data:
+                pull_request_data["number"] = \
+                    self.current_build_data["pull_request_number"]
+
+            self.current_job.add_property("pull_request", pull_request_data)
 
     def parse_job_log(self, job_id):
         """
