@@ -252,20 +252,22 @@ class TestBuild(unittest.TestCase):
 
         self.build.load_properties_from_settings()
         self.assertDictEqual(
-            {'duration': 0,
-             'ci_platform': "travis",
-             'build': "123",
-             'job': "123.1",
-             'branch': "branch1",
-             'result': "passed",
-             'build_trigger': "push",
-             'pull_request':
-                {
-                    "is_pull_request": False,
-                    "title": None,
-                    "number": None
-                },
-             'repo': "test/project"},
+            {
+                'duration': 0,
+                'ci_platform': "travis",
+                'build': "123",
+                'job': "123.1",
+                'branch': "branch1",
+                'result': "passed",
+                'build_trigger': "push",
+                'pull_request':
+                    {
+                        "is_pull_request": False,
+                        "title": None,
+                        "number": None
+                    },
+                'repo': "test/project"
+            },
             self.build.get_properties())
 
     def test_set_duration(self):
