@@ -248,6 +248,7 @@ class TestBuild(unittest.TestCase):
                 "title": None,
                 "number": None
             }
+        )
         settings.set_project_name("test/project")
 
         self.build.load_properties_from_settings()

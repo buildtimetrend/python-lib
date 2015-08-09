@@ -341,7 +341,9 @@ class TestTravis(unittest.TestCase):
             copy_result = os.environ["TRAVIS_TEST_RESULT"]
         else:
             reset_travis_result = True
+
         os.environ["TRAVIS_TEST_RESULT"] = "0"
+        os.environ["TRAVIS_PULL_REQUEST"] = "false"
 
         load_travis_env_vars()
 
