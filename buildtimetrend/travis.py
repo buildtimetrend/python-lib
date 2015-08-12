@@ -782,7 +782,7 @@ class TravisSubstage(object):
         result = False
 
         if self.has_started():
-            logger.warning("Substage already started")
+            logger.info("Substage already started")
         else:
             name = "%s.%s" % (
                 tags_dict['start_stage'], tags_dict['start_substage']
@@ -806,7 +806,7 @@ class TravisSubstage(object):
         logger.debug("Start time : %s", tags_dict)
 
         if self.has_timing_hash():
-            logger.warning("Substage timing already set")
+            logger.info("Substage timing already set")
             return False
 
         self.timing_hash = tags_dict['start_hash']
@@ -831,7 +831,7 @@ class TravisSubstage(object):
         result = False
 
         if self.has_command():
-            logger.warning("Command is already set")
+            logger.info("Command is already set")
         elif self.stage.set_command(tags_dict['command']):
             logger.info("Set command : %s", tags_dict['command'])
             result = True
@@ -864,7 +864,7 @@ class TravisSubstage(object):
         # and if hash matches
         if (not self.has_timing_hash() or
                 self.timing_hash != tags_dict['end_hash']):
-            logger.warning("Substage timing was not started or"
+            logger.info("Substage timing was not started or"
                            " hash doesn't match")
             self.finished_incomplete = True
         else:
@@ -915,7 +915,7 @@ class TravisSubstage(object):
         # check if stage was started
         # and if substage name matches
         if not self.has_name() or self.stage.data["name"] != end_stagename:
-            logger.warning("Substage was not started or name doesn't match")
+            logger.info("Substage was not started or name doesn't match")
             self.finished_incomplete = True
             return False
 
