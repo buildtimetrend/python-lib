@@ -166,6 +166,10 @@ class TestSettings(unittest.TestCase):
                 "task_queue": {
                     "backend": "amqp",
                     "broker_url": "amqp://user@localhost"
+                },
+                "multi_import": {
+                    "max_builds": "100",
+                    "delay": "3"
                 }
             },
             self.settings.settings.get_items())
@@ -218,6 +222,10 @@ class TestSettings(unittest.TestCase):
                 "task_queue": {
                     "backend": "amqp",
                     "broker_url": "amqp://user@localhost"
+                },
+                "multi_import": {
+                    "max_builds": "100",
+                    "delay": "3"
                 }
             },
             self.settings.settings.get_items())
@@ -256,6 +264,8 @@ class TestSettings(unittest.TestCase):
         exp_loglevel = os.environ["BTT_LOGLEVEL"] = "INFO"
         exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:1234"
         exp_config = os.environ["BUILD_TREND_CONFIGFILE"] = "test/config.js"
+        exp_max_builds = os.environ["BTT_MULTI_MAX_BUILDS"] = "50"
+        exp_delay = os.environ["BTT_MULTI_DELAY"] = "5"
 
         self.settings.load_env_vars()
 
@@ -269,12 +279,18 @@ class TestSettings(unittest.TestCase):
             {"backend": "amqp", "broker_url": exp_amqp},
             self.settings.get_setting("task_queue")
         )
+        self.assertDictEqual(
+            {"max_builds": exp_max_builds, "delay": exp_delay},
+            self.settings.get_setting("multi_import")
+        )
 
         # reset test environment variables
         del os.environ["BTT_LOGLEVEL"]
         del os.environ["BTT_AMQP_URL"]
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
         del os.environ["BUILD_TREND_CONFIGFILE"]
+        del os.environ["BTT_MULTI_MAX_BUILDS"]
+        del os.environ["BTT_MULTI_DELAY"]
 
     def test_load_env_vars_task_queue(self):
         # set test environment variables

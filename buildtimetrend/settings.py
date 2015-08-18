@@ -244,6 +244,8 @@ class Settings(object):
 
             # load task queue environment variables
             self.load_env_vars_task_queue()
+            # load multi build import environment variables
+            self.load_env_vars_multi_import()
 
         def load_env_vars_task_queue(self):
             """
@@ -272,6 +274,18 @@ class Settings(object):
                     )
                     # exit loop on first match
                     break
+
+        def load_env_vars_multi_import(self):
+            """Load multi build import environment variables."""
+            multi_import = {}
+
+            if "BTT_MULTI_MAX_BUILDS" in os.environ:
+                multi_import["max_builds"] = os.environ["BTT_MULTI_MAX_BUILDS"]
+            if "BTT_MULTI_DELAY" in os.environ:
+                multi_import["delay"] = os.environ["BTT_MULTI_DELAY"]
+
+            if len(multi_import) > 0:
+                self.add_setting("multi_import", multi_import)
 
         def env_var_to_settings(self, env_var_name, settings_name):
             """
