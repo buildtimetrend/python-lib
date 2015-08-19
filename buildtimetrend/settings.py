@@ -51,7 +51,10 @@ class Settings(object):
         def __init__(self):
             """Initialise class."""
             self.settings = Collection()
+            self.set_defaults()
 
+        def set_defaults(self):
+            """Set default values."""
             # set loglevel
             self.add_setting("loglevel", "WARNING")
 
