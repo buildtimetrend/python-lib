@@ -69,6 +69,15 @@ class Settings(object):
             self.add_setting('dashboard_configfile',
                              'dashboard/config.js')
 
+            # set multi build import settings
+            self.add_setting(
+                'multi_import',
+                {
+                    'max_builds': '100',
+                    'delay': '3'
+                }
+            )
+
         def set_project_name(self, name):
             """
             Set project name.

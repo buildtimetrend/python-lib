@@ -11,8 +11,8 @@ buildtimetrend:
         backend: "amqp"
         broker_url: "amqp://user@localhost"
     multi_import:
-        max_builds: "100"
-        delay: "3"
+        max_builds: "150"
+        delay: "6"
 
 # Keen.io connection settings
 keen:

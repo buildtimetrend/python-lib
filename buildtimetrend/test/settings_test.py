@@ -39,6 +39,10 @@ DEFAULT_SETTINGS = {
     "mode_native": False,
     "mode_keen": True,
     "loglevel": "WARNING",
+    "multi_import": {
+        "max_builds": '100',
+        "delay": '3'
+    },
     "dashboard_configfile": "dashboard/config.js"
 }
 
@@ -168,8 +172,8 @@ class TestSettings(unittest.TestCase):
                     "broker_url": "amqp://user@localhost"
                 },
                 "multi_import": {
-                    "max_builds": "100",
-                    "delay": "3"
+                    "max_builds": "150",
+                    "delay": "6"
                 }
             },
             self.settings.settings.get_items())
@@ -224,8 +228,8 @@ class TestSettings(unittest.TestCase):
                     "broker_url": "amqp://user@localhost"
                 },
                 "multi_import": {
-                    "max_builds": "100",
-                    "delay": "3"
+                    "max_builds": "150",
+                    "delay": "6"
                 }
             },
             self.settings.settings.get_items())
