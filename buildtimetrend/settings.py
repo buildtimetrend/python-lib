@@ -292,7 +292,8 @@ class Settings(object):
             multi_import = {}
 
             if "BTT_MULTI_MAX_BUILDS" in os.environ:
-                multi_import["max_builds"] = int(os.environ["BTT_MULTI_MAX_BUILDS"])
+                multi_import["max_builds"] = \
+                    int(os.environ["BTT_MULTI_MAX_BUILDS"])
             if "BTT_MULTI_DELAY" in os.environ:
                 multi_import["delay"] = int(os.environ["BTT_MULTI_DELAY"])
 
