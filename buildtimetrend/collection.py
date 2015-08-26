@@ -42,7 +42,11 @@ class Collection(object):
         - name : Item name
         - value : Item value
         """
-        self.items[name] = value
+        if check_dict(value) and name in self.items and \
+                check_dict(self.items[name]):
+            self.items[name].update(value)
+        else:
+            self.items[name] = value
 
     def get_item(self, name):
         """
