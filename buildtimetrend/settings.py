@@ -73,8 +73,8 @@ class Settings(object):
             self.add_setting(
                 'multi_import',
                 {
-                    'max_builds': '100',
-                    'delay': '3'
+                    'max_builds': 100,
+                    'delay': 3
                 }
             )
 
@@ -292,9 +292,9 @@ class Settings(object):
             multi_import = {}
 
             if "BTT_MULTI_MAX_BUILDS" in os.environ:
-                multi_import["max_builds"] = os.environ["BTT_MULTI_MAX_BUILDS"]
+                multi_import["max_builds"] = int(os.environ["BTT_MULTI_MAX_BUILDS"])
             if "BTT_MULTI_DELAY" in os.environ:
-                multi_import["delay"] = os.environ["BTT_MULTI_DELAY"]
+                multi_import["delay"] = int(os.environ["BTT_MULTI_DELAY"])
 
             if len(multi_import) > 0:
                 self.add_setting("multi_import", multi_import)

@@ -40,8 +40,8 @@ DEFAULT_SETTINGS = {
     "mode_keen": True,
     "loglevel": "WARNING",
     "multi_import": {
-        "max_builds": '100',
-        "delay": '3'
+        "max_builds": 100,
+        "delay": 3
     },
     "dashboard_configfile": "dashboard/config.js"
 }
@@ -172,8 +172,8 @@ class TestSettings(unittest.TestCase):
                     "broker_url": "amqp://user@localhost"
                 },
                 "multi_import": {
-                    "max_builds": "150",
-                    "delay": "6"
+                    "max_builds": 150,
+                    "delay": 6
                 }
             },
             self.settings.settings.get_items())
@@ -185,6 +185,29 @@ class TestSettings(unittest.TestCase):
         self.assertEquals("7890abcd", keen.master_key)
         self.assertTrue(keen_is_readable())
         self.assertTrue(keen_is_writable())
+
+    def test_load_multi_build_settings(self):
+        self.assertDictEqual(
+            {
+                "max_builds": 100,
+                "delay": 3
+            },
+            self.settings.get_setting("multi_import")
+        )
+
+        exp_max_builds = os.environ["BTT_MULTI_MAX_BUILDS"] = "75"
+        exp_max_builds = int(exp_max_builds)
+
+        self.settings.load_env_vars()
+        self.assertDictEqual(
+            {
+                "max_builds": exp_max_builds,
+                "delay": 3
+            },
+            self.settings.get_setting("multi_import")
+        )
+
+        del os.environ["BTT_MULTI_MAX_BUILDS"]
 
     def test_load_settings(self):
         # checking if Keen.io configuration is not set (yet)
@@ -228,8 +251,8 @@ class TestSettings(unittest.TestCase):
                     "broker_url": "amqp://user@localhost"
                 },
                 "multi_import": {
-                    "max_builds": "150",
-                    "delay": "6"
+                    "max_builds": 150,
+                    "delay": 6
                 }
             },
             self.settings.settings.get_items())
@@ -269,7 +292,9 @@ class TestSettings(unittest.TestCase):
         exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:1234"
         exp_config = os.environ["BUILD_TREND_CONFIGFILE"] = "test/config.js"
         exp_max_builds = os.environ["BTT_MULTI_MAX_BUILDS"] = "50"
+        exp_max_builds = int(exp_max_builds)
         exp_delay = os.environ["BTT_MULTI_DELAY"] = "5"
+        exp_delay = int(exp_delay)
 
         self.settings.load_env_vars()
 

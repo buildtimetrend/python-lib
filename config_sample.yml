@@ -10,8 +10,8 @@ buildtimetrend:
         backend: "" # fe. amqp, redis, ...
         broker_url: "" # format : transport://userid:password@hostname:port/virtual_host
     multi_import:
-        max_builds: "100" # maximum number of builds allowed in one batch
-        delay: "3" # number of seconds between the start of each build
+        max_builds: 100 # maximum number of builds allowed in one batch
+        delay: 3 # number of seconds between the start of each build
 
 # Keen.io connection settings
 keen:
