@@ -75,6 +75,40 @@ class TestBuild(unittest.TestCase):
         self.build = Build('', 123)
         self.assertEquals(123, self.build.stages.end_timestamp)
 
+    def test_set_started_at(self):
+        self.assertEquals(None, self.build.properties.get_item("started_at"))
+
+        self.build.set_started_at(None)
+        self.assertEquals(None, self.build.properties.get_item("started_at"))
+
+        # set as int, isotimestamp string expected
+        self.build.set_started_at(constants.TIMESTAMP_STARTED)
+        self.assertEquals(None, self.build.properties.get_item("started_at"))
+
+        # set as isotimestamp string
+        self.build.set_started_at(constants.ISOTIMESTAMP_STARTED)
+        self.assertDictEqual(
+            constants.SPLIT_TIMESTAMP_STARTED,
+            self.build.properties.get_item("started_at")
+        )
+
+    def test_set_finished_at(self):
+        self.assertEquals(None, self.build.properties.get_item("finished_at"))
+
+        self.build.set_finished_at(None)
+        self.assertEquals(None, self.build.properties.get_item("finished_at"))
+
+        # set as int, isotimestamp string expected
+        self.build.set_finished_at(constants.TIMESTAMP_FINISHED)
+        self.assertEquals(None, self.build.properties.get_item("finished_at"))
+
+        # set as isotimestamp string
+        self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
+        self.assertDictEqual(
+            constants.SPLIT_TIMESTAMP_FINISHED,
+            self.build.properties.get_item("finished_at")
+        )
+
     def test_add_stages(self):
         self.build.add_stages(None)
         self.assertEquals(0, len(self.build.stages.stages))

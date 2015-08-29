@@ -12,6 +12,7 @@ v0.3 (not yet released)
 - add keen_io_generate_write_key()
 - issue #91 : store pull_request related data
 - issue #89 : add settings to configure batch mode to process multiple builds
+- issue #96 : catch error when started_at or finished_at timestamp is invalid
 
 v0.2 (released on 16Feb2015)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script
