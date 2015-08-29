@@ -67,7 +67,10 @@ def split_isotimestamp(isotimestamp):
     Parameters :
     - isotimestamp : timestamp in ISO format YYYY-MM-DDTHH:MM:SS
     """
-    if isotimestamp is None or type(isotimestamp) not in (str, unicode):
+    if isotimestamp is None:
+        logger.warning('isotimestamp expected, %s found', type(isotimestamp))
+        return None
+    if type(isotimestamp) not in (str, unicode):
         raise TypeError(
             "param %s should be an isotimestamp formatted string, "
             "type %s found" %
