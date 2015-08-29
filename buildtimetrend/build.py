@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import copy
 from lxml import etree
+from buildtimetrend import logger
 from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stages
 from buildtimetrend.collection import Collection
@@ -110,7 +111,12 @@ class Build(object):
         Parameters :
         - isotimestamp : timestamp in iso format when build started
         """
-        self.add_property("started_at", split_isotimestamp(isotimestamp))
+        try:
+            self.add_property("started_at", split_isotimestamp(isotimestamp))
+        except (TypeError, ValueError), msg:
+            logger.warning(
+                "isotimestamp expected when setting started_at : %s", msg
+            )
 
     def set_finished_at(self, isotimestamp):
         """
@@ -119,7 +125,12 @@ class Build(object):
         Parameters :
         - isotimestamp : timestamp in iso format when build started
         """
-        self.add_property("finished_at", split_isotimestamp(isotimestamp))
+        try:
+            self.add_property("finished_at", split_isotimestamp(isotimestamp))
+        except (TypeError, ValueError), msg:
+            logger.warning(
+                "isotimestamp expected when setting finished_at : %s", msg
+            )
 
     def load_properties_from_settings(self):
         """Load build properties from settings."""
