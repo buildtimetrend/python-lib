@@ -59,6 +59,7 @@ setup(
         "License :: OSI Approved :: GNU Affero General Public License v3" \
         " or later (AGPLv3+)",
         "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Software Development :: Build Tools",
         "Topic :: Software Development :: Quality Assurance"
     ]
 )
