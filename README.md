@@ -113,6 +113,17 @@ Bugs and feature requests
 
 Please report bugs and add feature requests in the Github [issue tracker](https://github.com/buildtimetrend/python-lib/issues).
 
+Contribute
+----------
+
+If you want to contribute to make Buildtime Trend even better, check out the [contribution](https://github.com/buildtimetrend/python-lib/wiki/Contribute) page.
+We are looking for testers, developers, designers, ... and what more. [Contact us](#contact) if you want to help out.
+
+Donations
+---------
+
+You can also support the project by making a [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LG9M6QTBS9LKL). They will help pay for the hosting and support further development.
+
 
 Credits
 -------
