@@ -563,7 +563,8 @@ class TestTravisData(unittest.TestCase):
         build_job = self.travis_data.process_build_job("29404875")
         self.assertDictEqual(DICT_JOB_158_1, build_job.properties.get_items())
         self.assertEquals(1, len(self.travis_data.build_jobs))
-        self.assertDictEqual(DICT_JOB_158_1,
+        self.assertDictEqual(
+            DICT_JOB_158_1,
             self.travis_data.build_jobs["29404875"].properties.get_items()
         )
 
@@ -577,10 +578,13 @@ class TestTravisData(unittest.TestCase):
         # retrieve data from Travis API
         self.travis_data.get_build_data()
         for build_job in self.travis_data.process_build_jobs():
-            self.assertDictEqual(DICT_BUILD_158,
-                build_job.properties.get_items())
+            self.assertDictEqual(
+                DICT_BUILD_158,
+                build_job.properties.get_items()
+            )
         self.assertEquals(1, len(self.travis_data.build_jobs))
-        self.assertDictEqual(DICT_BUILD_158,
+        self.assertDictEqual(
+            DICT_BUILD_158,
             self.travis_data.build_jobs["29404875"].properties.get_items()
         )
 
@@ -616,54 +620,65 @@ class TestTravisData(unittest.TestCase):
         # retrieve data from Travis API
         self.travis_data.get_build_data()
         for build_job in self.travis_data.process_build_jobs():
-            self.assertDictEqual(DICT_BUILD_504,
-                build_job.properties.get_items())
+            self.assertDictEqual(
+                DICT_BUILD_504,
+                build_job.properties.get_items()
+            )
         self.assertEquals(1, len(self.travis_data.build_jobs))
-        self.assertDictEqual(DICT_BUILD_504,
+        self.assertDictEqual(
+            DICT_BUILD_504,
             self.travis_data.build_jobs["50398739"].properties.get_items()
         )
 
     def test_get_build_matrix_c(self):
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_C))
         self.assertDictEqual(
-            {'build_matrix': {
-                'compiler': 'clang',
-                'language': 'c',
-                'os': 'osx',
-                'parameters': 'TOXENV=py26',
-                'summary': 'clang c osx TOXENV=py26'}
+            {
+                'build_matrix': {
+                    'compiler': 'clang',
+                    'language': 'c',
+                    'os': 'osx',
+                    'parameters': 'TOXENV=py26',
+                    'summary': 'clang c osx TOXENV=py26'
+                }
             },
             self.travis_data.current_job.properties.get_items())
 
     def test_get_build_matrix_python(self):
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_PYTHON))
         self.assertDictEqual(
-            {'build_matrix': {
-                'os': 'linux',
-                'language': 'python',
-                'language_version': '2.7',
-                'summary': 'python 2.7 linux'}
+            {
+                'build_matrix': {
+                    'os': 'linux',
+                    'language': 'python',
+                    'language_version': '2.7',
+                    'summary': 'python 2.7 linux'
+                }
             },
             self.travis_data.current_job.properties.get_items())
 
     def test_get_build_matrix_java(self):
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_JAVA))
         self.assertDictEqual(
-            {'build_matrix': {
-                'jdk': 'openjdk7',
-                'language': 'java',
-                'summary': 'openjdk7 java'}
+            {
+                'build_matrix': {
+                    'jdk': 'openjdk7',
+                    'language': 'java',
+                    'summary': 'openjdk7 java'
+                }
             },
             self.travis_data.current_job.properties.get_items())
 
     def test_get_build_matrix_android(self):
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_ANDROID))
         self.assertDictEqual(
-            {'build_matrix': {
-                'language': 'android',
-                'language_components': 'android-20 build-tools-21.1.2',
-                'os': 'linux',
-                'summary': 'android android-20 build-tools-21.1.2 linux'}
+            {
+                'build_matrix': {
+                    'language': 'android',
+                    'language_components': 'android-20 build-tools-21.1.2',
+                    'os': 'linux',
+                    'summary': 'android android-20 build-tools-21.1.2 linux'
+                }
             },
             self.travis_data.current_job.properties.get_items())
 
