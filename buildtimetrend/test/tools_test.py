@@ -275,7 +275,6 @@ class TestTools(unittest.TestCase):
         # should return true if parameter is a list
         self.assertTrue(is_list(["string", "test"], "name"))
 
-
     def test_num_string(self):
         self.assertRaises(TypeError, check_num_string)
         self.assertRaises(TypeError, check_num_string, None)
