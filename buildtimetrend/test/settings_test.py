@@ -323,7 +323,8 @@ class TestSettings(unittest.TestCase):
 
     def test_load_env_vars_task_queue(self):
         # set test environment variables
-        exp_redisgreen = os.environ["REDISGREEN_URL"] = "redis://test@hostname:4567"
+        exp_redisgreen = os.environ["REDISGREEN_URL"] = \
+            "redis://test@hostname:4567"
 
         self.settings.load_env_vars_task_queue()
 
@@ -334,7 +335,8 @@ class TestSettings(unittest.TestCase):
         )
 
         # set test environment variables
-        exp_cloudamqp = os.environ["CLOUDAMQP_URL"] = "amqp://guest:guest@localhost"
+        exp_cloudamqp = os.environ["CLOUDAMQP_URL"] = \
+            "amqp://guest:guest@localhost"
 
         self.settings.load_env_vars_task_queue()
 
@@ -345,7 +347,8 @@ class TestSettings(unittest.TestCase):
         )
 
         # set test environment variables
-        exp_bigwig = os.environ["RABBITMQ_BIGWIG_URL"] = "amqp://guest:guest@bigwig"
+        exp_bigwig = os.environ["RABBITMQ_BIGWIG_URL"] = \
+            "amqp://guest:guest@bigwig"
 
         self.settings.load_env_vars_task_queue()
 

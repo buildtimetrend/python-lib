@@ -368,7 +368,9 @@ class TestTravis(unittest.TestCase):
         expected_pull_request = os.environ["TRAVIS_PULL_REQUEST"] = "123"
         load_travis_env_vars()
         self.assertEquals("failed", settings.get_setting("result"))
-        self.assertEquals("pull_request", settings.get_setting("build_trigger"))
+        self.assertEquals(
+            "pull_request", settings.get_setting("build_trigger")
+        )
         self.assertDictEqual(
             {
                 'is_pull_request': True,
@@ -528,15 +530,21 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_connector_parameter(self):
-        self.assertEquals(TRAVIS_ORG_API_URL, self.travis_data.connector.api_url)
+        self.assertEquals(
+            TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
+        )
 
         self.travis_data = TravisData(TEST_REPO, TEST_BUILD, 1234)
-        self.assertEquals(TRAVIS_ORG_API_URL, self.travis_data.connector.api_url)
+        self.assertEquals(
+            TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
+        )
 
         custom_connector = TravisConnector()
         custom_connector.api_url = "http://test.url.com/"
         self.travis_data = TravisData(TEST_REPO, TEST_BUILD, custom_connector)
-        self.assertEquals("http://test.url.com/", self.travis_data.connector.api_url)
+        self.assertEquals(
+            "http://test.url.com/", self.travis_data.connector.api_url
+        )
 
     def test_gather_data(self):
         # retrieve data from Travis API
