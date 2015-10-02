@@ -26,10 +26,12 @@ import constants
 from lxml import etree
 import unittest
 
-STAGES_RESULT = [{'duration': 17.0,
-             'finished_at': constants.SPLIT_TIMESTAMP4,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP1}]
+STAGES_RESULT = [{
+    'duration': 17.0,
+    'finished_at': constants.SPLIT_TIMESTAMP4,
+    'name': 'stage1',
+    'started_at': constants.SPLIT_TIMESTAMP1
+}]
 
 
 class TestStages(unittest.TestCase):
@@ -87,18 +89,26 @@ class TestStages(unittest.TestCase):
 
         # test stages (names + duration)
         self.assertListEqual(
-           [{'duration': 2,
-             'finished_at': constants.SPLIT_TIMESTAMP2,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP1},
-            {'duration': 5,
-             'finished_at': constants.SPLIT_TIMESTAMP3,
-             'name': 'stage2',
-             'started_at': constants.SPLIT_TIMESTAMP2},
-            {'duration': 10,
-             'finished_at': constants.SPLIT_TIMESTAMP4,
-             'name': 'stage3',
-             'started_at': constants.SPLIT_TIMESTAMP3}],
+            [
+                {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                },
+                {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2
+                },
+                {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3
+                }
+            ],
             self.stages.stages)
 
     def test_parse_timestamps_end(self):
@@ -127,14 +137,20 @@ class TestStages(unittest.TestCase):
             ["end", "1396378755"]])
 
         self.assertListEqual(
-           [{'duration': 17,
-             'finished_at': constants.SPLIT_TIMESTAMP4,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP1},
-            {'duration': 3,
-             'finished_at': constants.SPLIT_TIMESTAMP_ENDTAG,
-             'name': 'end_tag',
-             'started_at': constants.SPLIT_TIMESTAMP4}],
+            [
+                {
+                    'duration': 17,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                },
+                {
+                    'duration': 3,
+                    'finished_at': constants.SPLIT_TIMESTAMP_ENDTAG,
+                    'name': 'end_tag',
+                    'started_at': constants.SPLIT_TIMESTAMP4
+                }
+            ],
             self.stages.stages)
 
     def test_parse_timestamps_done(self):
@@ -181,10 +197,14 @@ class TestStages(unittest.TestCase):
         self.stages.parse_timestamps([["stage1", constants.TIMESTAMP_STARTED]])
 
         self.assertListEqual(
-           [{'duration': 371.2339999675751,
-             'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP_STARTED}],
+            [
+                {
+                    'duration': 371.2339999675751,
+                    'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP_STARTED
+                }
+            ],
             self.stages.stages)
 
         # test total duration
@@ -291,10 +311,14 @@ class TestStages(unittest.TestCase):
 
         # test stages (names + duration)
         self.assertListEqual(
-           [{'duration': 235,
-             'finished_at': constants.SPLIT_TIMESTAMP1,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP_STARTED}],
+            [
+                {
+                    'duration': 235,
+                    'finished_at': constants.SPLIT_TIMESTAMP1,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP_STARTED
+                }
+            ],
             self.stages.stages)
 
         # add another stage
@@ -323,14 +347,20 @@ class TestStages(unittest.TestCase):
 
         # test stages (names + duration)
         self.assertListEqual(
-           [{'duration': 235,
-             'finished_at': constants.SPLIT_TIMESTAMP1,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP_STARTED},
-            {'duration': 136.234,
-             'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-             'name': 'stage2',
-             'started_at': constants.SPLIT_TIMESTAMP1}],
+            [
+                {
+                    'duration': 235,
+                    'finished_at': constants.SPLIT_TIMESTAMP1,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP_STARTED
+                },
+                {
+                    'duration': 136.234,
+                    'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                }
+            ],
             self.stages.stages)
 
     def test_add_stage_incomplete(self):
@@ -353,9 +383,13 @@ class TestStages(unittest.TestCase):
 
         # test stages (names + duration)
         self.assertListEqual(
-           [{'duration': 235,
-             'finished_at': constants.SPLIT_TIMESTAMP1,
-             'name': 'stage1'}],
+            [
+                {
+                    'duration': 235,
+                    'finished_at': constants.SPLIT_TIMESTAMP1,
+                    'name': 'stage1'
+                }
+            ],
             self.stages.stages)
 
         # add another stage without finished_at timestamp
@@ -377,12 +411,18 @@ class TestStages(unittest.TestCase):
 
         # test stages (names + duration)
         self.assertListEqual(
-           [{'duration': 235,
-             'finished_at': constants.SPLIT_TIMESTAMP1,
-             'name': 'stage1'},
-            {'duration': 136.234,
-             'name': 'stage2',
-             'started_at': constants.SPLIT_TIMESTAMP1}],
+            [
+                {
+                    'duration': 235,
+                    'finished_at': constants.SPLIT_TIMESTAMP1,
+                    'name': 'stage1'
+                },
+                {
+                    'duration': 136.234,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                }
+            ],
             self.stages.stages)
 
 
