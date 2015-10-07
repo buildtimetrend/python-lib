@@ -554,7 +554,7 @@ class TravisData(object):
         self.current_job.add_property("build_matrix", build_matrix.get_items())
 
     def process_pull_request_data(self):
-        """ Retrieve pull request data from Travis CI API."""
+        """Retrieve pull request data from Travis CI API."""
         if len(self.current_build_data) > 0:
             if "event_type" in self.current_build_data:
                 # build trigger (push or pull_request)
