@@ -113,13 +113,14 @@ class TestTools(unittest.TestCase):
 
          # dict with finished_at timestamp
         self.assertDictEqual(
-                {"test": "value",
+            {
+                "test": "value",
                 "buildtime_trend": self.project_info,
                 "job": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED},
                 "keen": {"timestamp": constants.ISOTIMESTAMP_FINISHED}
             },
-            add_project_info_dict(
-                {"test": "value",
+            add_project_info_dict({
+                "test": "value",
                 "job": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED}
             })
         )
@@ -150,10 +151,11 @@ class TestTools(unittest.TestCase):
         )
 
         # list with two dict as element
-        self.assertListEqual(
-            [{"test": "value", "buildtime_trend": self.project_info},
+        self.assertListEqual([
+            {"test": "value", "buildtime_trend": self.project_info},
             {"test2": "value2", "buildtime_trend": self.project_info}],
-            add_project_info_list([{"test": "value"},
+            add_project_info_list([
+                {"test": "value"},
                 {"test2": "value2"}])
         )
 
