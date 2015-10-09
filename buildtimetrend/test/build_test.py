@@ -390,25 +390,28 @@ class TestBuild(unittest.TestCase):
         # finished_at property should override default value
         self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
         # test dict
-        self.assertDictEqual(
-            {'duration': 17,
+        self.assertDictEqual({
+            'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP_STARTED,
             'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
             'property1': 2, 'property2': 3,
-            'stages':
-            [{'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-             {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-             {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3}]
-            },
+            'stages': [
+                {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1},
+                {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2},
+                {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3}
+            ]},
             self.build.to_dict())
 
     def test_stages_to_list(self):
@@ -416,29 +419,40 @@ class TestBuild(unittest.TestCase):
         self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test list
-        self.assertListEqual(
-            [{'stage': {'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP1,
-            'finished_at': constants.SPLIT_TIMESTAMP4}},
-            {'stage': {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP1,
-            'finished_at': constants.SPLIT_TIMESTAMP4}},
-            {'stage': {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP1,
-            'finished_at': constants.SPLIT_TIMESTAMP4}},
-            ],
+        self.assertListEqual([
+            {
+                'stage': {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP1,
+                    'finished_at': constants.SPLIT_TIMESTAMP4}
+            },
+            {
+                'stage': {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP1,
+                    'finished_at': constants.SPLIT_TIMESTAMP4}
+            },
+            {
+                'stage': {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP1,
+                    'finished_at': constants.SPLIT_TIMESTAMP4}
+            }],
             self.build.stages_to_list())
 
         # add properties
@@ -449,32 +463,43 @@ class TestBuild(unittest.TestCase):
         # finished_at property should override default value
         self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
         # test dict
-        self.assertListEqual(
-            [{'stage': {'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-            'property1': 2, 'property2': 3}},
-            {'stage': {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-            'property1': 2, 'property2': 3}},
-            {'stage': {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-            'property1': 2, 'property2': 3}},
-            ],
+        self.assertListEqual([
+            {
+                'stage': {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP_STARTED,
+                    'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                    'property1': 2, 'property2': 3}
+            },
+            {
+                'stage': {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP_STARTED,
+                    'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                    'property1': 2, 'property2': 3}
+            },
+            {
+                'stage': {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP_STARTED,
+                    'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                    'property1': 2, 'property2': 3}
+            }],
             self.build.stages_to_list())
 
     def test_to_xml(self):
