@@ -165,10 +165,12 @@ class TestBuild(unittest.TestCase):
 
         # test stages (names + duration)
         self.assertListEqual(
-           [{'duration': 235,
-             'finished_at': constants.SPLIT_TIMESTAMP1,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP_STARTED}],
+            [{
+                'duration': 235,
+                'finished_at': constants.SPLIT_TIMESTAMP1,
+                'name': 'stage1',
+                'started_at': constants.SPLIT_TIMESTAMP_STARTED
+            }],
             self.build.stages.stages)
 
         # add another stage
@@ -196,15 +198,19 @@ class TestBuild(unittest.TestCase):
         )
 
         # test stages (names + duration)
-        self.assertListEqual(
-           [{'duration': 235,
-             'finished_at': constants.SPLIT_TIMESTAMP1,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP_STARTED},
-            {'duration': 136.234,
-             'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-             'name': 'stage2',
-             'started_at': constants.SPLIT_TIMESTAMP1}],
+        self.assertListEqual([
+            {
+                'duration': 235,
+                'finished_at': constants.SPLIT_TIMESTAMP1,
+                'name': 'stage1',
+                'started_at': constants.SPLIT_TIMESTAMP_STARTED
+            },
+            {
+                'duration': 136.234,
+                'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                'name': 'stage2',
+                'started_at': constants.SPLIT_TIMESTAMP1
+            }],
             self.build.stages.stages)
 
     def test_add_property(self):
@@ -295,12 +301,10 @@ class TestBuild(unittest.TestCase):
                 'branch': "branch1",
                 'result': "passed",
                 'build_trigger': "push",
-                'pull_request':
-                    {
-                        "is_pull_request": False,
-                        "title": None,
-                        "number": None
-                    },
+                'pull_request': {
+                    "is_pull_request": False,
+                    "title": None,
+                    "number": None},
                 'repo': "test/project"
             },
             self.build.get_properties())
@@ -313,48 +317,60 @@ class TestBuild(unittest.TestCase):
         self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test dict
-        self.assertDictEqual(
-            {'duration': 17,
+        self.assertDictEqual({
+            'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP1,
             'finished_at': constants.SPLIT_TIMESTAMP4,
-            'stages':
-            [{'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-             {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-             {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3}]
-            },
+            'stages': [
+                {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                },
+                {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2
+                },
+                {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3
+                }
+            ]},
             self.build.to_dict())
 
         # setting duration, overrides total stage duration
         self.build.add_property("duration", 20)
 
         # test dict
-        self.assertDictEqual(
-            {'duration': 20,
+        self.assertDictEqual({
+            'duration': 20,
             'started_at': constants.SPLIT_TIMESTAMP1,
             'finished_at': constants.SPLIT_TIMESTAMP4,
-            'stages':
-            [{'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-             {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-             {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3}]
-            },
+            'stages': [
+                {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                },
+                {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2
+                },
+                {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3
+                }
+            ]},
             self.build.to_dict())
 
     def test_to_dict(self):
@@ -362,24 +378,30 @@ class TestBuild(unittest.TestCase):
         self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test dict
-        self.assertDictEqual(
-            {'duration': 17,
+        self.assertDictEqual({
+            'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP1,
             'finished_at': constants.SPLIT_TIMESTAMP4,
-            'stages':
-            [{'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-             {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-             {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3}]
-            },
+            'stages': [
+                {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                },
+                {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2
+                },
+                {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3
+                }
+            ]},
             self.build.to_dict())
 
         # add properties
