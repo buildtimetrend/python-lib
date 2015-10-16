@@ -540,18 +540,7 @@ class TravisData(object):
             if parameter in job_config:
                 build_matrix.add_item(name, str(job_config[parameter]))
 
-        # concatenate all properties in a summary field
-        matrix_params = build_matrix.get_key_sorted_items().values()
-        try:
-            summary = " ".join(matrix_params)
-            build_matrix.add_item("summary", summary)
-        except TypeError, msg:
-            logger.error(
-                "Error parsing build matrix properties : %s, message : %s",
-                matrix_params, str(msg)
-            )
-
-        self.current_job.add_property("build_matrix", build_matrix.get_items())
+        self.current_job.add_property("build_matrix", build_matrix.get_items_with_summary())
 
     def process_pull_request_data(self):
         """Retrieve pull request data from Travis CI API."""
