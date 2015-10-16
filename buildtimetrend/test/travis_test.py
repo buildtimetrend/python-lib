@@ -430,10 +430,14 @@ class TestTravis(unittest.TestCase):
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
             expected_os = os.environ["TRAVIS_OS_NAME"]
+            expected_cc = os.environ["CC"]
+            expected_env = os.environ["ENV"]
         else:
             reset_travis_vars = True
             os.environ["TRAVIS"] = "true"
             expected_os = os.environ["TRAVIS_OS_NAME"] = "test_os"
+            expected_cc = os.environ["CC"] = "test_cc"
+            expected_env = os.environ["ENV"] = "test_env"
 
         test_languages = [
             {'env_var': 'TRAVIS_DART_VERSION', 'language': 'dart', 'test_value': "1.1"},
@@ -466,9 +470,11 @@ class TestTravis(unittest.TestCase):
             self.assertDictEqual(
                 {
                     'os': expected_os,
+                    'compiler': expected_cc,
+                    'parameters': expected_env,
                     'language': language['language'],
                     'language_version': expected_lang_version,
-                    'summary': "%s %s %s" % (language['language'], expected_lang_version, expected_os)
+                    'summary': "%s %s %s %s %s" % (expected_cc, language['language'], expected_lang_version, expected_os, expected_env)
                 },
                 settings.get_setting("build_matrix")
             )
@@ -481,6 +487,8 @@ class TestTravis(unittest.TestCase):
         if reset_travis_vars:
             del os.environ["TRAVIS"]
             del os.environ["TRAVIS_OS_NAME"]
+            del os.environ["CC"]
+            del os.environ["ENV"]
 
     def test_convert_build_result(self):
         self.assertEquals("passed", convert_build_result(0))
