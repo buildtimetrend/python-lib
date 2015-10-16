@@ -107,7 +107,8 @@ def load_build_matrix_env_vars(settings):
     if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
         build_matrix = Collection()
 
-        build_matrix.add_item("os", os.environ["TRAVIS_OS_NAME"])
+        if "TRAVIS_OS_NAME" in os.environ:
+            build_matrix.add_item("os", os.environ["TRAVIS_OS_NAME"])
 
         # set language and language version
         language_env_vars = {
