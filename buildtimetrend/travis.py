@@ -83,6 +83,7 @@ def load_travis_env_vars():
                 convert_build_result(os.environ["TRAVIS_TEST_RESULT"])
             )
 
+        load_build_matrix_env_vars(settings)
         load_travis_pull_request_env_vars(settings)
 
 
