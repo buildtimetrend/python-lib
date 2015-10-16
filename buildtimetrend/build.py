@@ -141,6 +141,7 @@ class Build(object):
         self.load_property_from_settings("build_trigger")
         self.load_property_from_settings("pull_request")
         self.load_property_from_settings("result")
+        self.load_property_from_settings("build_matrix")
         self.add_property("repo", Settings().get_project_name())
 
     def load_property_from_settings(self, property_name, setting_name=None):
