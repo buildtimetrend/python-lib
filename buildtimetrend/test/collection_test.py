@@ -147,6 +147,42 @@ class TestCollection(unittest.TestCase):
             {'property1': 2, 'property2': 4},
             self.collection.get_items())
 
+    def test_get_items_with_summary(self):
+        self.collection.add_item('property1', '2')
+        self.assertDictEqual(
+            {'property1': '2'},
+            self.collection.get_items())
+        self.assertDictEqual(
+            {'property1': '2', 'summary': '2'},
+            self.collection.get_items_with_summary())
+
+        self.collection.add_item('property2', '3')
+        self.assertDictEqual(
+            {'property1': '2', 'property2': '3'},
+            self.collection.get_items())
+        self.assertDictEqual(
+            {'property1': '2', 'property2': '3',
+            'summary': '2 3'},
+            self.collection.get_items_with_summary())
+
+        self.collection.add_item('property2', '4')
+        self.assertDictEqual(
+            {'property1': '2', 'property2': '4'},
+            self.collection.get_items())
+        self.assertDictEqual(
+            {'property1': '2', 'property2': '4',
+            'summary': '2 4'},
+            self.collection.get_items_with_summary())
+
+        self.collection.add_item('property2', 5)
+        self.assertDictEqual(
+            {'property1': '2', 'property2': 5},
+            self.collection.get_items())
+        # summary is only available if all properties have string values
+        self.assertDictEqual(
+            {'property1': '2', 'property2': 5},
+            self.collection.get_items_with_summary())
+
     def test_get_key_sorted_items(self):
         self.collection.add_item('property3', 2)
         self.collection.add_item('property1', 3)
