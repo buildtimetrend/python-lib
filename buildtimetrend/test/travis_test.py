@@ -421,6 +421,49 @@ class TestTravis(unittest.TestCase):
         else:
             os.environ["TRAVIS_TEST_RESULT"] = copy_result
 
+    def test_load_build_matrix_env_vars(self):
+        settings = Settings()
+
+        self.assertEquals(None, settings.get_setting("build_matrix"))
+
+        #setup Travis env vars
+        if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
+            reset_travis_vars = False
+            expected_os = os.environ["TRAVIS_OS_NAME"]
+        else:
+            reset_travis_vars = True
+            os.environ["TRAVIS"] = "true"
+            expected_os = os.environ["TRAVIS_OS_NAME"] = "test_os"
+
+        # setup Travis test result
+        if "TRAVIS_PYTHON_VERSION" in os.environ:
+            reset_travis_lang_version = False
+            expected_lang_version = os.environ["TRAVIS_PYTHON_VERSION"]
+        else:
+            reset_travis_lang_version = True
+            expected_lang_version = os.environ["TRAVIS_PYTHON_VERSION"] = "1.0"
+
+        load_build_matrix_env_vars(settings)
+
+        self.assertDictEqual(
+            {
+                'os': expected_os,
+                'language': 'python',
+                'language_version': expected_lang_version,
+                'summary': "python %s %s" % (expected_lang_version, expected_os)
+            },
+            settings.get_setting("build_matrix")
+        )
+
+        # reset Travis test result
+        if reset_travis_lang_version:
+            del os.environ["TRAVIS_PYTHON_VERSION"]
+
+       # reset test Travis vars
+        if reset_travis_vars:
+            del os.environ["TRAVIS"]
+            del os.environ["TRAVIS_OS_NAME"]
+
     def test_convert_build_result(self):
         self.assertEquals("passed", convert_build_result(0))
         self.assertEquals("failed", convert_build_result(1))
