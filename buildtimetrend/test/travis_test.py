@@ -430,10 +430,20 @@ class TestTravis(unittest.TestCase):
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
             expected_os = os.environ["TRAVIS_OS_NAME"]
+            copy_python = os.environ["TRAVIS_PYTHON_VERSION"]
+            del os.environ["TRAVIS_PYTHON_VERSION"]
         else:
             reset_travis_vars = True
             os.environ["TRAVIS"] = "true"
             expected_os = os.environ["TRAVIS_OS_NAME"] = "test_os"
+
+        # temporarily remove PYTHON VERSION
+        if "TRAVIS_PYTHON_VERSION" in os.environ:
+            reset_python_version = True
+            copy_python = os.environ["TRAVIS_PYTHON_VERSION"]
+            del os.environ["TRAVIS_PYTHON_VERSION"]
+        else:
+            reset_python_version = False
 
         # test language and language versions
         test_languages = [
@@ -478,10 +488,14 @@ class TestTravis(unittest.TestCase):
             if reset_travis_lang_version:
                 del os.environ[language['env_var']]
 
-       # reset test Travis vars
+        # reset test Travis vars
         if reset_travis_vars:
             del os.environ["TRAVIS"]
             del os.environ["TRAVIS_OS_NAME"]
+
+        # reset removed python version
+        if reset_python_version:
+            os.environ["TRAVIS_PYTHON_VERSION"] = copy_python
 
     def test_load_build_matrix_env_vars_parameters(self):
         # setup Travis env vars
@@ -491,6 +505,14 @@ class TestTravis(unittest.TestCase):
         else:
             reset_travis_vars = True
             os.environ["TRAVIS"] = "true"
+
+        # temporarily remove PYTHON VERSION
+        if "TRAVIS_PYTHON_VERSION" in os.environ:
+            reset_python_version = True
+            copy_python = os.environ["TRAVIS_PYTHON_VERSION"]
+            del os.environ["TRAVIS_PYTHON_VERSION"]
+        else:
+            reset_python_version = False
 
         # test optional build matrix parameters
         test_parameters = [
@@ -533,6 +555,11 @@ class TestTravis(unittest.TestCase):
             del os.environ["TRAVIS"]
         else:
             os.environ["TRAVIS_OS_NAME"] = copy_os
+
+        # reset removed python version
+        if reset_python_version:
+            os.environ["TRAVIS_PYTHON_VERSION"] = copy_python
+
 
     def test_convert_build_result(self):
         self.assertEquals("passed", convert_build_result(0))
