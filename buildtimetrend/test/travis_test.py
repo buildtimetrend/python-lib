@@ -430,12 +430,10 @@ class TestTravis(unittest.TestCase):
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
             expected_os = os.environ["TRAVIS_OS_NAME"]
-            expected_env = os.environ["ENV"]
         else:
             reset_travis_vars = True
             os.environ["TRAVIS"] = "true"
             expected_os = os.environ["TRAVIS_OS_NAME"] = "test_os"
-            expected_env = os.environ["ENV"] = "test_env"
 
         # test language and language versions
         test_languages = [
@@ -469,10 +467,9 @@ class TestTravis(unittest.TestCase):
             self.assertDictEqual(
                 {
                     'os': expected_os,
-                    'parameters': expected_env,
                     'language': language['language'],
                     'language_version': expected_lang_version,
-                    'summary': "%s %s %s %s" % (language['language'], expected_lang_version, expected_os, expected_env)
+                    'summary': "%s %s %s" % (language['language'], expected_lang_version, expected_os)
                 },
                 settings.get_setting("build_matrix")
             )
@@ -485,14 +482,12 @@ class TestTravis(unittest.TestCase):
         if reset_travis_vars:
             del os.environ["TRAVIS"]
             del os.environ["TRAVIS_OS_NAME"]
-            del os.environ["ENV"]
 
     def test_load_build_matrix_env_vars_parameters(self):
         # setup Travis env vars
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
             copy_os = os.environ["TRAVIS_OS_NAME"]
-            copy_env = os.environ["ENV"]
         else:
             reset_travis_vars = True
             os.environ["TRAVIS"] = "true"
@@ -503,7 +498,8 @@ class TestTravis(unittest.TestCase):
             {'env_var': 'TRAVIS_XCODE_SCHEME', 'parameter': 'xcode_scheme', 'test_value': "test_x_scheme"},
             {'env_var': 'TRAVIS_XCODE_PROJECT', 'parameter': 'xcode_project', 'test_value': "test_x_project"},
             {'env_var': 'TRAVIS_XCODE_WORKSPACE', 'parameter': 'xcode_workspace', 'test_value': "test_x_workspace"},
-            {'env_var': 'CC', 'parameter': 'compiler', 'test_value': "test_gcc"}
+            {'env_var': 'CC', 'parameter': 'compiler', 'test_value': "test_gcc"},
+            {'env_var': 'ENV', 'parameter': 'parameters', 'test_value': "test_env"}
         ]
 
         # test parameters
@@ -532,13 +528,11 @@ class TestTravis(unittest.TestCase):
             if reset_travis_parameter:
                 del os.environ[parameter['env_var']]
 
-
-       # reset test Travis vars
+        # reset test Travis vars
         if reset_travis_vars:
             del os.environ["TRAVIS"]
         else:
             os.environ["TRAVIS_OS_NAME"] = copy_os
-            os.environ["ENV"] = copy_env
 
     def test_convert_build_result(self):
         self.assertEquals("passed", convert_build_result(0))
