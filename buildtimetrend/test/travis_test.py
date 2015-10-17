@@ -506,6 +506,14 @@ class TestTravis(unittest.TestCase):
             reset_travis_vars = True
             os.environ["TRAVIS"] = "true"
 
+        # temporarily remove OS VERSION
+        if "TRAVIS_OS_NAME" in os.environ:
+            reset_os = True
+            copy_os = os.environ["TRAVIS_OS_NAME"]
+            del os.environ["TRAVIS_OS_NAME"]
+        else:
+            reset_os = False
+
         # temporarily remove PYTHON VERSION
         if "TRAVIS_PYTHON_VERSION" in os.environ:
             reset_python_version = True
@@ -553,7 +561,9 @@ class TestTravis(unittest.TestCase):
         # reset test Travis vars
         if reset_travis_vars:
             del os.environ["TRAVIS"]
-        else:
+
+        # reset removed os name
+        if reset_os:
             os.environ["TRAVIS_OS_NAME"] = copy_os
 
         # reset removed python version
