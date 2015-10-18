@@ -421,6 +421,156 @@ class TestTravis(unittest.TestCase):
         else:
             os.environ["TRAVIS_TEST_RESULT"] = copy_result
 
+    def test_load_build_matrix_env_vars(self):
+        settings = Settings()
+
+        self.assertEquals(None, settings.get_setting("build_matrix"))
+
+        #setup Travis env vars
+        if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
+            reset_travis_vars = False
+            expected_os = os.environ["TRAVIS_OS_NAME"]
+            copy_python = os.environ["TRAVIS_PYTHON_VERSION"]
+            del os.environ["TRAVIS_PYTHON_VERSION"]
+        else:
+            reset_travis_vars = True
+            os.environ["TRAVIS"] = "true"
+            expected_os = os.environ["TRAVIS_OS_NAME"] = "test_os"
+
+        # temporarily remove PYTHON VERSION
+        if "TRAVIS_PYTHON_VERSION" in os.environ:
+            reset_python_version = True
+            copy_python = os.environ["TRAVIS_PYTHON_VERSION"]
+            del os.environ["TRAVIS_PYTHON_VERSION"]
+        else:
+            reset_python_version = False
+
+        # test language and language versions
+        test_languages = [
+            {'env_var': 'TRAVIS_DART_VERSION', 'language': 'dart', 'test_value': "1.1"},
+            {'env_var': 'TRAVIS_GO_VERSION', 'language': 'go', 'test_value': "1.2"},
+            {'env_var': 'TRAVIS_HAXE_VERSION', 'language': 'haxe', 'test_value': "1.3"},
+            {'env_var': 'TRAVIS_JDK_VERSION', 'language': 'java', 'test_value': "1.4"},
+            {'env_var': 'TRAVIS_JULIA_VERSION', 'language': 'julia', 'test_value': "1.5"},
+            {'env_var': 'TRAVIS_NODE_VERSION', 'language': 'javascript', 'test_value': "1.6"},
+            {'env_var': 'TRAVIS_OTP_RELEASE', 'language': 'erlang', 'test_value': "1.7"},
+            {'env_var': 'TRAVIS_PERL_VERSION', 'language': 'perl', 'test_value': "1.8"},
+            {'env_var': 'TRAVIS_PHP_VERSION', 'language': 'php', 'test_value': "1.9"},
+            {'env_var': 'TRAVIS_PYTHON_VERSION', 'language': 'python', 'test_value': "1.10"},
+            {'env_var': 'TRAVIS_R_VERSION', 'language': 'r', 'test_value': "1.11"},
+            {'env_var': 'TRAVIS_RUBY_VERSION', 'language': 'ruby', 'test_value': "1.12"},
+            {'env_var': 'TRAVIS_RUST_VERSION', 'language': 'rust', 'test_value': "1.13"},
+            {'env_var': 'TRAVIS_SCALA_VERSION', 'language': 'scala', 'test_value': "1.14"}
+        ]
+
+        # test languages
+        for language in test_languages:
+            if language['env_var'] in os.environ:
+                reset_travis_lang_version = False
+                expected_lang_version = os.environ[language['env_var']]
+            else:
+                reset_travis_lang_version = True
+                expected_lang_version = os.environ[language['env_var']] = language['test_value']
+
+            load_build_matrix_env_vars(settings)
+
+            self.assertDictEqual(
+                {
+                    'os': expected_os,
+                    'language': language['language'],
+                    'language_version': expected_lang_version,
+                    'summary': "%s %s %s" % (language['language'], expected_lang_version, expected_os)
+                },
+                settings.get_setting("build_matrix")
+            )
+
+            # reset Travis test result
+            if reset_travis_lang_version:
+                del os.environ[language['env_var']]
+
+        # reset test Travis vars
+        if reset_travis_vars:
+            del os.environ["TRAVIS"]
+            del os.environ["TRAVIS_OS_NAME"]
+
+        # reset removed python version
+        if reset_python_version:
+            os.environ["TRAVIS_PYTHON_VERSION"] = copy_python
+
+    def test_load_build_matrix_env_vars_parameters(self):
+        # setup Travis env vars
+        if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
+            reset_travis_vars = False
+            copy_os = os.environ["TRAVIS_OS_NAME"]
+        else:
+            reset_travis_vars = True
+            os.environ["TRAVIS"] = "true"
+
+        # temporarily remove OS VERSION
+        if "TRAVIS_OS_NAME" in os.environ:
+            reset_os = True
+            copy_os = os.environ["TRAVIS_OS_NAME"]
+            del os.environ["TRAVIS_OS_NAME"]
+        else:
+            reset_os = False
+
+        # temporarily remove PYTHON VERSION
+        if "TRAVIS_PYTHON_VERSION" in os.environ:
+            reset_python_version = True
+            copy_python = os.environ["TRAVIS_PYTHON_VERSION"]
+            del os.environ["TRAVIS_PYTHON_VERSION"]
+        else:
+            reset_python_version = False
+
+        # test optional build matrix parameters
+        test_parameters = [
+            {'env_var': 'TRAVIS_XCODE_SDK', 'parameter': 'xcode_sdk', 'test_value': "test_x_sdk"},
+            {'env_var': 'TRAVIS_XCODE_SCHEME', 'parameter': 'xcode_scheme', 'test_value': "test_x_scheme"},
+            {'env_var': 'TRAVIS_XCODE_PROJECT', 'parameter': 'xcode_project', 'test_value': "test_x_project"},
+            {'env_var': 'TRAVIS_XCODE_WORKSPACE', 'parameter': 'xcode_workspace', 'test_value': "test_x_workspace"},
+            {'env_var': 'CC', 'parameter': 'compiler', 'test_value': "test_gcc"},
+            {'env_var': 'ENV', 'parameter': 'parameters', 'test_value': "test_env"}
+        ]
+
+        # test parameters
+        for parameter in test_parameters:
+            Settings().__init__()
+            settings = Settings()
+
+            if parameter['env_var'] in os.environ:
+                reset_travis_parameter = False
+                expected_param_value = os.environ[parameter['env_var']]
+            else:
+                reset_travis_parameter = True
+                expected_param_value = os.environ[parameter['env_var']] = parameter['test_value']
+
+            load_build_matrix_env_vars(settings)
+
+            self.assertDictEqual(
+                {
+                    parameter["parameter"]: expected_param_value,
+                    'summary': expected_param_value
+                },
+                settings.get_setting("build_matrix")
+            )
+
+            # reset Travis parameters
+            if reset_travis_parameter:
+                del os.environ[parameter['env_var']]
+
+        # reset test Travis vars
+        if reset_travis_vars:
+            del os.environ["TRAVIS"]
+
+        # reset removed os name
+        if reset_os:
+            os.environ["TRAVIS_OS_NAME"] = copy_os
+
+        # reset removed python version
+        if reset_python_version:
+            os.environ["TRAVIS_PYTHON_VERSION"] = copy_python
+
+
     def test_convert_build_result(self):
         self.assertEquals("passed", convert_build_result(0))
         self.assertEquals("failed", convert_build_result(1))
