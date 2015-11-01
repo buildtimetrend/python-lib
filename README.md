@@ -122,7 +122,7 @@ We are looking for testers, developers, designers, ... and what more. [Contact u
 Donations
 ---------
 
-You can also support the project by making a [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LG9M6QTBS9LKL). They will help pay for the hosting and support further development.
+You can support the project by making a [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LG9M6QTBS9LKL). The donations will help pay for the hosting and support further development.
 
 
 Credits
