@@ -9,7 +9,7 @@ v0.3 (not yet released)
 - keenio.add_project_info_dict() : override project_name in event header with build_job repo
 - check_process_parameters() is split into validate_travis_request() and validate_task_parameters()
 - issue #69 : use Keen.io query caching to speed up badge generation
-- add keen_io_generate_write_key()
+- issue #8  : add keen_io_generate_write_key()
 - issue #91 : store pull_request related data
 - issue #89 : add settings to configure batch mode to process multiple builds
 - issue #96 : catch error when started_at or finished_at timestamp is invalid
