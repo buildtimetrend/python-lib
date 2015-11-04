@@ -139,8 +139,8 @@ def load_build_matrix_env_vars(settings):
         parameters = {
             'TRAVIS_XCODE_SDK': 'xcode_sdk',  # Objective-C
             'TRAVIS_XCODE_SCHEME': 'xcode_scheme',  # Objective-C
-            'TRAVIS_XCODE_PROJECT': 'xcode_project', # Objective-C
-            'TRAVIS_XCODE_WORKSPACE': 'xcode_workspace', # Objective-C
+            'TRAVIS_XCODE_PROJECT': 'xcode_project',  # Objective-C
+            'TRAVIS_XCODE_WORKSPACE': 'xcode_workspace',  # Objective-C
             'CC': 'compiler',  # C, C++
             'ENV': 'parameters'
         }
@@ -149,7 +149,10 @@ def load_build_matrix_env_vars(settings):
             if parameter in os.environ:
                 build_matrix.add_item(name, str(os.environ[parameter]))
 
-        settings.add_setting("build_matrix", build_matrix.get_items_with_summary())
+        settings.add_setting(
+            "build_matrix",
+            build_matrix.get_items_with_summary()
+        )
 
 
 def load_travis_pull_request_env_vars(settings):
@@ -606,7 +609,10 @@ class TravisData(object):
             if parameter in job_config:
                 build_matrix.add_item(name, str(job_config[parameter]))
 
-        self.current_job.add_property("build_matrix", build_matrix.get_items_with_summary())
+        self.current_job.add_property(
+            "build_matrix",
+            build_matrix.get_items_with_summary()
+        )
 
     def process_pull_request_data(self):
         """Retrieve pull request data from Travis CI API."""
