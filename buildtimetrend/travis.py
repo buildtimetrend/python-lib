@@ -774,14 +774,14 @@ class TravisData(object):
     def get_started_at(self):
         """Retrieve timestamp when build was started."""
         if len(self.builds_data) > 0:
-            return self.builds_data['builds'][0]['started_at']
+         return self.current_build_data['started_at']
         else:
             return None
 
     def get_finished_at(self):
         """Retrieve timestamp when build finished."""
         if len(self.builds_data) > 0:
-            return self.builds_data['builds'][0]['finished_at']
+            return self.current_build_data['finished_at']
         else:
             return None
 
