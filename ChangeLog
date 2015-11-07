@@ -15,6 +15,7 @@ v0.3 (not yet released)
 - issue #96 : catch error when started_at or finished_at timestamp is invalid
 - add get_items_with_summary() method to Collection class
 - issue #23 : load Travis CI build matrix settings
+- rename class Build to BuildJob, and file build.py to buildjob.py
 
 v0.2 (released on 16Feb2015)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script

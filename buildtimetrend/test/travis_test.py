@@ -1478,7 +1478,7 @@ class TestTravisData(unittest.TestCase):
         self.assertAlmostEqual(60.123, self.travis_data.get_job_duration(), 3)
 
         # reset current_job and only set finished timestamp
-        self.travis_data.current_job = Build()
+        self.travis_data.current_job = BuildJob()
         self.travis_data.current_job.set_finished_at(
             "2014-07-30T16:31:00.123Z"
         )

@@ -30,9 +30,9 @@ from buildtimetrend.collection import Collection
 from buildtimetrend.tools import split_isotimestamp
 
 
-class Build(object):
+class BuildJob(object):
 
-    """Gather Build related data."""
+    """Gather build job related data."""
 
     def __init__(self, csv_filename=None, end_timestamp=None):
         """Initialize instance."""
@@ -193,7 +193,7 @@ class Build(object):
         return data
 
     def to_xml(self):
-        """Generate XML object of a Build instance."""
+        """Generate XML object of a BuildJob instance."""
         root = etree.Element("build")
 
         # add properties
@@ -207,5 +207,5 @@ class Build(object):
         return root
 
     def to_xml_string(self):
-        """Generate XML string of a Build instance."""
+        """Generate XML string of a BuildJob instance."""
         return etree.tostring(self.to_xml(), pretty_print=True)

@@ -22,7 +22,7 @@
 
 import buildtimetrend
 from buildtimetrend.settings import Settings
-from buildtimetrend.build import Build
+from buildtimetrend.buildjob import BuildJob
 from buildtimetrend.stages import Stage
 from buildtimetrend.stages import Stages
 import constants
@@ -30,9 +30,9 @@ from lxml import etree
 import unittest
 
 
-class TestBuild(unittest.TestCase):
+class TestBuildJob(unittest.TestCase):
     def setUp(self):
-        self.build = Build()
+        self.build = BuildJob()
         # show full diff in case of assert mismatch
         self.maxDiff = None
 
@@ -63,16 +63,16 @@ class TestBuild(unittest.TestCase):
 
     def test_nofile(self):
         # number of stages should be zero when file doesn't exist
-        self.build = Build('nofile.csv')
+        self.build = BuildJob('nofile.csv')
         self.assertEquals(0, len(self.build.stages.stages))
 
-        self.build = Build('')
+        self.build = BuildJob('')
         self.assertEquals(0, len(self.build.stages.stages))
 
     def test_end_timestamp(self):
         self.assertEquals(0, self.build.stages.end_timestamp)
 
-        self.build = Build('', 123)
+        self.build = BuildJob('', 123)
         self.assertEquals(123, self.build.stages.end_timestamp)
 
     def test_set_started_at(self):
@@ -314,7 +314,7 @@ class TestBuild(unittest.TestCase):
         self.assertDictEqual({'duration': 20}, self.build.get_properties())
 
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test dict
         self.assertDictEqual({
@@ -375,7 +375,7 @@ class TestBuild(unittest.TestCase):
 
     def test_to_dict(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test dict
         self.assertDictEqual({
@@ -438,7 +438,7 @@ class TestBuild(unittest.TestCase):
 
     def test_stages_to_list(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test list
         self.assertListEqual([
@@ -526,7 +526,7 @@ class TestBuild(unittest.TestCase):
 
     def test_to_xml(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml output
         self.assertEquals(
@@ -548,7 +548,7 @@ class TestBuild(unittest.TestCase):
 
     def test_to_xml_string(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml string output
         self.assertEquals(

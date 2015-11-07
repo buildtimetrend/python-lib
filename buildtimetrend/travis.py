@@ -29,7 +29,7 @@ from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string
 from buildtimetrend.tools import get_repo_slug
-from buildtimetrend.build import Build
+from buildtimetrend.buildjob import BuildJob
 from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stage
 from buildtimetrend.collection import Collection
@@ -388,7 +388,7 @@ class TravisData(object):
         self.builds_data = {}
         self.build_jobs = {}
         self.current_build_data = {}
-        self.current_job = Build()
+        self.current_job = BuildJob()
         self.travis_substage = None
         self.repo = repo
         self.build_id = str(build_id)
@@ -487,7 +487,7 @@ class TravisData(object):
         # store build job
         self.build_jobs[str(job_id)] = self.current_job
         # create new build job instance
-        self.current_job = Build()
+        self.current_job = BuildJob()
 
         # return processed build job
         return self.build_jobs[str(job_id)]
