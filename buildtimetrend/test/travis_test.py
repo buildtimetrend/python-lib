@@ -710,17 +710,38 @@ class TestTravisData(unittest.TestCase):
     def test_gather_data(self):
         # retrieve data from Travis API
         self.assertTrue(self.travis_data.get_build_data())
-        self.assertTrue(len(self.travis_data.builds_data) > 0)
+        self.assertTrue(check_dict(self.travis_data.builds_data, key_list=["builds"]))
+        self.assertTrue(len(self.travis_data.builds_data["builds"]) > 0)
+        self.assertTrue(
+            check_dict(
+                self.travis_data.builds_data["builds"][0],
+                key_list=[
+                    "id", "number", "job_ids", "config",
+                    "started_at", "finished_at"
+                ]
+            )
+        )
+
+        # there should be build job IDs
+        self.assertTrue(
+            len(self.travis_data.builds_data["builds"][0]["job_ids"]) > 0
+        )
+
+        # check build number
+        self.assertEquals(
+            '158',
+            self.travis_data.builds_data["builds"][0]["number"]
+        )
 
         # retrieve start time
         self.assertEquals(
             '2014-07-08T11:18:13Z',
-            self.travis_data.get_started_at())
+            self.travis_data.builds_data["builds"][0]["started_at"])
 
         # retrieve finished timestamp
         self.assertEquals(
             '2014-07-08T11:19:55Z',
-            self.travis_data.get_finished_at())
+            self.travis_data.builds_data["builds"][0]["finished_at"])
 
     def test_get_substage_name(self):
         # test missing or incorrect parameter
