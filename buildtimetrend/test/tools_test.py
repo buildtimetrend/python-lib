@@ -275,6 +275,45 @@ class TestTools(unittest.TestCase):
         # should return true if parameter is a list
         self.assertTrue(is_list(["string", "test"], "name"))
 
+    def test_is_string(self):
+        self.assertRaises(TypeError, is_string)
+        self.assertRaises(TypeError, is_string, None)
+        self.assertRaises(TypeError, is_string, None, None)
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            is_string(None, "name")
+        self.assertEqual(
+            "param name should be a string",
+            str(cm.exception)
+        )
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            is_string(123, "name")
+        self.assertEqual(
+            "param name should be a string",
+            str(cm.exception)
+        )
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            is_string({}, "name")
+        self.assertEqual(
+            "param name should be a string",
+            str(cm.exception)
+        )
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            is_string([], "name")
+        self.assertEqual(
+            "param name should be a string",
+            str(cm.exception)
+        )
+
+        self.assertTrue(is_string("string", "name"))
+
     def test_num_string(self):
         self.assertRaises(TypeError, check_num_string)
         self.assertRaises(TypeError, check_num_string, None)

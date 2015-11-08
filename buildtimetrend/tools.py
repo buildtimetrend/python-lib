@@ -260,6 +260,19 @@ def is_list(param_list, name=None):
 
     return True
 
+def is_string(param, name):
+    """
+    Check if a parameter is a string.
+
+    Parameters :
+    - param: parameter that should be a string
+    - name: name of the parameter
+    Returns true if parameter is a string, throws an error when it isn't
+    """
+    if param is None or type(param) is not str:
+        raise TypeError("param %s should be a string" % name)
+
+    return True
 
 def check_num_string(num_string, name):
     """
