@@ -723,6 +723,10 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.get_finished_at())
 
     def test_get_substage_name(self):
+        # test missing or incorrect parameter
+        self.assertRaises(TypeError, self.travis_data.get_substage_name)
+        self.assertRaises(TypeError, self.travis_data.get_substage_name, 123)
+
         # result should be empty if no build config data is set
         self.assertEquals("", self.travis_data.get_substage_name("test_command.sh"))
 

@@ -28,6 +28,7 @@ from buildtimetrend import logger
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string
+from buildtimetrend.tools import is_string
 from buildtimetrend.tools import get_repo_slug
 from buildtimetrend.buildjob import BuildJob
 from buildtimetrend.settings import Settings
@@ -428,6 +429,9 @@ class TravisData(object):
         Parameters:
         - command : cli command
         """
+        if not is_string(command, "command"):
+            return ""
+
         if len(self.current_build_data) > 0 and \
                 "config" in self.current_build_data:
             build_config = self.current_build_data["config"]
