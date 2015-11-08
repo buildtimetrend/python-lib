@@ -750,6 +750,26 @@ class TestTravisData(unittest.TestCase):
             '2014-07-08T11:19:55Z',
             self.travis_data.builds_data["builds"][0]["finished_at"])
 
+    def test_get_started_at(self):
+        self.travis_data.current_build_data = {
+            "started_at": '2014-07-08T11:18:13Z',
+        }
+
+        # retrieve start time
+        self.assertEquals(
+            '2014-07-08T11:18:13Z',
+            self.travis_data.get_started_at())
+
+    def test_get_finished_at(self):
+        self.travis_data.current_build_data = {
+            "finished_at": '2014-07-08T11:19:55Z'
+        }
+
+        # retrieve finished timestamp
+        self.assertEquals(
+            '2014-07-08T11:19:55Z',
+            self.travis_data.get_finished_at())
+
     def test_get_substage_name(self):
         # test missing or incorrect parameter
         self.assertRaises(TypeError, self.travis_data.get_substage_name)
