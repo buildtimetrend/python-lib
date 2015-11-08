@@ -10,7 +10,7 @@ Visualise what's trending in your build process
 [![Supported Python versions](https://pypip.in/py_versions/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
 
 [![Build Status](https://travis-ci.org/buildtimetrend/python-lib.svg?branch=master)](https://travis-ci.org/buildtimetrend/python-lib)
-[![Coverage Status](https://coveralls.io/repos/buildtimetrend/python-lib/badge.png?branch=master)](https://coveralls.io/r/buildtimetrend/python-lib?branch=master)
+[![Coverage Status](https://coveralls.io/repos/buildtimetrend/python-lib/badge.svg?branch=master&service=github)](https://coveralls.io/github/buildtimetrend/python-lib?branch=master)
 [![Code Health](https://landscape.io/github/buildtimetrend/python-lib/master/landscape.png)](https://landscape.io/github/buildtimetrend/python-lib/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/?branch=master)
 [![Codacy Badge](https://www.codacy.com/project/badge/38e1a8fcf164434f87389a693368d0f2)](https://www.codacy.com/public/ruleant/python-lib)
