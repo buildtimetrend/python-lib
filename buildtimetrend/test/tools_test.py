@@ -277,8 +277,6 @@ class TestTools(unittest.TestCase):
 
     def test_is_string(self):
         self.assertRaises(TypeError, is_string)
-        self.assertRaises(TypeError, is_string, None)
-        self.assertRaises(TypeError, is_string, None, None)
 
         # error is thrown when called with an invalid parameter
         with self.assertRaises(TypeError) as cm:
@@ -311,6 +309,9 @@ class TestTools(unittest.TestCase):
             "param name should be a string",
             str(cm.exception)
         )
+
+        self.assertFalse(is_string(None))
+        self.assertFalse(is_string(None, None))
 
         self.assertTrue(is_string("string", "name"))
 

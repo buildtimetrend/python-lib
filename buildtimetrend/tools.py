@@ -243,14 +243,13 @@ def is_list(param_list, name=None):
     """
     Check if a parameter is a list.
 
-    Returns True if it is a list, false if it isn't,
+    Returns True if parameter is a list, false if it isn't,
     or if parameter 'name' is specified,
-    an Error is raised with the name in the message.
+    an Error is raised with the name of the parameter in the message.
 
     Parameters :
     - param_list: parameter that should be a list
     - name: name of the parameter
-    Return true if parameter is a list, throws error when it isn't
     """
     if param_list is None or type(param_list) is not list:
         if name is None:
@@ -260,17 +259,23 @@ def is_list(param_list, name=None):
 
     return True
 
-def is_string(param, name):
+def is_string(param, name=None):
     """
     Check if a parameter is a string.
+
+    Returns True if parameter is a string, false if it isn't,
+    If parameter 'name' is specified,
+    an Error is raised with the name of the parameter in the message.
 
     Parameters :
     - param: parameter that should be a string
     - name: name of the parameter
-    Returns true if parameter is a string, throws an error when it isn't
     """
     if param is None or type(param) is not str:
-        raise TypeError("param %s should be a string" % name)
+        if name is None:
+            return False
+        else:
+            raise TypeError("param %s should be a string" % name)
 
     return True
 
