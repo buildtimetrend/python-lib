@@ -778,7 +778,7 @@ class TravisData(object):
     def get_started_at(self):
         """Retrieve timestamp when build was started."""
         if check_dict(self.current_build_data, key_list=["started_at"]):
-         return self.current_build_data['started_at']
+            return self.current_build_data['started_at']
         else:
             return None
 

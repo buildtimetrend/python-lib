@@ -259,6 +259,7 @@ def is_list(param_list, name=None):
 
     return True
 
+
 def is_string(param, name=None):
     """
     Check if a parameter is a string.
@@ -278,6 +279,7 @@ def is_string(param, name=None):
             raise TypeError("param %s should be a string" % name)
 
     return True
+
 
 def check_num_string(num_string, name):
     """
