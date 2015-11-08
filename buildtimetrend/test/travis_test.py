@@ -707,6 +707,13 @@ class TestTravisData(unittest.TestCase):
             "http://test.url.com/", self.travis_data.connector.api_url
         )
 
+    def test_get_build_data(self):
+        self.assertTrue(self.travis_data.get_build_data())
+
+        # trigger URLError, with invalid URL
+        self.travis_data.connector.api_url = "http://invalid_url/"
+        self.assertFalse(self.travis_data.get_build_data())
+
     def test_gather_data(self):
         # retrieve data from Travis API
         self.assertTrue(self.travis_data.get_build_data())
