@@ -429,7 +429,7 @@ class TravisData(object):
         Parameters:
         - command : cli command
         """
-        if not is_string(command, "command"):
+        if not is_string(command):
             return ""
 
         if len(self.current_build_data) > 0 and \
