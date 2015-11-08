@@ -722,6 +722,25 @@ class TestTravisData(unittest.TestCase):
             '2014-07-08T11:19:55Z',
             self.travis_data.get_finished_at())
 
+    def test_get_substage_name(self):
+        # result should be empty if no build config data is set
+        self.assertEquals("", self.travis_data.get_substage_name("test_command.sh"))
+
+        # test with incorrect build config data
+        self.travis_data.current_build_data = {"test": "value"}
+        self.assertEquals("", self.travis_data.get_substage_name("test_command.sh"))
+
+        # test with empty command list
+        self.travis_data.current_build_data = {"config": {}}
+        self.assertEquals("", self.travis_data.get_substage_name("test_command.sh"))
+
+        # test with correct build data, but without a matching command
+        self.travis_data.current_build_data = json.loads(JOB_DATA_ANDROID)["job"]
+        self.assertEquals("", self.travis_data.get_substage_name("test_command.sh"))
+
+        # test with existing command
+        self.assertEquals("before_install.4", self.travis_data.get_substage_name("mvn -v"))
+
     def test_process_no_build_job(self):
         self.assertRaises(TypeError, self.travis_data.process_build_job)
 
