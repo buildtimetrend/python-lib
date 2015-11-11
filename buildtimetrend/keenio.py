@@ -187,8 +187,8 @@ def add_project_info_dict(payload):
 
     Param payload: dictonary payload
     """
-    if not check_dict(payload, "payload"):
-        return None
+    # check if payload is a dictionary, throws an exception if it isn't
+    check_dict(payload, "payload")
 
     payload_as_dict = copy.deepcopy(payload)
 
@@ -215,8 +215,8 @@ def add_project_info_list(payload):
 
     Param payload: list of dictionaries
     """
-    if not is_list(payload, "payload"):
-        return None
+    # check if payload is a list, throws an exception if it isn't
+    is_list(payload, "payload")
 
     payload_as_list = []
 
