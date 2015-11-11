@@ -341,7 +341,7 @@ def get_avg_buildtime(repo=None, interval=None):
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         return -1
-    except keen.exceptions.KeenApiError, msg:
+    except keen.exceptions.KeenApiError as msg:
         logger.error("Error in keenio.get_avg_buildtime() : " + str(msg))
         return -1
 
@@ -371,7 +371,7 @@ def get_total_build_jobs(repo=None, interval=None):
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         return -1
-    except keen.exceptions.KeenApiError, msg:
+    except keen.exceptions.KeenApiError as msg:
         logger.error("Error in keenio.get_total_build_jobs() : " + str(msg))
         return -1
 
@@ -408,7 +408,7 @@ def get_passed_build_jobs(repo=None, interval=None):
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         return -1
-    except keen.exceptions.KeenApiError, msg:
+    except keen.exceptions.KeenApiError as msg:
         logger.error("Error in keenio.get_passed_build_jobs() : " + str(msg))
         return -1
 
@@ -483,7 +483,7 @@ def get_total_builds(repo=None, interval=None):
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         return -1
-    except keen.exceptions.KeenApiError, msg:
+    except keen.exceptions.KeenApiError as msg:
         logger.error("Error in keenio.get_total_builds() : " + str(msg))
         return -1
 
@@ -508,7 +508,7 @@ def get_latest_buildtime(repo=None):
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         return -1
-    except keen.exceptions.KeenApiError, msg:
+    except keen.exceptions.KeenApiError as msg:
         logger.error("Error in keenio.get_latest_buildtime() : " + str(msg))
         return -1
 
@@ -544,7 +544,7 @@ def has_build_id(repo=None, build_id=None):
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         raise SystemError("Connection to Keen.io API failed")
-    except keen.exceptions.KeenApiError, msg:
+    except keen.exceptions.KeenApiError as msg:
         logger.error("Error in keenio.has_build_id : " + str(msg))
         raise SystemError(msg)
 
@@ -562,7 +562,7 @@ def get_all_projects():
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         return []
-    except keen.exceptions.KeenApiError, msg:
+    except keen.exceptions.KeenApiError as msg:
         logger.error("Error in keenio.get_all_projects() : " + str(msg))
         return -1
 

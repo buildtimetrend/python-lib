@@ -89,7 +89,7 @@ class Collection(object):
         matrix_params = self.get_key_sorted_items().values()
         try:
             items["summary"] = " ".join(matrix_params)
-        except TypeError, msg:
+        except TypeError as msg:
             logger.error(
                 "Error parsing build matrix properties : %s, message : %s",
                 matrix_params, str(msg)

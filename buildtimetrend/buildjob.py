@@ -113,7 +113,7 @@ class BuildJob(object):
         """
         try:
             self.add_property("started_at", split_isotimestamp(isotimestamp))
-        except (TypeError, ValueError), msg:
+        except (TypeError, ValueError) as msg:
             logger.warning(
                 "isotimestamp expected when setting started_at : %s", msg
             )
@@ -127,7 +127,7 @@ class BuildJob(object):
         """
         try:
             self.add_property("finished_at", split_isotimestamp(isotimestamp))
-        except (TypeError, ValueError), msg:
+        except (TypeError, ValueError) as msg:
             logger.warning(
                 "isotimestamp expected when setting finished_at : %s", msg
             )

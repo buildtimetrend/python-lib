@@ -409,7 +409,7 @@ class TravisData(object):
         request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
         try:
             self.builds_data = self.connector.json_request(request)
-        except (HTTPError, URLError), msg:
+        except (HTTPError, URLError) as msg:
             logger.error("Error getting build data from Travis CI: %s", msg)
             return False
 
