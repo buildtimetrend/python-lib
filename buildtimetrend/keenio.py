@@ -31,12 +31,13 @@ from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import is_list
+from buildtimetrend.tools import is_string
 
 
 TIME_INTERVALS = {
-    'week': {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 24 * 3600},
-    'month': {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 24 * 3600},
-    'year': {'name': 'year', 'timeframe': 'this_52_weeks', 'max_age': 7 * 24 * 3600}
+    'week': {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
+    'month': {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 600},
+    'year': {'name': 'year', 'timeframe': 'this_52_weeks', 'max_age': 1800}
 }
 KEEN_PROJECT_INFO_NAME = "buildtime_trend"
 
@@ -59,10 +60,27 @@ def keen_has_master_key():
     return False
 
 
+def keen_has_write_key():
+    """Check if Keen.io Write Key is set."""
+    if "KEEN_WRITE_KEY" in os.environ or keen.write_key is not None:
+        return True
+
+    logger.warning("Keen.io Write Key is not set")
+    return False
+
+
+def keen_has_read_key():
+    """Check if Keen.io Read key is set."""
+    if "KEEN_READ_KEY" in os.environ or keen.read_key is not None:
+        return True
+
+    logger.warning("Keen.io Read Key is not set")
+    return False
+
+
 def keen_is_writable():
     """Check if login keys for Keen IO API are set, to allow writing."""
-    if (keen_has_project_id() and
-            "KEEN_WRITE_KEY" in os.environ or keen.write_key is not None):
+    if keen_has_project_id() and keen_has_write_key():
         return True
 
     logger.warning("Keen.io Write Key is not set")
@@ -71,8 +89,7 @@ def keen_is_writable():
 
 def keen_is_readable():
     """Check if login keys for Keen IO API are set, to allow reading."""
-    if (keen_has_project_id() and
-            "KEEN_READ_KEY" in os.environ or keen.read_key is not None):
+    if keen_has_project_id() and keen_has_read_key():
         return True
 
     logger.warning("Keen.io Read Key is not set")
@@ -93,11 +110,30 @@ def keen_io_generate_read_key(repo):
     master_key = keen.master_key or os.environ.get("KEEN_MASTER_KEY")
 
     privileges = {
-        "filters": [get_repo_filter(repo)],
         "allowed_operations": ["read"]
     }
 
+    if repo is not None:
+        privileges["filters"] = [get_repo_filter(repo)]
+
     logger.info("Keen.io Read Key is created for %s", repo)
+    return scoped_keys.encrypt(master_key, privileges)
+
+
+def keen_io_generate_write_key():
+    """Create scoped key for write access to Keen.io database."""
+    if not keen_has_master_key():
+        logger.warning("Keen.io Write Key was not created,"
+                       " keen.master_key is not defined.")
+        return None
+
+    master_key = keen.master_key or os.environ.get("KEEN_MASTER_KEY")
+
+    privileges = {
+        "allowed_operations": ["write"]
+    }
+
+    logger.info("Keen.io Write Key is created")
     return scoped_keys.encrypt(master_key, privileges)
 
 
@@ -151,8 +187,8 @@ def add_project_info_dict(payload):
 
     Param payload: dictonary payload
     """
-    if not check_dict(payload, "payload"):
-        return None
+    # check if payload is a dictionary, throws an exception if it isn't
+    check_dict(payload, "payload")
 
     payload_as_dict = copy.deepcopy(payload)
 
@@ -179,8 +215,8 @@ def add_project_info_list(payload):
 
     Param payload: list of dictionaries
     """
-    if not is_list(payload, "payload"):
-        return None
+    # check if payload is a list, throws an exception if it isn't
+    is_list(payload, "payload")
 
     payload_as_list = []
 
@@ -200,11 +236,6 @@ def get_dashboard_keen_config(repo):
     """
     # initialise config settings
     keen_config = {}
-
-    if repo is None:
-        logger.warning("Keen.io related config settings could not be created,"
-                       " repo is not defined.")
-        return keen_config
 
     if not keen_has_project_id() or not keen_has_master_key():
         logger.warning("Keen.io related config settings could not be created,"
@@ -497,9 +528,9 @@ def has_build_id(repo=None, build_id=None):
     """
     if repo is None or build_id is None:
         logger.error("Repo or build_id is not set")
-        raise ValueError
+        raise ValueError("Repo or build_id is not set")
     if not keen_is_readable():
-        raise SystemError
+        raise SystemError("Keen.io Project ID or API Read Key is not set")
 
     try:
         count = keen.count(
@@ -512,10 +543,10 @@ def has_build_id(repo=None, build_id=None):
         return count > 0
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
-        raise requests.ConnectionError
+        raise SystemError("Connection to Keen.io API failed")
     except keen.exceptions.KeenApiError, msg:
         logger.error("Error in keenio.has_build_id : " + str(msg))
-        raise keen.exceptions.KeenApiError
+        raise SystemError(msg)
 
 
 def get_all_projects():
@@ -566,7 +597,7 @@ def check_time_interval(interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     """
-    if type(interval) is str:
+    if is_string(interval):
         # convert to lowercase
         interval = interval.lower()
 

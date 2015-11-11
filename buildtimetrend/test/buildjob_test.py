@@ -22,7 +22,7 @@
 
 import buildtimetrend
 from buildtimetrend.settings import Settings
-from buildtimetrend.build import Build
+from buildtimetrend.buildjob import BuildJob
 from buildtimetrend.stages import Stage
 from buildtimetrend.stages import Stages
 import constants
@@ -30,9 +30,9 @@ from lxml import etree
 import unittest
 
 
-class TestBuild(unittest.TestCase):
+class TestBuildJob(unittest.TestCase):
     def setUp(self):
-        self.build = Build()
+        self.build = BuildJob()
         # show full diff in case of assert mismatch
         self.maxDiff = None
 
@@ -63,17 +63,51 @@ class TestBuild(unittest.TestCase):
 
     def test_nofile(self):
         # number of stages should be zero when file doesn't exist
-        self.build = Build('nofile.csv')
+        self.build = BuildJob('nofile.csv')
         self.assertEquals(0, len(self.build.stages.stages))
 
-        self.build = Build('')
+        self.build = BuildJob('')
         self.assertEquals(0, len(self.build.stages.stages))
 
     def test_end_timestamp(self):
         self.assertEquals(0, self.build.stages.end_timestamp)
 
-        self.build = Build('', 123)
+        self.build = BuildJob('', 123)
         self.assertEquals(123, self.build.stages.end_timestamp)
+
+    def test_set_started_at(self):
+        self.assertEquals(None, self.build.properties.get_item("started_at"))
+
+        self.build.set_started_at(None)
+        self.assertEquals(None, self.build.properties.get_item("started_at"))
+
+        # set as int, isotimestamp string expected
+        self.build.set_started_at(constants.TIMESTAMP_STARTED)
+        self.assertEquals(None, self.build.properties.get_item("started_at"))
+
+        # set as isotimestamp string
+        self.build.set_started_at(constants.ISOTIMESTAMP_STARTED)
+        self.assertDictEqual(
+            constants.SPLIT_TIMESTAMP_STARTED,
+            self.build.properties.get_item("started_at")
+        )
+
+    def test_set_finished_at(self):
+        self.assertEquals(None, self.build.properties.get_item("finished_at"))
+
+        self.build.set_finished_at(None)
+        self.assertEquals(None, self.build.properties.get_item("finished_at"))
+
+        # set as int, isotimestamp string expected
+        self.build.set_finished_at(constants.TIMESTAMP_FINISHED)
+        self.assertEquals(None, self.build.properties.get_item("finished_at"))
+
+        # set as isotimestamp string
+        self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
+        self.assertDictEqual(
+            constants.SPLIT_TIMESTAMP_FINISHED,
+            self.build.properties.get_item("finished_at")
+        )
 
     def test_add_stages(self):
         self.build.add_stages(None)
@@ -131,10 +165,12 @@ class TestBuild(unittest.TestCase):
 
         # test stages (names + duration)
         self.assertListEqual(
-           [{'duration': 235,
-             'finished_at': constants.SPLIT_TIMESTAMP1,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP_STARTED}],
+            [{
+                'duration': 235,
+                'finished_at': constants.SPLIT_TIMESTAMP1,
+                'name': 'stage1',
+                'started_at': constants.SPLIT_TIMESTAMP_STARTED
+            }],
             self.build.stages.stages)
 
         # add another stage
@@ -162,15 +198,19 @@ class TestBuild(unittest.TestCase):
         )
 
         # test stages (names + duration)
-        self.assertListEqual(
-           [{'duration': 235,
-             'finished_at': constants.SPLIT_TIMESTAMP1,
-             'name': 'stage1',
-             'started_at': constants.SPLIT_TIMESTAMP_STARTED},
-            {'duration': 136.234,
-             'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-             'name': 'stage2',
-             'started_at': constants.SPLIT_TIMESTAMP1}],
+        self.assertListEqual([
+            {
+                'duration': 235,
+                'finished_at': constants.SPLIT_TIMESTAMP1,
+                'name': 'stage1',
+                'started_at': constants.SPLIT_TIMESTAMP_STARTED
+            },
+            {
+                'duration': 136.234,
+                'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                'name': 'stage2',
+                'started_at': constants.SPLIT_TIMESTAMP1
+            }],
             self.build.stages.stages)
 
     def test_add_property(self):
@@ -240,17 +280,33 @@ class TestBuild(unittest.TestCase):
         settings.add_setting("job", "123.1")
         settings.add_setting("branch", "branch1")
         settings.add_setting("result", "passed")
+        settings.add_setting("build_trigger", "push")
+        settings.add_setting(
+            "pull_request",
+            {
+                "is_pull_request": False,
+                "title": None,
+                "number": None
+            }
+        )
         settings.set_project_name("test/project")
 
         self.build.load_properties_from_settings()
         self.assertDictEqual(
-            {'duration': 0,
-             'ci_platform': "travis",
-             'build': "123",
-             'job': "123.1",
-             'branch': "branch1",
-             'result': "passed",
-             'repo': "test/project"},
+            {
+                'duration': 0,
+                'ci_platform': "travis",
+                'build': "123",
+                'job': "123.1",
+                'branch': "branch1",
+                'result': "passed",
+                'build_trigger': "push",
+                'pull_request': {
+                    "is_pull_request": False,
+                    "title": None,
+                    "number": None},
+                'repo': "test/project"
+            },
             self.build.get_properties())
 
     def test_set_duration(self):
@@ -258,76 +314,94 @@ class TestBuild(unittest.TestCase):
         self.assertDictEqual({'duration': 20}, self.build.get_properties())
 
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test dict
-        self.assertDictEqual(
-            {'duration': 17,
+        self.assertDictEqual({
+            'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP1,
             'finished_at': constants.SPLIT_TIMESTAMP4,
-            'stages':
-            [{'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-             {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-             {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3}]
-            },
+            'stages': [
+                {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                },
+                {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2
+                },
+                {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3
+                }
+            ]},
             self.build.to_dict())
 
         # setting duration, overrides total stage duration
         self.build.add_property("duration", 20)
 
         # test dict
-        self.assertDictEqual(
-            {'duration': 20,
+        self.assertDictEqual({
+            'duration': 20,
             'started_at': constants.SPLIT_TIMESTAMP1,
             'finished_at': constants.SPLIT_TIMESTAMP4,
-            'stages':
-            [{'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-             {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-             {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3}]
-            },
+            'stages': [
+                {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                },
+                {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2
+                },
+                {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3
+                }
+            ]},
             self.build.to_dict())
 
     def test_to_dict(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test dict
-        self.assertDictEqual(
-            {'duration': 17,
+        self.assertDictEqual({
+            'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP1,
             'finished_at': constants.SPLIT_TIMESTAMP4,
-            'stages':
-            [{'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-             {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-             {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3}]
-            },
+            'stages': [
+                {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1
+                },
+                {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2
+                },
+                {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3
+                }
+            ]},
             self.build.to_dict())
 
         # add properties
@@ -338,55 +412,69 @@ class TestBuild(unittest.TestCase):
         # finished_at property should override default value
         self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
         # test dict
-        self.assertDictEqual(
-            {'duration': 17,
+        self.assertDictEqual({
+            'duration': 17,
             'started_at': constants.SPLIT_TIMESTAMP_STARTED,
             'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
             'property1': 2, 'property2': 3,
-            'stages':
-            [{'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-             {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-             {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3}]
-            },
+            'stages': [
+                {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1},
+                {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2},
+                {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3}
+            ]},
             self.build.to_dict())
 
     def test_stages_to_list(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test list
-        self.assertListEqual(
-            [{'stage': {'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP1,
-            'finished_at': constants.SPLIT_TIMESTAMP4}},
-            {'stage': {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP1,
-            'finished_at': constants.SPLIT_TIMESTAMP4}},
-            {'stage': {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP1,
-            'finished_at': constants.SPLIT_TIMESTAMP4}},
-            ],
+        self.assertListEqual([
+            {
+                'stage': {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP1,
+                    'finished_at': constants.SPLIT_TIMESTAMP4}
+            },
+            {
+                'stage': {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP1,
+                    'finished_at': constants.SPLIT_TIMESTAMP4}
+            },
+            {
+                'stage': {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP1,
+                    'finished_at': constants.SPLIT_TIMESTAMP4}
+            }],
             self.build.stages_to_list())
 
         # add properties
@@ -397,37 +485,48 @@ class TestBuild(unittest.TestCase):
         # finished_at property should override default value
         self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
         # test dict
-        self.assertListEqual(
-            [{'stage': {'duration': 2,
-              'finished_at': constants.SPLIT_TIMESTAMP2,
-              'name': 'stage1',
-              'started_at': constants.SPLIT_TIMESTAMP1},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-            'property1': 2, 'property2': 3}},
-            {'stage': {'duration': 5,
-              'finished_at': constants.SPLIT_TIMESTAMP3,
-              'name': 'stage2',
-              'started_at': constants.SPLIT_TIMESTAMP2},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-            'property1': 2, 'property2': 3}},
-            {'stage': {'duration': 10,
-              'finished_at': constants.SPLIT_TIMESTAMP4,
-              'name': 'stage3',
-              'started_at': constants.SPLIT_TIMESTAMP3},
-            'job': {'duration': 17,
-            'started_at': constants.SPLIT_TIMESTAMP_STARTED,
-            'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
-            'property1': 2, 'property2': 3}},
-            ],
+        self.assertListEqual([
+            {
+                'stage': {
+                    'duration': 2,
+                    'finished_at': constants.SPLIT_TIMESTAMP2,
+                    'name': 'stage1',
+                    'started_at': constants.SPLIT_TIMESTAMP1},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP_STARTED,
+                    'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                    'property1': 2, 'property2': 3}
+            },
+            {
+                'stage': {
+                    'duration': 5,
+                    'finished_at': constants.SPLIT_TIMESTAMP3,
+                    'name': 'stage2',
+                    'started_at': constants.SPLIT_TIMESTAMP2},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP_STARTED,
+                    'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                    'property1': 2, 'property2': 3}
+            },
+            {
+                'stage': {
+                    'duration': 10,
+                    'finished_at': constants.SPLIT_TIMESTAMP4,
+                    'name': 'stage3',
+                    'started_at': constants.SPLIT_TIMESTAMP3},
+                'job': {
+                    'duration': 17,
+                    'started_at': constants.SPLIT_TIMESTAMP_STARTED,
+                    'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
+                    'property1': 2, 'property2': 3}
+            }],
             self.build.stages_to_list())
 
     def test_to_xml(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml output
         self.assertEquals(
@@ -449,7 +548,7 @@ class TestBuild(unittest.TestCase):
 
     def test_to_xml_string(self):
         # read and parse sample file
-        self.build = Build(constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml string output
         self.assertEquals(

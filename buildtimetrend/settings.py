@@ -51,7 +51,10 @@ class Settings(object):
         def __init__(self):
             """Initialise class."""
             self.settings = Collection()
+            self.set_defaults()
 
+        def set_defaults(self):
+            """Set default values."""
             # set loglevel
             self.add_setting("loglevel", "WARNING")
 
@@ -65,6 +68,15 @@ class Settings(object):
             # set default paths
             self.add_setting('dashboard_configfile',
                              'dashboard/config.js')
+
+            # set multi build import settings
+            self.add_setting(
+                'multi_import',
+                {
+                    'max_builds': 100,
+                    'delay': 3
+                }
+            )
 
         def set_project_name(self, name):
             """
@@ -244,6 +256,8 @@ class Settings(object):
 
             # load task queue environment variables
             self.load_env_vars_task_queue()
+            # load multi build import environment variables
+            self.load_env_vars_multi_import()
 
         def load_env_vars_task_queue(self):
             """
@@ -256,6 +270,7 @@ class Settings(object):
             queue_env_vars = OrderedDict()
             queue_env_vars["BTT_AMQP_URL"] = "amqp"
             queue_env_vars["BTT_REDIS_URL"] = "redis"
+            queue_env_vars["RABBITMQ_BIGWIG_URL"] = "amqp"
             queue_env_vars["CLOUDAMQP_URL"] = "amqp"
             queue_env_vars["REDISGREEN_URL"] = "redis"
 
@@ -271,6 +286,19 @@ class Settings(object):
                     )
                     # exit loop on first match
                     break
+
+        def load_env_vars_multi_import(self):
+            """Load multi build import environment variables."""
+            multi_import = {}
+
+            if "BTT_MULTI_MAX_BUILDS" in os.environ:
+                multi_import["max_builds"] = \
+                    int(os.environ["BTT_MULTI_MAX_BUILDS"])
+            if "BTT_MULTI_DELAY" in os.environ:
+                multi_import["delay"] = int(os.environ["BTT_MULTI_DELAY"])
+
+            if len(multi_import) > 0:
+                self.add_setting("multi_import", multi_import)
 
         def env_var_to_settings(self, env_var_name, settings_name):
             """

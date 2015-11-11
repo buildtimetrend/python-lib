@@ -68,8 +68,11 @@ def split_isotimestamp(isotimestamp):
     - isotimestamp : timestamp in ISO format YYYY-MM-DDTHH:MM:SS
     """
     if isotimestamp is None or type(isotimestamp) not in (str, unicode):
-        raise TypeError("param %s should be an isotimestamp formatted string" %
-                        'isotimestamp')
+        raise TypeError(
+            "param %s should be an isotimestamp formatted string, "
+            "type %s found" %
+            ('isotimestamp', type(isotimestamp))
+        )
     # use dateutil.parser.parse to parse the timestamp
     return split_datetime(parse(isotimestamp, tzinfos={"UTC": +0}))
 
@@ -240,20 +243,40 @@ def is_list(param_list, name=None):
     """
     Check if a parameter is a list.
 
-    Returns True if it is a list, false if it isn't,
+    Returns True if parameter is a list, false if it isn't,
     or if parameter 'name' is specified,
-    an Error is raised with the name in the message.
+    an Error is raised with the name of the parameter in the message.
 
     Parameters :
     - param_list: parameter that should be a list
     - name: name of the parameter
-    Return true if parameter is a list, throws error when it isn't
     """
     if param_list is None or type(param_list) is not list:
         if name is None:
             return False
         else:
             raise TypeError("param %s should be a list" % name)
+
+    return True
+
+
+def is_string(param, name=None):
+    """
+    Check if a parameter is a string.
+
+    Returns True if parameter is a string, false if it isn't,
+    If parameter 'name' is specified,
+    an Error is raised with the name of the parameter in the message.
+
+    Parameters :
+    - param: parameter that should be a string
+    - name: name of the parameter
+    """
+    if param is None or type(param) is not str:
+        if name is None:
+            return False
+        else:
+            raise TypeError("param %s should be a string" % name)
 
     return True
 

@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import copy
 from collections import OrderedDict
 from buildtimetrend.tools import check_dict
+from buildtimetrend import logger
 
 
 class Collection(object):
@@ -42,7 +43,11 @@ class Collection(object):
         - name : Item name
         - value : Item value
         """
-        self.items[name] = value
+        if check_dict(value) and name in self.items and \
+                check_dict(self.items[name]):
+            self.items[name].update(value)
+        else:
+            self.items[name] = value
 
     def get_item(self, name):
         """
@@ -75,6 +80,22 @@ class Collection(object):
         """Return items collection as dictionary."""
         # copy values of items collection
         return copy.deepcopy(self.items)
+
+    def get_items_with_summary(self):
+        """Return items collection as dictionary with an summary property."""
+        items = self.get_items()
+
+        # concatenate all properties in a summary field
+        matrix_params = self.get_key_sorted_items().values()
+        try:
+            items["summary"] = " ".join(matrix_params)
+        except TypeError, msg:
+            logger.error(
+                "Error parsing build matrix properties : %s, message : %s",
+                matrix_params, str(msg)
+            )
+
+        return items
 
     def get_key_sorted_items(self):
         """Return items as an ordered dictionary, sorted on key."""

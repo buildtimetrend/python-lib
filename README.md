@@ -10,7 +10,7 @@ Visualise what's trending in your build process
 [![Supported Python versions](https://pypip.in/py_versions/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
 
 [![Build Status](https://travis-ci.org/buildtimetrend/python-lib.svg?branch=master)](https://travis-ci.org/buildtimetrend/python-lib)
-[![Coverage Status](https://coveralls.io/repos/buildtimetrend/python-lib/badge.png?branch=master)](https://coveralls.io/r/buildtimetrend/python-lib?branch=master)
+[![Coverage Status](https://coveralls.io/repos/buildtimetrend/python-lib/badge.svg?branch=master&service=github)](https://coveralls.io/github/buildtimetrend/python-lib?branch=master)
 [![Code Health](https://landscape.io/github/buildtimetrend/python-lib/master/landscape.png)](https://landscape.io/github/buildtimetrend/python-lib/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/?branch=master)
 [![Codacy Badge](https://www.codacy.com/project/badge/38e1a8fcf164434f87389a693368d0f2)](https://www.codacy.com/public/ruleant/python-lib)
@@ -112,6 +112,17 @@ Bugs and feature requests
 -------------------------
 
 Please report bugs and add feature requests in the Github [issue tracker](https://github.com/buildtimetrend/python-lib/issues).
+
+Contribute
+----------
+
+If you want to contribute to make Buildtime Trend even better, check out the [contribution](https://github.com/buildtimetrend/python-lib/wiki/Contribute) page.
+We are looking for testers, developers, designers, ... and what more. [Contact us](#contact) if you want to help out.
+
+Donations
+---------
+
+You can support the project by making a [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LG9M6QTBS9LKL). The donations will help pay for the hosting and support further development.
 
 
 Credits
