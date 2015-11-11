@@ -143,6 +143,6 @@ def validate_task_parameters(repo=None, build=None):
     except Exception, msg:
         # Raise last exception again
         logger.error("Error checking if build exists : %s", msg)
-        raise Exception("Error checking if build exists.")
+        raise SystemError("Error checking if build exists.")
 
     return None

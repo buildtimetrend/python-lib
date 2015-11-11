@@ -528,9 +528,9 @@ def has_build_id(repo=None, build_id=None):
     """
     if repo is None or build_id is None:
         logger.error("Repo or build_id is not set")
-        raise ValueError
+        raise ValueError("Repo or build_id is not set")
     if not keen_is_readable():
-        raise SystemError
+        raise SystemError("Keen.io Project ID or API Read Key is not set")
 
     try:
         count = keen.count(
@@ -543,10 +543,10 @@ def has_build_id(repo=None, build_id=None):
         return count > 0
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
-        raise requests.ConnectionError
+        raise SystemError("Connection to Keen.io API failed")
     except keen.exceptions.KeenApiError, msg:
         logger.error("Error in keenio.has_build_id : " + str(msg))
-        raise keen.exceptions.KeenApiError
+        raise SystemError(msg)
 
 
 def get_all_projects():

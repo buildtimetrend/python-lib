@@ -362,3 +362,18 @@ class TestKeen(unittest.TestCase):
         self.assertEqual("red", get_result_color(49, 75, 50))
         self.assertEqual("red", get_result_color(0, 75, 50))
         self.assertEqual("red", get_result_color(-10, 75, 50))
+
+    def test_has_build_id(self):
+        # error is thrown when called without parameters
+        self.assertRaises(ValueError, has_build_id)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(ValueError, has_build_id, None, None)
+
+        # error is thrown when project_id or read key is not set
+        self.assertRaises(SystemError, has_build_id, "test", 123)
+
+        # test with an invalid token
+        keen.project_id = "1234abcd"
+        keen.read_key = "4567abcd5678efgh"
+        self.assertRaises(SystemError, has_build_id, "test", 123)

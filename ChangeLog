@@ -17,6 +17,7 @@ v0.3 (not yet released)
 - issue #23 : load Travis CI build matrix settings
 - rename class Build to BuildJob, and file build.py to buildjob.py
 - add is_string() test
+- issue #126 : improve Keen.io API connection error handling
 
 v0.2 (released on 16Feb2015)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script
