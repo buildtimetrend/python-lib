@@ -85,7 +85,7 @@ def load_travis_env_vars():
             )
 
         load_build_matrix_env_vars(settings)
-        load_travis_pull_request_env_vars(settings)
+        load_travis_pr_env_vars(settings)
 
 
 def load_build_matrix_env_vars(settings):
@@ -156,9 +156,9 @@ def load_build_matrix_env_vars(settings):
         )
 
 
-def load_travis_pull_request_env_vars(settings):
+def load_travis_pr_env_vars(settings):
     """
-    Load Travis CI pull request environment variable.
+    Load Travis CI pull request environment variables.
 
     Load Travis CI pull request environment variables
     and assign their values to the corresponding setting value.
