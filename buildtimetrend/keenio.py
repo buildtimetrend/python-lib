@@ -31,6 +31,7 @@ from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import is_list
+from buildtimetrend.tools import is_string
 
 
 TIME_INTERVALS = {
@@ -596,7 +597,7 @@ def check_time_interval(interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     """
-    if type(interval) is str:
+    if is_string(interval):
         # convert to lowercase
         interval = interval.lower()
 

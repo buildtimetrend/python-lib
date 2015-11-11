@@ -283,7 +283,7 @@ def check_authorization(repo, auth_header):
         return True
 
     # check if parameters are strings
-    if type(repo) is str and type(auth_header) is str and type(token) is str:
+    if is_string(repo) and is_string(auth_header) and is_string(token):
         # generate hash and compare with Authorization header
         auth_hash = sha256(repo + token).hexdigest()
 
