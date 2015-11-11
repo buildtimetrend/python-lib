@@ -28,7 +28,7 @@ import unittest
 import constants
 
 
-class TestTools(unittest.TestCase):
+class TestKeen(unittest.TestCase):
     copy_keen_project_id = None
     copy_keen_write_key = None
     copy_keen_read_key = None
