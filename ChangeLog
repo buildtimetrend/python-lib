@@ -1,4 +1,4 @@
-v0.3 (not yet released)
+v0.3 (released on 17Nov2015)
 - move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut
 - issue #76 : check if build exists in Keen.io datastore
 - TravisData.process_build_logs() returns a generator
