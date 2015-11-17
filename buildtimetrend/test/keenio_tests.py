@@ -28,7 +28,7 @@ import unittest
 import constants
 
 
-class TestTools(unittest.TestCase):
+class TestKeen(unittest.TestCase):
     copy_keen_project_id = None
     copy_keen_write_key = None
     copy_keen_read_key = None
@@ -86,6 +86,8 @@ class TestTools(unittest.TestCase):
 
         self.assertFalse(keen_has_project_id())
         self.assertFalse(keen_has_master_key())
+        self.assertFalse(keen_has_write_key())
+        self.assertFalse(keen_has_read_key())
         self.assertFalse(keen_is_writable())
         self.assertFalse(keen_is_readable())
 
@@ -111,13 +113,14 @@ class TestTools(unittest.TestCase):
 
          # dict with finished_at timestamp
         self.assertDictEqual(
-                {"test": "value",
+            {
+                "test": "value",
                 "buildtime_trend": self.project_info,
                 "job": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED},
                 "keen": {"timestamp": constants.ISOTIMESTAMP_FINISHED}
             },
-            add_project_info_dict(
-                {"test": "value",
+            add_project_info_dict({
+                "test": "value",
                 "job": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED}
             })
         )
@@ -148,10 +151,11 @@ class TestTools(unittest.TestCase):
         )
 
         # list with two dict as element
-        self.assertListEqual(
-            [{"test": "value", "buildtime_trend": self.project_info},
+        self.assertListEqual([
+            {"test": "value", "buildtime_trend": self.project_info},
             {"test2": "value2", "buildtime_trend": self.project_info}],
-            add_project_info_list([{"test": "value"},
+            add_project_info_list([
+                {"test": "value"},
                 {"test2": "value2"}])
         )
 
@@ -197,6 +201,26 @@ class TestTools(unittest.TestCase):
         os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
         self.assertTrue(keen_is_writable())
 
+    def test_keen_has_write_key_keen_var(self):
+        # set write_key
+        keen.write_key = "4567abcd5678efgh"
+        self.assertTrue(keen_has_write_key())
+
+    def test_keen_has_write_key_envir_vars(self):
+        # set write_key
+        os.environ["KEEN_WRITE_KEY"] = "4567abcd5678efgh"
+        self.assertTrue(keen_has_write_key())
+
+    def test_keen_has_read_key_keen_var(self):
+        # set read_key
+        keen.read_key = "4567abcd5678efgh"
+        self.assertTrue(keen_has_read_key())
+
+    def test_keen_has_read_key_envir_vars(self):
+        # set read_key
+        os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
+        self.assertTrue(keen_has_read_key())
+
     def test_keen_is_readable_keen_var(self):
         # only set project id, check should fail
         keen.project_id = "1234abcd"
@@ -225,6 +249,14 @@ class TestTools(unittest.TestCase):
         self.assertEqual(str, type(keen_io_generate_read_key(None)))
         self.assertEqual(str, type(keen_io_generate_read_key("test/project")))
 
+    def test_generate_write_key(self):
+        # should return None if master key is not set
+        self.assertEqual(None, keen_io_generate_write_key())
+
+        # set master_key
+        os.environ["KEEN_MASTER_KEY"] = "4567abcd5678efgh"
+        self.assertEqual(str, type(keen_io_generate_write_key()))
+
     def test_get_repo_filter(self):
         self.assertEqual(None, get_repo_filter())
         self.assertEqual(None, get_repo_filter(None))
@@ -246,43 +278,43 @@ class TestTools(unittest.TestCase):
     def test_check_time_interval(self):
         # empty or undefined defaults to 'week'
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days'},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval()
         )
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days'},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval(None)
         )
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days'},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval(1234)
         )
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days'},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval([])
         )
 
         # valid entries : week, month, year
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days'},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval("week")
         )
         self.assertDictEqual(
-            {'name': 'month', 'timeframe': 'this_30_days'},
+            {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 600},
             check_time_interval("month")
         )
         self.assertDictEqual(
-            {'name': 'year', 'timeframe': 'this_52_weeks'},
+            {'name': 'year', 'timeframe': 'this_52_weeks', 'max_age': 1800},
             check_time_interval("year")
         )
 
         # valid entries are case insensitive
         self.assertDictEqual(
-            {'name': 'week', 'timeframe': 'this_7_days'},
+            {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
             check_time_interval("wEEk")
         )
         self.assertDictEqual(
-            {'name': 'month', 'timeframe': 'this_30_days'},
+            {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 600},
             check_time_interval("moNth")
         )
 
@@ -330,3 +362,18 @@ class TestTools(unittest.TestCase):
         self.assertEqual("red", get_result_color(49, 75, 50))
         self.assertEqual("red", get_result_color(0, 75, 50))
         self.assertEqual("red", get_result_color(-10, 75, 50))
+
+    def test_has_build_id(self):
+        # error is thrown when called without parameters
+        self.assertRaises(ValueError, has_build_id)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(ValueError, has_build_id, None, None)
+
+        # error is thrown when project_id or read key is not set
+        self.assertRaises(SystemError, has_build_id, "test", 123)
+
+        # test with an invalid token
+        keen.project_id = "1234abcd"
+        keen.read_key = "4567abcd5678efgh"
+        self.assertRaises(SystemError, has_build_id, "test", 123)

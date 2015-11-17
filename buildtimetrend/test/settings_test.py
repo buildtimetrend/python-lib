@@ -21,8 +21,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.settings import *
-from buildtimetrend.tools import get_logger
-from buildtimetrend.tools import set_loglevel
+from buildtimetrend import logger
+from buildtimetrend import set_loglevel
 from buildtimetrend.collection import Collection
 from buildtimetrend.keenio import keen_is_writable
 from buildtimetrend.keenio import keen_is_readable
@@ -39,8 +39,13 @@ DEFAULT_SETTINGS = {
     "mode_native": False,
     "mode_keen": True,
     "loglevel": "WARNING",
+    "multi_import": {
+        "max_builds": 100,
+        "delay": 3
+    },
     "dashboard_configfile": "dashboard/config.js"
 }
+
 
 class TestSettings(unittest.TestCase):
     @classmethod
@@ -159,8 +164,17 @@ class TestSettings(unittest.TestCase):
                 "mode_keen": False,
                 "loglevel": "INFO",
                 "setting1": "test_value1",
-                "dashboard_sample_configfile": "test/dashboard/config_sample.js",
-                "dashboard_configfile": "test/dashboard/config.js"
+                "dashboard_sample_configfile":
+                constants.DASHBOARD_SAMPLE_CONFIG_FILE,
+                "dashboard_configfile": "test/dashboard/config.js",
+                "task_queue": {
+                    "backend": "amqp",
+                    "broker_url": "amqp://user@localhost"
+                },
+                "multi_import": {
+                    "max_builds": 150,
+                    "delay": 6
+                }
             },
             self.settings.settings.get_items())
 
@@ -171,6 +185,29 @@ class TestSettings(unittest.TestCase):
         self.assertEquals("7890abcd", keen.master_key)
         self.assertTrue(keen_is_readable())
         self.assertTrue(keen_is_writable())
+
+    def test_load_multi_build_settings(self):
+        self.assertDictEqual(
+            {
+                "max_builds": 100,
+                "delay": 3
+            },
+            self.settings.get_setting("multi_import")
+        )
+
+        exp_max_builds = os.environ["BTT_MULTI_MAX_BUILDS"] = "75"
+        exp_max_builds = int(exp_max_builds)
+
+        self.settings.load_env_vars()
+        self.assertDictEqual(
+            {
+                "max_builds": exp_max_builds,
+                "delay": 3
+            },
+            self.settings.get_setting("multi_import")
+        )
+
+        del os.environ["BTT_MULTI_MAX_BUILDS"]
 
     def test_load_settings(self):
         # checking if Keen.io configuration is not set (yet)
@@ -195,7 +232,8 @@ class TestSettings(unittest.TestCase):
         # load settings (config file, env vars and cli parameters)
         self.assertListEqual(
             ["argument"],
-            self.settings.load_settings(argv, constants.TEST_SAMPLE_CONFIG_FILE)
+            self.settings.load_settings(argv,
+                                        constants.TEST_SAMPLE_CONFIG_FILE)
         )
         self.assertDictEqual(
             {
@@ -205,8 +243,17 @@ class TestSettings(unittest.TestCase):
                 "mode_keen": False,
                 "loglevel": "INFO",
                 "setting1": "test_value1",
-                "dashboard_sample_configfile": "test/dashboard/config_sample.js",
-                "dashboard_configfile": exp_config
+                "dashboard_sample_configfile":
+                constants.DASHBOARD_SAMPLE_CONFIG_FILE,
+                "dashboard_configfile": exp_config,
+                "task_queue": {
+                    "backend": "amqp",
+                    "broker_url": "amqp://user@localhost"
+                },
+                "multi_import": {
+                    "max_builds": 150,
+                    "delay": 6
+                }
             },
             self.settings.settings.get_items())
 
@@ -242,7 +289,12 @@ class TestSettings(unittest.TestCase):
         # set test environment variables
         exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
         exp_loglevel = os.environ["BTT_LOGLEVEL"] = "INFO"
+        exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:1234"
         exp_config = os.environ["BUILD_TREND_CONFIGFILE"] = "test/config.js"
+        exp_max_builds = os.environ["BTT_MULTI_MAX_BUILDS"] = "50"
+        exp_max_builds = int(exp_max_builds)
+        exp_delay = os.environ["BTT_MULTI_DELAY"] = "5"
+        exp_delay = int(exp_delay)
 
         self.settings.load_env_vars()
 
@@ -252,15 +304,99 @@ class TestSettings(unittest.TestCase):
                           self.settings.get_setting("travis_account_token"))
         self.assertEquals(exp_config,
                           self.settings.get_setting("dashboard_configfile"))
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_amqp},
+            self.settings.get_setting("task_queue")
+        )
+        self.assertDictEqual(
+            {"max_builds": exp_max_builds, "delay": exp_delay},
+            self.settings.get_setting("multi_import")
+        )
 
         # reset test environment variables
         del os.environ["BTT_LOGLEVEL"]
+        del os.environ["BTT_AMQP_URL"]
         del os.environ["TRAVIS_ACCOUNT_TOKEN"]
         del os.environ["BUILD_TREND_CONFIGFILE"]
+        del os.environ["BTT_MULTI_MAX_BUILDS"]
+        del os.environ["BTT_MULTI_DELAY"]
+
+    def test_load_env_vars_task_queue(self):
+        # set test environment variables
+        exp_redisgreen = os.environ["REDISGREEN_URL"] = \
+            "redis://test@hostname:4567"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "redis", "broker_url": exp_redisgreen},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
+        exp_cloudamqp = os.environ["CLOUDAMQP_URL"] = \
+            "amqp://guest:guest@localhost"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_cloudamqp},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
+        exp_bigwig = os.environ["RABBITMQ_BIGWIG_URL"] = \
+            "amqp://guest:guest@bigwig"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_bigwig},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
+        exp_redis = os.environ["BTT_REDIS_URL"] = "redis://test@hostname:3456"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "redis", "broker_url": exp_redis},
+            self.settings.get_setting("task_queue")
+        )
+
+        # set test environment variables
+        exp_amqp = os.environ["BTT_AMQP_URL"] = "amqp://test@hostname:2345"
+
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "amqp", "broker_url": exp_amqp},
+            self.settings.get_setting("task_queue")
+        )
+
+        # remove first task queue url, second should be loaded
+        del os.environ["BTT_AMQP_URL"]
+        self.settings.load_env_vars_task_queue()
+
+        # test environment variables
+        self.assertDictEqual(
+            {"backend": "redis", "broker_url": exp_redis},
+            self.settings.get_setting("task_queue")
+        )
+
+        # reset test environment variables
+        del os.environ["BTT_REDIS_URL"]
+        del os.environ["RABBITMQ_BIGWIG_URL"]
+        del os.environ["CLOUDAMQP_URL"]
+        del os.environ["REDISGREEN_URL"]
 
     def test_process_argv(self):
-        logger = get_logger()
-
         scriptname = "script.py"
 
         expected_ci = "travis"

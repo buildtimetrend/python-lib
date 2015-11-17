@@ -26,7 +26,6 @@ from buildtimetrend.settings import Settings
 import os
 import unittest
 import constants
-import logging
 
 
 class TestTools(unittest.TestCase):
@@ -70,7 +69,7 @@ class TestTools(unittest.TestCase):
 
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH,
-            split_isotimestamp(u"1970-01-01T00:00:00Z")
+            split_isotimestamp("1970-01-01T00:00:00Z")
         )
 
         # test 0 timestamp (epoch), without timezone
@@ -108,7 +107,9 @@ class TestTools(unittest.TestCase):
         )
 
         # test timestamp
-        timestamp_dt = datetime.utcfromtimestamp(constants.TIMESTAMP_TESTDATE).replace(tzinfo=tzutc())
+        timestamp_dt = datetime.utcfromtimestamp(constants.TIMESTAMP_TESTDATE)
+        timestamp_dt = timestamp_dt.replace(tzinfo=tzutc())
+
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_TESTDATE,
             split_datetime(timestamp_dt)
@@ -180,6 +181,14 @@ class TestTools(unittest.TestCase):
             NEWER_FILE)
         )
 
+    def test_is_dict(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, is_dict)
+
+        self.assertFalse(is_dict(None))
+        self.assertFalse(is_dict("not_a_dict"))
+        self.assertTrue(is_dict({"string": "test"}))
+
     def test_check_dict(self):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, check_dict)
@@ -200,15 +209,24 @@ class TestTools(unittest.TestCase):
         # should return true if parameter is a dictionary
         self.assertTrue(check_dict({"string": "test"}, "name"))
 
+        # should return false if parameter is not a list (and name is not set)
+        self.assertFalse(check_dict(None))
+        self.assertFalse(check_dict("string"))
+
         # should return true if key is found in dictionary
-        self.assertTrue(check_dict({"string": "test"}, "string"))
+        self.assertTrue(check_dict({"string": "test"}, "name", "string"))
         self.assertTrue(check_dict(
             {"string": "test", 7: "test"},
+            "name",
             list({7, "string"})
         ))
 
         # should return false if key is not found in dictionary
-        self.assertTrue(check_dict({"string": "test"}, "name"))
+        self.assertFalse(check_dict(
+            {"string": "test"},
+            "name",
+            list({7})
+        ))
 
     def test_keys_in_dict(self):
         # empty dict and empty key_list should return true
@@ -227,28 +245,75 @@ class TestTools(unittest.TestCase):
             list({7, "string"})
         ))
 
+        # passing something else than a list should return true
+        self.assertFalse(keys_in_dict({"string": "test"}, {}))
+
         # missing keys
         self.assertFalse(keys_in_dict({"string": "test"}, 7))
         self.assertFalse(keys_in_dict({7: "test"}, "string"))
         self.assertFalse(keys_in_dict({"string": "test"}, list({7, "string"})))
 
-    def test_check_list(self):
+    def test_is_list(self):
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, check_list)
+        self.assertRaises(TypeError, is_list)
 
         # error is thrown when called with an invalid parameter
         with self.assertRaises(TypeError) as cm:
-            check_list(None, "name")
+            is_list(None, "name")
         self.assertEqual("param name should be a list", str(cm.exception))
 
         with self.assertRaises(TypeError) as cm:
-            check_list("string", "string_name")
+            is_list("string", "string_name")
         self.assertEqual(
             "param string_name should be a list", str(cm.exception)
         )
 
+        # should return false if parameter is not a list (and name is not set)
+        self.assertFalse(is_list(None))
+        self.assertFalse(is_list("string"))
+
         # should return true if parameter is a list
-        self.assertTrue(check_list(["string", "test"], "name"))
+        self.assertTrue(is_list(["string", "test"], "name"))
+
+    def test_is_string(self):
+        self.assertRaises(TypeError, is_string)
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            is_string(None, "name")
+        self.assertEqual(
+            "param name should be a string",
+            str(cm.exception)
+        )
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            is_string(123, "name")
+        self.assertEqual(
+            "param name should be a string",
+            str(cm.exception)
+        )
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            is_string({}, "name")
+        self.assertEqual(
+            "param name should be a string",
+            str(cm.exception)
+        )
+
+        # error is thrown when called with an invalid parameter
+        with self.assertRaises(TypeError) as cm:
+            is_string([], "name")
+        self.assertEqual(
+            "param name should be a string",
+            str(cm.exception)
+        )
+
+        self.assertFalse(is_string(None))
+        self.assertFalse(is_string(None, None))
+
+        self.assertTrue(is_string("string", "name"))
 
     def test_num_string(self):
         self.assertRaises(TypeError, check_num_string)
@@ -274,41 +339,6 @@ class TestTools(unittest.TestCase):
         self.assertEquals(-1, check_num_string("-1", "name"))
         self.assertEquals(2, check_num_string("2", "name"))
 
-    def test_set_loglevel(self):
-        logger = logging.getLogger(buildtimetrend.NAME)
-        # test default loglevel
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
-
-        # test setting loglevel to INFO
-        set_loglevel("INFO")
-        self.assertEquals(logging.INFO, logger.getEffectiveLevel())
-
-        # test setting loglevel to DEBUG
-        set_loglevel("DEBUG")
-        self.assertEquals(logging.DEBUG, logger.getEffectiveLevel())
-
-        # test setting loglevel to ERROR
-        set_loglevel("ERROR")
-        self.assertEquals(logging.ERROR, logger.getEffectiveLevel())
-
-        # test setting loglevel to CRITICAL
-        set_loglevel("CRITICAL")
-        self.assertEquals(logging.CRITICAL, logger.getEffectiveLevel())
-
-        # test setting loglevel to WARNING
-        set_loglevel("WARNING")
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
-
-        # error is thrown when called without parameters
-        self.assertRaises(TypeError, set_loglevel)
-
-        # error is thrown when called with an invalid parameter
-        self.assertRaises(TypeError, set_loglevel, None)
-        self.assertRaises(ValueError, set_loglevel, "invalid")
-
-        # passing invalid tags should not change log level
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
-
     def test_get_repo_slug(self):
         self.assertEquals(None, get_repo_slug())
         self.assertEquals(None, get_repo_slug("abcd", None))
@@ -316,5 +346,5 @@ class TestTools(unittest.TestCase):
         self.assertEquals(None, get_repo_slug(None, None))
 
         self.assertEquals("abcd/efgh", get_repo_slug("abcd", "efgh"))
-        self.assertEquals("abcd/efgh", get_repo_slug("Abcd", "eFgh"))
+        self.assertEquals("Abcd/eFgh", get_repo_slug("Abcd", "eFgh"))
         self.assertEquals("123/456", get_repo_slug(123, 456))

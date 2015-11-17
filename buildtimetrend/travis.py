@@ -24,21 +24,24 @@ import os
 import json
 import re
 from hashlib import sha256
-from buildtimetrend.tools import get_logger
+from buildtimetrend import logger
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import check_num_string
+from buildtimetrend.tools import is_string
 from buildtimetrend.tools import get_repo_slug
-from buildtimetrend.build import Build
+from buildtimetrend.buildjob import BuildJob
 from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stage
+from buildtimetrend.collection import Collection
 import buildtimetrend
 try:
     # For Python 3.0 and later
-    from urllib.request import urlopen, Request, build_opener
+    from urllib.request import Request, build_opener
+    from urllib.error import HTTPError, URLError
 except ImportError:
     # Fall back to Python 2's urllib2
-    from urllib2 import urlopen, Request, build_opener
+    from urllib2 import Request, build_opener, HTTPError, URLError
 
 TRAVIS_ORG_API_URL = 'https://api.travis-ci.org/'
 
@@ -81,6 +84,108 @@ def load_travis_env_vars():
                 convert_build_result(os.environ["TRAVIS_TEST_RESULT"])
             )
 
+        load_build_matrix_env_vars(settings)
+        load_travis_pr_env_vars(settings)
+
+
+def load_build_matrix_env_vars(settings):
+    """
+    Retrieve build matrix data from environment variables.
+
+    Load Travis CI build matrix environment variables
+    and assign their values to the corresponding setting value.
+
+    Properties :
+    - language
+    - language version (if applicable)
+    - compiler (if applicable)
+    - operating system
+    - environment parameters
+
+    Parameters:
+    - settings: Settings instance
+    """
+    if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
+        build_matrix = Collection()
+
+        if "TRAVIS_OS_NAME" in os.environ:
+            build_matrix.add_item("os", os.environ["TRAVIS_OS_NAME"])
+
+        # set language and language version
+        language_env_vars = {
+            'TRAVIS_DART_VERSION': 'dart',
+            'TRAVIS_GO_VERSION': 'go',
+            'TRAVIS_HAXE_VERSION': 'haxe',
+            'TRAVIS_JDK_VERSION': 'java',
+            'TRAVIS_JULIA_VERSION': 'julia',
+            'TRAVIS_NODE_VERSION': 'javascript',
+            'TRAVIS_OTP_RELEASE': 'erlang',
+            'TRAVIS_PERL_VERSION': 'perl',
+            'TRAVIS_PHP_VERSION': 'php',
+            'TRAVIS_PYTHON_VERSION': 'python',
+            'TRAVIS_R_VERSION': 'r',
+            'TRAVIS_RUBY_VERSION': 'ruby',
+            'TRAVIS_RUST_VERSION': 'rust',
+            'TRAVIS_SCALA_VERSION': 'scala'
+        }
+        for env_var, language in language_env_vars.items():
+            if env_var in os.environ:
+                build_matrix.add_item("language", language)
+                build_matrix.add_item(
+                    "language_version",
+                    str(os.environ[env_var])
+                )
+
+        # language specific build matrix parameters
+        parameters = {
+            'TRAVIS_XCODE_SDK': 'xcode_sdk',  # Objective-C
+            'TRAVIS_XCODE_SCHEME': 'xcode_scheme',  # Objective-C
+            'TRAVIS_XCODE_PROJECT': 'xcode_project',  # Objective-C
+            'TRAVIS_XCODE_WORKSPACE': 'xcode_workspace',  # Objective-C
+            'CC': 'compiler',  # C, C++
+            'ENV': 'parameters'
+        }
+
+        for parameter, name in parameters.items():
+            if parameter in os.environ:
+                build_matrix.add_item(name, str(os.environ[parameter]))
+
+        settings.add_setting(
+            "build_matrix",
+            build_matrix.get_items_with_summary()
+        )
+
+
+def load_travis_pr_env_vars(settings):
+    """
+    Load Travis CI pull request environment variables.
+
+    Load Travis CI pull request environment variables
+    and assign their values to the corresponding setting value.
+    """
+    if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true" and \
+            "TRAVIS_PULL_REQUEST" in os.environ and \
+            not os.environ["TRAVIS_PULL_REQUEST"] == "false":
+        settings.add_setting("build_trigger", "pull_request")
+        settings.add_setting(
+            "pull_request",
+            {
+                'is_pull_request': True,
+                'title': "unknown",
+                'number': os.environ["TRAVIS_PULL_REQUEST"]
+            }
+        )
+    else:
+        settings.add_setting("build_trigger", "push")
+        settings.add_setting(
+            "pull_request",
+            {
+                'is_pull_request': False,
+                'title': None,
+                'number': None
+            }
+        )
+
 
 def convert_build_result(result):
     """
@@ -103,41 +208,52 @@ def convert_build_result(result):
 
 def process_notification_payload(payload):
     """
-    Load payload from Travis notification.
+    Extract repo slug and build number from Travis notification payload.
+
+    Returns a dictionary with "repo" and "build" information,
+    or an empty dictionary if the payload could not be processed.
+
+    Deprecated behaviour : Currently the repo and build information are
+    also stored in the "settings" object,
+    but this will be removed in the near future.
 
     Parameters:
     - payload : Travis CI notification payload
     """
-    logger = get_logger()
     settings = Settings()
+    parameters = {}
 
     if payload is None:
         logger.warning("Travis notification payload is not set")
-        return
+        return parameters
 
     if not type(payload) in (str, unicode):
         logger.warning("Travis notification payload is incorrect :"
                        " (unicode) string expected, got %s", type(payload))
-        return
+        return parameters
 
     json_payload = json.loads(payload)
     logger.info("Travis Payload : %r.", json_payload)
 
     # get repo name from payload
-    if ("repository" in json_payload
-            and "owner_name" in json_payload["repository"]
-            and "name" in json_payload["repository"]):
+    if ("repository" in json_payload and
+            "owner_name" in json_payload["repository"] and
+            "name" in json_payload["repository"]):
 
         repo = get_repo_slug(json_payload["repository"]["owner_name"],
                              json_payload["repository"]["name"])
 
         logger.info("Build repo : %s", repo)
         settings.set_project_name(repo)
+        parameters["repo"] = repo
 
     # get build number from payload
     if "number" in json_payload:
         logger.info("Build number : %s", str(json_payload["number"]))
         settings.add_setting('build', json_payload['number'])
+        parameters["build"] = json_payload['number']
+
+    return parameters
 
 
 def check_authorization(repo, auth_header):
@@ -156,8 +272,6 @@ def check_authorization(repo, auth_header):
     - repo : git repo name
     - auth_header : Travis CI notification Authorization header
     """
-    logger = get_logger()
-
     # get Travis account token from Settings
     token = Settings().get_setting("travis_account_token")
 
@@ -169,7 +283,7 @@ def check_authorization(repo, auth_header):
         return True
 
     # check if parameters are strings
-    if type(repo) is str and type(auth_header) is str and type(token) is str:
+    if is_string(repo) and is_string(auth_header) and is_string(token):
         # generate hash and compare with Authorization header
         auth_hash = sha256(repo + token).hexdigest()
 
@@ -187,38 +301,126 @@ def check_authorization(repo, auth_header):
         return False
 
 
+class TravisConnector(object):
+
+    """Abstract class to connects to Travis CI API."""
+
+    def __init__(self):
+        """Constructor."""
+        self.api_url = None
+        self.request_params = {
+            'user-agent': buildtimetrend.USER_AGENT
+        }
+
+    def download_job_log(self, job_id):
+        """
+        Retrieve Travis CI job log.
+
+        Parameters:
+        - job_id : ID of the job to process
+        """
+        request = 'jobs/%s/log' % str(job_id)
+        logger.info("Request build job log #%s", str(job_id))
+        return self._handle_request(request)
+
+    def json_request(self, json_request):
+        """
+        Retrieve Travis CI data using API.
+
+        Parameters:
+        - json_request : json_request to be sent to API
+        """
+        result = self._handle_request(
+            json_request,
+            {
+                'accept': 'application/vnd.travis-ci.2+json'
+            }
+        )
+
+        return json.load(result)
+
+    def _handle_request(self, request, params=None):
+        """
+        Retrieve Travis CI data using API.
+
+        Parameters:
+        - request : request to be sent to API
+        - params : HTTP request parameters
+        """
+        request_url = self.api_url + request
+
+        request_params = self.request_params.copy()
+        if params is not None and check_dict(params, "params"):
+            request_params.update(params)
+
+        req = Request(
+            request_url,
+            None,
+            request_params
+        )
+        opener = build_opener()
+        logger.info("Request from Travis CI API : %s", request_url)
+        return opener.open(req)
+
+
+class TravisOrgConnector(TravisConnector):
+
+    """Connects to Travis.org API."""
+
+    def __init__(self):
+        """Constructor."""
+        super(TravisOrgConnector, self).__init__()
+        self.api_url = TRAVIS_ORG_API_URL
+
+
 class TravisData(object):
 
-    """ Gather data from Travis CI using the API. """
+    """Gather data from Travis CI using the API."""
 
-    def __init__(self, repo, build_id):
+    def __init__(self, repo, build_id, connector=None):
         """
         Retrieve Travis CI build data using the API.
 
         Parameters:
         - repo : github repository slug (fe. buildtimetrend/python-lib)
         - build_id : Travis CI build id (fe. 158)
+        - connector : Travis Connector instance
         """
-        self.build_data = {}
+        self.builds_data = {}
         self.build_jobs = {}
-        self.build_config = {}
-        self.current_job = Build()
+        self.current_build_data = {}
+        self.current_job = BuildJob()
         self.travis_substage = None
         self.repo = repo
-        self.api_url = TRAVIS_ORG_API_URL
         self.build_id = str(build_id)
+        # set TravisConnector if it is defined
+        if connector is not None and type(connector) is TravisConnector:
+            self.connector = connector
+        # use Travis Org connector by default
+        else:
+            self.connector = TravisOrgConnector()
 
     def get_build_data(self):
-        """ Retrieve Travis CI build data. """
-        request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
-        self.build_data = self.json_request(request)
+        """
+        Retrieve Travis CI build data.
 
-        # log build_data
-        get_logger().debug(
+        Returns true if retrieving data was succesful, false on error.
+        """
+        request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
+        try:
+            self.builds_data = self.connector.json_request(request)
+        except (HTTPError, URLError) as msg:
+            logger.error("Error getting build data from Travis CI: %s", msg)
+            return False
+
+        # log builds_data
+        logger.debug(
             "Build #%s data : %s",
             str(self.build_id),
-            json.dumps(self.build_data, sort_keys=True, indent=2)
+            json.dumps(self.builds_data, sort_keys=True, indent=2)
         )
+
+        return True
 
     def get_substage_name(self, command):
         """
@@ -227,29 +429,47 @@ class TravisData(object):
         Parameters:
         - command : cli command
         """
-        if len(self.build_config) > 0:
-            for stage_name, commands in self.build_config.items():
+        if not is_string(command):
+            return ""
+
+        if len(self.current_build_data) > 0 and \
+                "config" in self.current_build_data:
+            build_config = self.current_build_data["config"]
+        else:
+            logger.warning(
+                "Travis CI build config is not set"
+            )
+            return ""
+
+        if len(build_config) > 0:
+            for stage_name, commands in build_config.items():
                 if type(commands) is list and command in commands:
                     substage_number = commands.index(command) + 1
                     substage_name = "%s.%s" % (stage_name, substage_number)
-                    get_logger().debug(
+                    logger.debug(
                         "Substage %s corresponds to '%s'",
                         substage_name, command
                     )
                     return substage_name
 
+        return ""
+
     def process_build_jobs(self):
-        """ Retrieve Travis CI build job data. """
-        if len(self.build_data) > 0 and "builds" in self.build_data:
-            for build in self.build_data['builds']:
-                if "config" in build:
-                    self.build_config = build["config"]
-                else:
-                    self.build_config = {}
+        """
+        Retrieve Travis CI build job data.
+
+        Method is a generator, iterate result to get each processed build job.
+        """
+        if len(self.builds_data) > 0 and "builds" in self.builds_data:
+            for build in self.builds_data['builds']:
+                self.current_build_data = build
 
                 if "job_ids" in build:
                     for job_id in build['job_ids']:
-                        self.process_build_job(job_id)
+                        yield self.process_build_job(job_id)
+
+            # reset current_build_data after builds are processed
+            self.current_build_data = {}
 
     def process_build_job(self, job_id):
         """
@@ -259,7 +479,7 @@ class TravisData(object):
         - job_id : ID of the job to process
         """
         if job_id is None:
-            return
+            return None
 
         # retrieve job data from Travis CI
         job_data = self.get_job_data(job_id)
@@ -271,7 +491,10 @@ class TravisData(object):
         # store build job
         self.build_jobs[str(job_id)] = self.current_job
         # create new build job instance
-        self.current_job = Build()
+        self.current_job = BuildJob()
+
+        # return processed build job
+        return self.build_jobs[str(job_id)]
 
     def get_job_data(self, job_id):
         """
@@ -281,10 +504,10 @@ class TravisData(object):
         - job_id : ID of the job to process
         """
         request = 'jobs/%s' % str(job_id)
-        job_data = self.json_request(request)
+        job_data = self.connector.json_request(request)
 
         # log job_data
-        get_logger().debug(
+        logger.debug(
             "Job #%s data : %s",
             str(job_id),
             json.dumps(job_data, sort_keys=True, indent=2)
@@ -302,6 +525,9 @@ class TravisData(object):
         - git repo
         - git branch
         - CI platform : Travis
+        - build matrix (language, language version, compiler, ...)
+        - build_trigger : push, pull_request
+        - pull_request (is_pull_request, title, number)
 
         Parameters:
         - job_data : dictionary with Travis CI job data
@@ -319,6 +545,11 @@ class TravisData(object):
         )
         self.current_job.add_property("ci_platform", 'travis')
         self.current_job.add_property("result", job_data['job']['state'])
+
+        self.set_build_matrix(job_data)
+
+        self.process_pull_request_data()
+
         self.current_job.set_started_at(job_data['job']['started_at'])
         self.current_job.set_finished_at(job_data['job']['finished_at'])
 
@@ -327,17 +558,93 @@ class TravisData(object):
         if not self.has_timing_tags():
             self.current_job.add_property("duration", self.get_job_duration())
 
-    def get_job_log(self, job_id):
+    def set_build_matrix(self, job_data):
         """
-        Retrieve Travis CI job log.
+        Retrieve build matrix data from job data and store in properties.
+
+        Properties :
+        - language
+        - language version (if applicable)
+        - compiler (if applicable)
+        - operating system
+        - environment parameters
 
         Parameters:
-        - job_id : ID of the job to process
+        - job_data : dictionary with Travis CI job data
         """
-        request = 'jobs/%s/log' % str(job_id)
-        request_url = self.api_url + request
-        get_logger().info("Request build job log : %s", request_url)
-        return urlopen(request_url)
+        build_matrix = Collection()
+
+        job_config = job_data['job']['config']
+
+        language = job_config['language']
+        build_matrix.add_item("language", language)
+
+        # set language version
+        # ('d', 'dart', 'go', 'perl', 'php', 'python', 'rust')
+        if language in job_config:
+            if language == "android":
+                build_matrix.add_item(
+                    "language_components",
+                    " ".join(job_config[language]["components"])
+                )
+            else:
+                build_matrix.add_item(
+                    "language_version",
+                    str(job_config[language])
+                )
+
+        # language specific build matrix parameters
+        parameters = {
+            'ghc': 'ghc',  # Haskell
+            'jdk': 'jdk',  # Java, Android, Groovy, Ruby, Scala
+            'lein': 'lein',  # Clojure
+            'mono': 'mono',  # C#, F#, Visual Basic
+            'node_js': 'node_js',  # Javascript
+            'otp_release': 'otp_release',  # Erlang
+            'rvm': 'rvm',  # Ruby, Objective-C
+            'gemfile': 'gemfile',  # Ruby, Objective-C
+            'xcode_sdk': 'xcode_sdk',  # Objective-C
+            'xcode_scheme': 'xcode_scheme',  # Objective-C
+            'compiler': 'compiler',  # C, C++
+            'os': 'os',
+            'env': 'parameters'
+        }
+        for parameter, name in parameters.items():
+            if parameter in job_config:
+                build_matrix.add_item(name, str(job_config[parameter]))
+
+        self.current_job.add_property(
+            "build_matrix",
+            build_matrix.get_items_with_summary()
+        )
+
+    def process_pull_request_data(self):
+        """Retrieve pull request data from Travis CI API."""
+        if len(self.current_build_data) > 0:
+            if "event_type" in self.current_build_data:
+                # build trigger (push or pull_request)
+                self.current_job.add_property(
+                    "build_trigger",
+                    self.current_build_data["event_type"]
+                )
+
+            # pull_request
+            pull_request_data = {}
+            if "pull_request" in self.current_build_data:
+                pull_request_data["is_pull_request"] = \
+                    self.current_build_data["pull_request"]
+            else:
+                pull_request_data["is_pull_request"] = False
+
+            if "pull_request_title" in self.current_build_data:
+                pull_request_data["title"] = \
+                    self.current_build_data["pull_request_title"]
+
+            if "pull_request_number" in self.current_build_data:
+                pull_request_data["number"] = \
+                    self.current_build_data["pull_request_number"]
+
+            self.current_job.add_property("pull_request", pull_request_data)
 
     def parse_job_log(self, job_id):
         """
@@ -346,7 +653,7 @@ class TravisData(object):
         Parameters:
         - job_id : ID of the job to process
         """
-        self.parse_job_log_stream(self.get_job_log(job_id))
+        self.parse_job_log_stream(self.connector.download_job_log(job_id))
 
     def parse_job_log_file(self, filename):
         """
@@ -395,7 +702,7 @@ class TravisData(object):
             self.travis_substage = TravisSubstage()
 
         escaped_line = line.replace('\x0d', '*').replace('\x1b', 'ESC')
-        get_logger().debug('line : %s', escaped_line)
+        logger.debug('line : %s', escaped_line)
 
         # parse Travis CI timing tags
         for parse_string in TRAVIS_LOG_PARSE_TIMING_STRINGS:
@@ -426,7 +733,7 @@ class TravisData(object):
         Parameters:
         - line : line from logfile containing Travis CI tags
         """
-        get_logger().debug('line : %s', line)
+        logger.debug('line : %s', line)
 
         # parse Travis CI worker tags
         result = re.search(TRAVIS_LOG_PARSE_WORKER_STRING, line)
@@ -439,28 +746,8 @@ class TravisData(object):
         # if it contains all required tags
         tag_list = list({'hostname', 'os'})
         if check_dict(worker_tags, "worker_tags", tag_list):
-            get_logger().debug("Worker tags : %s", worker_tags)
+            logger.debug("Worker tags : %s", worker_tags)
             self.current_job.add_property("worker", worker_tags)
-
-    def json_request(self, json_request):
-        """
-        Retrieve Travis CI data using API.
-
-        Parameters:
-        - json_request : json_request to be sent to API
-        """
-        req = Request(
-            self.api_url + json_request,
-            None,
-            {
-                'user-agent': buildtimetrend.USER_AGENT,
-                'accept': 'application/vnd.travis-ci.2+json'
-            }
-        )
-        opener = build_opener()
-        result = opener.open(req)
-
-        return json.load(result)
 
     def has_timing_tags(self):
         """
@@ -477,7 +764,7 @@ class TravisData(object):
         return started_at["timestamp_seconds"] > 1407369600
 
     def get_job_duration(self):
-        """ Calculate build job duration. """
+        """Calculate build job duration."""
         started_at = self.current_job.get_property("started_at")
         finished_at = self.current_job.get_property("finished_at")
         if started_at is None or "timestamp_seconds" not in started_at or \
@@ -489,16 +776,16 @@ class TravisData(object):
         return timestamp_end - timestamp_start
 
     def get_started_at(self):
-        """ Retrieve timestamp when build was started. """
-        if len(self.build_data) > 0:
-            return self.build_data['builds'][0]['started_at']
+        """Retrieve timestamp when build was started."""
+        if check_dict(self.current_build_data, key_list=["started_at"]):
+            return self.current_build_data['started_at']
         else:
             return None
 
     def get_finished_at(self):
-        """ Retrieve timestamp when build finished. """
-        if len(self.build_data) > 0:
-            return self.build_data['builds'][0]['finished_at']
+        """Retrieve timestamp when build finished."""
+        if check_dict(self.current_build_data, key_list=["finished_at"]):
+            return self.current_build_data['finished_at']
         else:
             return None
 
@@ -512,7 +799,7 @@ class TravisSubstage(object):
     """
 
     def __init__(self):
-        """ Initialise Travis CI Substage object. """
+        """Initialise Travis CI Substage object."""
         self.stage = Stage()
         self.timing_hash = ""
         self.finished_incomplete = False
@@ -555,13 +842,12 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logger = get_logger()
         logger.debug("Start stage : %s", tags_dict)
 
         result = False
 
         if self.has_started():
-            logger.warning("Substage already started")
+            logger.info("Substage already started")
         else:
             name = "%s.%s" % (
                 tags_dict['start_stage'], tags_dict['start_substage']
@@ -582,11 +868,10 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'start_hash'):
             return False
 
-        logger = get_logger()
         logger.debug("Start time : %s", tags_dict)
 
         if self.has_timing_hash():
-            logger.warning("Substage timing already set")
+            logger.info("Substage timing already set")
             return False
 
         self.timing_hash = tags_dict['start_hash']
@@ -606,13 +891,12 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", 'command'):
             return False
 
-        logger = get_logger()
         logger.debug("Command : %s", tags_dict)
 
         result = False
 
         if self.has_command():
-            logger.warning("Command is already set")
+            logger.info("Command is already set")
         elif self.stage.set_command(tags_dict['command']):
             logger.info("Set command : %s", tags_dict['command'])
             result = True
@@ -637,7 +921,6 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logger = get_logger()
         logger.debug("End time : %s", tags_dict)
 
         result = False
@@ -646,8 +929,8 @@ class TravisSubstage(object):
         # and if hash matches
         if (not self.has_timing_hash() or
                 self.timing_hash != tags_dict['end_hash']):
-            logger.warning("Substage timing was not started or"
-                           " hash doesn't match")
+            logger.info("Substage timing was not started or"
+                        " hash doesn't match")
             self.finished_incomplete = True
         else:
             set_started = set_finished = set_duration = False
@@ -687,7 +970,6 @@ class TravisSubstage(object):
         if not check_dict(tags_dict, "tags_dict", tag_list):
             return False
 
-        logger = get_logger()
         logger.debug("End stage : %s", tags_dict)
 
         # construct substage name
@@ -698,7 +980,7 @@ class TravisSubstage(object):
         # check if stage was started
         # and if substage name matches
         if not self.has_name() or self.stage.data["name"] != end_stagename:
-            logger.warning("Substage was not started or name doesn't match")
+            logger.info("Substage was not started or name doesn't match")
             self.finished_incomplete = True
             return False
 
@@ -759,7 +1041,7 @@ class TravisSubstage(object):
             len(self.stage.data["command"]) > 0
 
     def get_command(self):
-        """ Return substage command. """
+        """Return substage command."""
         if self.has_command():
             return self.stage.data["command"]
         else:

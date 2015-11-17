@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 from lxml import etree
-from buildtimetrend.tools import get_logger
+from buildtimetrend import logger
 from buildtimetrend.tools import check_file
 import matplotlib
 # Force matplotlib to not use any Xwindow backend.
@@ -34,10 +34,10 @@ from matplotlib import pyplot as plt
 
 class Trend(object):
 
-    """ Trend class, generate a chart from gathered buildtime data. """
+    """Trend class, generate a chart from gathered buildtime data."""
 
     def __init__(self):
-        """ Initialize instance. """
+        """Initialize instance."""
         self.stages = {}
         self.builds = []
 
@@ -81,13 +81,13 @@ class Trend(object):
                 if build_child.tag == 'stages':
                     stage_count = len(build_child)
                     self.parse_xml_stages(build_child, index)
-            get_logger().debug("Build ID : %s, Job : %s, stages : %d",
-                               build_id, job_id, stage_count)
+            logger.debug("Build ID : %s, Job : %s, stages : %d",
+                         build_id, job_id, stage_count)
             index += 1
         return True
 
     def parse_xml_stages(self, stages, index):
-        """ Parse stages in from xml file. """
+        """Parse stages in from xml file."""
         for stage in stages:
             if (stage.tag == 'stage' and
                     stage.get('name') is not None and

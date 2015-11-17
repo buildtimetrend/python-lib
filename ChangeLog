@@ -1,3 +1,24 @@
+v0.3 (released on 17Nov2015)
+- move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut
+- issue #76 : check if build exists in Keen.io datastore
+- TravisData.process_build_logs() returns a generator
+- issue #85 : create a TravisConnector class and move methods json_request and download_job_log there
+- move is_repo_allowed(), check_process_parameters() and format_duration() from service to library
+- service.format_duration() rounds to full seconds
+- check_list() renamed to is_list(), with 'name' as an optional parameter
+- keenio.add_project_info_dict() : override project_name in event header with build_job repo
+- check_process_parameters() is split into validate_travis_request() and validate_task_parameters()
+- issue #69 : use Keen.io query caching to speed up badge generation
+- issue #8  : add keen_io_generate_write_key()
+- issue #91 : store pull_request related data
+- issue #89 : add settings to configure batch mode to process multiple builds
+- issue #96 : catch error when started_at or finished_at timestamp is invalid
+- add get_items_with_summary() method to Collection class
+- issue #23 : load Travis CI build matrix settings
+- rename class Build to BuildJob, and file build.py to buildjob.py
+- add is_string() test
+- issue #126 : improve Keen.io API connection error handling
+
 v0.2 (released on 16Feb2015)
 - issue #29 : run sync-buildtime-trend-with-gh-pages.sh in after_script
 - issue #28 : improve documentation on assigning Keen.io access keys

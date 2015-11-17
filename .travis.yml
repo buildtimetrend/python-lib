@@ -20,5 +20,5 @@ deploy:
 notifications:
   webhooks:
     # parse Travis CI log and send result to Keen.io, using Builtime Trend Service
-    - http://buildtimetrend-dev.herokuapp.com/travis
-    - http://buildtimetrend.herokuapp.com/travis
+    - https://buildtimetrend-dev.herokuapp.com/travis
+    - https://buildtimetrend.herokuapp.com/travis

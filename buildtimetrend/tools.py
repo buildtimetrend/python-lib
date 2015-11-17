@@ -21,9 +21,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
+from __future__ import division
 import os
-import logging
-import buildtimetrend
+from buildtimetrend import logger
 from datetime import datetime
 from dateutil.parser import parse
 from dateutil.tz import tzutc
@@ -69,8 +69,11 @@ def split_isotimestamp(isotimestamp):
     - isotimestamp : timestamp in ISO format YYYY-MM-DDTHH:MM:SS
     """
     if isotimestamp is None or type(isotimestamp) not in (str, unicode):
-        raise TypeError("param %s should be an isotimestamp formatted string" %
-                        'isotimestamp')
+        raise TypeError(
+            "param %s should be an isotimestamp formatted string, "
+            "type %s found" %
+            ('isotimestamp', type(isotimestamp))
+        )
     # use dateutil.parser.parse to parse the timestamp
     return split_datetime(parse(isotimestamp, tzinfos={"UTC": +0}))
 
@@ -145,7 +148,7 @@ def check_file(filename):
     """
     # load timestamps file
     if not os.path.isfile(filename):
-        get_logger().critical('File doesn\'t exist : %s', filename)
+        logger.critical('File doesn\'t exist : %s', filename)
         return False
 
     return True
@@ -172,9 +175,28 @@ def file_is_newer(path1, path2):
     return (mtime1 - mtime2) > 0
 
 
-def check_dict(param_dict, name, key_list=None):
+def is_dict(param_dict):
+    """
+    Return true if a parameter is a dictionary.
+
+    Parameters :
+    - param_dict: parameter that should be a dictonary
+    Return true if parameter is a dictionary.
+    """
+    return param_dict is not None and type(param_dict) is dict
+
+
+def check_dict(param_dict, name=None, key_list=None):
     """
     Check if a parameter is a dictionary.
+
+    Returns True if it is a dictionary, false if it isn't,
+    or if parameter 'name' is specified,
+    an Error is raised with the name in the message.
+
+    If key_list is defined,
+    true is returned if the keys in key_list exits in the dictionary,
+    false if they don't all exist.
 
     Parameters :
     - param_dict: parameter that should be a dictonary
@@ -182,8 +204,11 @@ def check_dict(param_dict, name, key_list=None):
     - key_list: list of keys that should be present in the dict
     Return true if parameter is a dictionary, throws error when it isn't
     """
-    if param_dict is None or type(param_dict) is not dict:
-        raise TypeError("param %s should be a dictionary" % name)
+    if not is_dict(param_dict):
+        if name is None:
+            return False
+        else:
+            raise TypeError("param %s should be a dictionary" % name)
 
     # check if key_list is defined
     if key_list is None:
@@ -205,7 +230,7 @@ def keys_in_dict(param_dict, key_list):
     """
     if type(key_list) in (str, int):
         return key_list in param_dict
-    elif not check_list(key_list, "key_list"):
+    elif not is_list(key_list):
         return False
 
     for key in key_list:
@@ -215,17 +240,44 @@ def keys_in_dict(param_dict, key_list):
     return True
 
 
-def check_list(param_list, name):
+def is_list(param_list, name=None):
     """
     Check if a parameter is a list.
+
+    Returns True if parameter is a list, false if it isn't,
+    or if parameter 'name' is specified,
+    an Error is raised with the name of the parameter in the message.
 
     Parameters :
     - param_list: parameter that should be a list
     - name: name of the parameter
-    Return true if parameter is a list, throws error when it isn't
     """
     if param_list is None or type(param_list) is not list:
-        raise TypeError("param %s should be a list" % name)
+        if name is None:
+            return False
+        else:
+            raise TypeError("param %s should be a list" % name)
+
+    return True
+
+
+def is_string(param, name=None):
+    """
+    Check if a parameter is a string.
+
+    Returns True if parameter is a string, false if it isn't,
+    If parameter 'name' is specified,
+    an Error is raised with the name of the parameter in the message.
+
+    Parameters :
+    - param: parameter that should be a string
+    - name: name of the parameter
+    """
+    if param is None or type(param) is not str:
+        if name is None:
+            return False
+        else:
+            raise TypeError("param %s should be a string" % name)
 
     return True
 
@@ -247,39 +299,6 @@ def check_num_string(num_string, name):
     return int(num_string)
 
 
-def get_logger():
-    """ Return logger object. """
-    return logging.getLogger(buildtimetrend.NAME)
-
-
-def set_loglevel(loglevel):
-    """
-    Set loglevel.
-
-    Based on example on https://docs.python.org/2/howto/logging.html
-
-    Assuming loglevel is bound to the string value obtained from the
-    command line argument. Convert to upper case to allow the user to
-    specify --log=DEBUG or --log=debug
-    """
-    if loglevel is None or type(loglevel) is not str:
-        raise TypeError("param %s should be a string" % 'loglevel')
-
-    numeric_level = getattr(logging, loglevel.upper(), None)
-    if not isinstance(numeric_level, int):
-        raise ValueError('Invalid log level: %s' % loglevel)
-
-    # create handler
-    log_handler = logging.StreamHandler()
-    log_handler.setLevel(numeric_level)
-
-    # setup logger
-    logger = get_logger()
-    logger.setLevel(numeric_level)
-    logger.addHandler(log_handler)
-    logger.info("Set loglevel to %s (%d)", loglevel.upper(), numeric_level)
-
-
 def get_repo_slug(repo_owner=None, repo_name=None):
     """
     Return repo slug.
@@ -292,6 +311,6 @@ def get_repo_slug(repo_owner=None, repo_name=None):
     - repo_name : name of the Github repo, fe. `service`
     """
     if repo_owner is not None and repo_name is not None:
-        return "%s/%s" % (str(repo_owner).lower(), str(repo_name).lower())
+        return "%s/%s" % (str(repo_owner), str(repo_name))
     else:
         return None

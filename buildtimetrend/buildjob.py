@@ -23,18 +23,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import copy
 from lxml import etree
+from buildtimetrend import logger
 from buildtimetrend.settings import Settings
 from buildtimetrend.stages import Stages
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import split_isotimestamp
 
 
-class Build(object):
+class BuildJob(object):
 
-    """ Gather Build related data. """
+    """Gather build job related data."""
 
     def __init__(self, csv_filename=None, end_timestamp=None):
-        """ Initialize instance. """
+        """Initialize instance."""
         self.properties = Collection()
         self.stages = Stages()
         if end_timestamp is not None:
@@ -81,14 +82,14 @@ class Build(object):
         return self.properties.get_item(name)
 
     def get_properties(self):
-        """ Return build properties. """
+        """Return build properties."""
         # copy values of properties
         data = self.properties.get_items()
 
         # add total duration
         # use total stage duration if it is defined
         # else, calculate duration from stage duration
-        if not "duration" in data:
+        if "duration" not in data:
             data["duration"] = self.stages.total_duration()
 
         # add started_at of first stage if it is defined
@@ -110,7 +111,12 @@ class Build(object):
         Parameters :
         - isotimestamp : timestamp in iso format when build started
         """
-        self.add_property("started_at", split_isotimestamp(isotimestamp))
+        try:
+            self.add_property("started_at", split_isotimestamp(isotimestamp))
+        except (TypeError, ValueError) as msg:
+            logger.warning(
+                "isotimestamp expected when setting started_at : %s", msg
+            )
 
     def set_finished_at(self, isotimestamp):
         """
@@ -119,15 +125,23 @@ class Build(object):
         Parameters :
         - isotimestamp : timestamp in iso format when build started
         """
-        self.add_property("finished_at", split_isotimestamp(isotimestamp))
+        try:
+            self.add_property("finished_at", split_isotimestamp(isotimestamp))
+        except (TypeError, ValueError) as msg:
+            logger.warning(
+                "isotimestamp expected when setting finished_at : %s", msg
+            )
 
     def load_properties_from_settings(self):
-        """ Load build properties from settings. """
+        """Load build properties from settings."""
         self.load_property_from_settings("build")
         self.load_property_from_settings("job")
         self.load_property_from_settings("branch")
         self.load_property_from_settings("ci_platform")
+        self.load_property_from_settings("build_trigger")
+        self.load_property_from_settings("pull_request")
         self.load_property_from_settings("result")
+        self.load_property_from_settings("build_matrix")
         self.add_property("repo", Settings().get_project_name())
 
     def load_property_from_settings(self, property_name, setting_name=None):
@@ -147,7 +161,7 @@ class Build(object):
             self.add_property(property_name, value)
 
     def to_dict(self):
-        """ Return object as dictionary. """
+        """Return object as dictionary."""
         # get build properties
         data = self.get_properties()
 
@@ -158,7 +172,7 @@ class Build(object):
         return data
 
     def stages_to_list(self):
-        """ Return list of stages, all containing the build properties. """
+        """Return list of stages, all containing the build properties."""
         if type(self.stages) is Stages:
             # create list to be returned
             data = []
@@ -179,7 +193,7 @@ class Build(object):
         return data
 
     def to_xml(self):
-        """ Generate XML object of a Build instance. """
+        """Generate XML object of a BuildJob instance."""
         root = etree.Element("build")
 
         # add properties
@@ -193,5 +207,5 @@ class Build(object):
         return root
 
     def to_xml_string(self):
-        """ Generate XML string of a Build instance. """
+        """Generate XML string of a BuildJob instance."""
         return etree.tostring(self.to_xml(), pretty_print=True)

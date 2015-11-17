@@ -22,15 +22,18 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
+from __future__ import print_function
 import os
 import getopt
 import yaml
 import keen
 import buildtimetrend
+from collections import OrderedDict
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
-from buildtimetrend.tools import set_loglevel
-from buildtimetrend.tools import get_logger
+from buildtimetrend.tools import is_dict
+from buildtimetrend import set_loglevel
+from buildtimetrend import logger
 
 
 class Settings(object):
@@ -39,18 +42,20 @@ class Settings(object):
     Settings class is a singleton.
 
     Inspired by
-    http://python-3-patterns-idioms-test.readthedocs.org/ \
-    en/latest/Singleton.html
+    http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Singleton.html
     """
 
     class __Settings(object):
 
-        """ Settings class contains settings and config options. """
+        """Settings class contains settings and config options."""
 
         def __init__(self):
-            """ Initialise class. """
+            """Initialise class."""
             self.settings = Collection()
+            self.set_defaults()
 
+        def set_defaults(self):
+            """Set default values."""
             # set loglevel
             self.add_setting("loglevel", "WARNING")
 
@@ -65,6 +70,15 @@ class Settings(object):
             self.add_setting('dashboard_configfile',
                              'dashboard/config.js')
 
+            # set multi build import settings
+            self.add_setting(
+                'multi_import',
+                {
+                    'max_builds': 100,
+                    'delay': 3
+                }
+            )
+
         def set_project_name(self, name):
             """
             Set project name.
@@ -75,7 +89,7 @@ class Settings(object):
             self.add_setting("project_name", name)
 
         def get_project_name(self):
-            """ Get project name. """
+            """Get project name."""
             return self.get_setting("project_name")
 
         def set_client(self, name, version):
@@ -133,7 +147,9 @@ class Settings(object):
 
             with open(config_file, 'r') as file_stream:
                 config = yaml.load(file_stream)
-                self.settings.add_items(config["buildtimetrend"])
+                if "buildtimetrend" in config and \
+                        is_dict(config["buildtimetrend"]):
+                    self.settings.add_items(config["buildtimetrend"])
 
                 set_loglevel(self.get_setting("loglevel"))
 
@@ -150,7 +166,7 @@ class Settings(object):
                 return True
 
         def get_project_info(self):
-            """ Get project info as a dictonary. """
+            """Get project info as a dictonary."""
             return {
                 "lib_version": buildtimetrend.VERSION,
                 "schema_version": buildtimetrend.SCHEMA_VERSION,
@@ -239,6 +255,52 @@ class Settings(object):
             self.env_var_to_settings("BUILD_TREND_CONFIGFILE",
                                      "dashboard_configfile")
 
+            # load task queue environment variables
+            self.load_env_vars_task_queue()
+            # load multi build import environment variables
+            self.load_env_vars_multi_import()
+
+        def load_env_vars_task_queue(self):
+            """
+            Load task queue environment variables.
+
+            The environment variable that matches first is loaded,
+            other variables are ignored.
+            """
+            # prepare list of env vars, in order of priority
+            queue_env_vars = OrderedDict()
+            queue_env_vars["BTT_AMQP_URL"] = "amqp"
+            queue_env_vars["BTT_REDIS_URL"] = "redis"
+            queue_env_vars["RABBITMQ_BIGWIG_URL"] = "amqp"
+            queue_env_vars["CLOUDAMQP_URL"] = "amqp"
+            queue_env_vars["REDISGREEN_URL"] = "redis"
+
+            # loop over list of env vars, loading first match
+            for env_var in queue_env_vars.keys():
+                if env_var in os.environ:
+                    self.add_setting(
+                        "task_queue",
+                        {
+                            "backend": queue_env_vars[env_var],
+                            "broker_url": os.environ[env_var]
+                        }
+                    )
+                    # exit loop on first match
+                    break
+
+        def load_env_vars_multi_import(self):
+            """Load multi build import environment variables."""
+            multi_import = {}
+
+            if "BTT_MULTI_MAX_BUILDS" in os.environ:
+                multi_import["max_builds"] = \
+                    int(os.environ["BTT_MULTI_MAX_BUILDS"])
+            if "BTT_MULTI_DELAY" in os.environ:
+                multi_import["delay"] = int(os.environ["BTT_MULTI_DELAY"])
+
+            if len(multi_import) > 0:
+                self.add_setting("multi_import", multi_import)
+
         def env_var_to_settings(self, env_var_name, settings_name):
             """
             Store environment variable value as a setting.
@@ -247,8 +309,6 @@ class Settings(object):
             - env_var_name : Name of the environment variable
             - settings_name : Name of the corresponding settings value
             """
-            logger = get_logger()
-
             if env_var_name in os.environ:
                 self.add_setting(settings_name, os.environ[env_var_name])
                 logger.debug(
@@ -265,15 +325,15 @@ class Settings(object):
     instance = None
 
     def __new__(cls):  # __new__ always a classmethod
-        """ Create a singleton. """
+        """Create a singleton."""
         if not Settings.instance:
             Settings.instance = Settings.__Settings()
         return Settings.instance
 
     def __getattr__(self, name):
-        """ Redirect access to get singleton properties. """
+        """Redirect access to get singleton properties."""
         return getattr(self.instance, name)
 
     def __setattr__(self, name):
-        """ Redirect access to set singleton properties. """
+        """Redirect access to set singleton properties."""
         return setattr(self.instance, name)
