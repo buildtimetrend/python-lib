@@ -20,6 +20,10 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
+#from future import standard_library
+#standard_library.install_aliases()
+from builtins import str
+from builtins import object
 import os
 import json
 import re
@@ -228,9 +232,9 @@ def process_notification_payload(payload):
         logger.warning("Travis notification payload is not set")
         return parameters
 
-    if not type(payload) in (str, unicode):
+    if not is_string(payload):
         logger.warning("Travis notification payload is incorrect :"
-                       " (unicode) string expected, got %s", type(payload))
+                       " string expected, got %s", type(payload))
         return parameters
 
     json_payload = json.loads(payload)
