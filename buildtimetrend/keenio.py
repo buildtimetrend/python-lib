@@ -559,6 +559,7 @@ def get_all_projects():
         result = keen.select_unique(
             "build_jobs",
             "buildtime_trend.project_name"
+            max_age=3600 * 24  # cache for 24 hours
         )
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
