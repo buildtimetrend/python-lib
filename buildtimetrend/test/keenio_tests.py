@@ -22,6 +22,7 @@
 
 from buildtimetrend.keenio import *
 from buildtimetrend.settings import Settings
+from buildtimetrend.tools import is_string
 import os
 import keen
 import unittest
@@ -246,8 +247,8 @@ class TestKeen(unittest.TestCase):
 
         # set master_key
         os.environ["KEEN_MASTER_KEY"] = "4567abcd5678efgh"
-        self.assertEqual(str, type(keen_io_generate_read_key(None)))
-        self.assertEqual(str, type(keen_io_generate_read_key("test/project")))
+        self.assertTrue(is_string(keen_io_generate_read_key(None)))
+        self.assertTrue(is_string(keen_io_generate_read_key("test/project")))
 
     def test_generate_write_key(self):
         # should return None if master key is not set
@@ -255,7 +256,7 @@ class TestKeen(unittest.TestCase):
 
         # set master_key
         os.environ["KEEN_MASTER_KEY"] = "4567abcd5678efgh"
-        self.assertEqual(str, type(keen_io_generate_write_key()))
+        self.assertTrue(is_string(keen_io_generate_write_key()))
 
     def test_get_repo_filter(self):
         self.assertEqual(None, get_repo_filter())

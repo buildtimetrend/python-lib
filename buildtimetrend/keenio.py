@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 from __future__ import division
+from builtins import str
 import os
 from buildtimetrend import logger
 import copy
