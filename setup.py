@@ -17,7 +17,7 @@ setup(
     name=buildtimetrend.NAME,
     version=buildtimetrend.VERSION,
     packages=find_packages(),
-    install_requires=['keen>=0.3.9', 'lxml', 'pyyaml', 'python-dateutil'],
+    install_requires=['keen>=0.3.9', 'lxml', 'pyyaml', 'python-dateutil', 'future'],
     tests_require=['nose', 'coveralls'],
     extras_require={
         'native': ['lxml', 'matplotlib>=1.2.0']
