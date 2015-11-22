@@ -558,7 +558,7 @@ def get_all_projects():
     try:
         result = keen.select_unique(
             "build_jobs",
-            "buildtime_trend.project_name"
+            "buildtime_trend.project_name",
             max_age=3600 * 24  # cache for 24 hours
         )
     except requests.ConnectionError:
