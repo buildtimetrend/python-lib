@@ -22,6 +22,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 from __future__ import division
+from builtins import str
+from six import string_types
 import os
 from buildtimetrend import logger
 from datetime import datetime
@@ -68,14 +70,9 @@ def split_isotimestamp(isotimestamp):
     Parameters :
     - isotimestamp : timestamp in ISO format YYYY-MM-DDTHH:MM:SS
     """
-    if isotimestamp is None or type(isotimestamp) not in (str, unicode):
-        raise TypeError(
-            "param %s should be an isotimestamp formatted string, "
-            "type %s found" %
-            ('isotimestamp', type(isotimestamp))
-        )
-    # use dateutil.parser.parse to parse the timestamp
-    return split_datetime(parse(isotimestamp, tzinfos={"UTC": +0}))
+    if is_string(isotimestamp, "isotimestamp"):
+        # use dateutil.parser.parse to parse the timestamp
+        return split_datetime(parse(isotimestamp, tzinfos={"UTC": +0}))
 
 
 def split_datetime(timestamp_datetime):
@@ -228,7 +225,7 @@ def keys_in_dict(param_dict, key_list):
     - key_list: key or list of keys that should be present in the dict
     Return true if all keys were found in the dictionary
     """
-    if type(key_list) in (str, int):
+    if isinstance(key_list, (string_types, int)):
         return key_list in param_dict
     elif not is_list(key_list):
         return False
@@ -273,7 +270,7 @@ def is_string(param, name=None):
     - param: parameter that should be a string
     - name: name of the parameter
     """
-    if param is None or type(param) is not str:
+    if param is None or not isinstance(param, string_types):
         if name is None:
             return False
         else:
@@ -291,7 +288,7 @@ def check_num_string(num_string, name):
     - name: name of the parameter
     Return integer of numerical string, throws error when it isn't
     """
-    if num_string is None or type(num_string) not in (str, int):
+    if num_string is None or not isinstance(num_string, (string_types, int)):
         raise TypeError(
             "param %s should be a numerical string or an integer" % name
         )
