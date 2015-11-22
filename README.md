@@ -8,6 +8,7 @@ Visualise what's trending in your build process
 [![Latest Version](https://pypip.in/version/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
 [![Downloads](https://pypip.in/download/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
 [![Supported Python versions](https://pypip.in/py_versions/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
+[![Can I Use Python 3?](https://caniusepython3.com/project/buildtimetrend.svg)](https://caniusepython3.com/project/buildtimetrend)
 
 [![Build Status](https://travis-ci.org/buildtimetrend/python-lib.svg?branch=master)](https://travis-ci.org/buildtimetrend/python-lib)
 [![Coverage Status](https://coveralls.io/repos/buildtimetrend/python-lib/badge.svg?branch=master&service=github)](https://coveralls.io/github/buildtimetrend/python-lib?branch=master)
