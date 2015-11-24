@@ -188,14 +188,14 @@ class TestCollection(unittest.TestCase):
         self.collection.add_item('property1', 3)
 
         ordered_dict = self.collection.get_key_sorted_items()
-        keys = ordered_dict.keys()
+        keys = list(ordered_dict.keys())
         self.assertEqual('property1', keys[0])
         self.assertEqual('property3', keys[1])
 
         self.collection.add_item('property2', 4)
 
         ordered_dict = self.collection.get_key_sorted_items()
-        keys = ordered_dict.keys()
+        keys = list(ordered_dict.keys())
         self.assertEqual('property1', keys[0])
         self.assertEqual('property2', keys[1])
         self.assertEqual('property3', keys[2])
