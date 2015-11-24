@@ -247,8 +247,10 @@ class TestKeen(unittest.TestCase):
 
         # set master_key
         os.environ["KEEN_MASTER_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(is_string(keen_io_generate_read_key(None)))
-        self.assertTrue(is_string(keen_io_generate_read_key("test/project")))
+        self.assertTrue(isinstance(keen_io_generate_read_key(None), bytes))
+        self.assertTrue(
+            isinstance(keen_io_generate_read_key("test/project"), bytes)
+        )
 
     def test_generate_write_key(self):
         # should return None if master key is not set
@@ -256,7 +258,7 @@ class TestKeen(unittest.TestCase):
 
         # set master_key
         os.environ["KEEN_MASTER_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(is_string(keen_io_generate_write_key()))
+        self.assertTrue(isinstance(keen_io_generate_write_key(), bytes))
 
     def test_get_repo_filter(self):
         self.assertEqual(None, get_repo_filter())
