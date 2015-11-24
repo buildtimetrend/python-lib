@@ -150,7 +150,7 @@ class Stages(object):
 
         param stage Stage instance
         """
-        if stage is None or type(stage) is not Stage:
+        if not isinstance(stage, Stage):
             raise TypeError("param %s should be a Stage instance" % stage)
 
         # add stage
