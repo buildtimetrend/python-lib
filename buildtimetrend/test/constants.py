@@ -222,9 +222,9 @@ SPLIT_TIMESTAMP_ENDTAG = {
     'timezone_offset': '+0000'
 }
 
-TIMESTAMP_FINISHED = 1396378871.234567
-TIMESTAMP_NANO_FINISHED = 1396378871234567000
-ISOTIMESTAMP_FINISHED = '2014-04-01T19:01:11.234567+00:00'
+TIMESTAMP_FINISHED = 1396378871.234568
+TIMESTAMP_NANO_FINISHED = 1396378871234567800
+ISOTIMESTAMP_FINISHED = '2014-04-01T19:01:11.234568+00:00'
 SPLIT_TIMESTAMP_FINISHED = {
     'day_of_month': '01',
     'day_of_week': '2',
@@ -238,13 +238,14 @@ SPLIT_TIMESTAMP_FINISHED = {
     'month_full_en': 'April',
     'month_short_en': 'Apr',
     'second': '11',
-    'microsecond': '234567',
-    'isotimestamp': '2014-04-01T19:01:11.234567+00:00',
+    'microsecond': '234568',
+    'isotimestamp': '2014-04-01T19:01:11.234568+00:00',
     'timestamp_seconds': TIMESTAMP_FINISHED,
     'year': '2014',
     'timezone': 'UTC',
     'timezone_offset': '+0000'
 }
+STAGE_DURATION = 371.2345681190491
 STAGES_RESULT = [{'duration': 17,
                   'finished_at': SPLIT_TIMESTAMP4,
                   'name': 'stage1',
