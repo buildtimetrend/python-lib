@@ -50,7 +50,7 @@ class BuildJob(object):
         Parameters :
         - stages : Stages instance
         """
-        if stages is not None and type(stages) is Stages:
+        if isinstance(stages, Stages):
             self.stages = stages
 
     def add_stage(self, stage):
@@ -166,14 +166,14 @@ class BuildJob(object):
         data = self.get_properties()
 
         # add stages
-        if type(self.stages) is Stages:
+        if isinstance(self.stages, Stages):
             data["stages"] = self.stages.stages
 
         return data
 
     def stages_to_list(self):
         """Return list of stages, all containing the build properties."""
-        if type(self.stages) is Stages:
+        if isinstance(self.stages, Stages):
             # create list to be returned
             data = []
 
@@ -201,7 +201,7 @@ class BuildJob(object):
             root.set(str(key), str(self.properties.get_item(key)))
 
         # add stages
-        if type(self.stages) is Stages:
+        if isinstance(self.stages, Stages):
             root.append(self.stages.to_xml())
 
         return root
