@@ -199,7 +199,7 @@ class TestStages(unittest.TestCase):
         self.assertListEqual(
             [
                 {
-                    'duration': 371.2345669269562,
+                    'duration': constants.STAGE_DURATION,
                     'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
                     'name': 'stage1',
                     'started_at': constants.SPLIT_TIMESTAMP_STARTED
@@ -208,7 +208,7 @@ class TestStages(unittest.TestCase):
             self.stages.stages)
 
         # test total duration
-        self.assertEqual(371.2345669269562, self.stages.total_duration())
+        self.assertEqual(constants.STAGE_DURATION, self.stages.total_duration())
 
     def test_create_stage(self):
         self.assertEqual(
@@ -235,7 +235,7 @@ class TestStages(unittest.TestCase):
         )
 
         self.assertDictEqual(
-            {'duration': 371.2345669269562,
+            {'duration': constants.STAGE_DURATION,
              'finished_at': constants.SPLIT_TIMESTAMP_FINISHED,
              'name': 'stage1',
              'started_at': constants.SPLIT_TIMESTAMP_STARTED},
