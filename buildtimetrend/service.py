@@ -70,7 +70,7 @@ def format_duration(duration):
     Parameters:
     - duration : duration in seconds
     """
-    if type(duration) not in (float, int) or duration < 0:
+    if not isinstance(duration, (float, int)) or duration < 0:
         return "unknown"
 
     # round duration

@@ -55,7 +55,7 @@ class Stages(object):
         Parameters:
         - timestamp : end timestamp
         """
-        if type(timestamp) in (int, float) and timestamp > 0:
+        if isinstance(timestamp, (int, float)) and timestamp > 0:
             logger.info("Set end_timestamp : %f", timestamp)
             self.end_timestamp = timestamp
 
@@ -150,7 +150,7 @@ class Stages(object):
 
         param stage Stage instance
         """
-        if stage is None or type(stage) is not Stage:
+        if not isinstance(stage, Stage):
             raise TypeError("param %s should be a Stage instance" % stage)
 
         # add stage
@@ -175,8 +175,8 @@ class Stages(object):
         - end_time : end of stage timestamp
         """
         # timestamps should be integer or floating point numbers
-        if not (type(start_time) in (int, float) and
-                type(end_time) in (int, float)):
+        if not (isinstance(start_time, (int, float)) and
+                isinstance(end_time, (int, float))):
             return None
 
         # calculate duration from start and end timestamp

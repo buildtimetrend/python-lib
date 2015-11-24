@@ -217,10 +217,9 @@ class TestStages(unittest.TestCase):
         )
         self.assertEqual(None, self.stages.create_stage("stage1", 1, "string"))
         self.assertEqual(None, self.stages.create_stage("stage1", "string", 1))
-        self.assertEqual(Stage, type(self.stages.create_stage("stage1", 1, 2)))
-        self.assertEqual(
-            Stage,
-            type(self.stages.create_stage("stage1", 1.0, 2.0))
+        self.assertTrue(isinstance(self.stages.create_stage("stage1", 1, 2), Stage))
+        self.assertTrue(
+            isinstance(self.stages.create_stage("stage1", 1.0, 2.0), Stage)
         )
 
         self.assertDictEqual(
