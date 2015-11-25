@@ -688,6 +688,8 @@ class TravisData(object):
         check_timing_tags = self.has_timing_tags()
 
         for line in stream:
+            # convert from bytes to string
+            line = line.decode('utf-8')
             # parse Travis CI timing tags
             if check_timing_tags and 'travis_' in line:
                 self.parse_travis_time_tag(line)
