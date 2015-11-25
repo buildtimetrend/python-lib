@@ -717,7 +717,9 @@ class TestTravisData(unittest.TestCase):
     def test_gather_data(self):
         # retrieve data from Travis API
         self.assertTrue(self.travis_data.get_build_data())
-        self.assertTrue(check_dict(self.travis_data.builds_data, key_list=["builds"]))
+        self.assertTrue(
+            check_dict(self.travis_data.builds_data, key_list=["builds"])
+        )
         self.assertTrue(len(self.travis_data.builds_data["builds"]) > 0)
         self.assertTrue(
             check_dict(
@@ -780,22 +782,32 @@ class TestTravisData(unittest.TestCase):
         self.assertEquals("", self.travis_data.get_substage_name({}))
 
         # result should be empty if no build config data is set
-        self.assertEquals("", self.travis_data.get_substage_name("test_command.sh"))
+        self.assertEquals(
+            "", self.travis_data.get_substage_name("test_command.sh")
+        )
 
         # test with incorrect build config data
         self.travis_data.current_build_data = {"test": "value"}
-        self.assertEquals("", self.travis_data.get_substage_name("test_command.sh"))
+        self.assertEquals(
+            "", self.travis_data.get_substage_name("test_command.sh")
+        )
 
         # test with empty command list
         self.travis_data.current_build_data = {"config": {}}
-        self.assertEquals("", self.travis_data.get_substage_name("test_command.sh"))
+        self.assertEquals(
+            "", self.travis_data.get_substage_name("test_command.sh")
+        )
 
         # test with correct build data, but without a matching command
         self.travis_data.current_build_data = json.loads(JOB_DATA_ANDROID)["job"]
-        self.assertEquals("", self.travis_data.get_substage_name("test_command.sh"))
+        self.assertEquals(
+            "", self.travis_data.get_substage_name("test_command.sh")
+        )
 
         # test with existing command
-        self.assertEquals("before_install.4", self.travis_data.get_substage_name("mvn -v"))
+        self.assertEquals(
+            "before_install.4", self.travis_data.get_substage_name("mvn -v")
+        )
 
     def test_process_no_build_job(self):
         self.assertRaises(TypeError, self.travis_data.process_build_job)
