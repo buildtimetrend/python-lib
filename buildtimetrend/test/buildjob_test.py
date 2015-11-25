@@ -566,11 +566,11 @@ class TestBuildJob(unittest.TestCase):
         self.build.add_property('property2', 3)
         # test xml string output
         self.assertEquals(
-            '<build property1="2" property2="3">\n'
-            '  <stages>\n'
-            '    <stage duration="2.0" name="stage1"/>\n'
-            '    <stage duration="5.0" name="stage2"/>\n'
-            '    <stage duration="10.0" name="stage3"/>\n'
-            '  </stages>\n'
-            '</build>\n',
+            b'<build property1="2" property2="3">\n'
+            b'  <stages>\n'
+            b'    <stage duration="2.0" name="stage1"/>\n'
+            b'    <stage duration="5.0" name="stage2"/>\n'
+            b'    <stage duration="10.0" name="stage3"/>\n'
+            b'  </stages>\n'
+            b'</build>\n',
             self.build.to_xml_string())
