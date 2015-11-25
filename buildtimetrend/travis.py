@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 import json
 import re
+import codecs
 from hashlib import sha256
 from buildtimetrend import logger
 from buildtimetrend.tools import check_file
@@ -337,7 +338,8 @@ class TravisConnector(object):
             }
         )
 
-        return json.load(result)
+        reader = codecs.getreader('utf-8')
+        return json.load(reader(result))
 
     def _handle_request(self, request, params=None):
         """
