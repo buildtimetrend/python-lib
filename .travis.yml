@@ -6,6 +6,7 @@ sudo: false
 install:
   - CFLAGS="-O0" pip install -e .[native]
   - CFLAGS="-O0" pip install coveralls
+  - CFLAGS="-O0" pip install formencode
 script:
   - python setup.py nosetests
 after_script:
