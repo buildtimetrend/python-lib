@@ -285,9 +285,10 @@ def check_authorization(repo, auth_header):
 
     # check if parameters are strings
     if is_string(repo) and is_string(auth_header) and is_string(token):
-        # generate hash and compare with Authorization header
-        auth_hash = sha256(repo + token).hexdigest()
+        # generate hash (encode string to bytes first)
+        auth_hash = sha256((repo + token).encode('utf-8')).hexdigest()
 
+        # compare hash with Authorization header
         if auth_hash == auth_header:
             logger.info("Travis CI notification Authorization header"
                         " is correct.")
