@@ -9,6 +9,7 @@ sudo: false
 install:
   - CFLAGS="-O0" pip install -e .[native]
   - CFLAGS="-O0" pip install coveralls
+  - CFLAGS="-O0" pip install formencode
 script:
   - nosetests --with-coverage --cover-package=buildtimetrend
 after_script:
