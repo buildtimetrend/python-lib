@@ -11,7 +11,7 @@ install:
   - CFLAGS="-O0" pip install coveralls
   - CFLAGS="-O0" pip install formencode
 script:
-  - nosetests --with-coverage --cover-package=buildtimetrend
+  - python setup.py nosetests
 after_script:
   - coveralls
 deploy:
