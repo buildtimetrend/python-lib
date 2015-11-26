@@ -18,7 +18,7 @@ setup(
     version=buildtimetrend.VERSION,
     packages=find_packages(),
     install_requires=['keen>=0.3.9', 'lxml', 'pyyaml', 'python-dateutil', 'future'],
-    tests_require=['nose', 'coveralls'],
+    tests_require=['nose', 'coveralls', 'formencode'],
     extras_require={
         'native': ['lxml', 'matplotlib>=1.2.0']
     },

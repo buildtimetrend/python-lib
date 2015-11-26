@@ -25,6 +25,7 @@ from buildtimetrend.settings import Settings
 from buildtimetrend.buildjob import BuildJob
 from buildtimetrend.stages import Stage
 from buildtimetrend.stages import Stages
+from formencode.doctest_xml_compare import xml_compare
 import constants
 from lxml import etree
 import unittest
@@ -529,22 +530,24 @@ class TestBuildJob(unittest.TestCase):
         self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml output
-        self.assertEquals(
+        expected_xml = etree.fromstring(
             b'<build><stages><stage duration="2.0" name="stage1"/>'
             b'<stage duration="5.0" name="stage2"/>'
-            b'<stage duration="10.0" name="stage3"/></stages></build>',
-            etree.tostring(self.build.to_xml()))
+            b'<stage duration="10.0" name="stage3"/></stages></build>'
+        )
+        self.assertTrue(xml_compare(expected_xml, self.build.to_xml()))
 
         # add properties
         self.build.add_property('property1', 2)
         self.build.add_property('property2', 3)
         # test xml output
-        self.assertEquals(
+        expected_xml = etree.fromstring(
             b'<build property1="2" property2="3">'
             b'<stages><stage duration="2.0" name="stage1"/>'
             b'<stage duration="5.0" name="stage2"/>'
-            b'<stage duration="10.0" name="stage3"/></stages></build>',
-            etree.tostring(self.build.to_xml()))
+            b'<stage duration="10.0" name="stage3"/></stages></build>'
+        )
+        self.assertTrue(xml_compare(expected_xml, self.build.to_xml()))
 
     def test_to_xml_string(self):
         # read and parse sample file
@@ -565,12 +568,17 @@ class TestBuildJob(unittest.TestCase):
         self.build.add_property('property1', 2)
         self.build.add_property('property2', 3)
         # test xml string output
-        self.assertEquals(
+        expected_xml = etree.fromstring(
             b'<build property1="2" property2="3">\n'
             b'  <stages>\n'
             b'    <stage duration="2.0" name="stage1"/>\n'
             b'    <stage duration="5.0" name="stage2"/>\n'
             b'    <stage duration="10.0" name="stage3"/>\n'
             b'  </stages>\n'
-            b'</build>\n',
-            self.build.to_xml_string())
+            b'</build>\n'
+        )
+        self.assertTrue(
+            xml_compare(
+                expected_xml, etree.fromstring(self.build.to_xml_string())
+            )
+        )

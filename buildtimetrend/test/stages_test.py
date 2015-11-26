@@ -22,6 +22,7 @@
 
 from buildtimetrend.stages import Stages
 from buildtimetrend.stages import Stage
+from formencode.doctest_xml_compare import xml_compare
 import constants
 from lxml import etree
 import unittest
@@ -49,7 +50,9 @@ class TestStages(unittest.TestCase):
         self.assertEqual(None, self.stages.started_at)
         self.assertEqual(None, self.stages.finished_at)
         # xml shouldn't contain items
-        self.assertEquals(b"<stages/>", etree.tostring(self.stages.to_xml()))
+        self.assertTrue(
+            xml_compare(etree.fromstring(b"<stages/>"), self.stages.to_xml())
+        )
         self.assertEquals(b"<stages/>\n", self.stages.to_xml_string())
 
     def test_nofile(self):
@@ -260,11 +263,12 @@ class TestStages(unittest.TestCase):
         self.stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml output
-        self.assertEquals(
+        expected_xml = etree.fromstring(
             b'<stages><stage duration="2.0" name="stage1"/>'
             b'<stage duration="5.0" name="stage2"/>'
-            b'<stage duration="10.0" name="stage3"/></stages>',
-            etree.tostring(self.stages.to_xml()))
+            b'<stage duration="10.0" name="stage3"/></stages>'
+        )
+        self.assertTrue(xml_compare(expected_xml, self.stages.to_xml()))
 
     def test_to_xml_string(self):
         # read and parse sample file
