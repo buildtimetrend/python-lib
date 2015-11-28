@@ -524,12 +524,36 @@ class TestTravis(unittest.TestCase):
 
         # test optional build matrix parameters
         test_parameters = [
-            {'env_var': 'TRAVIS_XCODE_SDK', 'parameter': 'xcode_sdk', 'test_value': "test_x_sdk"},
-            {'env_var': 'TRAVIS_XCODE_SCHEME', 'parameter': 'xcode_scheme', 'test_value': "test_x_scheme"},
-            {'env_var': 'TRAVIS_XCODE_PROJECT', 'parameter': 'xcode_project', 'test_value': "test_x_project"},
-            {'env_var': 'TRAVIS_XCODE_WORKSPACE', 'parameter': 'xcode_workspace', 'test_value': "test_x_workspace"},
-            {'env_var': 'CC', 'parameter': 'compiler', 'test_value': "test_gcc"},
-            {'env_var': 'ENV', 'parameter': 'parameters', 'test_value': "test_env"}
+            {
+                'env_var': 'TRAVIS_XCODE_SDK',
+                'parameter': 'xcode_sdk',
+                'test_value': "test_x_sdk"
+            },
+            {
+                'env_var': 'TRAVIS_XCODE_SCHEME',
+                'parameter': 'xcode_scheme',
+                'test_value': "test_x_scheme"
+            },
+            {
+                'env_var': 'TRAVIS_XCODE_PROJECT',
+                'parameter': 'xcode_project',
+                'test_value': "test_x_project"
+            },
+            {
+                'env_var': 'TRAVIS_XCODE_WORKSPACE',
+                'parameter': 'xcode_workspace',
+                'test_value': "test_x_workspace"
+            },
+            {
+                'env_var': 'CC',
+                'parameter': 'compiler',
+                'test_value': "test_gcc"
+            },
+            {
+                'env_var': 'ENV',
+                'parameter': 'parameters',
+                'test_value': "test_env"
+            }
         ]
 
         # test parameters
@@ -542,7 +566,8 @@ class TestTravis(unittest.TestCase):
                 expected_param_value = os.environ[parameter['env_var']]
             else:
                 reset_travis_parameter = True
-                expected_param_value = os.environ[parameter['env_var']] = parameter['test_value']
+                expected_param_value = os.environ[parameter['env_var']] = \
+                    parameter['test_value']
 
             load_build_matrix_env_vars(settings)
 
@@ -799,7 +824,8 @@ class TestTravisData(unittest.TestCase):
         )
 
         # test with correct build data, but without a matching command
-        self.travis_data.current_build_data = json.loads(JOB_DATA_ANDROID)["job"]
+        self.travis_data.current_build_data = \
+            json.loads(JOB_DATA_ANDROID)["job"]
         self.assertEquals(
             "", self.travis_data.get_substage_name("test_command.sh")
         )
