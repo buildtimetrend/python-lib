@@ -513,7 +513,7 @@ class TestStage(unittest.TestCase):
         )
         self.assertTrue(self.stage.set_duration_nano(123456789.123))
         self.assertDictEqual(
-            {"name": "", "duration": 0.123456789123},
+            {"name": "", "duration": 0.123456789},
             self.stage.to_dict())
 
         # duration can be zero

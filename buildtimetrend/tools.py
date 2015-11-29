@@ -27,6 +27,9 @@ from buildtimetrend import logger
 from datetime import datetime
 from dateutil.parser import parse
 from dateutil.tz import tzutc
+from decimal import Decimal
+from decimal import getcontext
+from numbers import Number
 
 
 def format_timestamp(timestamp):
@@ -135,7 +138,8 @@ def nano2sec(time):
     Parameters:
     - time : time in nanoseconds
     """
-    return float(time) / float(1000000000)
+    getcontext().prec = 20
+    return Decimal(int(time)) / Decimal(1000000000)
 
 
 def check_file(filename):
