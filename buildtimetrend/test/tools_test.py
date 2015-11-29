@@ -42,6 +42,13 @@ class TestTools(unittest.TestCase):
         self.assertEquals("2014-07-09T12:38:33", format_timestamp(1404909513))
 
     def test_split_timestamp(self):
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, split_timestamp)
+
+        # error is thrown when called with an invalid parameter
+        self.assertRaises(TypeError, split_timestamp, None)
+        self.assertRaises(TypeError, split_timestamp, "string")
+
         # test 0 timestamp (epoch)
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH, split_timestamp(0)
@@ -50,7 +57,19 @@ class TestTools(unittest.TestCase):
         # test timestamp
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_TESTDATE,
-            split_timestamp(constants.TIMESTAMP_TESTDATE)
+            split_timestamp(nano2sec(constants.TIMESTAMP_NANO_TESTDATE))
+        )
+
+        # test timestamp
+        self.assertDictEqual(
+            constants.SPLIT_TIMESTAMP_STARTED,
+            split_timestamp(constants.TIMESTAMP_STARTED)
+        )
+
+        # test timestamp
+        self.assertDictEqual(
+            constants.SPLIT_TIMESTAMP_FINISHED,
+            split_timestamp(nano2sec(constants.TIMESTAMP_NANO_FINISHED))
         )
 
     def test_split_isotimestamp(self):
