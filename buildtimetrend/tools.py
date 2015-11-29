@@ -55,7 +55,14 @@ def split_timestamp(timestamp):
     Parameters :
     - timestamp : timestamp, seconds since epoch
     """
-    dt_utc = datetime.utcfromtimestamp(timestamp).replace(tzinfo=tzutc())
+    if not isinstance(timestamp, Number):
+        raise TypeError("param timestamp should be a number %s" % type(timestamp))
+
+    ts_seconds = int(timestamp)
+    ts_microseconds = int((timestamp - ts_seconds) * 1000000)
+    dt_utc = datetime.utcfromtimestamp(ts_seconds).replace(
+        tzinfo=tzutc(), microsecond=ts_microseconds
+    )
     return split_datetime(dt_utc)
 
 

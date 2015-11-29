@@ -998,12 +998,12 @@ class TestTravisData(unittest.TestCase):
         )
 
         # check build started and finished timestamps
-        self.assertEquals(
-            1408282890.843066,
+        self.assertEqual(
+            1408282890.843065,
             self.travis_data.current_job.stages
                 .started_at["timestamp_seconds"]
         )
-        self.assertEquals(
+        self.assertEqual(
             1408282901.287937,
             self.travis_data.current_job.stages
                 .finished_at["timestamp_seconds"]
@@ -1030,7 +1030,7 @@ class TestTravisData(unittest.TestCase):
 
         # check build started and finished timestamps
         self.assertEquals(
-            1408282901.278676,
+            1408282901.278675,
             self.travis_data.current_job.stages
                 .started_at["timestamp_seconds"]
         )
@@ -1134,7 +1134,7 @@ class TestTravisData(unittest.TestCase):
 
         # check build started and finished timestamps
         self.assertEquals(
-            1408282815.329855,
+            1408282815.329854,
             self.travis_data.current_job.stages
                 .started_at["timestamp_seconds"]
         )
@@ -1195,7 +1195,7 @@ class TestTravisData(unittest.TestCase):
                 self.travis_data.current_job.stages.stages[0]["name"]
             )
             self.assertEquals(
-                1408282890.843066,
+                1408282890.843065,
                 self.travis_data.current_job.stages
                     .stages[0]["started_at"]["timestamp_seconds"]
             )
@@ -1211,7 +1211,7 @@ class TestTravisData(unittest.TestCase):
 
             # check build started and finished timestamps
             self.assertEquals(
-                1408282890.843066,
+                1408282890.843065,
                 self.travis_data.current_job.stages
                     .started_at["timestamp_seconds"])
             self.assertEquals(
@@ -1260,11 +1260,11 @@ class TestTravisData(unittest.TestCase):
                 'coveralls',
                 self.travis_data.current_job.stages.stages[1]["command"])
             self.assertEquals(
-                1408282896.480782,
+                1408282896.480781,
                 self.travis_data.current_job.stages
                     .stages[1]["started_at"]["timestamp_seconds"])
             self.assertEquals(
-                1408282901.258724,
+                1408282901.258723,
                 self.travis_data.current_job.stages
                     .stages[1]["finished_at"]["timestamp_seconds"])
             self.assertEquals(
@@ -1273,11 +1273,11 @@ class TestTravisData(unittest.TestCase):
 
             # check build started and finished timestamps
             self.assertEquals(
-                1408282890.843066,
+                1408282890.843065,
                 self.travis_data.current_job.stages
                     .started_at["timestamp_seconds"])
             self.assertEquals(
-                1408282901.258724,
+                1408282901.258723,
                 self.travis_data.current_job.stages
                     .finished_at["timestamp_seconds"])
 
@@ -1323,11 +1323,11 @@ class TestTravisData(unittest.TestCase):
             # check build started and finished timestamps, they don't change
             # because this stage doesn't having timing info
             self.assertEquals(
-                1408282890.843066,
+                1408282890.843065,
                 self.travis_data.current_job.stages
                     .started_at["timestamp_seconds"])
             self.assertEquals(
-                1408282901.258724,
+                1408282901.258723,
                 self.travis_data.current_job.stages
                     .finished_at["timestamp_seconds"])
 
@@ -1358,7 +1358,7 @@ class TestTravisData(unittest.TestCase):
                 'timestamp.sh Done',
                 self.travis_data.current_job.stages.stages[3]["command"])
             self.assertEquals(
-                1408282901.278676,
+                1408282901.278675,
                 self.travis_data.current_job.stages
                     .stages[3]["started_at"]["timestamp_seconds"])
             self.assertEquals(
@@ -1371,7 +1371,7 @@ class TestTravisData(unittest.TestCase):
 
             # check build started and finished timestamps
             self.assertEquals(
-                1408282890.843066,
+                1408282890.843065,
                 self.travis_data.current_job.stages
                     .started_at["timestamp_seconds"])
             self.assertEquals(
@@ -1518,7 +1518,7 @@ class TestTravisData(unittest.TestCase):
                 'timestamp.sh Done',
                 self.travis_data.current_job.stages.stages[1]["command"])
             self.assertEquals(
-                1408282901.278676,
+                1408282901.278675,
                 self.travis_data.current_job.stages
                     .stages[1]["started_at"]["timestamp_seconds"])
             self.assertEquals(
@@ -1531,7 +1531,7 @@ class TestTravisData(unittest.TestCase):
 
             # check build started and finished timestamps
             self.assertEquals(
-                1408282901.278676,
+                1408282901.278675,
                 self.travis_data.current_job.stages
                     .started_at["timestamp_seconds"])
             self.assertEquals(
