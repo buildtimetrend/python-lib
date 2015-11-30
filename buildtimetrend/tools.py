@@ -56,7 +56,9 @@ def split_timestamp(timestamp):
     - timestamp : timestamp, seconds since epoch
     """
     if not isinstance(timestamp, Number):
-        raise TypeError("param timestamp should be a number %s" % type(timestamp))
+        raise TypeError(
+            "param timestamp should be a number %s" % type(timestamp)
+        )
 
     ts_seconds = int(timestamp)
     ts_microseconds = int((timestamp - ts_seconds) * 1000000)
