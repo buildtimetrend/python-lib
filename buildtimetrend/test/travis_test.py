@@ -1153,10 +1153,10 @@ class TestTravisData(unittest.TestCase):
 
     def test_parse_travis_time_tag(self):
         # read sample lines with timetags
-        with open(TRAVIS_TIMING_TAGS_FILE, 'r') as f:
+        with open(TRAVIS_TIMING_TAGS_FILE, 'rb') as f:
             """First stage"""
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'install.4' is started, but is not finished
             self.assertEquals(
@@ -1174,7 +1174,7 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'install.4' is finished, and is added to Stages object
             self.assertEquals(
@@ -1229,7 +1229,7 @@ class TestTravisData(unittest.TestCase):
 
             """Seconds stage"""
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'after_script.2' is started, but is not finished
             self.assertEquals(
@@ -1245,7 +1245,7 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'after_script.2' is finished,
             # and is added to Stages object
@@ -1295,7 +1295,7 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'after_script.3' is finished, and is added to Stages object
             self.assertEquals(
@@ -1344,7 +1344,7 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'timestamp.sh Done' is finished,
             # and is added to Stages object
@@ -1380,10 +1380,10 @@ class TestTravisData(unittest.TestCase):
 
     def test_parse_travis_time_tag_incorrect(self):
         # read sample lines with timetags
-        with open(TRAVIS_INCORRECT_TIMING_TAGS_FILE, 'r') as f:
+        with open(TRAVIS_INCORRECT_TIMING_TAGS_FILE, 'rb') as f:
             """First stage"""
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'install.4' is started, but is not finished
             self.assertEquals(
@@ -1397,7 +1397,7 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'install.4' is not finished, end-tag is incorrect
             self.assertEquals(
@@ -1419,7 +1419,7 @@ class TestTravisData(unittest.TestCase):
 
             """Seconds stage"""
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'after_script.2' is started, but is not finished
             self.assertEquals(
@@ -1433,7 +1433,7 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'after_script.3' is not finished,
             # because timing_hash is incorrect
@@ -1461,7 +1461,7 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'after_script.3' is not finished,
             # because timing_hash is incorrect
@@ -1502,7 +1502,7 @@ class TestTravisData(unittest.TestCase):
             self.assertFalse(self.travis_data.travis_substage.has_finished())
 
             # read next log file line
-            self.travis_data.parse_travis_time_tag(next(f))
+            self.travis_data.parse_travis_time_tag(next(f).decode('utf-8'))
 
             # stage 'timestamp.sh Done' is finished,
             # and is added to Stages object
