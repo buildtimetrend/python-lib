@@ -20,8 +20,6 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
-#from future import standard_library
-#standard_library.install_aliases()
 from builtins import str
 from builtins import object
 import os
