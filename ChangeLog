@@ -1,6 +1,6 @@
 v0.4 (not yet released)
 - use Keen.io API cache when retrieving project list
-- Python 2/3 compatible
+- issue #117 : Support Python 2/3
 
 v0.3 (released on 17Nov2015)
 - move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut
