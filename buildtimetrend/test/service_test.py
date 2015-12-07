@@ -153,15 +153,28 @@ class TestService(unittest.TestCase):
             check_process_parameters("user/repo", 1234)
         )
 
-        # TODO complete test when has_build_id() can be mocked
         # set keen project ID and write key
         keen.project_id = "1234abcd"
         keen.write_key = "1234abcd5678efgh"
         with self.assertRaises(Exception) as exc:
-            validate_task_parameters("user/repo", 1234)
+            check_process_parameters("user/repo", 1234)
         self.assertEqual(
             "Error checking if build exists.", str(exc.exception)
         )
+
+    @mock.patch('buildtimetrend.service.has_build_id', return_value=True)
+    def test_check_process_parameters_mock(self, has_build_id_func):
+        # set keen project ID and write key
+        keen.project_id = "1234abcd"
+        keen.write_key = "1234abcd5678efgh"
+
+        self.assertEqual(
+            "Build #1234 of project user/repo already exists in database",
+            check_process_parameters("user/repo", 1234)
+        )
+
+        has_build_id_func.return_value = False
+        self.assertEqual(None, check_process_parameters("user/repo", 1234))
 
     def test_validate_travis_request(self):
         # repo or build is not set
