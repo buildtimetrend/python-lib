@@ -567,7 +567,7 @@ def get_all_projects():
         return []
     except keen.exceptions.KeenApiError as msg:
         logger.error("Error in keenio.get_all_projects() : " + str(msg))
-        return -1
+        return []
 
     if type(result) is list:
         return result
