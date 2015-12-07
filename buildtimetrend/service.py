@@ -122,7 +122,7 @@ def validate_travis_request(repo=None, build=None):
 
     # check if repo is allowed
     if not is_repo_allowed(repo):
-        return "Project '%s' is not allowed." % cgi.escape(repo)
+        return "Project '{}' is not allowed.".format(cgi.escape(repo))
 
     return None
 
@@ -139,11 +139,14 @@ def validate_task_parameters(repo=None, build=None):
 
     try:
         if has_build_id(repo, build):
-            return "Build #%s of project %s already exists in database" % \
-                (cgi.escape(str(build)), cgi.escape(str(repo)))
+            template = "Build #{build} of project {repo} " \
+                "already exists in database"
+            return template.format(
+                build=cgi.escape(str(build)), repo=cgi.escape(str(repo))
+            )
     except Exception as msg:
         # Raise last exception again
-        logger.error("Error checking if build exists : %s", msg)
+        logger.error("Error checking if build exists : {}".format(msg))
         raise SystemError("Error checking if build exists.")
 
     return None
