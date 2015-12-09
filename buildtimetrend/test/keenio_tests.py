@@ -112,7 +112,23 @@ class TestKeen(unittest.TestCase):
             add_project_info_dict({"test": "value"})
         )
 
-         # dict with finished_at timestamp
+        # job.repo overrides buildtime_trend.project_name
+        TEST_NAME = "test/name"
+        tmp_project_info = copy.deepcopy(self.project_info)
+        tmp_project_info["project_name"] = TEST_NAME
+        self.assertDictEqual(
+            {
+                "test": "value",
+                "buildtime_trend": tmp_project_info,
+                "job": {"repo": TEST_NAME},
+            },
+            add_project_info_dict({
+                "test": "value",
+                "job": {"repo": TEST_NAME}
+            })
+        )
+
+        # dict with finished_at timestamp
         self.assertDictEqual(
             {
                 "test": "value",
