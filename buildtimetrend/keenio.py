@@ -542,13 +542,14 @@ def has_build_id(repo=None, build_id=None):
                 "operator": "eq",
                 "property_value": str(build_id)}]
         )
-        return count > 0
     except requests.ConnectionError:
         logger.error("Connection to Keen.io API failed")
         raise SystemError("Connection to Keen.io API failed")
     except keen.exceptions.KeenApiError as msg:
         logger.error("Error in keenio.has_build_id : " + str(msg))
         raise SystemError(msg)
+
+    return count > 0
 
 
 def get_all_projects():

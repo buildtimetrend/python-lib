@@ -26,6 +26,7 @@ from buildtimetrend.tools import is_string
 import os
 import keen
 import unittest
+import mock
 import constants
 
 
@@ -396,3 +397,15 @@ class TestKeen(unittest.TestCase):
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
         self.assertRaises(SystemError, has_build_id, "test", 123)
+
+    @mock.patch('keen.count', return_value=0)
+    def test_has_build_id_mock(self, keen_count_func):
+        # test with some token (value doesn't matter, keen.count is mocked)
+        keen.project_id = "1234abcd"
+        keen.read_key = "4567abcd5678efgh"
+        # should return false if ID doesn't exist
+        self.assertFalse(has_build_id("test", 123))
+
+        # should return true if does exist
+        keen_count_func.return_value=1
+        self.assertTrue(has_build_id("test", 123))
