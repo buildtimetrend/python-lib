@@ -255,6 +255,7 @@ def get_dashboard_keen_config(repo):
     # generate read key
     read_key = keen_io_generate_read_key(repo)
     if read_key is not None:
+        # convert bytes to string
         if isinstance(read_key, bytes):
             read_key = read_key.decode('utf-8')
 
