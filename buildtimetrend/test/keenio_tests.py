@@ -416,3 +416,46 @@ class TestKeen(unittest.TestCase):
         # test raising ConnectionError
         keen_count_func.side_effect=self.raise_conn_err
         self.assertRaises(SystemError, has_build_id, "test", 123)
+
+    @mock.patch(
+        'buildtimetrend.keenio.keen_io_generate_read_key',
+        return_value=None
+    )
+    def test_get_dashboard_keen_config(self, gen_key_func):
+        self.assertDictEqual({}, get_dashboard_keen_config("test"))
+
+        # test with a project id
+        keen.master_key = '4567abcd5678efgh'
+        self.assertDictEqual({}, get_dashboard_keen_config("test"))
+
+        # test with a KEEN_PROJECT_ID
+        os.environ["KEEN_PROJECT_ID"] = 'abcd1234'
+        self.assertDictEqual(
+            {'projectId': 'abcd1234'}, get_dashboard_keen_config("test")
+        )
+
+        # test with a keen.project_id
+        keen.project_id = '1234abcd'
+        self.assertDictEqual(
+            {'projectId': '1234abcd'}, get_dashboard_keen_config("test")
+        )
+
+        # test with a generated read_key
+        gen_key_func.return_value = 'fedcba9876543210abcdefg'
+        self.assertDictEqual(
+            {
+                'projectId': '1234abcd',
+                'readKey': 'fedcba9876543210abcdefg'
+            },
+            get_dashboard_keen_config("test")
+        )
+
+        # test with a generated read_key (bytes)
+        gen_key_func.return_value = b'fedcba9876543210abcdefg'
+        self.assertDictEqual(
+            {
+                'projectId': '1234abcd',
+                'readKey': 'fedcba9876543210abcdefg'
+            },
+            get_dashboard_keen_config("test")
+        )

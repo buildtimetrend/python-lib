@@ -255,6 +255,9 @@ def get_dashboard_keen_config(repo):
     # generate read key
     read_key = keen_io_generate_read_key(repo)
     if read_key is not None:
+        if isinstance(read_key, bytes):
+            read_key = read_key.decode('utf-8')
+
         keen_config['readKey'] = str(read_key)
 
     # return keen config settings
