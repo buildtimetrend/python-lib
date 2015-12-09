@@ -398,6 +398,9 @@ class TestKeen(unittest.TestCase):
         keen.read_key = "4567abcd5678efgh"
         self.assertRaises(SystemError, has_build_id, "test", 123)
 
+    def raise_conn_err(*args, **kwargs):
+        raise requests.ConnectionError
+
     @mock.patch('keen.count', return_value=0)
     def test_has_build_id_mock(self, keen_count_func):
         # test with some token (value doesn't matter, keen.count is mocked)
@@ -409,3 +412,7 @@ class TestKeen(unittest.TestCase):
         # should return true if does exist
         keen_count_func.return_value=1
         self.assertTrue(has_build_id("test", 123))
+
+        # test raising ConnectionError
+        keen_count_func.side_effect=self.raise_conn_err
+        self.assertRaises(SystemError, has_build_id, "test", 123)
