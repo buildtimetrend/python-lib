@@ -410,11 +410,11 @@ class TestKeen(unittest.TestCase):
         self.assertFalse(has_build_id("test", 123))
 
         # should return true if does exist
-        keen_count_func.return_value=1
+        keen_count_func.return_value = 1
         self.assertTrue(has_build_id("test", 123))
 
         # test raising ConnectionError
-        keen_count_func.side_effect=self.raise_conn_err
+        keen_count_func.side_effect = self.raise_conn_err
         self.assertRaises(SystemError, has_build_id, "test", 123)
 
     @mock.patch(
