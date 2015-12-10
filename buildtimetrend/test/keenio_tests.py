@@ -459,3 +459,39 @@ class TestKeen(unittest.TestCase):
             },
             get_dashboard_keen_config("test")
         )
+
+    @mock.patch(
+        'buildtimetrend.keenio.get_dashboard_keen_config',
+        return_value={
+            'projectId': '1234abcd',
+            'readKey': 'fedcba9876543210abcdefg'
+        }
+    )
+    def test_get_dashboard_config(self, gen_config_func):
+        # error is thrown when extra parameter is not a dictionary
+        self.assertRaises(TypeError, get_dashboard_config, "test/repo", "should_be_dict")
+
+        # TODO fix unstable test : parameter order changes between different tests
+        '''
+        self.assertEqual(
+            "var config = {};\nvar keenConfig = "
+            "{'projectId': '1234abcd', 'readKey': 'fedcba9876543210abcdefg'};",
+            get_dashboard_config("")
+        )
+
+        # repo name is added
+        self.assertEqual(
+            "var config = {'projectName': 'test/repo', 'repoName': 'test/repo'};"
+            "\nvar keenConfig = "
+            "{'projectId': '1234abcd', 'readKey': 'fedcba9876543210abcdefg'};",
+            get_dashboard_config("test/repo")
+        )
+
+        # add extra parameters
+        self.assertEqual(
+            "var config = {'projectName': 'test/repo', 'repoName': 'test/repo', "
+            "'extra': 'value1', 'extra2': 'value2'};\nvar keenConfig = "
+            "{'projectId': '1234abcd', 'readKey': 'fedcba9876543210abcdefg'};",
+            get_dashboard_config("test/repo", {'extra': 'value1', 'extra2': 'value2'})
+        )
+        '''
