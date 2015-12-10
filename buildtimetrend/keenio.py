@@ -293,7 +293,7 @@ def get_dashboard_config(repo, extra=None):
         config.update(extra)
 
     # create configuration as a string
-    return "var config = %s;\nvar keenConfig = %s;" % (config, keen_config)
+    return "var config = {};\nvar keenConfig = {};".format(config, keen_config)
 
 
 def generate_dashboard_config_file(repo):
