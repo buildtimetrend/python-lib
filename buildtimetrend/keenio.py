@@ -293,6 +293,7 @@ def get_dashboard_config_dict(repo, extra=None):
 
     return config
 
+
 def get_dashboard_config(repo, extra=None):
     """
     Generate the configuration settings for the dashboard.

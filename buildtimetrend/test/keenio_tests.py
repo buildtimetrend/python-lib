@@ -478,8 +478,10 @@ class TestKeen(unittest.TestCase):
 
         # add extra parameters
         self.assertEqual(
-            {'projectName': 'test/repo', 'repoName': 'test/repo',
-            'extra': 'value1', 'extra2': 'value2'},
+            {
+                'projectName': 'test/repo', 'repoName': 'test/repo',
+                'extra': 'value1', 'extra2': 'value2'
+            },
             get_dashboard_config_dict(
                 "test/repo", {'extra': 'value1', 'extra2': 'value2'}
             )
