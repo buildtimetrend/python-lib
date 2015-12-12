@@ -460,38 +460,42 @@ class TestKeen(unittest.TestCase):
             get_dashboard_keen_config("test")
         )
 
-    @mock.patch(
-        'buildtimetrend.keenio.get_dashboard_keen_config',
-        return_value={
-            'projectId': '1234abcd',
-            'readKey': 'fedcba9876543210abcdefg'
-        }
-    )
-    def test_get_dashboard_config(self, gen_config_func):
+    def test_get_dashboard_config_dict(self):
         # error is thrown when extra parameter is not a dictionary
-        self.assertRaises(TypeError, get_dashboard_config, "test/repo", "should_be_dict")
-
-        # TODO fix unstable test : parameter order changes between different tests
-        '''
-        self.assertEqual(
-            "var config = {};\nvar keenConfig = "
-            "{'projectId': '1234abcd', 'readKey': 'fedcba9876543210abcdefg'};",
-            get_dashboard_config("")
+        self.assertRaises(
+            TypeError,
+            get_dashboard_config_dict, "test/repo", "should_be_dict"
         )
 
+        # empty configuration
+        self.assertDictEqual({}, get_dashboard_config_dict(""))
+
         # repo name is added
-        self.assertEqual(
-            "var config = {'projectName': 'test/repo', 'repoName': 'test/repo'};"
-            "\nvar keenConfig = "
-            "{'projectId': '1234abcd', 'readKey': 'fedcba9876543210abcdefg'};",
-            get_dashboard_config("test/repo")
+        self.assertDictEqual(
+            {'projectName': 'test/repo', 'repoName': 'test/repo'},
+            get_dashboard_config_dict("test/repo")
         )
 
         # add extra parameters
         self.assertEqual(
-            "var config = {'projectName': 'test/repo', 'repoName': 'test/repo', "
-            "'extra': 'value1', 'extra2': 'value2'};\nvar keenConfig = "
-            "{'projectId': '1234abcd', 'readKey': 'fedcba9876543210abcdefg'};",
-            get_dashboard_config("test/repo", {'extra': 'value1', 'extra2': 'value2'})
+            {'projectName': 'test/repo', 'repoName': 'test/repo',
+            'extra': 'value1', 'extra2': 'value2'},
+            get_dashboard_config_dict(
+                "test/repo", {'extra': 'value1', 'extra2': 'value2'}
+            )
         )
-        '''
+
+    @mock.patch(
+        'buildtimetrend.keenio.get_dashboard_keen_config',
+        return_value={'projectId': '1234abcd'}
+    )
+    @mock.patch(
+        'buildtimetrend.keenio.get_dashboard_config_dict',
+        return_value={'projectName': 'test/repo'}
+    )
+    def test_get_dashboard_config(self, keen_config_func, config_dict_func):
+        self.assertEqual(
+            "var config = {'projectName': 'test/repo'};"
+            "\nvar keenConfig = {'projectId': '1234abcd'};",
+            get_dashboard_config("test/repo")
+        )
