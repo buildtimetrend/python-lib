@@ -542,8 +542,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.duration',
-            'timeframe': 'this_7_days',
-            'max_age': 600,
+            'timeframe': TIME_INTERVALS['week']['timeframe'],
+            'max_age': TIME_INTERVALS['week']['max_age'],
             'filters': [{
                 'operator': 'eq',
                 'property_name': 'buildtime_trend.project_name',
@@ -558,8 +558,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.duration',
-            'timeframe': 'this_52_weeks',
-            'max_age': 1800,
+            'timeframe': TIME_INTERVALS['year']['timeframe'],
+            'max_age': TIME_INTERVALS['year']['max_age'],
             'filters': [{
                 'operator': 'eq',
                 'property_name': 'buildtime_trend.project_name',
