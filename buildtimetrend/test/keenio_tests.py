@@ -525,3 +525,53 @@ class TestKeen(unittest.TestCase):
         args, kwargs = config_dict_func.call_args
         self.assertEqual(args, ("test/repo2", {'extra': 'value'}))
         self.assertDictEqual(kwargs, {})
+
+    def test_get_avg_buildtime(self):
+        patcher = mock.patch('keen.average', return_value=123)
+        keen_avg_func = patcher.start()
+
+        self.assertEqual(-1, get_avg_buildtime())
+        self.assertEqual(-1, get_avg_buildtime("test/repo"))
+
+        # test with some token (value doesn't matter, keen.average is mocked)
+        keen.project_id = "1234abcd"
+        keen.read_key = "4567abcd5678efgh"
+        self.assertEqual(123, get_avg_buildtime("test/repo"))
+
+        # test parameters passed to keen.average
+        args, kwargs = keen_avg_func.call_args
+        self.assertEqual(args, ("build_jobs",))
+        self.assertDictEqual(kwargs, {
+            'target_property': 'job.duration',
+            'timeframe': 'this_7_days',
+            'max_age': 600,
+            'filters': [{
+                'operator': 'eq',
+                'property_name': 'buildtime_trend.project_name',
+                'property_value': 'test/repo'
+            }]
+        })
+
+        self.assertEqual(123, get_avg_buildtime("test/repo2", "year"))
+
+        # test parameters passed to keen.average
+        args, kwargs = keen_avg_func.call_args
+        self.assertEqual(args, ("build_jobs",))
+        self.assertDictEqual(kwargs, {
+            'target_property': 'job.duration',
+            'timeframe': 'this_52_weeks',
+            'max_age': 1800,
+            'filters': [{
+                'operator': 'eq',
+                'property_name': 'buildtime_trend.project_name',
+                'property_value': 'test/repo2'
+            }]
+        })
+
+        # test raising ConnectionError
+        keen_avg_func.side_effect = self.raise_conn_err
+        self.assertEqual(-1, get_avg_buildtime("test/repo"))
+
+        # test raising KeenApiError (call with invalid read_key)
+        patcher.stop()
+        self.assertEqual(-1, get_avg_buildtime("test/repo"))
