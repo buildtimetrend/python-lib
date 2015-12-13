@@ -80,6 +80,9 @@ class TestKeen(unittest.TestCase):
         keen.read_key = None
         keen.master_key = None
 
+    def raise_conn_err(*args, **kwargs):
+        raise requests.ConnectionError
+
     def test_novalues(self):
         self.assertEqual(None, keen.project_id)
         self.assertEqual(None, keen.write_key)
@@ -397,9 +400,6 @@ class TestKeen(unittest.TestCase):
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
         self.assertRaises(SystemError, has_build_id, "test", 123)
-
-    def raise_conn_err(*args, **kwargs):
-        raise requests.ConnectionError
 
     @mock.patch('keen.count', return_value=0)
     def test_has_build_id_mock(self, keen_count_func):
