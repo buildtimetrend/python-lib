@@ -521,7 +521,6 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("test/repo2",))
         self.assertDictEqual(kwargs, {})
 
-        print(config_dict_func.return_value)
         args, kwargs = config_dict_func.call_args
         self.assertEqual(args, ("test/repo2", {'extra': 'value'}))
         self.assertDictEqual(kwargs, {})
