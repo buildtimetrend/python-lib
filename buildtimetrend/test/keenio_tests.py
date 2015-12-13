@@ -487,6 +487,8 @@ class TestKeen(unittest.TestCase):
             )
         )
 
+    # decorators are applied from the bottom up see
+    # https://docs.python.org/dev/library/unittest.mock.html#nesting-patch-decorators
     @mock.patch(
         'buildtimetrend.keenio.get_dashboard_keen_config',
         return_value={'projectId': '1234abcd'}
@@ -495,9 +497,31 @@ class TestKeen(unittest.TestCase):
         'buildtimetrend.keenio.get_dashboard_config_dict',
         return_value={'projectName': 'test/repo'}
     )
-    def test_get_dashboard_config(self, keen_config_func, config_dict_func):
+    def test_get_dashboard_config(self, config_dict_func, keen_config_func):
         self.assertEqual(
             "var config = {'projectName': 'test/repo'};"
             "\nvar keenConfig = {'projectId': '1234abcd'};",
             get_dashboard_config("test/repo")
         )
+
+        # function was last called with argument "test/repo"
+        args, kwargs = keen_config_func.call_args
+        self.assertEqual(args, ("test/repo",))
+        self.assertDictEqual(kwargs, {})
+
+        print(config_dict_func.return_value)
+        args, kwargs = config_dict_func.call_args
+        self.assertEqual(args, ("test/repo", None))
+        self.assertDictEqual(kwargs, {})
+
+        # call function with argument "test/repo2"
+        # and a dict with extra parameters
+        get_dashboard_config("test/repo2", {'extra': 'value'})
+        args, kwargs = keen_config_func.call_args
+        self.assertEqual(args, ("test/repo2",))
+        self.assertDictEqual(kwargs, {})
+
+        print(config_dict_func.return_value)
+        args, kwargs = config_dict_func.call_args
+        self.assertEqual(args, ("test/repo2", {'extra': 'value'}))
+        self.assertDictEqual(kwargs, {})
