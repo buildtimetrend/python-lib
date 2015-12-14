@@ -535,7 +535,9 @@ def get_latest_buildtime(repo=None):
         logger.error("Error in keenio.get_latest_buildtime() : " + str(msg))
         return -1
 
-    if result is not None and len(result) > 0:
+    if is_list(result) and len(result) > 0 and \
+            check_dict(result[0], None, ['job']) and \
+            check_dict(result[0]['job'], None, ['duration']):
         return result[0]['job']['duration']
 
     return -1

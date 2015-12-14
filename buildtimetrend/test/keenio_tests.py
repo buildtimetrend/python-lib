@@ -773,8 +773,45 @@ class TestKeen(unittest.TestCase):
             }]
         })
 
+        # query returned two values (shouldn't happen, but test anyway)
+        keen_extract_func.return_value = [
+            {
+                "job": {
+                        "duration": 123.45
+                }
+            },
+            {
+                "job": {
+                        "duration": 345.56
+                }
+            }
+        ]
+        self.assertEqual(123.45, get_latest_buildtime("test/repo"))
+
         # return -1 if no value is returned
         keen_extract_func.return_value = []
+        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+
+        # returned value is invalid
+        keen_extract_func.return_value = [
+            {
+                "something": {
+                    "else": 345.56
+                }
+            }
+        ]
+        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+
+        # returned value is empty
+        keen_extract_func.return_value = None
+        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+
+        # returned value isn't a list
+        keen_extract_func.return_value = {}
+        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        keen_extract_func.return_value = 1234
+        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        keen_extract_func.return_value = "test"
         self.assertEqual(-1, get_latest_buildtime("test/repo"))
 
         # test raising ConnectionError
