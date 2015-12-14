@@ -624,3 +624,63 @@ class TestKeen(unittest.TestCase):
         # test raising KeenApiError (call with invalid read_key)
         patcher.stop()
         self.assertEqual(-1, get_total_build_jobs("test/repo"))
+
+    def test_get_passed_build_jobs(self):
+        patcher = mock.patch('keen.count_unique', return_value=34)
+        keen_count_func = patcher.start()
+
+        self.assertEqual(-1, get_passed_build_jobs())
+        self.assertEqual(-1, get_passed_build_jobs("test/repo"))
+
+        # test with some token (value doesn't matter, keen.average is mocked)
+        keen.project_id = "1234abcd"
+        keen.read_key = "4567abcd5678efgh"
+        self.assertEqual(34, get_passed_build_jobs("test/repo"))
+
+        # test parameters passed to keen.average
+        args, kwargs = keen_count_func.call_args
+        self.assertEqual(args, ("build_jobs",))
+        self.assertDictEqual(kwargs, {
+            'target_property': 'job.job',
+            'timeframe': TIME_INTERVALS['week']['timeframe'],
+            'max_age': TIME_INTERVALS['week']['max_age'],
+            'filters': [{
+                'operator': 'eq',
+                'property_name': 'buildtime_trend.project_name',
+                'property_value': 'test/repo'
+            },
+            {
+                "property_name": "job.result",
+                "operator": "eq",
+                "property_value": "passed"
+            }]
+        })
+
+        self.assertEqual(34, get_passed_build_jobs("test/repo2", "year"))
+
+        # test parameters passed to keen.average
+        args, kwargs = keen_count_func.call_args
+        self.assertEqual(args, ("build_jobs",))
+        self.assertDictEqual(kwargs, {
+            'target_property': 'job.job',
+            'timeframe': TIME_INTERVALS['year']['timeframe'],
+            'max_age': TIME_INTERVALS['year']['max_age'],
+            'filters': [{
+                'operator': 'eq',
+                'property_name': 'buildtime_trend.project_name',
+                'property_value': 'test/repo2'
+            },
+            {
+                "property_name": "job.result",
+                "operator": "eq",
+                "property_value": "passed"
+            }]
+        })
+
+        # test raising ConnectionError
+        keen_count_func.side_effect = self.raise_conn_err
+        self.assertEqual(-1, get_passed_build_jobs("test/repo"))
+
+        # test raising KeenApiError (call with invalid read_key)
+        patcher.stop()
+        self.assertEqual(-1, get_passed_build_jobs("test/repo"))
