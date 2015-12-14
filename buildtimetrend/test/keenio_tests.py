@@ -75,6 +75,7 @@ class TestKeen(unittest.TestCase):
             del os.environ["KEEN_MASTER_KEY"]
 
         # reset Keen.io connection settings before each test
+        keen._client = None
         keen.project_id = None
         keen.write_key = None
         keen.read_key = None

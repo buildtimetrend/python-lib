@@ -68,6 +68,7 @@ class TestSettings(unittest.TestCase):
 
         set_loglevel("WARNING")
 
+        keen._client = None
         keen.project_id = None
         keen.write_key = None
         keen.read_key = None
