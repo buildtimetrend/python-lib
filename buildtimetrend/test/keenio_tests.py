@@ -734,3 +734,49 @@ class TestKeen(unittest.TestCase):
         # test raising KeenApiError (call with invalid read_key)
         patcher.stop()
         self.assertEqual(-1, get_total_builds("test/repo"))
+
+    def test_get_latest_buildtime(self):
+        patcher = mock.patch(
+            'keen.extraction',
+            return_value=[
+                {
+                    "job": {
+                        "duration": 345.56
+                    }
+                }
+            ]
+        )
+        keen_extract_func = patcher.start()
+
+        self.assertEqual(-1, get_latest_buildtime())
+        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+
+        # test with some token (value doesn't matter, keen.extract is mocked)
+        keen.project_id = "1234abcd"
+        keen.read_key = "4567abcd5678efgh"
+        self.assertEqual(345.56, get_latest_buildtime("test/repo"))
+
+        # test parameters passed to keen.average
+        args, kwargs = keen_extract_func.call_args
+        self.assertEqual(args, ("build_jobs",))
+        self.assertDictEqual(kwargs, {
+            'property_names': 'job.duration',
+            'latest': 1,
+            'filters': [{
+                'operator': 'eq',
+                'property_name': 'buildtime_trend.project_name',
+                'property_value': 'test/repo'
+            }]
+        })
+
+        # return -1 if no value is returned
+        keen_extract_func.return_value = []
+        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+
+        # test raising ConnectionError
+        keen_extract_func.side_effect = self.raise_conn_err
+        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+
+        # test raising KeenApiError (call with invalid read_key)
+        patcher.stop()
+        self.assertEqual(-1, get_latest_buildtime("test/repo"))
