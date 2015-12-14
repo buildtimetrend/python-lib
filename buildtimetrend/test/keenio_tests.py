@@ -644,16 +644,18 @@ class TestKeen(unittest.TestCase):
             'target_property': 'job.job',
             'timeframe': TIME_INTERVALS['week']['timeframe'],
             'max_age': TIME_INTERVALS['week']['max_age'],
-            'filters': [{
-                'operator': 'eq',
-                'property_name': 'buildtime_trend.project_name',
-                'property_value': 'test/repo'
-            },
-            {
-                "property_name": "job.result",
-                "operator": "eq",
-                "property_value": "passed"
-            }]
+            'filters': [
+                {
+                    'operator': 'eq',
+                    'property_name': 'buildtime_trend.project_name',
+                    'property_value': 'test/repo'
+                },
+                {
+                    "property_name": "job.result",
+                    "operator": "eq",
+                    "property_value": "passed"
+                }
+            ]
         })
 
         self.assertEqual(34, get_passed_build_jobs("test/repo2", "year"))
@@ -665,16 +667,18 @@ class TestKeen(unittest.TestCase):
             'target_property': 'job.job',
             'timeframe': TIME_INTERVALS['year']['timeframe'],
             'max_age': TIME_INTERVALS['year']['max_age'],
-            'filters': [{
-                'operator': 'eq',
-                'property_name': 'buildtime_trend.project_name',
-                'property_value': 'test/repo2'
-            },
-            {
-                "property_name": "job.result",
-                "operator": "eq",
-                "property_value": "passed"
-            }]
+            'filters': [
+                {
+                    'operator': 'eq',
+                    'property_name': 'buildtime_trend.project_name',
+                    'property_value': 'test/repo2'
+                },
+                {
+                    "property_name": "job.result",
+                    "operator": "eq",
+                    "property_value": "passed"
+                }
+            ]
         })
 
         # test raising ConnectionError
