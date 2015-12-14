@@ -161,8 +161,10 @@ class TestCollection(unittest.TestCase):
             {'property1': '2', 'property2': '3'},
             self.collection.get_items())
         self.assertDictEqual(
-            {'property1': '2', 'property2': '3',
-            'summary': '2 3'},
+            {
+                'property1': '2', 'property2': '3',
+                'summary': '2 3'
+            },
             self.collection.get_items_with_summary())
 
         self.collection.add_item('property2', '4')
@@ -170,8 +172,10 @@ class TestCollection(unittest.TestCase):
             {'property1': '2', 'property2': '4'},
             self.collection.get_items())
         self.assertDictEqual(
-            {'property1': '2', 'property2': '4',
-            'summary': '2 4'},
+            {
+                'property1': '2', 'property2': '4',
+                'summary': '2 4'
+            },
             self.collection.get_items_with_summary())
 
         self.collection.add_item('property2', 5)

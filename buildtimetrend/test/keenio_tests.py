@@ -778,12 +778,12 @@ class TestKeen(unittest.TestCase):
         keen_extract_func.return_value = [
             {
                 "job": {
-                        "duration": 123.45
+                    "duration": 123.45
                 }
             },
             {
                 "job": {
-                        "duration": 345.56
+                    "duration": 345.56
                 }
             }
         ]
