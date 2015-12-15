@@ -323,7 +323,7 @@ class TravisConnector(object):
         Parameters:
         - job_id : ID of the job to process
         """
-        request = 'jobs/%s/log' % str(job_id)
+        request = 'jobs/{}/log'.format(str(job_id))
         logger.info("Request build job log #%s", str(job_id))
         return self._handle_request(request)
 
@@ -411,7 +411,9 @@ class TravisData(object):
 
         Returns true if retrieving data was succesful, false on error.
         """
-        request = 'repos/%s/builds?number=%s' % (self.repo, self.build_id)
+        request = 'repos/{repo}/builds?number={build_id}'.format(
+            repo=self.repo, build_id=self.build_id
+        )
         try:
             self.builds_data = self.connector.json_request(request)
         except (HTTPError, URLError) as msg:
@@ -450,7 +452,9 @@ class TravisData(object):
             for stage_name, commands in build_config.items():
                 if type(commands) is list and command in commands:
                     substage_number = commands.index(command) + 1
-                    substage_name = "%s.%s" % (stage_name, substage_number)
+                    substage_name = "{stage}.{substage:d}".format(
+                        stage=stage_name, substage=substage_number
+                    )
                     logger.debug(
                         "Substage %s corresponds to '%s'",
                         substage_name, command
@@ -508,7 +512,7 @@ class TravisData(object):
         Parameters:
         - job_id : ID of the job to process
         """
-        request = 'jobs/%s' % str(job_id)
+        request = 'jobs/{:s}'.format(str(job_id))
         job_data = self.connector.json_request(request)
 
         # log job_data
@@ -857,8 +861,9 @@ class TravisSubstage(object):
         if self.has_started():
             logger.info("Substage already started")
         else:
-            name = "%s.%s" % (
-                tags_dict['start_stage'], tags_dict['start_substage']
+            name = "{stage:s}.{substage:s}".format(
+                stage=tags_dict['start_stage'],
+                substage=tags_dict['start_substage']
             )
             result = self.set_name(name)
 
@@ -981,8 +986,9 @@ class TravisSubstage(object):
         logger.debug("End stage : %s", tags_dict)
 
         # construct substage name
-        end_stagename = "%s.%s" % (
-            tags_dict['end_stage'], tags_dict['end_substage']
+        end_stagename = "{stage}.{substage}".format(
+            stage=tags_dict['end_stage'],
+            substage=tags_dict['end_substage']
         )
 
         # check if stage was started
