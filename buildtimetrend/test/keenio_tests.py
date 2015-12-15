@@ -822,3 +822,48 @@ class TestKeen(unittest.TestCase):
         # test raising KeenApiError (call with invalid read_key)
         patcher.stop()
         self.assertEqual(-1, get_latest_buildtime("test/repo"))
+
+    def test_get_all_projects(self):
+        patcher = mock.patch(
+            'keen.select_unique',
+            return_value=["project1", "project2"]
+        )
+        keen_select_func = patcher.start()
+
+        self.assertListEqual([], get_all_projects())
+
+        # test with some token (value doesn't matter, keen.extract is mocked)
+        keen.project_id = "1234abcd"
+        keen.read_key = "4567abcd5678efgh"
+        self.assertListEqual(["project1", "project2"], get_all_projects())
+
+        # test parameters passed to keen.average
+        args, kwargs = keen_select_func.call_args
+        self.assertEqual(args, ("build_jobs", "buildtime_trend.project_name"))
+        self.assertDictEqual(kwargs, {'max_age': 86400})
+
+        # returned value is invalid
+        keen_select_func.return_value = "invalid"
+        self.assertListEqual([], get_all_projects())
+
+        # returned value is empty
+        keen_select_func.return_value = None
+        self.assertListEqual([], get_all_projects())
+        keen_select_func.return_value = []
+        self.assertListEqual([], get_all_projects())
+
+        # returned value isn't a list
+        keen_select_func.return_value = {}
+        self.assertListEqual([], get_all_projects())
+        keen_select_func.return_value = 1234
+        self.assertListEqual([], get_all_projects())
+        keen_select_func.return_value = "test"
+        self.assertListEqual([], get_all_projects())
+
+        # test raising ConnectionError
+        keen_select_func.side_effect = self.raise_conn_err
+        self.assertListEqual([], get_all_projects())
+
+        # test raising KeenApiError (call with invalid read_key)
+        patcher.stop()
+        self.assertListEqual([], get_all_projects())
