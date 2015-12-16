@@ -1,3 +1,8 @@
 doc-warnings: yes
 strictness: veryhigh
 autodetect: yes
+pep8:
+    full: true
+python-targets:
+    - 2
+    - 3
