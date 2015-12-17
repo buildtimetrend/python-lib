@@ -867,3 +867,37 @@ class TestKeen(unittest.TestCase):
         # test raising KeenApiError (call with invalid read_key)
         patcher.stop()
         self.assertListEqual([], get_all_projects())
+
+    # decorators are applied from the bottom up see
+    # https://docs.python.org/dev/library/unittest.mock.html#nesting-patch-decorators
+    @mock.patch(
+        'buildtimetrend.keenio.get_total_build_jobs', return_value=100
+    )
+    @mock.patch(
+        'buildtimetrend.keenio.get_passed_build_jobs', return_value=75
+    )
+    def test_pct_passed_build_jobs(self, passed_func, total_func):
+        self.assertEqual(75, get_pct_passed_build_jobs("test/repo", "week"))
+
+        # function was last called with argument "test/repo"
+        args, kwargs = total_func.call_args
+        self.assertEqual(args, ("test/repo", "week"))
+        self.assertDictEqual(kwargs, {})
+
+        args, kwargs = passed_func.call_args
+        self.assertEqual(args, ("test/repo", "week"))
+        self.assertDictEqual(kwargs, {})
+
+        total_func.return_value = 150
+        self.assertEqual(50, get_pct_passed_build_jobs("test/repo", "week"))
+
+        total_func.return_value = 0
+        self.assertEqual(-1, get_pct_passed_build_jobs("test/repo", "week"))
+        total_func.return_value = -1
+        self.assertEqual(-1, get_pct_passed_build_jobs("test/repo", "week"))
+
+        total_func.return_value = 100
+        passed_func.return_value = 0
+        self.assertEqual(0, get_pct_passed_build_jobs("test/repo", "week"))
+        passed_func.return_value = -1
+        self.assertEqual(-1, get_pct_passed_build_jobs("test/repo", "week"))
