@@ -448,7 +448,8 @@ class TravisData(object):
             )
             return ""
 
-        if len(build_config) > 0:
+        # check if build_config collection is empty
+        if build_config:
             for stage_name, commands in build_config.items():
                 if type(commands) is list and command in commands:
                     substage_number = commands.index(command) + 1
@@ -629,7 +630,8 @@ class TravisData(object):
 
     def process_pull_request_data(self):
         """Retrieve pull request data from Travis CI API."""
-        if len(self.current_build_data) > 0:
+        # check if collection is empty
+        if self.current_build_data:
             if "event_type" in self.current_build_data:
                 # build trigger (push or pull_request)
                 self.current_job.add_property(

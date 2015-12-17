@@ -186,7 +186,8 @@ class BuildJob(object):
                 # copy stage data
                 temp["stage"] = copy.deepcopy(stage)
                 # copy values of properties
-                if len(build_properties) > 0:
+                # check if collection is empty
+                if build_properties:
                     temp["job"] = build_properties
                 data.append(temp)
 

@@ -298,7 +298,8 @@ class Settings(object):
             if "BTT_MULTI_DELAY" in os.environ:
                 multi_import["delay"] = int(os.environ["BTT_MULTI_DELAY"])
 
-            if len(multi_import) > 0:
+            # check if collection is empty
+            if multi_import:
                 self.add_setting("multi_import", multi_import)
 
         def env_var_to_settings(self, env_var_name, settings_name):
