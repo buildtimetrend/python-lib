@@ -22,9 +22,10 @@ setup(
         'lxml',
         'pyyaml',
         'python-dateutil',
-        'future'
+        'future',
+        'six'
     ],
-    tests_require=['nose', 'coveralls', 'formencode'],
+    tests_require=['nose', 'coveralls', 'mock', 'funcsigs', 'formencode'],
     extras_require={
         'native': ['lxml', 'matplotlib>=1.2.0']
     },
