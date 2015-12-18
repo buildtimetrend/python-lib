@@ -37,31 +37,31 @@ class TestKeen(unittest.TestCase):
     copy_keen_master_key = None
 
     @classmethod
-    def setUpClass(self):
-        self.project_info = Settings().get_project_info()
-        self.maxDiff = None
+    def setUpClass(cls):
+        cls.project_info = Settings().get_project_info()
+        cls.maxDiff = None
 
         # copy Keen.io environment variables
         if "KEEN_PROJECT_ID" in os.environ:
-            self.copy_keen_project_id = os.environ["KEEN_PROJECT_ID"]
+            cls.copy_keen_project_id = os.environ["KEEN_PROJECT_ID"]
         if "KEEN_WRITE_KEY" in os.environ:
-            self.copy_keen_write_key = os.environ["KEEN_WRITE_KEY"]
+            cls.copy_keen_write_key = os.environ["KEEN_WRITE_KEY"]
         if "KEEN_READ_KEY" in os.environ:
-            self.copy_keen_read_key = os.environ["KEEN_READ_KEY"]
+            cls.copy_keen_read_key = os.environ["KEEN_READ_KEY"]
         if "KEEN_MASTER_KEY" in os.environ:
-            self.copy_keen_master_key = os.environ["KEEN_MASTER_KEY"]
+            cls.copy_keen_master_key = os.environ["KEEN_MASTER_KEY"]
 
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(cls):
         # restore saved Keen.io environment variables
-        if self.copy_keen_project_id is not None:
-            os.environ["KEEN_PROJECT_ID"] = self.copy_keen_project_id
-        if self.copy_keen_write_key is not None:
-            os.environ["KEEN_WRITE_KEY"] = self.copy_keen_write_key
-        if self.copy_keen_read_key is not None:
-            os.environ["KEEN_READ_KEY"] = self.copy_keen_read_key
-        if self.copy_keen_master_key is not None:
-            os.environ["KEEN_MASTER_KEY"] = self.copy_keen_master_key
+        if cls.copy_keen_project_id is not None:
+            os.environ["KEEN_PROJECT_ID"] = cls.copy_keen_project_id
+        if cls.copy_keen_write_key is not None:
+            os.environ["KEEN_WRITE_KEY"] = cls.copy_keen_write_key
+        if cls.copy_keen_read_key is not None:
+            os.environ["KEEN_READ_KEY"] = cls.copy_keen_read_key
+        if cls.copy_keen_master_key is not None:
+            os.environ["KEEN_MASTER_KEY"] = cls.copy_keen_master_key
 
     def setUp(self):
         # reset Keen.io environment variables before each test
