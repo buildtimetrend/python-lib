@@ -49,17 +49,17 @@ DEFAULT_SETTINGS = {
 
 class TestSettings(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.settings = Settings()
+    def setUpClass(cls):
+        cls.settings = Settings()
 
-        self.project_name = buildtimetrend.NAME
+        cls.project_name = buildtimetrend.NAME
 
-        self.project_info = {
+        cls.project_info = {
             "lib_version": buildtimetrend.VERSION,
             "schema_version": buildtimetrend.SCHEMA_VERSION,
             "client": 'None',
             "client_version": 'None',
-            "project_name": self.project_name}
+            "project_name": cls.project_name}
 
     def setUp(self):
         # reinit settings singleton
