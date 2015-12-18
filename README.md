@@ -15,7 +15,7 @@ Visualise what's trending in your build process
 [![Code Health](https://landscape.io/github/buildtimetrend/python-lib/master/landscape.png)](https://landscape.io/github/buildtimetrend/python-lib/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/buildtimetrend/python-lib/?branch=master)
 [![Codacy Badge](https://www.codacy.com/project/badge/38e1a8fcf164434f87389a693368d0f2)](https://www.codacy.com/public/ruleant/python-lib)
-[![Quantified Code Issues](https://www.quantifiedcode.com/api/v1/project/7562127530cc4993a6830834e0706f47/badge.svg)](https://www.quantifiedcode.com/app/project/7562127530cc4993a6830834e0706f47)
+[![Quantified Code Issues](https://www.quantifiedcode.com/api/v1/project/ac307284394d4eeeb150ae4a3f6f60bd/badge.svg)](https://www.quantifiedcode.com/app/project/ac307284394d4eeeb150ae4a3f6f60bd)
 
 [![Buildtime trend](https://buildtimetrend-dev.herokuapp.com/badge/buildtimetrend/python-lib/latest)](https://buildtimetrend-dev.herokuapp.com/dashboard/buildtimetrend/python-lib/index.html)
 [![Total builds](https://buildtimetrend-dev.herokuapp.com/badge/buildtimetrend/python-lib/builds/month)](https://buildtimetrend-dev.herokuapp.com/dashboard/buildtimetrend/python-lib/index.html)
