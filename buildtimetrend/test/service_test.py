@@ -34,8 +34,8 @@ import keen
 
 class TestService(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
-        self.settings = Settings()
+    def setUpClass(cls):
+        cls.settings = Settings()
 
     def setUp(self):
         # reinit settings singleton
