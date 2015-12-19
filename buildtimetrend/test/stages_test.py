@@ -211,7 +211,9 @@ class TestStages(unittest.TestCase):
             self.stages.stages)
 
         # test total duration
-        self.assertEqual(constants.STAGE_DURATION, self.stages.total_duration())
+        self.assertEqual(
+            constants.STAGE_DURATION, self.stages.total_duration()
+        )
 
     def test_create_stage(self):
         self.assertEqual(
@@ -220,7 +222,9 @@ class TestStages(unittest.TestCase):
         )
         self.assertEqual(None, self.stages.create_stage("stage1", 1, "string"))
         self.assertEqual(None, self.stages.create_stage("stage1", "string", 1))
-        self.assertTrue(isinstance(self.stages.create_stage("stage1", 1, 2), Stage))
+        self.assertTrue(
+            isinstance(self.stages.create_stage("stage1", 1, 2), Stage)
+        )
         self.assertTrue(
             isinstance(self.stages.create_stage("stage1", 1.0, 2.0), Stage)
         )
