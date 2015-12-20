@@ -30,7 +30,6 @@ import keen
 import requests
 from keen import scoped_keys
 from buildtimetrend.settings import Settings
-from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import is_list
 from buildtimetrend.tools import is_string

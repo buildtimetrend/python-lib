@@ -23,14 +23,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division
 from builtins import str
-import os
 from buildtimetrend import logger
-import copy
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
-from buildtimetrend.tools import is_list
-from buildtimetrend.tools import is_string
 from buildtimetrend.keenio import get_dashboard_keen_config
 
 
