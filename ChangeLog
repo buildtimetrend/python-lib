@@ -3,6 +3,7 @@ v0.4 (not yet released)
 - issue #117 : Support Python 2/3
 - move get_dashboard_config_dict(), get_dashboard_config() and
 generate_dashboard_config_file() from keenio to dashboard
+- rename get_dashboard_config() to get_dashboard_config_string()
 
 v0.3 (released on 17Nov2015)
 - move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut

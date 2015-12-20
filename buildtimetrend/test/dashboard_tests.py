@@ -73,14 +73,14 @@ class TestDashboard(unittest.TestCase):
         'buildtimetrend.dashboard.get_dashboard_config_dict',
         return_value={'projectName': 'test/repo'}
     )
-    def test_get_dashboard_config(self, config_dict_func, keen_config_func):
+    def test_get_dashboard_config_string(
+            self, config_dict_func, keen_config_func
+    ):
         self.assertEqual(
             "var config = {'projectName': 'test/repo'};"
             "\nvar keenConfig = {'projectId': '1234abcd'};",
-            get_dashboard_config("test/repo")
+            get_dashboard_config_string("test/repo")
         )
-
-        get_dashboard_config("test/repo")
 
         # function was last called with argument "test/repo"
         args, kwargs = keen_config_func.call_args
@@ -93,7 +93,7 @@ class TestDashboard(unittest.TestCase):
 
         # call function with argument "test/repo2"
         # and a dict with extra parameters
-        get_dashboard_config("test/repo2", {'extra': 'value'})
+        get_dashboard_config_string("test/repo2", {'extra': 'value'})
         args, kwargs = keen_config_func.call_args
         self.assertEqual(args, ("test/repo2",))
         self.assertDictEqual(kwargs, {})

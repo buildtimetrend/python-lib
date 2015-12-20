@@ -59,7 +59,7 @@ def get_dashboard_config_dict(repo, extra=None):
     return config
 
 
-def get_dashboard_config(repo, extra=None):
+def get_dashboard_config_string(repo, extra=None):
     """
     Generate the configuration settings for the dashboard.
 
@@ -89,7 +89,7 @@ def generate_dashboard_config_file(repo):
     - repo : repo name (fe. buildtimetrend/service)
     """
     # get config settings
-    config_string = get_dashboard_config(repo)
+    config_string = get_dashboard_config_string(repo)
 
     # write config file
     config_file = Settings().get_setting("dashboard_configfile")
