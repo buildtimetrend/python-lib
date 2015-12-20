@@ -23,11 +23,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division
 from builtins import str
+from buildtimetrend import keenio
 from buildtimetrend import logger
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
-from buildtimetrend.keenio import get_dashboard_keen_config
 
 
 def get_dashboard_config_dict(repo, extra=None):
@@ -72,7 +72,7 @@ def get_dashboard_config(repo, extra=None):
     """
     # initialise config settings dictionaries
     config = get_dashboard_config_dict(repo, extra)
-    keen_config = get_dashboard_keen_config(repo)
+    keen_config = keenio.get_dashboard_keen_config(repo)
 
     # create configuration as a string
     return "var config = {};\nvar keenConfig = {};".format(config, keen_config)
