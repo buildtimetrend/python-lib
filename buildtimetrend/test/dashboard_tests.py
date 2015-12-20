@@ -31,12 +31,17 @@ import constants
 
 
 class TestDashboard(unittest.TestCase):
+
+    """Unit tests for dashboard related functions"""
+
     @classmethod
     def setUpClass(cls):
+        """Set up test fixture."""
         cls.project_info = Settings().get_project_info()
         cls.maxDiff = None
 
     def test_get_config_dict(self):
+        """Test get_config_dict()"""
         # error is thrown when extra parameter is not a dictionary
         self.assertRaises(
             TypeError,
@@ -76,6 +81,7 @@ class TestDashboard(unittest.TestCase):
     def test_get_config_string(
             self, config_dict_func, keen_config_func
     ):
+        """Test get_config_string()"""
         self.assertEqual(
             "var config = {'projectName': 'test/repo'};"
             "\nvar keenConfig = {'projectId': '1234abcd'};",
