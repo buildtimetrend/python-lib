@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from buildtimetrend.dashboard import *
+from buildtimetrend import dashboard
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import is_string
 import buildtimetrend.keenio
@@ -40,16 +40,16 @@ class TestDashboard(unittest.TestCase):
         # error is thrown when extra parameter is not a dictionary
         self.assertRaises(
             TypeError,
-            get_config_dict, "test/repo", "should_be_dict"
+            dashboard.get_config_dict, "test/repo", "should_be_dict"
         )
 
         # empty configuration
-        self.assertDictEqual({}, get_config_dict(""))
+        self.assertDictEqual({}, dashboard.get_config_dict(""))
 
         # repo name is added
         self.assertDictEqual(
             {'projectName': 'test/repo', 'repoName': 'test/repo'},
-            get_config_dict("test/repo")
+            dashboard.get_config_dict("test/repo")
         )
 
         # add extra parameters
@@ -58,7 +58,7 @@ class TestDashboard(unittest.TestCase):
                 'projectName': 'test/repo', 'repoName': 'test/repo',
                 'extra': 'value1', 'extra2': 'value2'
             },
-            get_config_dict(
+            dashboard.get_config_dict(
                 "test/repo", {'extra': 'value1', 'extra2': 'value2'}
             )
         )
@@ -79,7 +79,7 @@ class TestDashboard(unittest.TestCase):
         self.assertEqual(
             "var config = {'projectName': 'test/repo'};"
             "\nvar keenConfig = {'projectId': '1234abcd'};",
-            get_config_string("test/repo")
+            dashboard.get_config_string("test/repo")
         )
 
         # function was last called with argument "test/repo"
@@ -93,7 +93,7 @@ class TestDashboard(unittest.TestCase):
 
         # call function with argument "test/repo2"
         # and a dict with extra parameters
-        get_config_string("test/repo2", {'extra': 'value'})
+        dashboard.get_config_string("test/repo2", {'extra': 'value'})
         args, kwargs = keen_config_func.call_args
         self.assertEqual(args, ("test/repo2",))
         self.assertDictEqual(kwargs, {})
