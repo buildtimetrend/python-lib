@@ -30,7 +30,7 @@ from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 
 
-def get_dashboard_config_dict(repo, extra=None):
+def get_config_dict(repo, extra=None):
     """
     Generate the configuration settings for the dashboard.
 
@@ -59,7 +59,7 @@ def get_dashboard_config_dict(repo, extra=None):
     return config
 
 
-def get_dashboard_config_string(repo, extra=None):
+def get_config_string(repo, extra=None):
     """
     Generate the configuration settings for the dashboard.
 
@@ -71,14 +71,14 @@ def get_dashboard_config_string(repo, extra=None):
     - extra : dictionary of extra config settings, format : {"name" : "value"}
     """
     # initialise config settings dictionaries
-    config = get_dashboard_config_dict(repo, extra)
+    config = get_config_dict(repo, extra)
     keen_config = keenio.get_dashboard_keen_config(repo)
 
     # create configuration as a string
     return "var config = {};\nvar keenConfig = {};".format(config, keen_config)
 
 
-def generate_dashboard_config_file(repo):
+def generate_config_file(repo):
     """
     Generate the configuration file for the dashboard.
 
@@ -89,7 +89,7 @@ def generate_dashboard_config_file(repo):
     - repo : repo name (fe. buildtimetrend/service)
     """
     # get config settings
-    config_string = get_dashboard_config_string(repo)
+    config_string = get_config_string(repo)
 
     # write config file
     config_file = Settings().get_setting("dashboard_configfile")

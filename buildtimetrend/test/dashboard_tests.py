@@ -36,20 +36,20 @@ class TestDashboard(unittest.TestCase):
         cls.project_info = Settings().get_project_info()
         cls.maxDiff = None
 
-    def test_get_dashboard_config_dict(self):
+    def test_get_config_dict(self):
         # error is thrown when extra parameter is not a dictionary
         self.assertRaises(
             TypeError,
-            get_dashboard_config_dict, "test/repo", "should_be_dict"
+            get_config_dict, "test/repo", "should_be_dict"
         )
 
         # empty configuration
-        self.assertDictEqual({}, get_dashboard_config_dict(""))
+        self.assertDictEqual({}, get_config_dict(""))
 
         # repo name is added
         self.assertDictEqual(
             {'projectName': 'test/repo', 'repoName': 'test/repo'},
-            get_dashboard_config_dict("test/repo")
+            get_config_dict("test/repo")
         )
 
         # add extra parameters
@@ -58,7 +58,7 @@ class TestDashboard(unittest.TestCase):
                 'projectName': 'test/repo', 'repoName': 'test/repo',
                 'extra': 'value1', 'extra2': 'value2'
             },
-            get_dashboard_config_dict(
+            get_config_dict(
                 "test/repo", {'extra': 'value1', 'extra2': 'value2'}
             )
         )
@@ -70,16 +70,16 @@ class TestDashboard(unittest.TestCase):
         return_value={'projectId': '1234abcd'}
     )
     @mock.patch(
-        'buildtimetrend.dashboard.get_dashboard_config_dict',
+        'buildtimetrend.dashboard.get_config_dict',
         return_value={'projectName': 'test/repo'}
     )
-    def test_get_dashboard_config_string(
+    def test_get_config_string(
             self, config_dict_func, keen_config_func
     ):
         self.assertEqual(
             "var config = {'projectName': 'test/repo'};"
             "\nvar keenConfig = {'projectId': '1234abcd'};",
-            get_dashboard_config_string("test/repo")
+            get_config_string("test/repo")
         )
 
         # function was last called with argument "test/repo"
@@ -93,7 +93,7 @@ class TestDashboard(unittest.TestCase):
 
         # call function with argument "test/repo2"
         # and a dict with extra parameters
-        get_dashboard_config_string("test/repo2", {'extra': 'value'})
+        get_config_string("test/repo2", {'extra': 'value'})
         args, kwargs = keen_config_func.call_args
         self.assertEqual(args, ("test/repo2",))
         self.assertDictEqual(kwargs, {})
