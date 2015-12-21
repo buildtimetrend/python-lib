@@ -30,27 +30,27 @@ class TestLogger(unittest.TestCase):
     def test_set_loglevel(self):
         logger = logging.getLogger(buildtimetrend.NAME)
         # test default loglevel
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
+        self.assertEqual(logging.WARNING, logger.getEffectiveLevel())
 
         # test setting loglevel to INFO
         set_loglevel("INFO")
-        self.assertEquals(logging.INFO, logger.getEffectiveLevel())
+        self.assertEqual(logging.INFO, logger.getEffectiveLevel())
 
         # test setting loglevel to DEBUG
         set_loglevel("DEBUG")
-        self.assertEquals(logging.DEBUG, logger.getEffectiveLevel())
+        self.assertEqual(logging.DEBUG, logger.getEffectiveLevel())
 
         # test setting loglevel to ERROR
         set_loglevel("ERROR")
-        self.assertEquals(logging.ERROR, logger.getEffectiveLevel())
+        self.assertEqual(logging.ERROR, logger.getEffectiveLevel())
 
         # test setting loglevel to CRITICAL
         set_loglevel("CRITICAL")
-        self.assertEquals(logging.CRITICAL, logger.getEffectiveLevel())
+        self.assertEqual(logging.CRITICAL, logger.getEffectiveLevel())
 
         # test setting loglevel to WARNING
         set_loglevel("WARNING")
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
+        self.assertEqual(logging.WARNING, logger.getEffectiveLevel())
 
         # error is thrown when called without parameters
         self.assertRaises(TypeError, set_loglevel)
@@ -60,4 +60,4 @@ class TestLogger(unittest.TestCase):
         self.assertRaises(ValueError, set_loglevel, "invalid")
 
         # passing invalid tags should not change log level
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
+        self.assertEqual(logging.WARNING, logger.getEffectiveLevel())

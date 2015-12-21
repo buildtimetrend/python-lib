@@ -36,10 +36,10 @@ class TestTools(unittest.TestCase):
 
     def test_format_timestamp(self):
         # test 0 timestamp (epoch)
-        self.assertEquals("1970-01-01T00:00:00", format_timestamp(0))
+        self.assertEqual("1970-01-01T00:00:00", format_timestamp(0))
 
         # test timestamp
-        self.assertEquals("2014-07-09T12:38:33", format_timestamp(1404909513))
+        self.assertEqual("2014-07-09T12:38:33", format_timestamp(1404909513))
 
     def test_split_timestamp(self):
         # error is thrown when called without parameters
@@ -349,22 +349,22 @@ class TestTools(unittest.TestCase):
             str(cm.exception)
         )
 
-        self.assertEquals(0, check_num_string(0, "name"))
-        self.assertEquals(1, check_num_string(1, "name"))
-        self.assertEquals(-1, check_num_string(-1, "name"))
-        self.assertEquals(2, check_num_string(2, "name"))
+        self.assertEqual(0, check_num_string(0, "name"))
+        self.assertEqual(1, check_num_string(1, "name"))
+        self.assertEqual(-1, check_num_string(-1, "name"))
+        self.assertEqual(2, check_num_string(2, "name"))
 
-        self.assertEquals(0, check_num_string("0", "name"))
-        self.assertEquals(1, check_num_string("1", "name"))
-        self.assertEquals(-1, check_num_string("-1", "name"))
-        self.assertEquals(2, check_num_string("2", "name"))
+        self.assertEqual(0, check_num_string("0", "name"))
+        self.assertEqual(1, check_num_string("1", "name"))
+        self.assertEqual(-1, check_num_string("-1", "name"))
+        self.assertEqual(2, check_num_string("2", "name"))
 
     def test_get_repo_slug(self):
-        self.assertEquals(None, get_repo_slug())
-        self.assertEquals(None, get_repo_slug("abcd", None))
-        self.assertEquals(None, get_repo_slug(None, "efgh"))
-        self.assertEquals(None, get_repo_slug(None, None))
+        self.assertEqual(None, get_repo_slug())
+        self.assertEqual(None, get_repo_slug("abcd", None))
+        self.assertEqual(None, get_repo_slug(None, "efgh"))
+        self.assertEqual(None, get_repo_slug(None, None))
 
-        self.assertEquals("abcd/efgh", get_repo_slug("abcd", "efgh"))
-        self.assertEquals("Abcd/eFgh", get_repo_slug("Abcd", "eFgh"))
-        self.assertEquals("123/456", get_repo_slug(123, 456))
+        self.assertEqual("abcd/efgh", get_repo_slug("abcd", "efgh"))
+        self.assertEqual("Abcd/eFgh", get_repo_slug("Abcd", "eFgh"))
+        self.assertEqual("123/456", get_repo_slug(123, 456))

@@ -32,8 +32,8 @@ class TestTrend(unittest.TestCase):
 
     def test_novalue(self):
          # number of builds and stages should be zero
-        self.assertEquals(0, len(self.trend.builds))
-        self.assertEquals(0, len(self.trend.stages))
+        self.assertEqual(0, len(self.trend.builds))
+        self.assertEqual(0, len(self.trend.stages))
 
     def test_nofile(self):
         # function should return false when file doesn't exist
@@ -48,8 +48,8 @@ class TestTrend(unittest.TestCase):
         self.assertTrue(self.trend.gather_data(TEST_SAMPLE_FILE))
 
         # test number of builds and stages
-        self.assertEquals(3, len(self.trend.builds))
-        self.assertEquals(5, len(self.trend.stages))
+        self.assertEqual(3, len(self.trend.builds))
+        self.assertEqual(5, len(self.trend.stages))
 
         # test buildnames
         self.assertListEqual(['10', '11.1', '#3'], self.trend.builds)

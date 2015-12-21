@@ -30,7 +30,7 @@ class TestCollection(unittest.TestCase):
 
     def test_novalue(self):
         # number of items should be zero
-        self.assertEquals(0, len(self.collection.items))
+        self.assertEqual(0, len(self.collection.items))
 
         # items collection should be an empty dictionary
         self.assertDictEqual({}, self.collection.get_items())
@@ -40,47 +40,47 @@ class TestCollection(unittest.TestCase):
         self.assertRaises(TypeError, self.collection.add_item)
 
         self.collection.add_item('property1', 2)
-        self.assertEquals(1, len(self.collection.items))
+        self.assertEqual(1, len(self.collection.items))
         self.assertDictEqual({'property1': 2}, self.collection.items)
 
         self.collection.add_item('property2', 3)
-        self.assertEquals(2, len(self.collection.items))
+        self.assertEqual(2, len(self.collection.items))
         self.assertDictEqual({'property1': 2, 'property2': 3},
                              self.collection.items)
 
         self.collection.add_item('property2', 4)
-        self.assertEquals(2, len(self.collection.items))
+        self.assertEqual(2, len(self.collection.items))
         self.assertDictEqual({'property1': 2, 'property2': 4},
                              self.collection.items)
 
     def test_get_size(self):
         self.collection.add_item('property1', 2)
-        self.assertEquals(1, len(self.collection.items))
-        self.assertEquals(1, self.collection.get_size())
+        self.assertEqual(1, len(self.collection.items))
+        self.assertEqual(1, self.collection.get_size())
 
         self.collection.add_item('property2', 3)
-        self.assertEquals(2, len(self.collection.items))
-        self.assertEquals(2, self.collection.get_size())
+        self.assertEqual(2, len(self.collection.items))
+        self.assertEqual(2, self.collection.get_size())
 
         self.collection.add_item('property2', 4)
-        self.assertEquals(2, len(self.collection.items))
-        self.assertEquals(2, self.collection.get_size())
+        self.assertEqual(2, len(self.collection.items))
+        self.assertEqual(2, self.collection.get_size())
 
     def test_get_item(self):
         self.collection.add_item('property1', 2)
-        self.assertEquals(2, self.collection.get_item('property1'))
+        self.assertEqual(2, self.collection.get_item('property1'))
 
         self.collection.add_item('property1', None)
-        self.assertEquals(None, self.collection.get_item('property1'))
+        self.assertEqual(None, self.collection.get_item('property1'))
 
         self.collection.add_item('property2', 3)
-        self.assertEquals(3, self.collection.get_item('property2'))
+        self.assertEqual(3, self.collection.get_item('property2'))
 
         self.collection.add_item('property2', 4)
-        self.assertEquals(4, self.collection.get_item('property2'))
+        self.assertEqual(4, self.collection.get_item('property2'))
 
     def test_get_property_does_not_exist(self):
-        self.assertEquals(None, self.collection.get_item('no_property'))
+        self.assertEqual(None, self.collection.get_item('no_property'))
 
     def test_add_items_invalidparameter(self):
         # error is thrown when called without parameters

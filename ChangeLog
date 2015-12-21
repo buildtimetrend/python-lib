@@ -5,6 +5,7 @@ v0.4 (not yet released)
   * keenio.get_dashboard_config() -> dashboard.get_config_string()
   * keenio.get_dashboard_config_dict() -> dashboard.get_config_dict()
   * keenio.generate_dashboard_config_file() -> dashboard.generate_config_file()
+- issue #133 : rename deprecated unittest assertions
 
 v0.3 (released on 17Nov2015)
 - move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut

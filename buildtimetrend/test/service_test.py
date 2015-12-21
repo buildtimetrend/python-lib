@@ -105,50 +105,50 @@ class TestService(unittest.TestCase):
         # error is thrown when called without parameters
         self.assertRaises(TypeError, format_duration)
 
-        self.assertEquals("unknown", format_duration(None))
-        self.assertEquals("unknown", format_duration("string"))
-        self.assertEquals("unknown", format_duration(-1))
+        self.assertEqual("unknown", format_duration(None))
+        self.assertEqual("unknown", format_duration("string"))
+        self.assertEqual("unknown", format_duration(-1))
 
-        self.assertEquals("0s", format_duration(0))
-        self.assertEquals("1s", format_duration(1))
-        self.assertEquals("1s", format_duration(1.4))
-        self.assertEquals("2s", format_duration(1.9))
-        self.assertEquals("2s", format_duration(2.1))
+        self.assertEqual("0s", format_duration(0))
+        self.assertEqual("1s", format_duration(1))
+        self.assertEqual("1s", format_duration(1.4))
+        self.assertEqual("2s", format_duration(1.9))
+        self.assertEqual("2s", format_duration(2.1))
 
-        self.assertEquals("59s", format_duration(59.1))
-        self.assertEquals("1m 0s", format_duration(59.7))
-        self.assertEquals("1m 0s", format_duration(60))
-        self.assertEquals("1m 0s", format_duration(60.3))
-        self.assertEquals("1m 1s", format_duration(60.6))
-        self.assertEquals("1m 1s", format_duration(61))
+        self.assertEqual("59s", format_duration(59.1))
+        self.assertEqual("1m 0s", format_duration(59.7))
+        self.assertEqual("1m 0s", format_duration(60))
+        self.assertEqual("1m 0s", format_duration(60.3))
+        self.assertEqual("1m 1s", format_duration(60.6))
+        self.assertEqual("1m 1s", format_duration(61))
 
-        self.assertEquals("59m 59s", format_duration(3599.3))
-        self.assertEquals("1h 0m 0s", format_duration(3599.7))
-        self.assertEquals("1h 0m 0s", format_duration(3600))
-        self.assertEquals("1h 0m 0s", format_duration(3600.3))
-        self.assertEquals("1h 0m 1s", format_duration(3601))
+        self.assertEqual("59m 59s", format_duration(3599.3))
+        self.assertEqual("1h 0m 0s", format_duration(3599.7))
+        self.assertEqual("1h 0m 0s", format_duration(3600))
+        self.assertEqual("1h 0m 0s", format_duration(3600.3))
+        self.assertEqual("1h 0m 1s", format_duration(3601))
 
-        self.assertEquals("2h 5m 0s", format_duration(7500))
+        self.assertEqual("2h 5m 0s", format_duration(7500))
 
     def test_check_process_parameters(self):
         # repo or build is not set
         no_repo_build = "Repo or build are not set, format : " \
             "/travis/<repo_owner>/<repo_name>/<build>"
 
-        self.assertEquals(no_repo_build, check_process_parameters())
-        self.assertEquals(no_repo_build, check_process_parameters("user/repo"))
-        self.assertEquals(no_repo_build, check_process_parameters(None, 1234))
+        self.assertEqual(no_repo_build, check_process_parameters())
+        self.assertEqual(no_repo_build, check_process_parameters("user/repo"))
+        self.assertEqual(no_repo_build, check_process_parameters(None, 1234))
 
         # repo is not allowed
         # set denied repo
         self.settings.add_setting("denied_repo", {"test1"})
-        self.assertEquals(
+        self.assertEqual(
             "Project 'user/test1' is not allowed.",
             check_process_parameters("user/test1", 1234)
         )
 
         # Keen.io write key is not set
-        self.assertEquals(
+        self.assertEqual(
             "Keen IO write key not set, no data was sent",
             check_process_parameters("user/repo", 1234)
         )
@@ -181,21 +181,21 @@ class TestService(unittest.TestCase):
         no_repo_build = "Repo or build are not set, format : " \
             "/travis/<repo_owner>/<repo_name>/<build>"
 
-        self.assertEquals(no_repo_build, validate_travis_request())
-        self.assertEquals(no_repo_build, validate_travis_request("user/repo"))
-        self.assertEquals(no_repo_build, validate_travis_request(None, 1234))
+        self.assertEqual(no_repo_build, validate_travis_request())
+        self.assertEqual(no_repo_build, validate_travis_request("user/repo"))
+        self.assertEqual(no_repo_build, validate_travis_request(None, 1234))
 
         # repo is not allowed
         # set denied repo
         self.settings.add_setting("denied_repo", {"test1"})
-        self.assertEquals(
+        self.assertEqual(
             "Project 'user/test1' is not allowed.",
             validate_travis_request("user/test1", 1234)
         )
 
     def test_validate_task_parameters(self):
         # Keen.io write key is not set
-        self.assertEquals(
+        self.assertEqual(
             "Keen IO write key not set, no data was sent",
             validate_task_parameters("user/repo", 1234)
         )

@@ -43,7 +43,7 @@ class TestStages(unittest.TestCase):
 
     def test_novalue(self):
         # number of stages should be zero
-        self.assertEquals(0, len(self.stages.stages))
+        self.assertEqual(0, len(self.stages.stages))
         # test total duration
         self.assertEqual(0, self.stages.total_duration())
         # test started_at and finished_at
@@ -53,7 +53,7 @@ class TestStages(unittest.TestCase):
         self.assertTrue(
             xml_compare(etree.fromstring(b"<stages/>"), self.stages.to_xml())
         )
-        self.assertEquals(b"<stages/>\n", self.stages.to_xml_string())
+        self.assertEqual(b"<stages/>\n", self.stages.to_xml_string())
 
     def test_nofile(self):
         # function should return false when file doesn't exist
@@ -64,16 +64,16 @@ class TestStages(unittest.TestCase):
         self.assertRaises(TypeError, self.stages.read_csv)
 
     def test_set_end_timestamp(self):
-        self.assertEquals(0, self.stages.end_timestamp)
+        self.assertEqual(0, self.stages.end_timestamp)
 
         self.stages.set_end_timestamp("string")
-        self.assertEquals(0, self.stages.end_timestamp)
+        self.assertEqual(0, self.stages.end_timestamp)
 
         self.stages.set_end_timestamp(23.45)
-        self.assertEquals(23.45, self.stages.end_timestamp)
+        self.assertEqual(23.45, self.stages.end_timestamp)
 
         self.stages.set_end_timestamp(123)
-        self.assertEquals(123, self.stages.end_timestamp)
+        self.assertEqual(123, self.stages.end_timestamp)
 
     def test_read_csv(self):
         # read and parse sample file
@@ -82,7 +82,7 @@ class TestStages(unittest.TestCase):
         )
 
         # test number of stages
-        self.assertEquals(3, len(self.stages.stages))
+        self.assertEqual(3, len(self.stages.stages))
 
         # test started_at
         self.assertEqual(constants.SPLIT_TIMESTAMP1, self.stages.started_at)
@@ -279,7 +279,7 @@ class TestStages(unittest.TestCase):
         self.stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml string output
-        self.assertEquals(
+        self.assertEqual(
             b'<stages>\n'
             b'  <stage duration="2.0" name="stage1"/>\n'
             b'  <stage duration="5.0" name="stage2"/>\n'
@@ -305,7 +305,7 @@ class TestStages(unittest.TestCase):
         self.stages.add_stage(stage)
 
         # test number of stages
-        self.assertEquals(1, len(self.stages.stages))
+        self.assertEqual(1, len(self.stages.stages))
 
         # test started_at
         self.assertEqual(
@@ -338,7 +338,7 @@ class TestStages(unittest.TestCase):
         self.stages.add_stage(stage)
 
         # test number of stages
-        self.assertEquals(2, len(self.stages.stages))
+        self.assertEqual(2, len(self.stages.stages))
 
         # test started_at
         self.assertEqual(
@@ -380,7 +380,7 @@ class TestStages(unittest.TestCase):
         self.stages.add_stage(stage)
 
         # test number of stages
-        self.assertEquals(1, len(self.stages.stages))
+        self.assertEqual(1, len(self.stages.stages))
 
         # test started_at
         self.assertEqual(None, self.stages.started_at)
@@ -408,7 +408,7 @@ class TestStages(unittest.TestCase):
         self.stages.add_stage(stage)
 
         # test number of stages
-        self.assertEquals(2, len(self.stages.stages))
+        self.assertEqual(2, len(self.stages.stages))
 
         # test started_at
         self.assertEqual(constants.SPLIT_TIMESTAMP1, self.stages.started_at)
@@ -440,7 +440,7 @@ class TestStage(unittest.TestCase):
 
     def test_novalue(self):
         # number of stages should be zero
-        self.assertEquals(2, len(self.stage.data))
+        self.assertEqual(2, len(self.stage.data))
         # test total duration
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 

@@ -80,24 +80,24 @@ class TestSettings(unittest.TestCase):
         )
 
     def test_get_set_project_name(self):
-        self.assertEquals(self.project_name, self.settings.get_project_name())
+        self.assertEqual(self.project_name, self.settings.get_project_name())
 
         self.settings.set_project_name("test_name")
-        self.assertEquals("test_name", self.settings.get_project_name())
+        self.assertEqual("test_name", self.settings.get_project_name())
 
         self.settings.set_project_name(None)
-        self.assertEquals(None, self.settings.get_project_name())
+        self.assertEqual(None, self.settings.get_project_name())
 
         self.settings.set_project_name("")
-        self.assertEquals("", self.settings.get_project_name())
+        self.assertEqual("", self.settings.get_project_name())
 
     def test_set_client(self):
-        self.assertEquals(None, self.settings.get_setting("client"))
-        self.assertEquals(None, self.settings.get_setting("client_version"))
+        self.assertEqual(None, self.settings.get_setting("client"))
+        self.assertEqual(None, self.settings.get_setting("client_version"))
 
         self.settings.set_client("client_name", "0.1")
-        self.assertEquals("client_name", self.settings.get_setting("client"))
-        self.assertEquals("0.1", self.settings.get_setting("client_version"))
+        self.assertEqual("client_name", self.settings.get_setting("client"))
+        self.assertEqual("0.1", self.settings.get_setting("client_version"))
 
         self.assertDictEqual({
             "lib_version": buildtimetrend.VERSION,
@@ -110,24 +110,24 @@ class TestSettings(unittest.TestCase):
 
     def test_get_add_setting(self):
         # setting is not set yet
-        self.assertEquals(None, self.settings.get_setting("test_name"))
+        self.assertEqual(None, self.settings.get_setting("test_name"))
 
         self.settings.add_setting("test_name", "test_value")
-        self.assertEquals("test_value", self.settings.get_setting("test_name"))
+        self.assertEqual("test_value", self.settings.get_setting("test_name"))
 
         self.settings.add_setting("test_name", None)
-        self.assertEquals(None, self.settings.get_setting("test_name"))
+        self.assertEqual(None, self.settings.get_setting("test_name"))
 
         self.settings.add_setting("test_name", "")
-        self.assertEquals("", self.settings.get_setting("test_name"))
+        self.assertEqual("", self.settings.get_setting("test_name"))
 
         self.settings.add_setting("test_name", 6)
-        self.assertEquals(6, self.settings.get_setting("test_name"))
+        self.assertEqual(6, self.settings.get_setting("test_name"))
 
     def test_get_setting(self):
-        self.assertEquals(None, self.settings.get_setting("test_name"))
+        self.assertEqual(None, self.settings.get_setting("test_name"))
 
-        self.assertEquals(
+        self.assertEqual(
             self.project_name,
             self.settings.get_setting("project_name"))
 
@@ -149,10 +149,10 @@ class TestSettings(unittest.TestCase):
 
     def test_load_config_file(self):
         # checking if Keen.io configuration is not set (yet)
-        self.assertEquals(None, keen.project_id)
-        self.assertEquals(None, keen.write_key)
-        self.assertEquals(None, keen.read_key)
-        self.assertEquals(None, keen.master_key)
+        self.assertEqual(None, keen.project_id)
+        self.assertEqual(None, keen.write_key)
+        self.assertEqual(None, keen.read_key)
+        self.assertEqual(None, keen.master_key)
 
         # load sample config file
         self.assertTrue(
@@ -180,10 +180,10 @@ class TestSettings(unittest.TestCase):
             self.settings.settings.get_items())
 
         # checking if Keen.io configuration is set
-        self.assertEquals("1234", keen.project_id)
-        self.assertEquals("12345678", keen.write_key)
-        self.assertEquals("abcdefg", keen.read_key)
-        self.assertEquals("7890abcd", keen.master_key)
+        self.assertEqual("1234", keen.project_id)
+        self.assertEqual("12345678", keen.write_key)
+        self.assertEqual("abcdefg", keen.read_key)
+        self.assertEqual("7890abcd", keen.master_key)
         self.assertTrue(keen_is_readable())
         self.assertTrue(keen_is_writable())
 
@@ -212,10 +212,10 @@ class TestSettings(unittest.TestCase):
 
     def test_load_settings(self):
         # checking if Keen.io configuration is not set (yet)
-        self.assertEquals(None, keen.project_id)
-        self.assertEquals(None, keen.write_key)
-        self.assertEquals(None, keen.read_key)
-        self.assertEquals(None, keen.master_key)
+        self.assertEqual(None, keen.project_id)
+        self.assertEqual(None, keen.write_key)
+        self.assertEqual(None, keen.read_key)
+        self.assertEqual(None, keen.master_key)
 
         scriptname = "script.py"
         expected_ci = "travis"
@@ -259,10 +259,10 @@ class TestSettings(unittest.TestCase):
             self.settings.settings.get_items())
 
         # checking if Keen.io configuration is set
-        self.assertEquals("1234", keen.project_id)
-        self.assertEquals("12345678", keen.write_key)
-        self.assertEquals("abcdefg", keen.read_key)
-        self.assertEquals("7890abcd", keen.master_key)
+        self.assertEqual("1234", keen.project_id)
+        self.assertEqual("12345678", keen.write_key)
+        self.assertEqual("abcdefg", keen.read_key)
+        self.assertEqual("7890abcd", keen.master_key)
         self.assertTrue(keen_is_readable())
         self.assertTrue(keen_is_writable())
 
@@ -270,21 +270,21 @@ class TestSettings(unittest.TestCase):
 
     def test_env_var_to_settings(self):
         self.assertFalse(self.settings.env_var_to_settings("", ""))
-        self.assertEquals(None, self.settings.get_setting("test"))
+        self.assertEqual(None, self.settings.get_setting("test"))
         self.assertFalse(self.settings.env_var_to_settings("NO_VAR", "test"))
-        self.assertEquals(None, self.settings.get_setting("test"))
+        self.assertEqual(None, self.settings.get_setting("test"))
 
         os.environ["BTT_TEST_VAR"] = "test_value1"
         self.assertTrue(
             self.settings.env_var_to_settings("BTT_TEST_VAR", "test")
         )
-        self.assertEquals("test_value1", self.settings.get_setting("test"))
+        self.assertEqual("test_value1", self.settings.get_setting("test"))
 
         del os.environ["BTT_TEST_VAR"]
 
     def test_load_env_vars(self):
-        self.assertEquals("WARNING", self.settings.get_setting("loglevel"))
-        self.assertEquals(None,
+        self.assertEqual("WARNING", self.settings.get_setting("loglevel"))
+        self.assertEqual(None,
                           self.settings.get_setting("travis_account_token"))
 
         # set test environment variables
@@ -300,10 +300,10 @@ class TestSettings(unittest.TestCase):
         self.settings.load_env_vars()
 
         # test environment variables
-        self.assertEquals(exp_loglevel, self.settings.get_setting("loglevel"))
-        self.assertEquals(exp_account_token,
+        self.assertEqual(exp_loglevel, self.settings.get_setting("loglevel"))
+        self.assertEqual(exp_account_token,
                           self.settings.get_setting("travis_account_token"))
-        self.assertEquals(exp_config,
+        self.assertEqual(exp_config,
                           self.settings.get_setting("dashboard_configfile"))
         self.assertDictEqual(
             {"backend": "amqp", "broker_url": exp_amqp},
@@ -410,7 +410,7 @@ class TestSettings(unittest.TestCase):
         self.settings.add_setting("mode_keen", False)
         self.assertFalse(self.settings.get_setting("mode_keen"))
         self.assertFalse(self.settings.get_setting("mode_native"))
-        self.assertEquals(logging.WARNING, logger.getEffectiveLevel())
+        self.assertEqual(logging.WARNING, logger.getEffectiveLevel())
 
         argv = [
             scriptname,
@@ -429,36 +429,36 @@ class TestSettings(unittest.TestCase):
         self.assertListEqual(["argument"], self.settings.process_argv(argv))
 
         # test setting loglevel to WARNING
-        self.assertEquals(logging.INFO, logger.getEffectiveLevel())
+        self.assertEqual(logging.INFO, logger.getEffectiveLevel())
         # reset default loglevel
         set_loglevel("WARNING")
 
         # test other options
-        self.assertEquals(expected_ci,
+        self.assertEqual(expected_ci,
                           self.settings.get_setting("ci_platform"))
-        self.assertEquals(expected_build, self.settings.get_setting("build"))
-        self.assertEquals(expected_job, self.settings.get_setting("job"))
-        self.assertEquals(expected_branch, self.settings.get_setting("branch"))
-        self.assertEquals(expected_project_name,
+        self.assertEqual(expected_build, self.settings.get_setting("build"))
+        self.assertEqual(expected_job, self.settings.get_setting("job"))
+        self.assertEqual(expected_branch, self.settings.get_setting("branch"))
+        self.assertEqual(expected_project_name,
                           self.settings.get_project_name())
-        self.assertEquals(expected_result, self.settings.get_setting("result"))
+        self.assertEqual(expected_result, self.settings.get_setting("result"))
         self.assertTrue(self.settings.get_setting("mode_keen"))
         self.assertTrue(self.settings.get_setting("mode_native"))
 
         # no parameters
         self.assertListEqual([], self.settings.process_argv([scriptname]))
-        self.assertEquals(None, self.settings.process_argv(None))
+        self.assertEqual(None, self.settings.process_argv(None))
 
         # invalid parameters
-        self.assertEquals(None, self.settings.process_argv([scriptname, "-x"]))
-        self.assertEquals(
+        self.assertEqual(None, self.settings.process_argv([scriptname, "-x"]))
+        self.assertEqual(
             None,
             self.settings.process_argv([scriptname, "--invalid"])
         )
 
         # help
-        self.assertEquals(None, self.settings.process_argv([scriptname, "-h"]))
-        self.assertEquals(None,
+        self.assertEqual(None, self.settings.process_argv([scriptname, "-h"]))
+        self.assertEqual(None,
                           self.settings.process_argv([scriptname, "--help"]))
 
     def test_set_mode(self):

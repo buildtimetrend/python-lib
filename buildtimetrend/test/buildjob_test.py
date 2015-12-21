@@ -39,8 +39,8 @@ class TestBuildJob(unittest.TestCase):
 
     def test_novalue(self):
         # number of stages should be zero
-        self.assertEquals(0, len(self.build.stages.stages))
-        self.assertEquals(0, self.build.properties.get_size())
+        self.assertEqual(0, len(self.build.stages.stages))
+        self.assertEqual(0, self.build.properties.get_size())
 
         # get properties should return zero duration
         self.assertDictEqual({'duration': 0}, self.build.get_properties())
@@ -55,9 +55,9 @@ class TestBuildJob(unittest.TestCase):
         self.assertListEqual([], self.build.stages_to_list())
 
         # xml shouldn't contain items
-        self.assertEquals(
+        self.assertEqual(
             b'<build><stages/></build>', etree.tostring(self.build.to_xml()))
-        self.assertEquals(
+        self.assertEqual(
             b'<build>\n'
             b'  <stages/>\n'
             b'</build>\n', self.build.to_xml_string())
@@ -65,26 +65,26 @@ class TestBuildJob(unittest.TestCase):
     def test_nofile(self):
         # number of stages should be zero when file doesn't exist
         self.build = BuildJob('nofile.csv')
-        self.assertEquals(0, len(self.build.stages.stages))
+        self.assertEqual(0, len(self.build.stages.stages))
 
         self.build = BuildJob('')
-        self.assertEquals(0, len(self.build.stages.stages))
+        self.assertEqual(0, len(self.build.stages.stages))
 
     def test_end_timestamp(self):
-        self.assertEquals(0, self.build.stages.end_timestamp)
+        self.assertEqual(0, self.build.stages.end_timestamp)
 
         self.build = BuildJob('', 123)
-        self.assertEquals(123, self.build.stages.end_timestamp)
+        self.assertEqual(123, self.build.stages.end_timestamp)
 
     def test_set_started_at(self):
-        self.assertEquals(None, self.build.properties.get_item("started_at"))
+        self.assertEqual(None, self.build.properties.get_item("started_at"))
 
         self.build.set_started_at(None)
-        self.assertEquals(None, self.build.properties.get_item("started_at"))
+        self.assertEqual(None, self.build.properties.get_item("started_at"))
 
         # set as int, isotimestamp string expected
         self.build.set_started_at(constants.TIMESTAMP_STARTED)
-        self.assertEquals(None, self.build.properties.get_item("started_at"))
+        self.assertEqual(None, self.build.properties.get_item("started_at"))
 
         # set as isotimestamp string
         self.build.set_started_at(constants.ISOTIMESTAMP_STARTED)
@@ -94,14 +94,14 @@ class TestBuildJob(unittest.TestCase):
         )
 
     def test_set_finished_at(self):
-        self.assertEquals(None, self.build.properties.get_item("finished_at"))
+        self.assertEqual(None, self.build.properties.get_item("finished_at"))
 
         self.build.set_finished_at(None)
-        self.assertEquals(None, self.build.properties.get_item("finished_at"))
+        self.assertEqual(None, self.build.properties.get_item("finished_at"))
 
         # set as int, isotimestamp string expected
         self.build.set_finished_at(constants.TIMESTAMP_FINISHED)
-        self.assertEquals(None, self.build.properties.get_item("finished_at"))
+        self.assertEqual(None, self.build.properties.get_item("finished_at"))
 
         # set as isotimestamp string
         self.build.set_finished_at(constants.ISOTIMESTAMP_FINISHED)
@@ -112,25 +112,25 @@ class TestBuildJob(unittest.TestCase):
 
     def test_add_stages(self):
         self.build.add_stages(None)
-        self.assertEquals(0, len(self.build.stages.stages))
+        self.assertEqual(0, len(self.build.stages.stages))
 
         self.build.add_stages("string")
-        self.assertEquals(0, len(self.build.stages.stages))
+        self.assertEqual(0, len(self.build.stages.stages))
 
         stages = Stages()
         stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE)
         self.build.add_stages(stages)
-        self.assertEquals(3, len(self.build.stages.stages))
+        self.assertEqual(3, len(self.build.stages.stages))
 
         # stages should not change when submitting an invalid object
         self.build.add_stages(None)
-        self.assertEquals(3, len(self.build.stages.stages))
+        self.assertEqual(3, len(self.build.stages.stages))
 
         self.build.add_stages("string")
-        self.assertEquals(3, len(self.build.stages.stages))
+        self.assertEqual(3, len(self.build.stages.stages))
 
         self.build.add_stages(Stages())
-        self.assertEquals(0, len(self.build.stages.stages))
+        self.assertEqual(0, len(self.build.stages.stages))
 
     def test_add_stage(self):
         # error is thrown when called without parameters
@@ -150,7 +150,7 @@ class TestBuildJob(unittest.TestCase):
         self.build.add_stage(stage)
 
         # test number of stages
-        self.assertEquals(1, len(self.build.stages.stages))
+        self.assertEqual(1, len(self.build.stages.stages))
 
         # test started_at
         self.assertEqual(
@@ -184,7 +184,7 @@ class TestBuildJob(unittest.TestCase):
         self.build.add_stage(stage)
 
         # test number of stages
-        self.assertEquals(2, len(self.build.stages.stages))
+        self.assertEqual(2, len(self.build.stages.stages))
 
         # test started_at
         self.assertEqual(
@@ -216,21 +216,21 @@ class TestBuildJob(unittest.TestCase):
 
     def test_add_property(self):
         self.build.add_property('property1', 2)
-        self.assertEquals(1, self.build.properties.get_size())
+        self.assertEqual(1, self.build.properties.get_size())
         self.assertDictEqual(
             {'property1': 2},
             self.build.properties.get_items()
         )
 
         self.build.add_property('property2', 3)
-        self.assertEquals(2, self.build.properties.get_size())
+        self.assertEqual(2, self.build.properties.get_size())
         self.assertDictEqual(
             {'property1': 2, 'property2': 3},
             self.build.properties.get_items()
         )
 
         self.build.add_property('property2', 4)
-        self.assertEquals(2, self.build.properties.get_size())
+        self.assertEqual(2, self.build.properties.get_size())
         self.assertDictEqual(
             {'property1': 2, 'property2': 4},
             self.build.properties.get_items()
@@ -238,19 +238,19 @@ class TestBuildJob(unittest.TestCase):
 
     def test_get_property(self):
         self.build.add_property('property1', 2)
-        self.assertEquals(2, self.build.get_property('property1'))
+        self.assertEqual(2, self.build.get_property('property1'))
 
         self.build.add_property('property1', None)
-        self.assertEquals(None, self.build.get_property('property1'))
+        self.assertEqual(None, self.build.get_property('property1'))
 
         self.build.add_property('property2', 3)
-        self.assertEquals(3, self.build.get_property('property2'))
+        self.assertEqual(3, self.build.get_property('property2'))
 
         self.build.add_property('property2', 4)
-        self.assertEquals(4, self.build.get_property('property2'))
+        self.assertEqual(4, self.build.get_property('property2'))
 
     def test_get_property_does_not_exist(self):
-        self.assertEquals(None, self.build.get_property('no_property'))
+        self.assertEqual(None, self.build.get_property('no_property'))
 
     def test_get_properties(self):
         self.build.add_property('property1', 2)
@@ -554,7 +554,7 @@ class TestBuildJob(unittest.TestCase):
         self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
         # test xml string output
-        self.assertEquals(
+        self.assertEqual(
             b'<build>\n'
             b'  <stages>\n'
             b'    <stage duration="2.0" name="stage1"/>\n'
