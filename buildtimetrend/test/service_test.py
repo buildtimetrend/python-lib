@@ -33,11 +33,16 @@ import keen
 
 
 class TestService(unittest.TestCase):
+    
+    """Unit tests for dashboard related functions"""
+    
     @classmethod
     def setUpClass(cls):
+        """Set up test fixture."""
         cls.settings = Settings()
 
     def setUp(self):
+        """Initialise test environment. (run before each test)"""
         # reinit settings singleton
         if self.settings is not None:
             self.settings.__init__()
@@ -49,6 +54,7 @@ class TestService(unittest.TestCase):
         keen.master_key = None
 
     def test_is_repo_allowed(self):
+        """Test is_repo_allowed()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, is_repo_allowed)
 
@@ -59,6 +65,7 @@ class TestService(unittest.TestCase):
         self.assertTrue(is_repo_allowed("name/repo"))
 
     def test_is_repo_allowed_set_denied(self):
+        """Test is_repo_allowed() by using the 'denied_repo' setting"""
         # test denied repo
         self.settings.add_setting("denied_repo", {"test1"})
 
@@ -67,6 +74,7 @@ class TestService(unittest.TestCase):
         self.assertTrue(is_repo_allowed("name/test2"))
 
     def test_is_repo_allowed_set_denied_multi(self):
+        """Test is_repo_allowed() by using multiple 'denied_repo' settings"""
         # test multiple denied repos
         self.settings.add_setting("denied_repo", {"test1", "test2"})
 
@@ -75,6 +83,7 @@ class TestService(unittest.TestCase):
         self.assertFalse(is_repo_allowed("name/test2"))
 
     def test_is_repo_allowed_set_allowed(self):
+        """Test is_repo_allowed() by using the 'allowed_repo' setting"""
         # test allowed repo
         self.settings.add_setting("allowed_repo", {"test1"})
 
@@ -83,6 +92,7 @@ class TestService(unittest.TestCase):
         self.assertFalse(is_repo_allowed("name/test2"))
 
     def test_is_repo_allowed_set_allowed_multi(self):
+        """Test is_repo_allowed() by using multiple 'allowed_repo' settings"""
         # test multiple allowed repos
         self.settings.add_setting("allowed_repo", {"test1", "test2"})
 
@@ -91,6 +101,10 @@ class TestService(unittest.TestCase):
         self.assertTrue(is_repo_allowed("name/test2"))
 
     def test_is_repo_allowed_set_denied_allowed(self):
+        """
+        Test is_repo_allowed() by using both
+        'allowed_repo' and 'denied_repo' settings
+        """
         # set denied repo
         self.settings.add_setting("denied_repo", {"test1"})
         # set allowed repo
@@ -102,6 +116,7 @@ class TestService(unittest.TestCase):
         self.assertFalse(is_repo_allowed("owner/repo"))
 
     def test_format_duration(self):
+        """Test format_duration()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, format_duration)
 
@@ -131,6 +146,7 @@ class TestService(unittest.TestCase):
         self.assertEqual("2h 5m 0s", format_duration(7500))
 
     def test_check_process_parameters(self):
+        """Test check_process_parameters()"""
         # repo or build is not set
         no_repo_build = "Repo or build are not set, format : " \
             "/travis/<repo_owner>/<repo_name>/<build>"
@@ -164,6 +180,7 @@ class TestService(unittest.TestCase):
 
     @mock.patch('buildtimetrend.service.has_build_id', return_value=True)
     def test_check_process_parameters_mock(self, has_build_id_func):
+        """Test check_process_parameters() mocking has_build_id()"""
         # set keen project ID and write key
         keen.project_id = "1234abcd"
         keen.write_key = "1234abcd5678efgh"
@@ -177,6 +194,7 @@ class TestService(unittest.TestCase):
         self.assertEqual(None, check_process_parameters("user/repo", 1234))
 
     def test_validate_travis_request(self):
+        """Test validate_travis_request()"""
         # repo or build is not set
         no_repo_build = "Repo or build are not set, format : " \
             "/travis/<repo_owner>/<repo_name>/<build>"
@@ -194,6 +212,7 @@ class TestService(unittest.TestCase):
         )
 
     def test_validate_task_parameters(self):
+        """Test validate_task_parameters()"""
         # Keen.io write key is not set
         self.assertEqual(
             "Keen IO write key not set, no data was sent",
@@ -211,6 +230,7 @@ class TestService(unittest.TestCase):
 
     @mock.patch('buildtimetrend.service.has_build_id', return_value=True)
     def test_validate_task_parameters_mock(self, has_build_id_func):
+        """Test validate_task_parameters() mocking has_build_id()"""
         # set keen project ID and write key
         keen.project_id = "1234abcd"
         keen.write_key = "1234abcd5678efgh"
