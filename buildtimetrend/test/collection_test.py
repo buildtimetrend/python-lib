@@ -25,10 +25,15 @@ import unittest
 
 
 class TestCollection(unittest.TestCase):
+    
+    """Unit tests for Collection class"""
+    
     def setUp(self):
+        """Set up test fixture."""
         self.collection = Collection()
 
     def test_novalue(self):
+        """Test freshly initialised object."""
         # number of items should be zero
         self.assertEqual(0, len(self.collection.items))
 
@@ -36,6 +41,7 @@ class TestCollection(unittest.TestCase):
         self.assertDictEqual({}, self.collection.get_items())
 
     def test_add_item(self):
+        """Test add_item()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, self.collection.add_item)
 
@@ -54,6 +60,7 @@ class TestCollection(unittest.TestCase):
                              self.collection.items)
 
     def test_get_size(self):
+        """Test get_size()"""
         self.collection.add_item('property1', 2)
         self.assertEqual(1, len(self.collection.items))
         self.assertEqual(1, self.collection.get_size())
@@ -67,6 +74,7 @@ class TestCollection(unittest.TestCase):
         self.assertEqual(2, self.collection.get_size())
 
     def test_get_item(self):
+        """Test get_item()"""
         self.collection.add_item('property1', 2)
         self.assertEqual(2, self.collection.get_item('property1'))
 
@@ -80,9 +88,11 @@ class TestCollection(unittest.TestCase):
         self.assertEqual(4, self.collection.get_item('property2'))
 
     def test_get_property_does_not_exist(self):
+        """Test get_item() for non-existing item"""
         self.assertEqual(None, self.collection.get_item('no_property'))
 
     def test_add_items_invalidparameter(self):
+        """Test add_item() with invalid parameters"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, self.collection.add_items)
 
@@ -92,6 +102,7 @@ class TestCollection(unittest.TestCase):
         self.assertRaises(TypeError, self.collection.add_items, 1234)
 
     def test_add_items(self):
+        """Test add_items()"""
         # add item to empty collection
         self.collection.add_items({'property1': 2})
         self.assertDictEqual(
@@ -111,6 +122,7 @@ class TestCollection(unittest.TestCase):
             self.collection.get_items())
 
     def test_add_items_multiple(self):
+        """Test add_items() with multiple items at once"""
         # fill collection with items
         self.collection.add_item('property1', 2)
         self.collection.add_item('property2', 3)
@@ -132,6 +144,7 @@ class TestCollection(unittest.TestCase):
         )
 
     def test_get_items(self):
+        """Test get_items()"""
         self.collection.add_item('property1', 2)
         self.assertDictEqual(
             {'property1': 2},
@@ -148,6 +161,7 @@ class TestCollection(unittest.TestCase):
             self.collection.get_items())
 
     def test_get_items_with_summary(self):
+        """Test get_items_with_summary()"""
         self.collection.add_item('property1', '2')
         self.assertDictEqual(
             {'property1': '2'},
@@ -188,6 +202,7 @@ class TestCollection(unittest.TestCase):
             self.collection.get_items_with_summary())
 
     def test_get_key_sorted_items(self):
+        """Test get_key_sorted_items()"""
         self.collection.add_item('property3', 2)
         self.collection.add_item('property1', 3)
 
