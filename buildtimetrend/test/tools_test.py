@@ -30,6 +30,9 @@ import constants
 
 
 class TestTools(unittest.TestCase):
+
+    """Unit tests for tools functions"""
+
     @classmethod
     def setUpClass(cls):
         """Set up test fixture."""
@@ -37,6 +40,7 @@ class TestTools(unittest.TestCase):
         cls.maxDiff = None
 
     def test_format_timestamp(self):
+        """Test format_timestamp()"""
         # test 0 timestamp (epoch)
         self.assertEqual("1970-01-01T00:00:00", format_timestamp(0))
 
@@ -44,6 +48,7 @@ class TestTools(unittest.TestCase):
         self.assertEqual("2014-07-09T12:38:33", format_timestamp(1404909513))
 
     def test_split_timestamp(self):
+        """Test split_timestamp()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, split_timestamp)
 
@@ -75,6 +80,7 @@ class TestTools(unittest.TestCase):
         )
 
     def test_split_isotimestamp(self):
+        """Test split_isotimestamp()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, split_isotimestamp)
 
@@ -107,6 +113,7 @@ class TestTools(unittest.TestCase):
         )
 
     def test_split_datetime(self):
+        """Test split_datetime()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, split_datetime)
 
@@ -138,6 +145,7 @@ class TestTools(unittest.TestCase):
         )
 
     def test_nano2sec(self):
+        """Test nano2sec()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, nano2sec)
 
@@ -161,6 +169,7 @@ class TestTools(unittest.TestCase):
         )
 
     def test_check_file(self):
+        """Test check_file()"""
         # function should return false when file doesn't exist
         self.assertFalse(check_file('nofile.csv'))
         self.assertFalse(check_file(''))
@@ -172,6 +181,7 @@ class TestTools(unittest.TestCase):
         self.assertTrue(check_file(constants.TEST_SAMPLE_TIMESTAMP_FILE))
 
     def test_file_is_newer(self):
+        """Test file_is_newer()"""
         NEWER_FILE = 'newer_file.tmp'
 
         # create a testfile
@@ -212,6 +222,7 @@ class TestTools(unittest.TestCase):
         )
 
     def test_is_dict(self):
+        """Test is_dict()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, is_dict)
 
@@ -220,6 +231,7 @@ class TestTools(unittest.TestCase):
         self.assertTrue(is_dict({"string": "test"}))
 
     def test_check_dict(self):
+        """Test check_dict()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, check_dict)
 
@@ -259,6 +271,7 @@ class TestTools(unittest.TestCase):
         ))
 
     def test_keys_in_dict(self):
+        """Test keys_in_dict()"""
         # empty dict and empty key_list should return true
         self.assertTrue(keys_in_dict({}, []))
         self.assertTrue(keys_in_dict({"string": "test"}, []))
@@ -284,6 +297,7 @@ class TestTools(unittest.TestCase):
         self.assertFalse(keys_in_dict({"string": "test"}, list({7, "string"})))
 
     def test_is_list(self):
+        """Test is_list()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, is_list)
 
@@ -306,6 +320,7 @@ class TestTools(unittest.TestCase):
         self.assertTrue(is_list(["string", "test"], "name"))
 
     def test_is_string(self):
+        """Test is_string()"""
         self.assertRaises(TypeError, is_string)
 
         # error is thrown when called with an invalid parameter
@@ -346,6 +361,7 @@ class TestTools(unittest.TestCase):
         self.assertTrue(is_string("string", "name"))
 
     def test_num_string(self):
+        """Test check_num_string()"""
         self.assertRaises(TypeError, check_num_string)
         self.assertRaises(TypeError, check_num_string, None)
         self.assertRaises(TypeError, check_num_string, 2.2, "name")
@@ -370,6 +386,7 @@ class TestTools(unittest.TestCase):
         self.assertEqual(2, check_num_string("2", "name"))
 
     def test_get_repo_slug(self):
+        """Test get_repo_slug()"""
         self.assertEqual(None, get_repo_slug())
         self.assertEqual(None, get_repo_slug("abcd", None))
         self.assertEqual(None, get_repo_slug(None, "efgh"))
