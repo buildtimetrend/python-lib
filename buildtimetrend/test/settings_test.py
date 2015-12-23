@@ -284,8 +284,9 @@ class TestSettings(unittest.TestCase):
 
     def test_load_env_vars(self):
         self.assertEqual("WARNING", self.settings.get_setting("loglevel"))
-        self.assertEqual(None,
-                          self.settings.get_setting("travis_account_token"))
+        self.assertEqual(
+            None, self.settings.get_setting("travis_account_token")
+        )
 
         # set test environment variables
         exp_account_token = os.environ["TRAVIS_ACCOUNT_TOKEN"] = "1234abcde"
@@ -301,10 +302,13 @@ class TestSettings(unittest.TestCase):
 
         # test environment variables
         self.assertEqual(exp_loglevel, self.settings.get_setting("loglevel"))
-        self.assertEqual(exp_account_token,
-                          self.settings.get_setting("travis_account_token"))
-        self.assertEqual(exp_config,
-                          self.settings.get_setting("dashboard_configfile"))
+        self.assertEqual(
+            exp_account_token,
+            self.settings.get_setting("travis_account_token")
+        )
+        self.assertEqual(
+            exp_config, self.settings.get_setting("dashboard_configfile")
+        )
         self.assertDictEqual(
             {"backend": "amqp", "broker_url": exp_amqp},
             self.settings.get_setting("task_queue")
@@ -434,13 +438,16 @@ class TestSettings(unittest.TestCase):
         set_loglevel("WARNING")
 
         # test other options
-        self.assertEqual(expected_ci,
-                          self.settings.get_setting("ci_platform"))
+        self.assertEqual(
+            expected_ci, self.settings.get_setting("ci_platform")
+        )
         self.assertEqual(expected_build, self.settings.get_setting("build"))
         self.assertEqual(expected_job, self.settings.get_setting("job"))
         self.assertEqual(expected_branch, self.settings.get_setting("branch"))
-        self.assertEqual(expected_project_name,
-                          self.settings.get_project_name())
+        self.assertEqual(
+            expected_project_name,
+            self.settings.get_project_name()
+        )
         self.assertEqual(expected_result, self.settings.get_setting("result"))
         self.assertTrue(self.settings.get_setting("mode_keen"))
         self.assertTrue(self.settings.get_setting("mode_native"))
@@ -458,8 +465,9 @@ class TestSettings(unittest.TestCase):
 
         # help
         self.assertEqual(None, self.settings.process_argv([scriptname, "-h"]))
-        self.assertEqual(None,
-                          self.settings.process_argv([scriptname, "--help"]))
+        self.assertEqual(
+            None, self.settings.process_argv([scriptname, "--help"])
+        )
 
     def test_set_mode(self):
         self.assertTrue(self.settings.get_setting("mode_keen"))

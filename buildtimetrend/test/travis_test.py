@@ -1449,8 +1449,10 @@ class TestTravisData(unittest.TestCase):
             self.assertEqual(
                 0, len(self.travis_data.current_job.stages.stages))
             self.assertTrue(self.travis_data.travis_substage.has_name())
-            self.assertEqual('install.4',
-                              self.travis_data.travis_substage.get_name())
+            self.assertEqual(
+                'install.4',
+                self.travis_data.travis_substage.get_name()
+            )
             self.assertTrue(self.travis_data.travis_substage.has_timing_hash())
             self.assertTrue(self.travis_data.travis_substage.has_command())
             self.assertTrue(self.travis_data.travis_substage.has_started())
@@ -1485,8 +1487,10 @@ class TestTravisData(unittest.TestCase):
             self.assertEqual(
                 0, len(self.travis_data.current_job.stages.stages))
             self.assertTrue(self.travis_data.travis_substage.has_name())
-            self.assertEqual('after_script.2',
-                              self.travis_data.travis_substage.get_name())
+            self.assertEqual(
+                'after_script.2',
+                self.travis_data.travis_substage.get_name()
+            )
             self.assertTrue(self.travis_data.travis_substage.has_timing_hash())
             self.assertTrue(self.travis_data.travis_substage.has_command())
             self.assertTrue(self.travis_data.travis_substage.has_started())
