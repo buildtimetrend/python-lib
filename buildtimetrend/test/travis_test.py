@@ -26,6 +26,7 @@ from builtins import str
 from buildtimetrend.travis import *
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import get_repo_slug
+from buildtimetrend.travis import connector
 import constants
 import unittest
 
@@ -776,12 +777,12 @@ class TestTravisData(unittest.TestCase):
 
     def test_connector_parameter(self):
         self.assertEqual(
-            TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
+            connector.TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
         )
 
         self.travis_data = TravisData(TEST_REPO, TEST_BUILD, 1234)
         self.assertEqual(
-            TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
+            connector.TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
         )
 
         custom_connector = TravisConnector()
