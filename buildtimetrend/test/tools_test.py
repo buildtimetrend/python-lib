@@ -30,9 +30,11 @@ import constants
 
 
 class TestTools(unittest.TestCase):
-    def setUp(self):
-        self.project_info = Settings().get_project_info()
-        self.maxDiff = None
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixture."""
+        cls.project_info = Settings().get_project_info()
+        cls.maxDiff = None
 
     def test_format_timestamp(self):
         # test 0 timestamp (epoch)
