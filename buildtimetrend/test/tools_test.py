@@ -145,10 +145,18 @@ class TestTools(unittest.TestCase):
 
         # test valid parameters
         self.assertEqual(0.0, nano2sec(0))
-        self.assertAlmostEqual(Decimal(123.456789123), nano2sec(123456789123), 9)
-        self.assertAlmostEqual(Decimal(0.123456789123), nano2sec(123456789.123), 9)
-        self.assertAlmostEqual(Decimal(-123.456789123), nano2sec(-123456789123), 9)
-        self.assertAlmostEqual(Decimal(123.456789123), nano2sec("123456789123"), 9)
+        self.assertAlmostEqual(
+            Decimal(123.456789123), nano2sec(123456789123), 9
+        )
+        self.assertAlmostEqual(
+            Decimal(0.123456789123), nano2sec(123456789.123), 9
+        )
+        self.assertAlmostEqual(
+            Decimal(-123.456789123), nano2sec(-123456789123), 9
+        )
+        self.assertAlmostEqual(
+            Decimal(123.456789123), nano2sec("123456789123"), 9
+        )
 
     def test_check_file(self):
         # function should return false when file doesn't exist
