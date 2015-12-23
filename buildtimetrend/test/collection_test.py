@@ -25,9 +25,9 @@ import unittest
 
 
 class TestCollection(unittest.TestCase):
-    
+
     """Unit tests for Collection class"""
-    
+
     def setUp(self):
         """Set up test fixture."""
         self.collection = Collection()

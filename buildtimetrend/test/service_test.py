@@ -33,9 +33,9 @@ import keen
 
 
 class TestService(unittest.TestCase):
-    
+
     """Unit tests for dashboard related functions"""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test fixture."""
