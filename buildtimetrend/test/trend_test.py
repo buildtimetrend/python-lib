@@ -27,15 +27,21 @@ TEST_SAMPLE_FILE = 'buildtimetrend/test/testsample_buildtimes.xml'
 
 
 class TestTrend(unittest.TestCase):
+
+    """Unit tests for Trend class"""
+
     def setUp(self):
+        """Set up test fixture."""
         self.trend = Trend()
 
     def test_novalue(self):
+        """Test freshly initialised object."""
          # number of builds and stages should be zero
         self.assertEqual(0, len(self.trend.builds))
         self.assertEqual(0, len(self.trend.stages))
 
     def test_nofile(self):
+        """Test gather_data() with no file."""
         # function should return false when file doesn't exist
         self.assertFalse(self.trend.gather_data('nofile.xml'))
         self.assertFalse(self.trend.gather_data(''))
@@ -44,6 +50,7 @@ class TestTrend(unittest.TestCase):
         self.assertRaises(TypeError, self.trend.gather_data)
 
     def test_gather_data(self):
+        """Test gather_data()"""
         # read and parse sample file
         self.assertTrue(self.trend.gather_data(TEST_SAMPLE_FILE))
 
