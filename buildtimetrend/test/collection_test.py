@@ -33,7 +33,7 @@ class TestCollection(unittest.TestCase):
         self.collection = Collection()
 
     def test_novalue(self):
-        """Test freshly initialised object."""
+        """Test freshly initialised Collection object."""
         # number of items should be zero
         self.assertEqual(0, len(self.collection.items))
 
