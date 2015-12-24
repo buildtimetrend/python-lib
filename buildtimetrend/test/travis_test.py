@@ -26,7 +26,11 @@ from builtins import str
 from buildtimetrend.travis import *
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import get_repo_slug
+from buildtimetrend.tools import check_dict
 from buildtimetrend.travis import connector
+from buildtimetrend.buildjob import BuildJob
+from buildtimetrend.travis.connector import TravisConnector
+from buildtimetrend.travis.substage import TravisSubstage
 import constants
 import unittest
 
