@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from buildtimetrend.settings import *
+from buildtimetrend.settings import Settings
 from buildtimetrend import logger
 from buildtimetrend import set_loglevel
 from buildtimetrend.collection import Collection
