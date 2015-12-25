@@ -48,8 +48,12 @@ DEFAULT_SETTINGS = {
 
 
 class TestSettings(unittest.TestCase):
+
+    """Unit tests for Settings class"""
+
     @classmethod
     def setUpClass(cls):
+        """Set up test fixture."""
         cls.settings = Settings()
 
         cls.project_name = buildtimetrend.NAME
@@ -62,6 +66,7 @@ class TestSettings(unittest.TestCase):
             "project_name": cls.project_name}
 
     def setUp(self):
+        """Initialise test environment before each test."""
         # reinit settings singleton
         if self.settings is not None:
             self.settings.__init__()
@@ -75,11 +80,13 @@ class TestSettings(unittest.TestCase):
         keen.master_key = None
 
     def test_get_project_info(self):
+        """Test Settings.get_project_info()"""
         self.assertDictEqual(
             self.project_info, self.settings.get_project_info()
         )
 
     def test_get_set_project_name(self):
+        """Test Settings.set_project_info()"""
         self.assertEqual(self.project_name, self.settings.get_project_name())
 
         self.settings.set_project_name("test_name")
@@ -92,6 +99,7 @@ class TestSettings(unittest.TestCase):
         self.assertEqual("", self.settings.get_project_name())
 
     def test_set_client(self):
+        """Test Settings.set_client()"""
         self.assertEqual(None, self.settings.get_setting("client"))
         self.assertEqual(None, self.settings.get_setting("client_version"))
 
@@ -109,6 +117,7 @@ class TestSettings(unittest.TestCase):
         )
 
     def test_get_add_setting(self):
+        """Test Settings.add_setting() and get_setting()"""
         # setting is not set yet
         self.assertEqual(None, self.settings.get_setting("test_name"))
 
@@ -125,6 +134,7 @@ class TestSettings(unittest.TestCase):
         self.assertEqual(6, self.settings.get_setting("test_name"))
 
     def test_get_setting(self):
+        """Test Settings.get_setting()"""
         self.assertEqual(None, self.settings.get_setting("test_name"))
 
         self.assertEqual(
@@ -135,6 +145,7 @@ class TestSettings(unittest.TestCase):
                              self.settings.settings.get_items())
 
     def test_no_config_file(self):
+        """Test Settings.load_config_file() with an invalid file name"""
         # function should return false when file doesn't exist
         self.assertFalse(self.settings.load_config_file('no_file.yml'))
         self.assertDictEqual(DEFAULT_SETTINGS,
@@ -148,6 +159,7 @@ class TestSettings(unittest.TestCase):
         self.assertRaises(TypeError, self.settings.load_config_file)
 
     def test_load_config_file(self):
+        """Test Settings.load_config_file()"""
         # checking if Keen.io configuration is not set (yet)
         self.assertEqual(None, keen.project_id)
         self.assertEqual(None, keen.write_key)
@@ -188,6 +200,7 @@ class TestSettings(unittest.TestCase):
         self.assertTrue(keen_is_writable())
 
     def test_load_multi_build_settings(self):
+        """Test multi_import setting"""
         self.assertDictEqual(
             {
                 "max_builds": 100,
@@ -211,6 +224,7 @@ class TestSettings(unittest.TestCase):
         del os.environ["BTT_MULTI_MAX_BUILDS"]
 
     def test_load_settings(self):
+        """Test Settings.load_settings()"""
         # checking if Keen.io configuration is not set (yet)
         self.assertEqual(None, keen.project_id)
         self.assertEqual(None, keen.write_key)
@@ -269,6 +283,7 @@ class TestSettings(unittest.TestCase):
         del os.environ["BUILD_TREND_CONFIGFILE"]
 
     def test_env_var_to_settings(self):
+        """Test Settings.env_var_to_settings()"""
         self.assertFalse(self.settings.env_var_to_settings("", ""))
         self.assertEqual(None, self.settings.get_setting("test"))
         self.assertFalse(self.settings.env_var_to_settings("NO_VAR", "test"))
@@ -283,6 +298,7 @@ class TestSettings(unittest.TestCase):
         del os.environ["BTT_TEST_VAR"]
 
     def test_load_env_vars(self):
+        """Test loading config env vars"""
         self.assertEqual("WARNING", self.settings.get_setting("loglevel"))
         self.assertEqual(
             None, self.settings.get_setting("travis_account_token")
@@ -327,6 +343,7 @@ class TestSettings(unittest.TestCase):
         del os.environ["BTT_MULTI_DELAY"]
 
     def test_load_env_vars_task_queue(self):
+        """Test loading config env vars task queue"""
         # set test environment variables
         exp_redisgreen = os.environ["REDISGREEN_URL"] = \
             "redis://test@hostname:4567"
@@ -402,6 +419,7 @@ class TestSettings(unittest.TestCase):
         del os.environ["REDISGREEN_URL"]
 
     def test_process_argv(self):
+        """Test processing cli arguments"""
         scriptname = "script.py"
 
         expected_ci = "travis"
@@ -470,6 +488,7 @@ class TestSettings(unittest.TestCase):
         )
 
     def test_set_mode(self):
+        """Test setting operating mode"""
         self.assertTrue(self.settings.get_setting("mode_keen"))
         self.assertFalse(self.settings.get_setting("mode_native"))
 

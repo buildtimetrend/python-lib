@@ -29,7 +29,7 @@ class TestCollection(unittest.TestCase):
     """Unit tests for Collection class"""
 
     def setUp(self):
-        """Set up test fixture."""
+        """Initialise test environment before each test."""
         self.collection = Collection()
 
     def test_novalue(self):
