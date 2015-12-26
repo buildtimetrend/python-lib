@@ -411,8 +411,8 @@ class TestTravis(unittest.TestCase):
         # test correct Authorization header
         self.assertTrue(check_authorization(
             TEST_REPO,
-            "61db633141cd24b4c9cbccb2a2c2c6a99988c3e346b951e4666e50474518cb82")
-        )
+            "61db633141cd24b4c9cbccb2a2c2c6a99988c3e346b951e4666e50474518cb82"
+        ))
 
 
 class TestTravisData(unittest.TestCase):
@@ -872,9 +872,10 @@ class TestTravisData(unittest.TestCase):
         )
 
         # check worker tag
-        self.assertDictEqual({
-            'hostname': 'worker-linux-12-1.bb.travis-ci.org',
-            'os': 'travis-linux-11'
+        self.assertDictEqual(
+            {
+                'hostname': 'worker-linux-12-1.bb.travis-ci.org',
+                'os': 'travis-linux-11'
             },
             self.travis_data.current_job.get_property("worker")
         )
