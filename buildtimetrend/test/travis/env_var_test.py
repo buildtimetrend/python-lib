@@ -30,11 +30,16 @@ from buildtimetrend.travis.env_var import load_travis_pr_env_vars
 import unittest
 
 class TestTravis(unittest.TestCase):
+
+    """Unit tests for Travis CI env var loading functions"""
+
     def setUp(self):
+        """Initialise test environment before each test."""
         # reinit settings singleton
         Settings().__init__()
 
     def test_load_travis_env_vars(self):
+        """Test load_travis_env_vars"""
         settings = Settings()
 
         self.assertEqual(None, settings.get_setting("ci_platform"))
@@ -139,6 +144,7 @@ class TestTravis(unittest.TestCase):
             os.environ["TRAVIS_TEST_RESULT"] = copy_result
 
     def test_load_build_matrix_env_vars(self):
+        """Test load_build_matrix_env_vars"""
         settings = Settings()
 
         self.assertEqual(None, settings.get_setting("build_matrix"))
@@ -276,6 +282,7 @@ class TestTravis(unittest.TestCase):
             os.environ["TRAVIS_PYTHON_VERSION"] = copy_python
 
     def test_load_build_matrix_env_vars_parameters(self):
+        """Test load_travis_env_vars, optional parameters"""
         # setup Travis env vars
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
@@ -372,5 +379,3 @@ class TestTravis(unittest.TestCase):
         # reset removed python version
         if reset_python_version:
             os.environ["TRAVIS_PYTHON_VERSION"] = copy_python
-
-
