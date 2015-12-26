@@ -21,15 +21,19 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import json
 import buildtimetrend
 from builtins import str
-from buildtimetrend.travis import *
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import get_repo_slug
 from buildtimetrend.tools import check_dict
 from buildtimetrend.travis import connector
 from buildtimetrend.buildjob import BuildJob
+from buildtimetrend.travis.parser import TravisData
 from buildtimetrend.travis.connector import TravisConnector
+from buildtimetrend.travis import convert_build_result
+from buildtimetrend.travis import check_authorization
+from buildtimetrend.travis import process_notification_payload
 import constants
 import unittest
 
