@@ -42,7 +42,7 @@ class TestService(unittest.TestCase):
         cls.settings = Settings()
 
     def setUp(self):
-        """Initialise test environment. (run before each test)"""
+        """Initialise test environment before each test."""
         # reinit settings singleton
         if self.settings is not None:
             self.settings.__init__()

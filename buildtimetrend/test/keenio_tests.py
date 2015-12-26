@@ -38,6 +38,7 @@ class TestKeen(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """Set up test fixture."""
         cls.project_info = Settings().get_project_info()
         cls.maxDiff = None
 
@@ -64,6 +65,7 @@ class TestKeen(unittest.TestCase):
             os.environ["KEEN_MASTER_KEY"] = cls.copy_keen_master_key
 
     def setUp(self):
+        """Initialise test environment before each test."""
         # reset Keen.io environment variables before each test
         if "KEEN_PROJECT_ID" in os.environ:
             del os.environ["KEEN_PROJECT_ID"]

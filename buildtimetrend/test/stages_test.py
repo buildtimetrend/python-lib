@@ -37,6 +37,7 @@ STAGES_RESULT = [{
 
 class TestStages(unittest.TestCase):
     def setUp(self):
+        """Initialise test environment before each test."""
         self.stages = Stages()
         # show full diff in case of assert mismatch
         self.maxDiff = None
@@ -435,6 +436,7 @@ class TestStages(unittest.TestCase):
 
 class TestStage(unittest.TestCase):
     def setUp(self):
+        """Initialise test environment before each test."""
         self.maxDiff = None
         self.stage = Stage()
 

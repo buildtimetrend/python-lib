@@ -36,7 +36,7 @@ class TestBuildJob(unittest.TestCase):
     """Unit tests for BuildJob class"""
 
     def setUp(self):
-        """Set up test fixture."""
+        """Initialise test environment before each test."""
         self.build = BuildJob()
         # show full diff in case of assert mismatch
         self.maxDiff = None
