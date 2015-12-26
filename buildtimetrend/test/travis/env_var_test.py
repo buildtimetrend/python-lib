@@ -26,10 +26,9 @@ from buildtimetrend.settings import Settings
 from buildtimetrend.travis.env_var import load_travis_env_vars
 from buildtimetrend.travis.env_var import load_build_matrix_env_vars
 from buildtimetrend.travis.env_var import load_travis_pr_env_vars
-#import constants
 import unittest
 
-class TestTravis(unittest.TestCase):
+class TestTravisEnvVar(unittest.TestCase):
 
     """Unit tests for Travis CI env var loading functions"""
 
