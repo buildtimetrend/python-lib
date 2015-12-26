@@ -322,10 +322,12 @@ class TestTravis(unittest.TestCase):
         Settings().__init__()
 
     def test_novalue(self):
+        """Test freshly initialised Buildjob object."""
         self.assertRaises(TypeError, convert_build_result)
         self.assertRaises(TypeError, convert_build_result, None)
 
     def test_convert_build_result(self):
+        """Test convert_build_result()"""
         self.assertEqual("passed", convert_build_result(0))
         self.assertEqual("failed", convert_build_result(1))
         self.assertEqual("errored", convert_build_result(-1))
@@ -337,6 +339,7 @@ class TestTravis(unittest.TestCase):
         self.assertEqual("errored", convert_build_result("2"))
 
     def test_process_notification_payload(self):
+        """Test process_notification_payload()"""
         settings = Settings()
 
         self.assertEqual(None, settings.get_setting("build"))
@@ -401,6 +404,7 @@ class TestTravis(unittest.TestCase):
         self.assertEqual(expected_project_name, settings.get_project_name())
 
     def test_check_authorization(self):
+        """Test check_authorization()"""
         self.assertTrue(check_authorization(None, None))
 
         # set account token
@@ -429,6 +433,7 @@ class TestTravisData(unittest.TestCase):
         self.travis_data = TravisData(TEST_REPO, TEST_BUILD)
 
     def test_novalue(self):
+        """Test freshly initialised Buildjob object."""
          # data should be empty
         self.assertEqual(0, len(self.travis_data.builds_data))
         self.assertEqual(None, self.travis_data.get_started_at())
@@ -447,6 +452,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_connector_parameter(self):
+        """Test connector parameter"""
         self.assertEqual(
             connector.TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
         )
@@ -464,6 +470,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_get_build_data(self):
+        """Test TravisData.get_build_data() with invalid url"""
         self.assertTrue(self.travis_data.get_build_data())
 
         # trigger URLError, with invalid URL
@@ -471,6 +478,7 @@ class TestTravisData(unittest.TestCase):
         self.assertFalse(self.travis_data.get_build_data())
 
     def test_gather_data(self):
+        """Test TravisData.get_build_data()"""
         # retrieve data from Travis API
         self.assertTrue(self.travis_data.get_build_data())
         self.assertTrue(
@@ -509,6 +517,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.builds_data["builds"][0]["finished_at"])
 
     def test_get_started_at(self):
+        """Test TravisData.get_started_at()"""
         self.travis_data.current_build_data = {
             "started_at": '2014-07-08T11:18:13Z',
         }
@@ -519,6 +528,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.get_started_at())
 
     def test_get_finished_at(self):
+        """Test TravisData.get_finished_at()"""
         self.travis_data.current_build_data = {
             "finished_at": '2014-07-08T11:19:55Z'
         }
@@ -529,6 +539,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.get_finished_at())
 
     def test_get_substage_name(self):
+        """Test TravisData.get_substage_name()"""
         # test missing parameter
         self.assertRaises(TypeError, self.travis_data.get_substage_name)
 
@@ -567,12 +578,14 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_process_no_build_job(self):
+        """Test TravisData.process_build_job() with invalid parameters"""
         self.assertRaises(TypeError, self.travis_data.process_build_job)
 
         self.assertEqual(None, self.travis_data.process_build_job(None))
         self.assertEqual(0, len(self.travis_data.build_jobs))
 
     def test_process_build_job(self):
+        """Test TravisData.process_build_job()"""
         build_job = self.travis_data.process_build_job("29404875")
         self.assertDictEqual(DICT_JOB_158_1, build_job.properties.get_items())
         self.assertEqual(1, len(self.travis_data.build_jobs))
@@ -582,12 +595,14 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_process_no_build_jobs(self):
+        """Test TravisData.process_build_jobs() with no build jobs"""
         # retrieve empty Travis API result
         self.travis_data.builds_data = {"builds": [], "commits": []}
         self.travis_data.process_build_jobs()
         self.assertEqual(0, len(self.travis_data.build_jobs))
 
     def test_process_build_jobs(self):
+        """Test TravisData.process_build_jobs() with no build jobs"""
         # retrieve data from Travis API
         self.travis_data.get_build_data()
         for build_job in self.travis_data.process_build_jobs():
@@ -602,6 +617,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_process_build_two_jobs(self):
+        """Test TravisData.process_build_jobs() with two jobs"""
         self.travis_data = TravisData('ruleant/getback_gps', 485)
         self.assertEqual(0, len(self.travis_data.build_jobs))
         # retrieve data from Travis API
@@ -627,6 +643,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_process_build_jobs_pull_request(self):
+        """Test TravisData.process_build_jobs() of a pull request"""
         self.travis_data = TravisData('buildtimetrend/python-lib', 504)
         self.assertEqual(0, len(self.travis_data.build_jobs))
 
@@ -644,6 +661,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_get_build_matrix_c(self):
+        """Test TravisData.set_build_matrix of a C project"""
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_C))
         self.assertDictEqual(
             {
@@ -658,6 +676,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.properties.get_items())
 
     def test_get_build_matrix_python(self):
+        """Test TravisData.set_build_matrix of a Python project"""
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_PYTHON))
         self.assertDictEqual(
             {
@@ -671,6 +690,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.properties.get_items())
 
     def test_get_build_matrix_java(self):
+        """Test TravisData.set_build_matrix of a Java project"""
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_JAVA))
         self.assertDictEqual(
             {
@@ -683,6 +703,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.properties.get_items())
 
     def test_get_build_matrix_android(self):
+        """Test TravisData.set_build_matrix of an Android project"""
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_ANDROID))
         self.assertDictEqual(
             {
@@ -695,7 +716,8 @@ class TestTravisData(unittest.TestCase):
             },
             self.travis_data.current_job.properties.get_items())
 
-    def test_nofile(self):
+    def test_no_logfile(self):
+        """Test TravisData.parse_job_log_file() with an invalid or empty file"""
         # number of stages should be zero when file doesn't exist
         self.assertFalse(self.travis_data.parse_job_log_file('nofile.csv'))
         self.assertEqual(0, len(self.travis_data.current_job.stages.stages))
@@ -704,6 +726,7 @@ class TestTravisData(unittest.TestCase):
         self.assertEqual(0, len(self.travis_data.current_job.stages.stages))
 
     def test_parse_valid_job_log(self):
+        """Test TravisData.parse_job_log_file()"""
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a logfile with 4 stages
         self.assertTrue(
@@ -741,6 +764,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_parse_incorrect_job_log(self):
+        """Test TravisData.parse_job_log_file() with incomplete timing tags"""
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a logfile with 2 incomplete stages and 2 valid stages
         self.assertTrue(
@@ -772,18 +796,21 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_parse_valid_job_log_travis_sample(self):
+        """Test TravisData.parse_job_log_file() with a local logfile"""
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a sample Travis CI logfile
         self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_LOG_FILE))
         self._check_travis_log()
 
     def test_parse_travis_log(self):
+        """Test TravisData.parse_job_log() : download and parse"""
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # retrieve and check Travis CI logfile
         self.travis_data.parse_job_log(32774630)
         self._check_travis_log()
 
     def _check_travis_log(self):
+        """Helper function to test parse_job_log result"""
         # checks result of parsing a sample Travis CI log file
         self.assertEqual(
             18,
@@ -885,6 +912,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_parse_travis_time_tag(self):
+        """Test TravisData.parse_travis_time_tag()"""
         # read sample lines with timetags
         with open(TRAVIS_TIMING_TAGS_FILE, 'rb') as f:
             """First stage"""
@@ -1112,6 +1140,7 @@ class TestTravisData(unittest.TestCase):
                     .finished_at["timestamp_seconds"])
 
     def test_parse_travis_time_tag_incorrect(self):
+        """Test TravisData.parse_travis_time_tag() with an incorrect tag"""
         # read sample lines with timetags
         with open(TRAVIS_INCORRECT_TIMING_TAGS_FILE, 'rb') as f:
             """First stage"""
@@ -1276,6 +1305,7 @@ class TestTravisData(unittest.TestCase):
                     .finished_at["timestamp_seconds"])
 
     def test_parse_travis_worker_tag(self):
+        """Test TravisData.parse_travis_worker_tag()"""
         # pass empty string
         self.travis_data.parse_travis_worker_tag("")
         self.assertEqual(None,
@@ -1298,7 +1328,9 @@ class TestTravisData(unittest.TestCase):
 
     def test_has_timing_tags(self):
         """
-        has_timing_tags() should be true if build was
+        Test TravisData.has_timing_tags()
+
+        This should be true if build was
         started at 2014-07-30 or after.
         """
         self.assertFalse(self.travis_data.has_timing_tags())
@@ -1311,7 +1343,7 @@ class TestTravisData(unittest.TestCase):
 
     def test_get_job_duration(self):
         """
-        Calculate job duration.
+        Test job duration calculation.
         """
         self.assertAlmostEqual(0.0, self.travis_data.get_job_duration(), 0)
 
