@@ -31,6 +31,9 @@ from buildtimetrend.travis import connector
 from buildtimetrend.buildjob import BuildJob
 from buildtimetrend.travis.connector import TravisConnector
 from buildtimetrend.travis.substage import TravisSubstage
+from buildtimetrend.travis.env_var import load_travis_env_vars
+from buildtimetrend.travis.env_var import load_build_matrix_env_vars
+from buildtimetrend.travis.env_var import load_travis_pr_env_vars
 import constants
 import unittest
 
