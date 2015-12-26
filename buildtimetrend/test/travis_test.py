@@ -315,7 +315,11 @@ JOB_DATA_ANDROID = '{"job":{"id":62985775,"repository_id":1390431,"repository_sl
 
 
 class TestTravis(unittest.TestCase):
+
+    """Unit tests for Travis CI related functions and classes"""
+
     def setUp(self):
+        """Initialise test environment before each test."""
         # reinit settings singleton
         Settings().__init__()
 
@@ -418,7 +422,11 @@ class TestTravis(unittest.TestCase):
 
 
 class TestTravisData(unittest.TestCase):
+
+    """Unit tests for TravisData class"""
+
     def setUp(self):
+        """Initialise test environment before each test."""
         self.maxDiff = None
         self.travis_data = TravisData(TEST_REPO, TEST_BUILD)
 
@@ -1328,7 +1336,11 @@ class TestTravisData(unittest.TestCase):
 
 
 class TestTravisSubstage(unittest.TestCase):
+
+    """Unit tests for TravisSubstage class"""
+
     def setUp(self):
+        """Initialise test environment before each test."""
         self.maxDiff = None
         self.substage = TravisSubstage()
 
