@@ -74,7 +74,7 @@ class TravisData(object):
         self.repo = repo
         self.build_id = str(build_id)
         # set TravisConnector if it is defined
-        if connector is not None and type(connector) is TravisConnector:
+        if isinstance(connector, TravisConnector):
             self.connector = connector
         # use Travis Org connector by default
         else:
