@@ -31,7 +31,7 @@ class TestTrend(unittest.TestCase):
     """Unit tests for Trend class"""
 
     def setUp(self):
-        """Set up test fixture."""
+        """Initialise test environment before each test."""
         self.trend = Trend()
 
     def test_novalue(self):

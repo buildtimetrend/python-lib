@@ -32,12 +32,17 @@ import unittest
 
 
 class TestBuildJob(unittest.TestCase):
+
+    """Unit tests for BuildJob class"""
+
     def setUp(self):
+        """Initialise test environment before each test."""
         self.build = BuildJob()
         # show full diff in case of assert mismatch
         self.maxDiff = None
 
     def test_novalue(self):
+        """Test freshly initialised Buildjob object."""
         # number of stages should be zero
         self.assertEqual(0, len(self.build.stages.stages))
         self.assertEqual(0, self.build.properties.get_size())
@@ -63,6 +68,7 @@ class TestBuildJob(unittest.TestCase):
             b'</build>\n', self.build.to_xml_string())
 
     def test_nofile(self):
+        """Test creating BuildJob instance with invalid filename."""
         # number of stages should be zero when file doesn't exist
         self.build = BuildJob('nofile.csv')
         self.assertEqual(0, len(self.build.stages.stages))
@@ -71,12 +77,14 @@ class TestBuildJob(unittest.TestCase):
         self.assertEqual(0, len(self.build.stages.stages))
 
     def test_end_timestamp(self):
+        """Test setting end timestamp"""
         self.assertEqual(0, self.build.stages.end_timestamp)
 
         self.build = BuildJob('', 123)
         self.assertEqual(123, self.build.stages.end_timestamp)
 
     def test_set_started_at(self):
+        """Test setting started_at timestamp"""
         self.assertEqual(None, self.build.properties.get_item("started_at"))
 
         self.build.set_started_at(None)
@@ -94,6 +102,7 @@ class TestBuildJob(unittest.TestCase):
         )
 
     def test_set_finished_at(self):
+        """Test setting finished_at timestamp"""
         self.assertEqual(None, self.build.properties.get_item("finished_at"))
 
         self.build.set_finished_at(None)
@@ -111,6 +120,7 @@ class TestBuildJob(unittest.TestCase):
         )
 
     def test_add_stages(self):
+        """Test adding stages"""
         self.build.add_stages(None)
         self.assertEqual(0, len(self.build.stages.stages))
 
@@ -133,6 +143,7 @@ class TestBuildJob(unittest.TestCase):
         self.assertEqual(0, len(self.build.stages.stages))
 
     def test_add_stage(self):
+        """Test adding a stage"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, self.build.add_stage)
 
@@ -215,6 +226,7 @@ class TestBuildJob(unittest.TestCase):
             self.build.stages.stages)
 
     def test_add_property(self):
+        """Test adding a property"""
         self.build.add_property('property1', 2)
         self.assertEqual(1, self.build.properties.get_size())
         self.assertDictEqual(
@@ -237,6 +249,7 @@ class TestBuildJob(unittest.TestCase):
         )
 
     def test_get_property(self):
+        """Test getting a property"""
         self.build.add_property('property1', 2)
         self.assertEqual(2, self.build.get_property('property1'))
 
@@ -250,9 +263,11 @@ class TestBuildJob(unittest.TestCase):
         self.assertEqual(4, self.build.get_property('property2'))
 
     def test_get_property_does_not_exist(self):
+        """Test getting a nonexistant property"""
         self.assertEqual(None, self.build.get_property('no_property'))
 
     def test_get_properties(self):
+        """Test getting properties"""
         self.build.add_property('property1', 2)
         self.assertDictEqual(
             {'duration': 0, 'property1': 2},
@@ -269,6 +284,7 @@ class TestBuildJob(unittest.TestCase):
             self.build.get_properties())
 
     def test_load_properties(self):
+        """Test loading properties"""
         self.build.load_properties_from_settings()
 
         self.assertDictEqual(
@@ -311,6 +327,7 @@ class TestBuildJob(unittest.TestCase):
             self.build.get_properties())
 
     def test_set_duration(self):
+        """Test calculating and setting a duration"""
         self.build.add_property("duration", 20)
         self.assertDictEqual({'duration': 20}, self.build.get_properties())
 
@@ -375,6 +392,7 @@ class TestBuildJob(unittest.TestCase):
             self.build.to_dict())
 
     def test_to_dict(self):
+        """Test exporting as a dictonary."""
         # read and parse sample file
         self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
@@ -438,6 +456,7 @@ class TestBuildJob(unittest.TestCase):
             self.build.to_dict())
 
     def test_stages_to_list(self):
+        """Test exporting stages as a list."""
         # read and parse sample file
         self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
@@ -526,6 +545,7 @@ class TestBuildJob(unittest.TestCase):
             self.build.stages_to_list())
 
     def test_to_xml(self):
+        """Test exporting in XML format."""
         # read and parse sample file
         self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
@@ -550,6 +570,7 @@ class TestBuildJob(unittest.TestCase):
         self.assertTrue(xml_compare(expected_xml, self.build.to_xml()))
 
     def test_to_xml_string(self):
+        """Test exporting in XML string format."""
         # read and parse sample file
         self.build = BuildJob(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 

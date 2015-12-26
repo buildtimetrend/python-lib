@@ -29,11 +29,11 @@ class TestCollection(unittest.TestCase):
     """Unit tests for Collection class"""
 
     def setUp(self):
-        """Set up test fixture."""
+        """Initialise test environment before each test."""
         self.collection = Collection()
 
     def test_novalue(self):
-        """Test freshly initialised object."""
+        """Test freshly initialised Collection object."""
         # number of items should be zero
         self.assertEqual(0, len(self.collection.items))
 
