@@ -24,6 +24,7 @@ from buildtimetrend import logger
 from buildtimetrend.stages import Stage
 from buildtimetrend.tools import check_dict
 
+
 class TravisSubstage(object):
 
     """

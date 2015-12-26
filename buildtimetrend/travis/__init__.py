@@ -148,6 +148,3 @@ def check_authorization(repo, auth_header):
         logger.debug("repo, auth_header and travis_auth_token"
                      " should be strings.")
         return False
-
-
-

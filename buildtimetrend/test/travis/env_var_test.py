@@ -28,6 +28,7 @@ from buildtimetrend.travis.env_var import load_build_matrix_env_vars
 from buildtimetrend.travis.env_var import load_travis_pr_env_vars
 import unittest
 
+
 class TestTravisEnvVar(unittest.TestCase):
 
     """Unit tests for Travis CI env var loading functions"""
