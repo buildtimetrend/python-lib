@@ -25,7 +25,7 @@ from builtins import object
 import os
 from buildtimetrend.settings import Settings
 from buildtimetrend.collection import Collection
-from buildtimetrend.travis import convert_build_result
+from buildtimetrend.travis.tools import convert_build_result
 
 
 def load_travis_env_vars():

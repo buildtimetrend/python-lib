@@ -31,9 +31,9 @@ from buildtimetrend.travis import connector
 from buildtimetrend.buildjob import BuildJob
 from buildtimetrend.travis.parser import TravisData
 from buildtimetrend.travis.connector import TravisConnector
-from buildtimetrend.travis import convert_build_result
-from buildtimetrend.travis import check_authorization
-from buildtimetrend.travis import process_notification_payload
+from buildtimetrend.travis.tools import convert_build_result
+from buildtimetrend.travis.tools import check_authorization
+from buildtimetrend.travis.tools import process_notification_payload
 from buildtimetrend.test import constants
 import unittest
 
