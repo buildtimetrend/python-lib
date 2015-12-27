@@ -40,6 +40,8 @@ class TestBuildJob(unittest.TestCase):
         self.build = BuildJob()
         # show full diff in case of assert mismatch
         self.maxDiff = None
+        # reinitialise settings
+        Settings().__init__()
 
     def test_novalue(self):
         """Test freshly initialised Buildjob object."""
