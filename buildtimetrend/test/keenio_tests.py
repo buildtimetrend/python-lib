@@ -54,6 +54,7 @@ class TestKeen(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        """Restore to state before test environment."""
         # restore saved Keen.io environment variables
         if cls.copy_keen_project_id is not None:
             os.environ["KEEN_PROJECT_ID"] = cls.copy_keen_project_id
@@ -84,9 +85,11 @@ class TestKeen(unittest.TestCase):
         keen.master_key = None
 
     def raise_conn_err(*args, **kwargs):
+        """Mock function raising a Connection Error"""
         raise requests.ConnectionError
 
     def test_novalues(self):
+        """Test initial state the function and classs instances."""
         self.assertEqual(None, keen.project_id)
         self.assertEqual(None, keen.write_key)
         self.assertEqual(None, keen.read_key)
@@ -100,6 +103,7 @@ class TestKeen(unittest.TestCase):
         self.assertFalse(keen_is_readable())
 
     def test_add_project_info_dict(self):
+        """Test keenio.add_project_info_dict()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, add_project_info_dict)
 
@@ -150,6 +154,7 @@ class TestKeen(unittest.TestCase):
         )
 
     def test_add_project_info_list(self):
+        """Test keenio.add_project_info_list()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, add_project_info_list)
 
