@@ -34,7 +34,7 @@ from buildtimetrend.travis.connector import TravisConnector
 from buildtimetrend.travis import convert_build_result
 from buildtimetrend.travis import check_authorization
 from buildtimetrend.travis import process_notification_payload
-import constants
+from buildtimetrend.test import constants
 import unittest
 
 TRAVIS_TIMING_TAGS_FILE = "buildtimetrend/test/test_sample_travis_time_tags"

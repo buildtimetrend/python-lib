@@ -27,7 +27,7 @@ import buildtimetrend.keenio
 import os
 import unittest
 import mock
-import constants
+from buildtimetrend.test import constants
 
 
 class TestDashboard(unittest.TestCase):

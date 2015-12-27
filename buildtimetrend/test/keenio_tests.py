@@ -27,7 +27,7 @@ import os
 import keen
 import unittest
 import mock
-import constants
+from buildtimetrend.test import constants
 
 
 class TestKeen(unittest.TestCase):

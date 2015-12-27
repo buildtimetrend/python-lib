@@ -30,7 +30,7 @@ import buildtimetrend
 import os
 import keen
 import unittest
-import constants
+from buildtimetrend.test import constants
 import logging
 
 
