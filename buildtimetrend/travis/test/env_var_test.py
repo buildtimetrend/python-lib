@@ -23,9 +23,7 @@
 import os
 import buildtimetrend
 from buildtimetrend.settings import Settings
-from buildtimetrend.travis.env_var import load_travis_env_vars
-from buildtimetrend.travis.env_var import load_build_matrix_env_vars
-from buildtimetrend.travis.env_var import load_travis_pr_env_vars
+from buildtimetrend.travis import env_var
 import unittest
 
 
@@ -78,7 +76,7 @@ class TestTravisEnvVar(unittest.TestCase):
         os.environ["TRAVIS_TEST_RESULT"] = "0"
         os.environ["TRAVIS_PULL_REQUEST"] = "false"
 
-        load_travis_env_vars()
+        env_var.load_all(settings)
 
         self.assertEqual("travis", settings.get_setting("ci_platform"))
         self.assertEqual(expected_build, settings.get_setting("build"))
@@ -99,7 +97,7 @@ class TestTravisEnvVar(unittest.TestCase):
         os.environ["TRAVIS_TEST_RESULT"] = "1"
         # build is a pull request
         expected_pull_request = os.environ["TRAVIS_PULL_REQUEST"] = "123"
-        load_travis_env_vars()
+        env_var.load_all()
         self.assertEqual("failed", settings.get_setting("result"))
         self.assertEqual(
             "pull_request", settings.get_setting("build_trigger")
@@ -115,7 +113,7 @@ class TestTravisEnvVar(unittest.TestCase):
 
         # build is not a pull request
         os.environ["TRAVIS_PULL_REQUEST"] = "false"
-        load_travis_env_vars()
+        env_var.load_all(settings)
         self.assertEqual("push", settings.get_setting("build_trigger"))
         self.assertDictEqual(
             {
@@ -252,7 +250,7 @@ class TestTravisEnvVar(unittest.TestCase):
                 expected_lang_version = \
                     os.environ[language['env_var']] = language['test_value']
 
-            load_build_matrix_env_vars(settings)
+            env_var.load_build_matrix_env_vars(settings)
 
             self.assertDictEqual(
                 {
@@ -354,7 +352,7 @@ class TestTravisEnvVar(unittest.TestCase):
                 expected_param_value = os.environ[parameter['env_var']] = \
                     parameter['test_value']
 
-            load_build_matrix_env_vars(settings)
+            env_var.load_build_matrix_env_vars(settings)
 
             self.assertDictEqual(
                 {

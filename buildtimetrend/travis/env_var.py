@@ -28,7 +28,25 @@ from buildtimetrend.collection import Collection
 from buildtimetrend.travis.tools import convert_build_result
 
 
-def load_travis_env_vars():
+def load_all(settings=None):
+    """
+    Load all Travis CI environment variables.
+
+    Load Travis CI environment variables and assign their values to
+    the corresponding setting value :
+    - general
+    - build matrix
+    - pull request
+    """
+    if not isinstance(settings, Settings):
+        settings = Settings()
+
+    load_general_env_vars(settings)
+    load_build_matrix_env_vars(settings)
+    load_travis_pr_env_vars(settings)
+
+
+def load_general_env_vars(settings):
     """
     Load Travis CI environment variables.
 
@@ -36,8 +54,6 @@ def load_travis_env_vars():
     the corresponding setting value.
     """
     if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
-        settings = Settings()
-
         # set ci_platform setting to "travis"
         settings.add_setting("ci_platform", "travis")
 
@@ -54,9 +70,6 @@ def load_travis_env_vars():
                 "result",
                 convert_build_result(os.environ["TRAVIS_TEST_RESULT"])
             )
-
-        load_build_matrix_env_vars(settings)
-        load_travis_pr_env_vars(settings)
 
 
 def load_build_matrix_env_vars(settings):

@@ -15,7 +15,8 @@ v0.4 (not yet released)
   * substage :
     * travis.TravisSubstage -> travis.substage.TravisSubstage
   * env_var :
-    * travis.load_travis_env_vars -> travis.env_var.load_travis_env_vars
+    * travis.load_travis_env_vars -> travis.env_var.load_all (calls all other functions)
+                                  -> travis.env_var.load_general_env_vars
     * travis.load_build_matrix_env_vars -> travis.env_var.load_build_matrix_env_vars
     * travis.load_travis_pr_env_vars -> travis.env_var.load_travis_pr_env_vars
   * tools :
