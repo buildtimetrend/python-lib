@@ -21,8 +21,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 from builtins import str
-from builtins import object
-import os
 import json
 from hashlib import sha256
 from buildtimetrend import logger
@@ -30,9 +28,6 @@ from buildtimetrend.tools import check_num_string
 from buildtimetrend.tools import is_string
 from buildtimetrend.tools import get_repo_slug
 from buildtimetrend.settings import Settings
-from buildtimetrend.collection import Collection
-from buildtimetrend.travis.parser import TravisData
-import buildtimetrend
 
 
 def convert_build_result(result):
