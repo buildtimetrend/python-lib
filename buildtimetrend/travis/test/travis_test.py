@@ -21,12 +21,20 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import json
 import buildtimetrend
 from builtins import str
-from buildtimetrend.travis import *
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import get_repo_slug
-import constants
+from buildtimetrend.tools import check_dict
+from buildtimetrend.travis import connector
+from buildtimetrend.buildjob import BuildJob
+from buildtimetrend.travis.parser import TravisData
+from buildtimetrend.travis.connector import TravisConnector
+from buildtimetrend.travis.tools import convert_build_result
+from buildtimetrend.travis.tools import check_authorization
+from buildtimetrend.travis.tools import process_notification_payload
+from buildtimetrend.test import constants
 import unittest
 
 TRAVIS_TIMING_TAGS_FILE = "buildtimetrend/test/test_sample_travis_time_tags"
@@ -40,11 +48,6 @@ TRAVIS_INCOMPLETE_LOG_WORKER = \
 
 TEST_REPO = 'buildtimetrend/python-lib'
 TEST_BUILD = '158'
-VALID_HASH1 = '1234abcd'
-VALID_HASH2 = '1234abce'
-INVALID_HASH = 'abcd1234'
-DURATION_NANO = 11000000000
-DURATION_SEC = 11.0
 DICT_JOB_158_1 = {
     'branch': 'master',
     'build': '158',
@@ -310,354 +313,21 @@ JOB_DATA_ANDROID = '{"job":{"id":62985775,"repository_id":1390431,"repository_sl
 
 
 class TestTravis(unittest.TestCase):
+
+    """Unit tests for Travis CI related functions and classes"""
+
     def setUp(self):
+        """Initialise test environment before each test."""
         # reinit settings singleton
         Settings().__init__()
 
     def test_novalue(self):
+        """Test freshly initialised Buildjob object."""
         self.assertRaises(TypeError, convert_build_result)
         self.assertRaises(TypeError, convert_build_result, None)
 
-    def test_load_travis_env_vars(self):
-        settings = Settings()
-
-        self.assertEqual(None, settings.get_setting("ci_platform"))
-        self.assertEqual(None, settings.get_setting("build"))
-        self.assertEqual(None, settings.get_setting("job"))
-        self.assertEqual(None, settings.get_setting("branch"))
-        self.assertEqual(None, settings.get_setting("result"))
-        self.assertEqual(None, settings.get_setting("build_trigger"))
-        self.assertEqual(None, settings.get_setting("pull_request"))
-        self.assertEqual(buildtimetrend.NAME, settings.get_project_name())
-
-        #setup Travis env vars
-        if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
-            reset_travis_vars = False
-            expected_build = os.environ["TRAVIS_BUILD_NUMBER"]
-            expected_job = os.environ["TRAVIS_JOB_NUMBER"]
-            expected_branch = os.environ["TRAVIS_BRANCH"]
-            expected_project_name = os.environ["TRAVIS_REPO_SLUG"]
-            copy_pull_request = os.environ["TRAVIS_PULL_REQUEST"]
-        else:
-            reset_travis_vars = True
-            os.environ["TRAVIS"] = "true"
-            expected_build = os.environ["TRAVIS_BUILD_NUMBER"] = "123"
-            expected_job = os.environ["TRAVIS_JOB_NUMBER"] = "123.1"
-            expected_branch = os.environ["TRAVIS_BRANCH"] = "branch1"
-            expected_project_name = \
-                os.environ["TRAVIS_REPO_SLUG"] = "test/project"
-
-        # setup Travis test result
-        if "TRAVIS_TEST_RESULT" in os.environ:
-            reset_travis_result = False
-            copy_result = os.environ["TRAVIS_TEST_RESULT"]
-        else:
-            reset_travis_result = True
-
-        os.environ["TRAVIS_TEST_RESULT"] = "0"
-        os.environ["TRAVIS_PULL_REQUEST"] = "false"
-
-        load_travis_env_vars()
-
-        self.assertEqual("travis", settings.get_setting("ci_platform"))
-        self.assertEqual(expected_build, settings.get_setting("build"))
-        self.assertEqual(expected_job, settings.get_setting("job"))
-        self.assertEqual(expected_branch, settings.get_setting("branch"))
-        self.assertEqual(expected_project_name, settings.get_project_name())
-        self.assertEqual("passed", settings.get_setting("result"))
-        self.assertEqual("push", settings.get_setting("build_trigger"))
-        self.assertDictEqual(
-            {
-                'is_pull_request': False,
-                'title': None,
-                'number': None
-            },
-            settings.get_setting("pull_request")
-        )
-
-        os.environ["TRAVIS_TEST_RESULT"] = "1"
-        # build is a pull request
-        expected_pull_request = os.environ["TRAVIS_PULL_REQUEST"] = "123"
-        load_travis_env_vars()
-        self.assertEqual("failed", settings.get_setting("result"))
-        self.assertEqual(
-            "pull_request", settings.get_setting("build_trigger")
-        )
-        self.assertDictEqual(
-            {
-                'is_pull_request': True,
-                'title': "unknown",
-                'number': expected_pull_request
-            },
-            settings.get_setting("pull_request")
-        )
-
-        # build is not a pull request
-        os.environ["TRAVIS_PULL_REQUEST"] = "false"
-        load_travis_env_vars()
-        self.assertEqual("push", settings.get_setting("build_trigger"))
-        self.assertDictEqual(
-            {
-                'is_pull_request': False,
-                'title': None,
-                'number': None
-            },
-            settings.get_setting("pull_request")
-        )
-
-        # reset test Travis vars
-        if reset_travis_vars:
-            del os.environ["TRAVIS"]
-            del os.environ["TRAVIS_BUILD_NUMBER"]
-            del os.environ["TRAVIS_JOB_NUMBER"]
-            del os.environ["TRAVIS_BRANCH"]
-            del os.environ["TRAVIS_REPO_SLUG"]
-            del os.environ["TRAVIS_PULL_REQUEST"]
-        else:
-            os.environ["TRAVIS_PULL_REQUEST"] = copy_pull_request
-
-        # reset Travis test result
-        if reset_travis_result:
-            del os.environ["TRAVIS_TEST_RESULT"]
-        else:
-            os.environ["TRAVIS_TEST_RESULT"] = copy_result
-
-    def test_load_build_matrix_env_vars(self):
-        settings = Settings()
-
-        self.assertEqual(None, settings.get_setting("build_matrix"))
-
-        #setup Travis env vars
-        if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
-            reset_travis_vars = False
-            expected_os = os.environ["TRAVIS_OS_NAME"]
-            copy_python = os.environ["TRAVIS_PYTHON_VERSION"]
-            del os.environ["TRAVIS_PYTHON_VERSION"]
-        else:
-            reset_travis_vars = True
-            os.environ["TRAVIS"] = "true"
-            expected_os = os.environ["TRAVIS_OS_NAME"] = "test_os"
-
-        # temporarily remove PYTHON VERSION
-        if "TRAVIS_PYTHON_VERSION" in os.environ:
-            reset_python_version = True
-            copy_python = os.environ["TRAVIS_PYTHON_VERSION"]
-            del os.environ["TRAVIS_PYTHON_VERSION"]
-        else:
-            reset_python_version = False
-
-        # test language and language versions
-        test_languages = [
-            {
-                'env_var': 'TRAVIS_DART_VERSION',
-                'language': 'dart',
-                'test_value': "1.1"
-            },
-            {
-                'env_var': 'TRAVIS_GO_VERSION',
-                'language': 'go',
-                'test_value': "1.2"
-            },
-            {
-                'env_var': 'TRAVIS_HAXE_VERSION',
-                'language': 'haxe',
-                'test_value': "1.3"
-            },
-            {
-                'env_var': 'TRAVIS_JDK_VERSION',
-                'language': 'java',
-                'test_value': "1.4"
-            },
-            {
-                'env_var': 'TRAVIS_JULIA_VERSION',
-                'language': 'julia',
-                'test_value': "1.5"
-            },
-            {
-                'env_var': 'TRAVIS_NODE_VERSION',
-                'language': 'javascript',
-                'test_value': "1.6"
-            },
-            {
-                'env_var': 'TRAVIS_OTP_RELEASE',
-                'language': 'erlang',
-                'test_value': "1.7"
-            },
-            {
-                'env_var': 'TRAVIS_PERL_VERSION',
-                'language': 'perl',
-                'test_value': "1.8"
-            },
-            {
-                'env_var': 'TRAVIS_PHP_VERSION',
-                'language': 'php',
-                'test_value': "1.9"
-            },
-            {
-                'env_var': 'TRAVIS_PYTHON_VERSION',
-                'language': 'python',
-                'test_value': "1.10"
-            },
-            {
-                'env_var': 'TRAVIS_R_VERSION',
-                'language': 'r',
-                'test_value': "1.11"
-            },
-            {
-                'env_var': 'TRAVIS_RUBY_VERSION',
-                'language': 'ruby',
-                'test_value': "1.12"
-            },
-            {
-                'env_var': 'TRAVIS_RUST_VERSION',
-                'language': 'rust',
-                'test_value': "1.13"
-            },
-            {
-                'env_var': 'TRAVIS_SCALA_VERSION',
-                'language': 'scala',
-                'test_value': "1.14"
-            }
-        ]
-
-        # test languages
-        for language in test_languages:
-            if language['env_var'] in os.environ:
-                reset_travis_lang_version = False
-                expected_lang_version = os.environ[language['env_var']]
-            else:
-                reset_travis_lang_version = True
-                expected_lang_version = \
-                    os.environ[language['env_var']] = language['test_value']
-
-            load_build_matrix_env_vars(settings)
-
-            self.assertDictEqual(
-                {
-                    'os': expected_os,
-                    'language': language['language'],
-                    'language_version': expected_lang_version,
-                    'summary': "%s %s %s" % (
-                        language['language'],
-                        expected_lang_version,
-                        expected_os
-                    )
-                },
-                settings.get_setting("build_matrix")
-            )
-
-            # reset Travis test result
-            if reset_travis_lang_version:
-                del os.environ[language['env_var']]
-
-        # reset test Travis vars
-        if reset_travis_vars:
-            del os.environ["TRAVIS"]
-            del os.environ["TRAVIS_OS_NAME"]
-
-        # reset removed python version
-        if reset_python_version:
-            os.environ["TRAVIS_PYTHON_VERSION"] = copy_python
-
-    def test_load_build_matrix_env_vars_parameters(self):
-        # setup Travis env vars
-        if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
-            reset_travis_vars = False
-            copy_os = os.environ["TRAVIS_OS_NAME"]
-        else:
-            reset_travis_vars = True
-            os.environ["TRAVIS"] = "true"
-
-        # temporarily remove OS VERSION
-        if "TRAVIS_OS_NAME" in os.environ:
-            reset_os = True
-            copy_os = os.environ["TRAVIS_OS_NAME"]
-            del os.environ["TRAVIS_OS_NAME"]
-        else:
-            reset_os = False
-
-        # temporarily remove PYTHON VERSION
-        if "TRAVIS_PYTHON_VERSION" in os.environ:
-            reset_python_version = True
-            copy_python = os.environ["TRAVIS_PYTHON_VERSION"]
-            del os.environ["TRAVIS_PYTHON_VERSION"]
-        else:
-            reset_python_version = False
-
-        # test optional build matrix parameters
-        test_parameters = [
-            {
-                'env_var': 'TRAVIS_XCODE_SDK',
-                'parameter': 'xcode_sdk',
-                'test_value': "test_x_sdk"
-            },
-            {
-                'env_var': 'TRAVIS_XCODE_SCHEME',
-                'parameter': 'xcode_scheme',
-                'test_value': "test_x_scheme"
-            },
-            {
-                'env_var': 'TRAVIS_XCODE_PROJECT',
-                'parameter': 'xcode_project',
-                'test_value': "test_x_project"
-            },
-            {
-                'env_var': 'TRAVIS_XCODE_WORKSPACE',
-                'parameter': 'xcode_workspace',
-                'test_value': "test_x_workspace"
-            },
-            {
-                'env_var': 'CC',
-                'parameter': 'compiler',
-                'test_value': "test_gcc"
-            },
-            {
-                'env_var': 'ENV',
-                'parameter': 'parameters',
-                'test_value': "test_env"
-            }
-        ]
-
-        # test parameters
-        for parameter in test_parameters:
-            Settings().__init__()
-            settings = Settings()
-
-            if parameter['env_var'] in os.environ:
-                reset_travis_parameter = False
-                expected_param_value = os.environ[parameter['env_var']]
-            else:
-                reset_travis_parameter = True
-                expected_param_value = os.environ[parameter['env_var']] = \
-                    parameter['test_value']
-
-            load_build_matrix_env_vars(settings)
-
-            self.assertDictEqual(
-                {
-                    parameter["parameter"]: expected_param_value,
-                    'summary': expected_param_value
-                },
-                settings.get_setting("build_matrix")
-            )
-
-            # reset Travis parameters
-            if reset_travis_parameter:
-                del os.environ[parameter['env_var']]
-
-        # reset test Travis vars
-        if reset_travis_vars:
-            del os.environ["TRAVIS"]
-
-        # reset removed os name
-        if reset_os:
-            os.environ["TRAVIS_OS_NAME"] = copy_os
-
-        # reset removed python version
-        if reset_python_version:
-            os.environ["TRAVIS_PYTHON_VERSION"] = copy_python
-
     def test_convert_build_result(self):
+        """Test convert_build_result()"""
         self.assertEqual("passed", convert_build_result(0))
         self.assertEqual("failed", convert_build_result(1))
         self.assertEqual("errored", convert_build_result(-1))
@@ -669,6 +339,7 @@ class TestTravis(unittest.TestCase):
         self.assertEqual("errored", convert_build_result("2"))
 
     def test_process_notification_payload(self):
+        """Test process_notification_payload()"""
         settings = Settings()
 
         self.assertEqual(None, settings.get_setting("build"))
@@ -733,6 +404,7 @@ class TestTravis(unittest.TestCase):
         self.assertEqual(expected_project_name, settings.get_project_name())
 
     def test_check_authorization(self):
+        """Test check_authorization()"""
         self.assertTrue(check_authorization(None, None))
 
         # set account token
@@ -747,16 +419,21 @@ class TestTravis(unittest.TestCase):
         # test correct Authorization header
         self.assertTrue(check_authorization(
             TEST_REPO,
-            "61db633141cd24b4c9cbccb2a2c2c6a99988c3e346b951e4666e50474518cb82")
-        )
+            "61db633141cd24b4c9cbccb2a2c2c6a99988c3e346b951e4666e50474518cb82"
+        ))
 
 
 class TestTravisData(unittest.TestCase):
+
+    """Unit tests for TravisData class"""
+
     def setUp(self):
+        """Initialise test environment before each test."""
         self.maxDiff = None
         self.travis_data = TravisData(TEST_REPO, TEST_BUILD)
 
     def test_novalue(self):
+        """Test freshly initialised Buildjob object."""
          # data should be empty
         self.assertEqual(0, len(self.travis_data.builds_data))
         self.assertEqual(None, self.travis_data.get_started_at())
@@ -775,13 +452,14 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_connector_parameter(self):
+        """Test connector parameter"""
         self.assertEqual(
-            TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
+            connector.TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
         )
 
         self.travis_data = TravisData(TEST_REPO, TEST_BUILD, 1234)
         self.assertEqual(
-            TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
+            connector.TRAVIS_ORG_API_URL, self.travis_data.connector.api_url
         )
 
         custom_connector = TravisConnector()
@@ -792,6 +470,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_get_build_data(self):
+        """Test TravisData.get_build_data() with invalid url"""
         self.assertTrue(self.travis_data.get_build_data())
 
         # trigger URLError, with invalid URL
@@ -799,6 +478,7 @@ class TestTravisData(unittest.TestCase):
         self.assertFalse(self.travis_data.get_build_data())
 
     def test_gather_data(self):
+        """Test TravisData.get_build_data()"""
         # retrieve data from Travis API
         self.assertTrue(self.travis_data.get_build_data())
         self.assertTrue(
@@ -837,6 +517,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.builds_data["builds"][0]["finished_at"])
 
     def test_get_started_at(self):
+        """Test TravisData.get_started_at()"""
         self.travis_data.current_build_data = {
             "started_at": '2014-07-08T11:18:13Z',
         }
@@ -847,6 +528,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.get_started_at())
 
     def test_get_finished_at(self):
+        """Test TravisData.get_finished_at()"""
         self.travis_data.current_build_data = {
             "finished_at": '2014-07-08T11:19:55Z'
         }
@@ -857,6 +539,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.get_finished_at())
 
     def test_get_substage_name(self):
+        """Test TravisData.get_substage_name()"""
         # test missing parameter
         self.assertRaises(TypeError, self.travis_data.get_substage_name)
 
@@ -895,12 +578,14 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_process_no_build_job(self):
+        """Test TravisData.process_build_job() with invalid parameters"""
         self.assertRaises(TypeError, self.travis_data.process_build_job)
 
         self.assertEqual(None, self.travis_data.process_build_job(None))
         self.assertEqual(0, len(self.travis_data.build_jobs))
 
     def test_process_build_job(self):
+        """Test TravisData.process_build_job()"""
         build_job = self.travis_data.process_build_job("29404875")
         self.assertDictEqual(DICT_JOB_158_1, build_job.properties.get_items())
         self.assertEqual(1, len(self.travis_data.build_jobs))
@@ -910,12 +595,14 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_process_no_build_jobs(self):
+        """Test TravisData.process_build_jobs() with no build jobs"""
         # retrieve empty Travis API result
         self.travis_data.builds_data = {"builds": [], "commits": []}
         self.travis_data.process_build_jobs()
         self.assertEqual(0, len(self.travis_data.build_jobs))
 
     def test_process_build_jobs(self):
+        """Test TravisData.process_build_jobs() with no build jobs"""
         # retrieve data from Travis API
         self.travis_data.get_build_data()
         for build_job in self.travis_data.process_build_jobs():
@@ -930,6 +617,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_process_build_two_jobs(self):
+        """Test TravisData.process_build_jobs() with two jobs"""
         self.travis_data = TravisData('ruleant/getback_gps', 485)
         self.assertEqual(0, len(self.travis_data.build_jobs))
         # retrieve data from Travis API
@@ -955,6 +643,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_process_build_jobs_pull_request(self):
+        """Test TravisData.process_build_jobs() of a pull request"""
         self.travis_data = TravisData('buildtimetrend/python-lib', 504)
         self.assertEqual(0, len(self.travis_data.build_jobs))
 
@@ -972,6 +661,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_get_build_matrix_c(self):
+        """Test TravisData.set_build_matrix of a C project"""
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_C))
         self.assertDictEqual(
             {
@@ -986,6 +676,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.properties.get_items())
 
     def test_get_build_matrix_python(self):
+        """Test TravisData.set_build_matrix of a Python project"""
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_PYTHON))
         self.assertDictEqual(
             {
@@ -999,6 +690,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.properties.get_items())
 
     def test_get_build_matrix_java(self):
+        """Test TravisData.set_build_matrix of a Java project"""
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_JAVA))
         self.assertDictEqual(
             {
@@ -1011,6 +703,7 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.properties.get_items())
 
     def test_get_build_matrix_android(self):
+        """Test TravisData.set_build_matrix of an Android project"""
         self.travis_data.set_build_matrix(json.loads(JOB_DATA_ANDROID))
         self.assertDictEqual(
             {
@@ -1023,7 +716,8 @@ class TestTravisData(unittest.TestCase):
             },
             self.travis_data.current_job.properties.get_items())
 
-    def test_nofile(self):
+    def test_no_logfile(self):
+        """Test TravisData.parse_job_log_file() with an invalid or empty file"""
         # number of stages should be zero when file doesn't exist
         self.assertFalse(self.travis_data.parse_job_log_file('nofile.csv'))
         self.assertEqual(0, len(self.travis_data.current_job.stages.stages))
@@ -1032,6 +726,7 @@ class TestTravisData(unittest.TestCase):
         self.assertEqual(0, len(self.travis_data.current_job.stages.stages))
 
     def test_parse_valid_job_log(self):
+        """Test TravisData.parse_job_log_file()"""
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a logfile with 4 stages
         self.assertTrue(
@@ -1069,6 +764,7 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_parse_incorrect_job_log(self):
+        """Test TravisData.parse_job_log_file() with incomplete timing tags"""
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a logfile with 2 incomplete stages and 2 valid stages
         self.assertTrue(
@@ -1100,18 +796,21 @@ class TestTravisData(unittest.TestCase):
         )
 
     def test_parse_valid_job_log_travis_sample(self):
+        """Test TravisData.parse_job_log_file() with a local logfile"""
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # add a sample Travis CI logfile
         self.assertTrue(self.travis_data.parse_job_log_file(TRAVIS_LOG_FILE))
         self._check_travis_log()
 
     def test_parse_travis_log(self):
+        """Test TravisData.parse_job_log() : download and parse"""
         self.travis_data.current_job.set_started_at("2014-08-17T13:40:14Z")
         # retrieve and check Travis CI logfile
         self.travis_data.parse_job_log(32774630)
         self._check_travis_log()
 
     def _check_travis_log(self):
+        """Helper function to test parse_job_log result"""
         # checks result of parsing a sample Travis CI log file
         self.assertEqual(
             18,
@@ -1204,14 +903,16 @@ class TestTravisData(unittest.TestCase):
         )
 
         # check worker tag
-        self.assertDictEqual({
-            'hostname': 'worker-linux-12-1.bb.travis-ci.org',
-            'os': 'travis-linux-11'
+        self.assertDictEqual(
+            {
+                'hostname': 'worker-linux-12-1.bb.travis-ci.org',
+                'os': 'travis-linux-11'
             },
             self.travis_data.current_job.get_property("worker")
         )
 
     def test_parse_travis_time_tag(self):
+        """Test TravisData.parse_travis_time_tag()"""
         # read sample lines with timetags
         with open(TRAVIS_TIMING_TAGS_FILE, 'rb') as f:
             """First stage"""
@@ -1439,6 +1140,7 @@ class TestTravisData(unittest.TestCase):
                     .finished_at["timestamp_seconds"])
 
     def test_parse_travis_time_tag_incorrect(self):
+        """Test TravisData.parse_travis_time_tag() with an incorrect tag"""
         # read sample lines with timetags
         with open(TRAVIS_INCORRECT_TIMING_TAGS_FILE, 'rb') as f:
             """First stage"""
@@ -1603,6 +1305,7 @@ class TestTravisData(unittest.TestCase):
                     .finished_at["timestamp_seconds"])
 
     def test_parse_travis_worker_tag(self):
+        """Test TravisData.parse_travis_worker_tag()"""
         # pass empty string
         self.travis_data.parse_travis_worker_tag("")
         self.assertEqual(None,
@@ -1625,7 +1328,9 @@ class TestTravisData(unittest.TestCase):
 
     def test_has_timing_tags(self):
         """
-        has_timing_tags() should be true if build was
+        Test TravisData.has_timing_tags()
+
+        This should be true if build was
         started at 2014-07-30 or after.
         """
         self.assertFalse(self.travis_data.has_timing_tags())
@@ -1638,7 +1343,7 @@ class TestTravisData(unittest.TestCase):
 
     def test_get_job_duration(self):
         """
-        Calculate job duration.
+        Test job duration calculation.
         """
         self.assertAlmostEqual(0.0, self.travis_data.get_job_duration(), 0)
 
@@ -1659,496 +1364,3 @@ class TestTravisData(unittest.TestCase):
             "2014-07-30T16:31:00.123Z"
         )
         self.assertAlmostEqual(0.0, self.travis_data.get_job_duration(), 0)
-
-
-class TestTravisSubstage(unittest.TestCase):
-    def setUp(self):
-        self.maxDiff = None
-        self.substage = TravisSubstage()
-
-    def test_novalue(self):
-         # data should be empty
-        self.assertFalse(self.substage.has_name())
-        self.assertFalse(self.substage.has_timing_hash())
-        self.assertFalse(self.substage.has_command())
-        self.assertFalse(self.substage.has_started())
-        self.assertFalse(self.substage.has_finished())
-        self.assertFalse(self.substage.finished_incomplete)
-        self.assertEqual("", self.substage.get_name())
-        self.assertDictEqual(
-            {"name": "", "duration": 0},
-            self.substage.stage.to_dict())
-        self.assertEqual("", self.substage.timing_hash)
-
-    def test_param_is_not_dict(self):
-        # error is thrown when called without parameters
-        self.assertRaises(TypeError, self.substage.process_parsed_tags)
-        self.assertRaises(TypeError, self.substage.process_start_stage)
-        self.assertRaises(TypeError, self.substage.process_start_time)
-        self.assertRaises(TypeError, self.substage.process_command)
-        self.assertRaises(TypeError, self.substage.process_end_time)
-        self.assertRaises(TypeError, self.substage.process_end_stage)
-
-        # error is thrown when called with an invalid parameter
-        self.assertRaises(TypeError, self.substage.process_parsed_tags, None)
-        self.assertRaises(TypeError, self.substage.process_start_stage, None)
-        self.assertRaises(TypeError, self.substage.process_start_time, None)
-        self.assertRaises(TypeError, self.substage.process_command, None)
-        self.assertRaises(TypeError, self.substage.process_end_time, None)
-        self.assertRaises(TypeError, self.substage.process_end_stage, None)
-
-        self.assertRaises(TypeError,
-                          self.substage.process_parsed_tags, "string")
-        self.assertRaises(TypeError,
-                          self.substage.process_start_stage, "string")
-        self.assertRaises(TypeError,
-                          self.substage.process_start_time, "string")
-        self.assertRaises(TypeError,
-                          self.substage.process_command, "string")
-        self.assertRaises(TypeError,
-                          self.substage.process_end_time, "string")
-        self.assertRaises(TypeError,
-                          self.substage.process_end_stage, "string")
-
-    def test_process_parsed_tags_full(self):
-        # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(self.substage.process_parsed_tags(
-            {'invalid': 'param'}
-        ))
-        self.assertFalse(self.substage.has_started())
-        self.assertFalse(self.substage.has_finished())
-
-        # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(self.substage.process_parsed_tags(
-            {'start_stage': 'stage'}
-        ))
-        self.assertFalse(self.substage.has_started())
-        self.assertFalse(self.substage.has_finished())
-
-        # pass a valid start tag
-        self.assertTrue(self.substage.process_parsed_tags({
-            'start_stage': 'stage1', 'start_substage': 'substage1'
-        }))
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual("stage1.substage1", self.substage.stage.data["name"])
-        self.assertFalse(self.substage.has_finished())
-
-        # pass a valid timing hash
-        self.assertTrue(self.substage.process_parsed_tags(
-            {'start_hash': VALID_HASH1}
-        ))
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual(VALID_HASH1, self.substage.timing_hash)
-        self.assertFalse(self.substage.has_finished())
-
-        # pass a valid command name
-        self.assertTrue(self.substage.process_parsed_tags(
-            {'command': 'command1.sh'}
-        ))
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual('command1.sh', self.substage.stage.data["command"])
-        self.assertFalse(self.substage.has_finished())
-
-        # pass valid timing data
-        self.assertTrue(self.substage.process_parsed_tags({
-            'end_hash': VALID_HASH1,
-            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': DURATION_NANO
-        }))
-        self.assertFalse(self.substage.has_finished())
-        self.assertDictEqual(constants.SPLIT_TIMESTAMP_STARTED,
-                             self.substage.stage.data["started_at"])
-        self.assertDictEqual(constants.SPLIT_TIMESTAMP_FINISHED,
-                             self.substage.stage.data["finished_at"])
-        self.assertEqual(DURATION_SEC, self.substage.stage.data["duration"])
-
-        # pass valid end tag
-        self.assertTrue(self.substage.process_parsed_tags({
-            'end_stage': 'stage1', 'end_substage': 'substage1'
-        }))
-        self.assertFalse(self.substage.finished_incomplete)
-        self.assertTrue(self.substage.has_finished())
-
-        # test stage
-        self.assertDictEqual(
-            {
-                "name": "stage1.substage1",
-                "duration": DURATION_SEC,
-                "command": "command1.sh",
-                "started_at": constants.SPLIT_TIMESTAMP_STARTED,
-                "finished_at": constants.SPLIT_TIMESTAMP_FINISHED
-            },
-            self.substage.stage.to_dict()
-        )
-
-    def test_process_parsed_tags_no_starttag(self):
-        # pass a valid timing hash
-        self.assertTrue(
-            self.substage.process_parsed_tags({'start_hash': VALID_HASH1})
-        )
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual(VALID_HASH1, self.substage.timing_hash)
-        self.assertFalse(self.substage.has_finished())
-
-        # pass a valid command name
-        self.assertTrue(
-            self.substage.process_parsed_tags({'command': 'command1.sh'})
-        )
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual('command1.sh', self.substage.stage.data["command"])
-        self.assertFalse(self.substage.has_finished())
-
-        # pass valid timing data
-        self.assertTrue(self.substage.process_parsed_tags({
-            'end_hash': VALID_HASH1,
-            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': DURATION_NANO
-        }))
-        self.assertTrue(self.substage.has_finished())
-
-        # test stage
-        self.assertDictEqual(
-            {
-                # TODO assign substage name
-                "name": "",
-                "duration": DURATION_SEC,
-                "command": "command1.sh",
-                "started_at": constants.SPLIT_TIMESTAMP_STARTED,
-                "finished_at": constants.SPLIT_TIMESTAMP_FINISHED
-            },
-            self.substage.stage.to_dict()
-        )
-
-    def test_process_parsed_tags_no_timing(self):
-        # pass a valid start tag
-        self.assertTrue(self.substage.process_parsed_tags({
-            'start_stage': 'stage1', 'start_substage': 'substage1'
-        }))
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual("stage1.substage1", self.substage.stage.data["name"])
-        self.assertFalse(self.substage.has_finished())
-
-        # pass a valid command name
-        self.assertTrue(
-            self.substage.process_parsed_tags({'command': 'command1.sh'})
-        )
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual('command1.sh', self.substage.stage.data["command"])
-        self.assertFalse(self.substage.has_finished())
-
-        # pass valid end tag
-        self.assertTrue(self.substage.process_parsed_tags({
-            'end_stage': 'stage1', 'end_substage': 'substage1'
-        }))
-        self.assertFalse(self.substage.finished_incomplete)
-        self.assertTrue(self.substage.has_finished())
-
-        # test stage
-        self.assertDictEqual(
-            {
-                "name": "stage1.substage1",
-                "duration": 0.0,
-                "command": "command1.sh",
-            },
-            self.substage.stage.to_dict()
-        )
-
-    def test_process_start_stage(self):
-        # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(
-            self.substage.process_start_stage({'invalid': 'param'})
-        )
-        self.assertFalse(
-            self.substage.process_start_stage({'start_stage': 'stage'})
-        )
-        self.assertFalse(
-            self.substage.process_start_stage({'start_substage': 'substage'})
-        )
-
-        # pass a valid start tag
-        self.assertTrue(self.substage.process_start_stage({
-            'start_stage': 'stage1', 'start_substage': 'substage1'
-        }))
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual("stage1.substage1", self.substage.stage.data["name"])
-        self.assertFalse(self.substage.has_finished())
-
-        # passing a valid start tag when it was started already, should fail
-        self.assertFalse(self.substage.process_start_stage({
-            'start_stage': 'stage1', 'start_substage': 'substage2'
-        }))
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual("stage1.substage1", self.substage.stage.data["name"])
-        self.assertFalse(self.substage.has_finished())
-
-    def test_process_start_time(self):
-        # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(
-            self.substage.process_start_time({'invalid': 'param'})
-        )
-
-        # pass a valid timing hash
-        self.assertTrue(
-            self.substage.process_start_time({'start_hash': VALID_HASH1})
-        )
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual(VALID_HASH1, self.substage.timing_hash)
-        self.assertFalse(self.substage.has_finished())
-
-        # passing a valid start tag when it was started already, should fail
-        self.assertFalse(
-            self.substage.process_start_time({'start_hash': VALID_HASH2})
-        )
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual(VALID_HASH1, self.substage.timing_hash)
-        self.assertFalse(self.substage.has_finished())
-
-    def test_get_command(self):
-        self.assertEqual("", self.substage.get_command())
-
-        self.substage.stage.set_command("command5.sh")
-        self.assertEqual("command5.sh", self.substage.get_command())
-
-    def test_process_command(self):
-        # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(self.substage.process_command({'invalid': 'param'}))
-
-        # call similar tests with a parameter
-        self.__check_process_command('command1.sh')
-
-    def test_process_command_has_name(self):
-        # assign substage name
-        self.substage.process_start_stage({
-            'start_stage': 'stage1', 'start_substage': 'substage1'
-        })
-
-        # call similar tests with a parameter
-        self.__check_process_command('stage1.substage1')
-
-    def __check_process_command(self, expected_command):
-        """similar test for test_process_command*"""
-        # pass a valid command name
-        self.assertTrue(
-            self.substage.process_command({'command': 'command1.sh'})
-        )
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual('command1.sh', self.substage.stage.data["command"])
-        self.assertEqual(expected_command, self.substage.get_name())
-
-        # passing a valid command when it was started already, should fail
-        self.assertFalse(
-            self.substage.process_command({'command': 'command2.sh'})
-        )
-        self.assertTrue(self.substage.has_started())
-        self.assertEqual('command1.sh', self.substage.stage.data["command"])
-        self.assertEqual(expected_command, self.substage.get_name())
-
-    def test_process_end_time_tags(self):
-        # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(self.substage.process_end_time({'invalid': 'param'}))
-        self.assertFalse(
-            self.substage.process_end_time({'end_hash': VALID_HASH1})
-        )
-        self.assertFalse(
-            self.substage.process_end_time(
-                {'start_timestamp': constants.TIMESTAMP_NANO_STARTED}
-            )
-        )
-        self.assertFalse(
-            self.substage.process_end_time(
-                {'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED}
-            )
-        )
-        self.assertFalse(
-            self.substage.process_end_time({'duration': DURATION_NANO}))
-
-    def test_process_end_time_not_started(self):
-        # pass a valid start tag but, timing hasn't started
-        self.assertFalse(self.substage.process_end_time({
-            'end_hash': VALID_HASH1,
-            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': DURATION_SEC
-        }))
-        self.assertTrue(self.substage.finished_incomplete)
-        self.assertTrue(self.substage.has_finished())
-
-    def test_process_end_time_invalid_hash(self):
-        # timing has started, but hash doesn't match
-        self.substage.process_start_time({'start_hash': VALID_HASH1})
-
-        self.assertFalse(self.substage.process_end_time({
-            'end_hash': INVALID_HASH,
-            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': DURATION_NANO
-        }))
-        self.assertTrue(self.substage.finished_incomplete)
-        self.assertTrue(self.substage.has_finished())
-
-    def test_process_end_time_valid_hash(self):
-        # timing has started, hash matches
-        self.substage.process_start_time({'start_hash': VALID_HASH1})
-
-        self.assertTrue(self.substage.process_end_time({
-            'end_hash': VALID_HASH1,
-            'start_timestamp': constants.TIMESTAMP_NANO_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_NANO_FINISHED,
-            'duration': DURATION_NANO
-        }))
-        self.assertFalse(self.substage.finished_incomplete)
-        self.assertTrue(self.substage.has_finished())
-
-        self.assertDictEqual(constants.SPLIT_TIMESTAMP_STARTED,
-                             self.substage.stage.data["started_at"])
-        self.assertDictEqual(constants.SPLIT_TIMESTAMP_FINISHED,
-                             self.substage.stage.data["finished_at"])
-        self.assertEqual(DURATION_SEC, self.substage.stage.data["duration"])
-
-    def test_process_end_stage_tags(self):
-        # dict shouldn't be processed if it doesn't contain the required tags
-        self.assertFalse(
-            self.substage.process_end_stage({'invalid': 'param'}))
-        self.assertFalse(
-            self.substage.process_end_stage({'end_stage': 'stage1'}))
-        self.assertFalse(
-            self.substage.process_end_stage({'end_substage': 'substage1'}))
-
-    def test_process_end_stage_not_started(self):
-        # pass a valid end tag but, stage wasn't started
-        self.assertFalse(self.substage.process_end_stage({
-            'end_stage': 'stage1', 'end_substage': 'substage1'
-        }))
-        self.assertTrue(self.substage.finished_incomplete)
-        self.assertTrue(self.substage.has_finished())
-
-    def test_process_end_time_invalid_name(self):
-        # stage was started, but name doesn't match
-        self.substage.process_start_stage({
-            'start_stage': 'stage1', 'start_substage': 'substage1'
-        })
-
-        self.assertFalse(self.substage.process_end_stage({
-            'end_stage': 'stage1', 'end_substage': 'substage2'
-        }))
-        self.assertTrue(self.substage.finished_incomplete)
-        self.assertTrue(self.substage.has_finished())
-
-    def test_process_end_time_valid_name(self):
-        # stage was started, name matches
-        self.substage.process_start_stage({
-            'start_stage': 'stage1', 'start_substage': 'substage1'
-        })
-
-        self.assertTrue(self.substage.process_end_stage({
-            'end_stage': 'stage1', 'end_substage': 'substage1'
-        }))
-        self.assertFalse(self.substage.finished_incomplete)
-        self.assertTrue(self.substage.has_finished())
-
-    def test_get_name(self):
-        """ get_name() returns the name, or the command if name is not set"""
-        # set name
-        self.substage.stage.set_name("stage.1")
-        self.assertEqual("stage.1", self.substage.get_name())
-
-        # set command, should have no influence, nam is already set
-        self.substage.command = "command1.sh"
-        self.assertEqual("stage.1", self.substage.get_name())
-
-    def test_get_name_command(self):
-        """ get_name() returns the name, or the command if name is not set"""
-        # set command
-        self.substage.stage.set_command("command1.sh")
-        self.assertEqual("command1.sh", self.substage.get_name())
-
-    def test_has_name(self):
-        """ has_name() should return true if name is set"""
-        # set name
-        self.substage.stage.set_name("stage.1")
-        self.assertTrue(self.substage.has_name())
-
-    def test_has_timing_hash(self):
-        """ has_started() should return true if timing_hash is set"""
-        # set substage timing hash
-        self.substage.timing_hash = VALID_HASH1
-        self.assertTrue(self.substage.has_timing_hash())
-
-    def test_has_command(self):
-        """ has_command() should return true if command is set"""
-        # set command
-        self.substage.stage.set_command("command1.sh")
-        self.assertTrue(self.substage.has_command())
-
-    def test_has_started_name(self):
-        """ has_started() should return true if name is set"""
-        # set name
-        self.substage.stage.set_name("stage.1")
-        self.assertTrue(self.substage.has_started())
-
-    def test_has_started_hash(self):
-        """ has_started() should return true if timing_hash is set"""
-        # set substage hash
-        self.substage.timing_hash = VALID_HASH1
-        self.assertTrue(self.substage.has_started())
-
-    def test_has_started_command(self):
-        """ has_started() should return true if command is set"""
-        # set command
-        self.substage.stage.set_command("command1.sh")
-        self.assertTrue(self.substage.has_started())
-
-    def test_has_started_both(self):
-        """ has_started() should return true if name or hash is set"""
-        # set name
-        self.substage.name = "stage.1"
-        # set timing hash
-        self.substage.timing_hash = VALID_HASH1
-        self.assertTrue(self.substage.has_started())
-
-    def test_has_finished_stage_name(self):
-        """ has_finished() should return true if stagename was closed"""
-        self.substage.process_start_stage({
-            'start_stage': 'stage1', 'start_substage': 'substage1'
-        })
-
-        self.assertTrue(self.substage.process_end_stage({
-            'end_stage': 'stage1', 'end_substage': 'substage1'
-        }))
-        self.assertTrue(self.substage.has_finished())
-
-    def test_has_finished_timestamp(self):
-        """ has_finished() should return true if finished timestamp is set"""
-        self.substage.process_start_time({'start_hash': VALID_HASH1})
-
-        self.assertTrue(self.substage.process_end_time({
-            'end_hash': VALID_HASH1,
-            'start_timestamp': constants.TIMESTAMP_STARTED,
-            'finish_timestamp': constants.TIMESTAMP_FINISHED,
-            'duration': DURATION_NANO
-        }))
-        self.assertTrue(self.substage.has_finished())
-
-    def test_has_finished_stage_command(self):
-        """ has_finished() should return true if command is set"""
-        self.substage.process_command({'command': 'command1.sh'})
-        self.assertTrue(self.substage.has_finished())
-
-    def test_has_finished_incomplete(self):
-        """ has_finished() should return true if finished_incomplete is set"""
-        # set finished_incomplete
-        self.substage.finished_incomplete = True
-        self.assertTrue(self.substage.has_finished())
-
-    def test_has_finished(self):
-        """
-        has_finished() should return true if finished timestamp is set
-        or if finished_incomplete is set
-        """
-        # set finish_timestamp
-        self.substage.stage.set_finished_at = constants.TIMESTAMP_FINISHED
-        # set finished_incomplete
-        self.substage.finished_incomplete = True
-        self.assertTrue(self.substage.has_finished())

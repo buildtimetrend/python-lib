@@ -6,6 +6,23 @@ v0.4 (not yet released)
   * keenio.get_dashboard_config_dict() -> dashboard.get_config_dict()
   * keenio.generate_dashboard_config_file() -> dashboard.generate_config_file()
 - issue #133 : rename deprecated unittest assertions
+- move travis related functions and classes to seperate files in the travis submodule :
+  * connector :
+    * travis.TravisConnector -> travis.connector.TravisConnector
+    * travis.TravisOrgConnector -> travis.connector.TravisOrgConnector
+  * parser :
+    * travis.TravisData -> travis.parser.TravisData
+  * substage :
+    * travis.TravisSubstage -> travis.substage.TravisSubstage
+  * env_var :
+    * travis.load_travis_env_vars -> travis.env_var.load_all (calls all other functions)
+                                  -> travis.env_var.load_general_env_vars
+    * travis.load_build_matrix_env_vars -> travis.env_var.load_build_matrix_env_vars
+    * travis.load_travis_pr_env_vars -> travis.env_var.load_travis_pr_env_vars
+  * tools :
+    * travis.convert_build_result -> travis.tools.convert_build_result
+    * travis.process_notification_payload -> travis.tools.process_notification_payload
+    * travis.check_authorization -> travis.tools.check_authorization
 
 v0.3 (released on 17Nov2015)
 - move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut

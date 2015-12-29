@@ -23,7 +23,7 @@
 from buildtimetrend.stages import Stages
 from buildtimetrend.stages import Stage
 from formencode.doctest_xml_compare import xml_compare
-import constants
+from buildtimetrend.test import constants
 from lxml import etree
 import unittest
 

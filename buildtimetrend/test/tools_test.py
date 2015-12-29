@@ -42,7 +42,7 @@ from decimal import Decimal
 from dateutil.tz import tzutc
 import os
 import unittest
-import constants
+from buildtimetrend.test import constants
 
 
 class TestTools(unittest.TestCase):
