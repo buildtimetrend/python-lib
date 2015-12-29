@@ -40,6 +40,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.substage = TravisSubstage()
 
     def test_novalue(self):
+        """Test freshly initialised Substage object."""
          # data should be empty
         self.assertFalse(self.substage.has_name())
         self.assertFalse(self.substage.has_timing_hash())
@@ -54,6 +55,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEqual("", self.substage.timing_hash)
 
     def test_param_is_not_dict(self):
+        """Test parameter input types"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, self.substage.process_parsed_tags)
         self.assertRaises(TypeError, self.substage.process_start_stage)
@@ -84,6 +86,7 @@ class TestTravisSubstage(unittest.TestCase):
                           self.substage.process_end_stage, "string")
 
     def test_process_parsed_tags_full(self):
+        """Test Substage.process_parsed_tags() with complete tags"""
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(self.substage.process_parsed_tags(
             {'invalid': 'param'}
@@ -156,6 +159,7 @@ class TestTravisSubstage(unittest.TestCase):
         )
 
     def test_process_parsed_tags_no_starttag(self):
+        """Test Substage.process_parsed_tags() with a missing start tag"""
         # pass a valid timing hash
         self.assertTrue(
             self.substage.process_parsed_tags({'start_hash': VALID_HASH1})
@@ -195,6 +199,7 @@ class TestTravisSubstage(unittest.TestCase):
         )
 
     def test_process_parsed_tags_no_timing(self):
+        """Test Substage.process_parsed_tags() without a timing data tag"""
         # pass a valid start tag
         self.assertTrue(self.substage.process_parsed_tags({
             'start_stage': 'stage1', 'start_substage': 'substage1'
@@ -229,6 +234,7 @@ class TestTravisSubstage(unittest.TestCase):
         )
 
     def test_process_start_stage(self):
+        """Test Substage.process_start_stage()"""
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(
             self.substage.process_start_stage({'invalid': 'param'})
@@ -257,6 +263,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.has_finished())
 
     def test_process_start_time(self):
+        """Test Substage.process_start_time()"""
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(
             self.substage.process_start_time({'invalid': 'param'})
@@ -279,12 +286,14 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertFalse(self.substage.has_finished())
 
     def test_get_command(self):
+        """Test Substage.get_command()"""
         self.assertEqual("", self.substage.get_command())
 
         self.substage.stage.set_command("command5.sh")
         self.assertEqual("command5.sh", self.substage.get_command())
 
     def test_process_command(self):
+        """Test Substage.process_command()"""
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(self.substage.process_command({'invalid': 'param'}))
 
@@ -292,6 +301,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.__check_process_command('command1.sh')
 
     def test_process_command_has_name(self):
+        """Test Substage.process_command() with a valid name"""
         # assign substage name
         self.substage.process_start_stage({
             'start_stage': 'stage1', 'start_substage': 'substage1'
@@ -319,6 +329,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEqual(expected_command, self.substage.get_name())
 
     def test_process_end_time_tags(self):
+        """Test Substage.process_end_time_tags()"""
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(self.substage.process_end_time({'invalid': 'param'}))
         self.assertFalse(
@@ -338,6 +349,7 @@ class TestTravisSubstage(unittest.TestCase):
             self.substage.process_end_time({'duration': DURATION_NANO}))
 
     def test_process_end_time_not_started(self):
+        """Test Substage.process_end_time() when start tag is missing"""
         # pass a valid start tag but, timing hasn't started
         self.assertFalse(self.substage.process_end_time({
             'end_hash': VALID_HASH1,
@@ -349,6 +361,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_finished())
 
     def test_process_end_time_invalid_hash(self):
+        """Test Substage.process_end_time() when hash is invalid"""
         # timing has started, but hash doesn't match
         self.substage.process_start_time({'start_hash': VALID_HASH1})
 
@@ -362,6 +375,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_finished())
 
     def test_process_end_time_valid_hash(self):
+        """Test Substage.process_end_time() with a valid hash"""
         # timing has started, hash matches
         self.substage.process_start_time({'start_hash': VALID_HASH1})
 
@@ -381,6 +395,7 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEqual(DURATION_SEC, self.substage.stage.data["duration"])
 
     def test_process_end_stage_tags(self):
+        """Test Substage.process_end_stage() with invalid tags"""
         # dict shouldn't be processed if it doesn't contain the required tags
         self.assertFalse(
             self.substage.process_end_stage({'invalid': 'param'}))
@@ -390,6 +405,7 @@ class TestTravisSubstage(unittest.TestCase):
             self.substage.process_end_stage({'end_substage': 'substage1'}))
 
     def test_process_end_stage_not_started(self):
+        """Test Substage.process_end_stage() when start tag is missing"""
         # pass a valid end tag but, stage wasn't started
         self.assertFalse(self.substage.process_end_stage({
             'end_stage': 'stage1', 'end_substage': 'substage1'
@@ -397,7 +413,8 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.finished_incomplete)
         self.assertTrue(self.substage.has_finished())
 
-    def test_process_end_time_invalid_name(self):
+    def test_process_end_stage_invalid_name(self):
+        """Test Substage.process_end_stage() with an invalid name"""
         # stage was started, but name doesn't match
         self.substage.process_start_stage({
             'start_stage': 'stage1', 'start_substage': 'substage1'
@@ -409,7 +426,8 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.finished_incomplete)
         self.assertTrue(self.substage.has_finished())
 
-    def test_process_end_time_valid_name(self):
+    def test_process_end_stage_valid_name(self):
+        """Test Substage.process_end_stage() with a valid name"""
         # stage was started, name matches
         self.substage.process_start_stage({
             'start_stage': 'stage1', 'start_substage': 'substage1'
@@ -422,7 +440,11 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_finished())
 
     def test_get_name(self):
-        """ get_name() returns the name, or the command if name is not set"""
+        """
+        Test get_name(), stage name is set.
+
+        It returns the name, or the command if name is not set.
+        """
         # set name
         self.substage.stage.set_name("stage.1")
         self.assertEqual("stage.1", self.substage.get_name())
@@ -432,49 +454,53 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertEqual("stage.1", self.substage.get_name())
 
     def test_get_name_command(self):
-        """ get_name() returns the name, or the command if name is not set"""
+        """
+        Test get_name(), command is set, but stagename is not.
+
+        It returns the name, or the command if name is not set.
+        """
         # set command
         self.substage.stage.set_command("command1.sh")
         self.assertEqual("command1.sh", self.substage.get_name())
 
     def test_has_name(self):
-        """ has_name() should return true if name is set"""
+        """Test has_name(), it should return true if name is set"""
         # set name
         self.substage.stage.set_name("stage.1")
         self.assertTrue(self.substage.has_name())
 
     def test_has_timing_hash(self):
-        """ has_started() should return true if timing_hash is set"""
+        """Test has_started(), it should return true if timing_hash is set"""
         # set substage timing hash
         self.substage.timing_hash = VALID_HASH1
         self.assertTrue(self.substage.has_timing_hash())
 
     def test_has_command(self):
-        """ has_command() should return true if command is set"""
+        """Test has_command(), it should return true if command is set"""
         # set command
         self.substage.stage.set_command("command1.sh")
         self.assertTrue(self.substage.has_command())
 
     def test_has_started_name(self):
-        """ has_started() should return true if name is set"""
+        """Test has_started(), it should return true if name is set"""
         # set name
         self.substage.stage.set_name("stage.1")
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_hash(self):
-        """ has_started() should return true if timing_hash is set"""
+        """Test has_started(), it should return true if timing_hash is set"""
         # set substage hash
         self.substage.timing_hash = VALID_HASH1
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_command(self):
-        """ has_started() should return true if command is set"""
+        """Test has_started(), it should return true if command is set"""
         # set command
         self.substage.stage.set_command("command1.sh")
         self.assertTrue(self.substage.has_started())
 
     def test_has_started_both(self):
-        """ has_started() should return true if name or hash is set"""
+        """Test has_started(), it should return true if name or hash is set"""
         # set name
         self.substage.name = "stage.1"
         # set timing hash
@@ -482,7 +508,9 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_started())
 
     def test_has_finished_stage_name(self):
-        """ has_finished() should return true if stagename was closed"""
+        """
+        Test has_finished(), it should return true if stagename was closed.
+        """
         self.substage.process_start_stage({
             'start_stage': 'stage1', 'start_substage': 'substage1'
         })
@@ -493,7 +521,9 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_finished())
 
     def test_has_finished_timestamp(self):
-        """ has_finished() should return true if finished timestamp is set"""
+        """
+        Test has_finished(), it should return true if finished timestamp is set
+        """
         self.substage.process_start_time({'start_hash': VALID_HASH1})
 
         self.assertTrue(self.substage.process_end_time({
@@ -505,19 +535,22 @@ class TestTravisSubstage(unittest.TestCase):
         self.assertTrue(self.substage.has_finished())
 
     def test_has_finished_stage_command(self):
-        """ has_finished() should return true if command is set"""
+        """Test has_finished(), it should return true if command is set."""
         self.substage.process_command({'command': 'command1.sh'})
         self.assertTrue(self.substage.has_finished())
 
     def test_has_finished_incomplete(self):
-        """ has_finished() should return true if finished_incomplete is set"""
+        """
+        Test has_finished(),
+        it should return true if finished_incomplete is set.
+        """
         # set finished_incomplete
         self.substage.finished_incomplete = True
         self.assertTrue(self.substage.has_finished())
 
     def test_has_finished(self):
         """
-        has_finished() should return true if finished timestamp is set
+        Test has_finished(), it should return true if finished timestamp is set
         or if finished_incomplete is set
         """
         # set finish_timestamp
