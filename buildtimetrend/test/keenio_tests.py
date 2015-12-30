@@ -213,23 +213,27 @@ class TestKeen(unittest.TestCase):
         )
 
     def test_keen_has_project_id_keen_var(self):
+        """Test keenio.keen_has_project_id() with keen vars"""
         keen.project_id = "1234abcd"
 
         self.assertTrue(keen_has_project_id())
 
-    def test_keen_has_master_key_keen_var(self):
-        keen.master_key = "abcd1234"
-        keen.project_id = "1234abcd"
-
-        self.assertTrue(keen_has_master_key())
-
-    def test_keen_has_project_envir_vars(self):
+    def test_keen_has_project_id_env_var(self):
+        """Test keenio.keen_has_project_id() with env vars"""
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
         keen.project_id = "1234abcd"
 
         self.assertTrue(keen_has_project_id())
 
+    def test_keen_has_master_key_keen_var(self):
+        """Test keenio.keen_has_master_key() with keen vars"""
+        keen.master_key = "abcd1234"
+        keen.project_id = "1234abcd"
+
+        self.assertTrue(keen_has_master_key())
+
     def test_keen_has_master_key_env_vars(self):
+        """Test keenio.keen_has_master_key() with env vars"""
         os.environ["KEEN_MASTER_KEY"] = "abcd1234"
 
         self.assertTrue(keen_has_master_key())
