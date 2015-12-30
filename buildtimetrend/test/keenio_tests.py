@@ -20,11 +20,35 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from buildtimetrend.keenio import *
+from buildtimetrend import keenio
+from buildtimetrend.keenio import add_project_info_dict
+from buildtimetrend.keenio import add_project_info_list
+from buildtimetrend.keenio import keen_has_project_id
+from buildtimetrend.keenio import keen_has_master_key
+from buildtimetrend.keenio import keen_has_write_key
+from buildtimetrend.keenio import keen_has_read_key
+from buildtimetrend.keenio import keen_is_writable
+from buildtimetrend.keenio import keen_is_readable
+from buildtimetrend.keenio import check_time_interval
+from buildtimetrend.keenio import keen_io_generate_read_key
+from buildtimetrend.keenio import keen_io_generate_write_key
+from buildtimetrend.keenio import get_all_projects
+from buildtimetrend.keenio import get_avg_buildtime
+from buildtimetrend.keenio import get_dashboard_keen_config
+from buildtimetrend.keenio import get_latest_buildtime
+from buildtimetrend.keenio import get_passed_build_jobs
+from buildtimetrend.keenio import get_repo_filter
+from buildtimetrend.keenio import get_result_color
+from buildtimetrend.keenio import get_total_build_jobs
+from buildtimetrend.keenio import get_total_builds
+from buildtimetrend.keenio import get_pct_passed_build_jobs
+from buildtimetrend.keenio import has_build_id
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import is_string
 import os
 import keen
+import requests
+import copy
 import unittest
 import mock
 from buildtimetrend.test import constants
@@ -485,8 +509,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.duration',
-            'timeframe': TIME_INTERVALS['week']['timeframe'],
-            'max_age': TIME_INTERVALS['week']['max_age'],
+            'timeframe': keenio.TIME_INTERVALS['week']['timeframe'],
+            'max_age': keenio.TIME_INTERVALS['week']['max_age'],
             'filters': [{
                 'operator': 'eq',
                 'property_name': 'buildtime_trend.project_name',
@@ -501,8 +525,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.duration',
-            'timeframe': TIME_INTERVALS['year']['timeframe'],
-            'max_age': TIME_INTERVALS['year']['max_age'],
+            'timeframe': keenio.TIME_INTERVALS['year']['timeframe'],
+            'max_age': keenio.TIME_INTERVALS['year']['max_age'],
             'filters': [{
                 'operator': 'eq',
                 'property_name': 'buildtime_trend.project_name',
@@ -535,8 +559,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.job',
-            'timeframe': TIME_INTERVALS['week']['timeframe'],
-            'max_age': TIME_INTERVALS['week']['max_age'],
+            'timeframe': keenio.TIME_INTERVALS['week']['timeframe'],
+            'max_age': keenio.TIME_INTERVALS['week']['max_age'],
             'filters': [{
                 'operator': 'eq',
                 'property_name': 'buildtime_trend.project_name',
@@ -551,8 +575,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.job',
-            'timeframe': TIME_INTERVALS['year']['timeframe'],
-            'max_age': TIME_INTERVALS['year']['max_age'],
+            'timeframe': keenio.TIME_INTERVALS['year']['timeframe'],
+            'max_age': keenio.TIME_INTERVALS['year']['max_age'],
             'filters': [{
                 'operator': 'eq',
                 'property_name': 'buildtime_trend.project_name',
@@ -585,8 +609,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.job',
-            'timeframe': TIME_INTERVALS['week']['timeframe'],
-            'max_age': TIME_INTERVALS['week']['max_age'],
+            'timeframe': keenio.TIME_INTERVALS['week']['timeframe'],
+            'max_age': keenio.TIME_INTERVALS['week']['max_age'],
             'filters': [
                 {
                     'operator': 'eq',
@@ -608,8 +632,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.job',
-            'timeframe': TIME_INTERVALS['year']['timeframe'],
-            'max_age': TIME_INTERVALS['year']['max_age'],
+            'timeframe': keenio.TIME_INTERVALS['year']['timeframe'],
+            'max_age': keenio.TIME_INTERVALS['year']['max_age'],
             'filters': [
                 {
                     'operator': 'eq',
@@ -649,8 +673,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.build',
-            'timeframe': TIME_INTERVALS['week']['timeframe'],
-            'max_age': TIME_INTERVALS['week']['max_age'],
+            'timeframe': keenio.TIME_INTERVALS['week']['timeframe'],
+            'max_age': keenio.TIME_INTERVALS['week']['max_age'],
             'filters': [{
                 'operator': 'eq',
                 'property_name': 'buildtime_trend.project_name',
@@ -665,8 +689,8 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args, ("build_jobs",))
         self.assertDictEqual(kwargs, {
             'target_property': 'job.build',
-            'timeframe': TIME_INTERVALS['year']['timeframe'],
-            'max_age': TIME_INTERVALS['year']['max_age'],
+            'timeframe': keenio.TIME_INTERVALS['year']['timeframe'],
+            'max_age': keenio.TIME_INTERVALS['year']['max_age'],
             'filters': [{
                 'operator': 'eq',
                 'property_name': 'buildtime_trend.project_name',
