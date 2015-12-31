@@ -160,3 +160,28 @@ class TestDashboard(unittest.TestCase):
                 "var keenConfig = {'projectId': '1234abcd'};",
                 next(config_file)
             )
+
+    def test_generate_config_file_fails(self):
+        """Test dashboard.generate_config_file() if creation fails"""
+        # set config file path
+        Settings().add_setting("dashboard_configfile", constants.DASHBOARD_TEST_CONFIG_FILE)
+
+        # check if configfile exists
+        self.assertFalse(check_file(constants.DASHBOARD_TEST_CONFIG_FILE))
+
+        # init mock
+        patcher = mock.patch('buildtimetrend.tools.check_file', return_value=False)
+        check_file_func = patcher.start()
+
+        # generation should return false
+        self.assertFalse(dashboard.generate_config_file("test/repo4"))
+
+        # check if mock was called with correct parameters
+        args, kwargs = check_file_func.call_args
+        self.assertEqual(
+            args,
+            (constants.DASHBOARD_TEST_CONFIG_FILE, )
+        )
+        self.assertDictEqual(kwargs, {})
+
+        patcher.stop()

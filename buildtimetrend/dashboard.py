@@ -26,7 +26,7 @@ from builtins import str
 from buildtimetrend import keenio
 from buildtimetrend import logger
 from buildtimetrend.settings import Settings
-from buildtimetrend.tools import check_file
+from buildtimetrend import tools
 from buildtimetrend.tools import check_dict
 
 
@@ -96,7 +96,7 @@ def generate_config_file(repo):
     with open(config_file, 'w') as outfile:
         outfile.write(config_string)
 
-    if check_file(config_file):
+    if tools.check_file(config_file):
         logger.info("Created trends dashboard config file %s", config_file)
         return True
     else:
