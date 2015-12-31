@@ -27,7 +27,6 @@ from buildtimetrend import keenio
 from buildtimetrend import logger
 from buildtimetrend.settings import Settings
 from buildtimetrend import tools
-from buildtimetrend.tools import check_dict
 
 
 def get_config_dict(repo, extra=None):
@@ -53,7 +52,7 @@ def get_config_dict(repo, extra=None):
         })
 
     # add extra config parameters
-    if extra is not None and check_dict(extra, "extra"):
+    if extra is not None and tools.check_dict(extra, "extra"):
         config.update(extra)
 
     return config
