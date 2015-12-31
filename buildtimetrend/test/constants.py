@@ -23,6 +23,7 @@
 TEST_SAMPLE_TIMESTAMP_FILE = 'buildtimetrend/test/testsample_timestamps.csv'
 TEST_SAMPLE_CONFIG_FILE = 'buildtimetrend/test/testsample_config.yml'
 DASHBOARD_SAMPLE_CONFIG_FILE = 'test/dashboard/config_sample.js'
+DASHBOARD_TEST_CONFIG_FILE = '/tmp/config_test.js'
 
 SPLIT_TIMESTAMP_EPOCH = {
     "isotimestamp": "1970-01-01T00:00:00+00:00",

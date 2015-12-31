@@ -23,6 +23,7 @@
 from buildtimetrend import dashboard
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import is_string
+from buildtimetrend.tools import check_file
 import buildtimetrend.keenio
 import os
 import unittest
@@ -39,6 +40,11 @@ class TestDashboard(unittest.TestCase):
         """Set up test fixture."""
         cls.project_info = Settings().get_project_info()
         cls.maxDiff = None
+
+    def tearDown(self):
+        """Clean up after tests"""
+        if (check_file(constants.DASHBOARD_TEST_CONFIG_FILE)):
+            os.remove(constants.DASHBOARD_TEST_CONFIG_FILE)
 
     def test_get_config_dict(self):
         """Test get_config_dict()"""
@@ -107,3 +113,50 @@ class TestDashboard(unittest.TestCase):
         args, kwargs = config_dict_func.call_args
         self.assertEqual(args, ("test/repo2", {'extra': 'value'}))
         self.assertDictEqual(kwargs, {})
+
+    @mock.patch(
+        'buildtimetrend.dashboard.get_config_string',
+        return_value="var config = {'projectName': 'test/repo3'};\n" \
+            "var keenConfig = {'projectId': '1234abcd'};"
+    )
+    def test_generate_config_file(self, get_cfg_str_func):
+        """Test dashboard.generate_config_file()"""
+        # set config file path
+        Settings().add_setting("dashboard_configfile", constants.DASHBOARD_TEST_CONFIG_FILE)
+
+        # check if configfile exists
+        self.assertFalse(check_file(constants.DASHBOARD_TEST_CONFIG_FILE))
+
+        # generate config file with empty repo name
+        self.assertRaises(TypeError, dashboard.generate_config_file)
+
+        # generate config file with empty repo name
+        self.assertTrue(dashboard.generate_config_file(None))
+
+        self.assertTrue(check_file(constants.DASHBOARD_TEST_CONFIG_FILE))
+
+        # check if mock was called with correct parameters
+        args, kwargs = get_cfg_str_func.call_args
+        self.assertEqual(args, (None, ))
+        self.assertDictEqual(kwargs, {})
+
+        # generate config file
+        self.assertTrue(dashboard.generate_config_file("test/repo3"))
+
+        self.assertTrue(check_file(constants.DASHBOARD_TEST_CONFIG_FILE))
+
+        # check if mock was called with correct parameters
+        args, kwargs = get_cfg_str_func.call_args
+        self.assertEqual(args, ("test/repo3", ))
+        self.assertDictEqual(kwargs, {})
+
+        # test generated config file contents
+        with open(constants.DASHBOARD_TEST_CONFIG_FILE, 'r') as config_file:
+            self.assertEqual(
+                "var config = {'projectName': 'test/repo3'};\n",
+                next(config_file)
+            )
+            self.assertEqual(
+                "var keenConfig = {'projectId': '1234abcd'};",
+                next(config_file)
+            )
