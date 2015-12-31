@@ -185,3 +185,17 @@ class TestDashboard(unittest.TestCase):
         self.assertDictEqual(kwargs, {})
 
         patcher.stop()
+
+    def test_generate_config_file_ioerror(self):
+        """
+        Test dashboard.generate_config_file()
+        if creation fails because of unexisting path.
+        """
+        # set config file path
+        Settings().add_setting(
+            "dashboard_configfile",
+            "build/unexisting_path/config_test.js"
+        )
+
+        # generation should return false
+        self.assertFalse(dashboard.generate_config_file("test/repo4"))

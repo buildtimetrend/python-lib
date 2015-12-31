@@ -93,8 +93,12 @@ def generate_config_file(repo):
 
     # write config file
     config_file = Settings().get_setting("dashboard_configfile")
-    with open(config_file, 'w') as outfile:
-        outfile.write(config_string)
+    try:
+        with open(config_file, 'w') as outfile:
+            outfile.write(config_string)
+    except IOError:
+        logger.warning("Error creating dashboard config file")
+        return False
 
     if tools.check_file(config_file):
         logger.info("Created trends dashboard config file %s", config_file)
