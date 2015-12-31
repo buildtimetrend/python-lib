@@ -122,7 +122,10 @@ class TestDashboard(unittest.TestCase):
     def test_generate_config_file(self, get_cfg_str_func):
         """Test dashboard.generate_config_file()"""
         # set config file path
-        Settings().add_setting("dashboard_configfile", constants.DASHBOARD_TEST_CONFIG_FILE)
+        Settings().add_setting(
+            "dashboard_configfile",
+            constants.DASHBOARD_TEST_CONFIG_FILE
+        )
 
         # check if configfile exists
         self.assertFalse(check_file(constants.DASHBOARD_TEST_CONFIG_FILE))
@@ -164,13 +167,19 @@ class TestDashboard(unittest.TestCase):
     def test_generate_config_file_fails(self):
         """Test dashboard.generate_config_file() if creation fails"""
         # set config file path
-        Settings().add_setting("dashboard_configfile", constants.DASHBOARD_TEST_CONFIG_FILE)
+        Settings().add_setting(
+            "dashboard_configfile",
+            constants.DASHBOARD_TEST_CONFIG_FILE
+        )
 
         # check if configfile exists
         self.assertFalse(check_file(constants.DASHBOARD_TEST_CONFIG_FILE))
 
         # init mock
-        patcher = mock.patch('buildtimetrend.tools.check_file', return_value=False)
+        patcher = mock.patch(
+            'buildtimetrend.tools.check_file',
+            return_value=False
+        )
         check_file_func = patcher.start()
 
         # generation should return false
