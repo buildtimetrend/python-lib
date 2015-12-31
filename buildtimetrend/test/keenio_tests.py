@@ -871,3 +871,39 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(0, get_pct_passed_build_jobs("test/repo", "week"))
         passed_func.return_value = -1
         self.assertEqual(-1, get_pct_passed_build_jobs("test/repo", "week"))
+
+    @mock.patch('keen.add_event')
+    def test_keen_add_event(self, add_event_func):
+        """Test keenio.add_event()"""
+        # test invalid parameters
+        self.assertRaises(TypeError, keenio.keen_add_event)
+        self.assertRaises(TypeError, keenio.keen_add_event, None)
+        self.assertRaises(TypeError, keenio.keen_add_event, "collection", 123)
+        self.assertRaises(
+            TypeError, keenio.keen_add_event, "collection", "text"
+        )
+        self.assertRaises(TypeError, keenio.keen_add_event, "collection", [])
+
+        # test keen_add_event with empty payload
+        keenio.keen_add_event("collection", {})
+
+        # check if mock was called with correct parameters
+        args, kwargs = add_event_func.call_args
+        self.assertEqual(args[0], "collection")
+        self.assertDictEqual(args[1], {"buildtime_trend": self.project_info})
+        self.assertDictEqual(kwargs, {})
+
+        # test keen_add_event with payload
+        keenio.keen_add_event("collection", {"test": "value"})
+
+        # check if mock was called with correct parameters
+        args, kwargs = add_event_func.call_args
+        self.assertEqual(args[0], "collection")
+        self.assertDictEqual(
+            args[1],
+            {
+                "buildtime_trend": self.project_info,
+                "test": "value"
+            }
+        )
+        self.assertDictEqual(kwargs, {})
