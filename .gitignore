@@ -7,6 +7,9 @@ config_service.yml
 newer_file.tmp
 *.py[cod]
 
+# Vagrant runtime
+.vagrant/
+
 # C extensions
 *.so
 
