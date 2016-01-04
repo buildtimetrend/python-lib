@@ -1,3 +1,4 @@
-tasks:
-  name: "Install git"
-  apt: name=git
+- hosts: all
+  tasks:
+    - name: "Install git"
+      apt: name=git state=latest
