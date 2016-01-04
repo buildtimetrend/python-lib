@@ -2,3 +2,11 @@
   tasks:
     - name: "Install git"
       apt: name=git state=latest
+
+    - name: "Install python pip"
+      apt: name=python-pip state=latest
+      register: pipinstalled
+
+    - name: "Install python dependencies"
+      pip: name='git+https://github.com/buildtimetrend/python-lib.git#egg=buildtimetrend[native]'
+      when: pipinstalled|success
