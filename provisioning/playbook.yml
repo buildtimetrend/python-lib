@@ -7,6 +7,16 @@
       apt: name=python-pip state=latest
       register: pipinstalled
 
+    - name: "Install required libraries"
+      apt: name={{item}} state=latest
+      with_items:
+        - python-dev
+        - libxml2-dev
+        - libxslt1-dev
+        - python-libxml2
+        - python-libxslt1
+      register: libsinstalled
+
     - name: "Install python dependencies"
       pip: name='git+https://github.com/buildtimetrend/python-lib.git#egg=buildtimetrend[native]'
-      when: pipinstalled|success
+      when: pipinstalled|success and libsinstalled|success
