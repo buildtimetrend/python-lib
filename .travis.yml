@@ -9,9 +9,8 @@ sudo: false
 install:
   # install dependencies
   - CFLAGS="-O0" pip install -e .[native]
-  # install test dependencies
-  - python setup.py test
 script:
+  # install test dependencies and run tests
   - python setup.py nosetests
 after_script:
   - coveralls
