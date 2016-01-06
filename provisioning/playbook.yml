@@ -7,6 +7,10 @@
       apt: name=python-pip state=latest
       register: pipinstalled
 
+    - name: "Install python nose"
+      apt: name=python-nose state=latest
+      register: noseinstalled
+
     - name: "Install required libraries"
       apt: name={{item}} state=latest
       with_items:
