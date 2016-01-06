@@ -7,9 +7,10 @@ python:
 # enable building on container-based infrastructure
 sudo: false
 install:
+  # install dependencies
   - CFLAGS="-O0" pip install -e .[native]
-  - CFLAGS="-O0" pip install coveralls
-  - CFLAGS="-O0" pip install formencode
+  # install test dependencies
+  - python setup.py test
 script:
   - python setup.py nosetests
 after_script:
