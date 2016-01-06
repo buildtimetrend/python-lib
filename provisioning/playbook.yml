@@ -13,6 +13,7 @@
         - python-dev
         - libxml2-dev
         - libxslt1-dev
+        - zlib1g-dev
         - python-libxml2
         - python-libxslt1
       register: libsinstalled
