@@ -23,7 +23,7 @@ setup(
     version=buildtimetrend.VERSION,
     packages=find_packages(),
     install_requires=get_requirements('requirements.txt'),
-    tests_require=['nose', 'coveralls', 'mock', 'funcsigs', 'formencode'],
+    tests_require=get_requirements('requirements_test.txt'),
     extras_require={
         'native': get_requirements('requirements_native.txt')
     },
