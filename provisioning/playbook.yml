@@ -22,6 +22,10 @@
         - python-libxslt1
       register: libsinstalled
 
-    - name: "Install python dependencies"
-      pip: name='git+https://github.com/buildtimetrend/python-lib.git#egg=buildtimetrend[native]'
+    - name: "Install buildtimetrend requirements"
+      pip: requirements='/vagrant/requirements.txt'
+      when: pipinstalled|success and libsinstalled|success
+
+    - name: "Install buildtimetrend native requirements"
+      pip: requirements='/vagrant/requirements_native.txt'
       when: pipinstalled|success and libsinstalled|success
