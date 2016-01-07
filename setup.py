@@ -10,21 +10,19 @@ This file is part of buildtimetrend/python-lib
 <https://github.com/buildtimetrend/python-lib>
 """
 from setuptools import setup, find_packages
+import os
 import buildtimetrend
 
+def get_requirements(filename):
+    setup_path = os.path.dirname(__file__)
+    with open(os.path.join(setup_path, filename), 'r') as reqs_file:
+        return reqs_file.readlines()
 
 setup(
     name=buildtimetrend.NAME,
     version=buildtimetrend.VERSION,
     packages=find_packages(),
-    install_requires=[
-        'keen>=0.3.9',
-        'lxml',
-        'pyyaml',
-        'python-dateutil',
-        'future',
-        'six'
-    ],
+    install_requires=get_requirements('requirements.txt'),
     tests_require=['nose', 'coveralls', 'mock', 'funcsigs', 'formencode'],
     extras_require={
         'native': ['lxml', 'matplotlib>=1.2.0']
