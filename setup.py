@@ -25,7 +25,7 @@ setup(
     install_requires=get_requirements('requirements.txt'),
     tests_require=['nose', 'coveralls', 'mock', 'funcsigs', 'formencode'],
     extras_require={
-        'native': ['lxml', 'matplotlib>=1.2.0']
+        'native': get_requirements('requirements_native.txt')
     },
 
     # metadata
