@@ -14,6 +14,7 @@ import os
 import buildtimetrend
 
 def get_requirements(filename):
+    """Load required packages from requirements file."""
     setup_path = os.path.dirname(__file__)
     with open(os.path.join(setup_path, filename), 'r') as reqs_file:
         return reqs_file.readlines()
