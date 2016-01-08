@@ -8,7 +8,7 @@ Features :
 - store the results in XML format or Keen.io database
 - other supporting tools
 
-Copyright (C) 2014-2015 Dieter Adriaenssens <ruleant@users.sourceforge.net>
+Copyright (C) 2014-2016 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
 This file is part of buildtimetrend/python-lib
 <https://github.com/buildtimetrend/python-lib/>
