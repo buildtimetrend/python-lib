@@ -44,6 +44,7 @@ from buildtimetrend.keenio import get_total_builds
 from buildtimetrend.keenio import get_pct_passed_build_jobs
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import is_string
+from buildtimetrend.buildjob import BuildJob
 import os
 import keen
 import requests
@@ -972,3 +973,22 @@ class TestKeen(unittest.TestCase):
             ]}
         )
         self.assertDictEqual(kwargs, {})
+
+    @mock.patch('buildtimetrend.keenio.keen_add_event')
+    @mock.patch('buildtimetrend.keenio.keen_add_events')
+    def test_send_build_data(self, add_events_func, add_event_func):
+        """Test keenio.send_build_data()"""
+        # test invalid parameters
+        self.assertRaises(TypeError, keenio.send_build_data)
+        self.assertRaises(TypeError, keenio.send_build_data, None)
+        self.assertRaises(TypeError, keenio.send_build_data, 123)
+        self.assertRaises(TypeError, keenio.send_build_data, "text")
+        self.assertRaises(TypeError, keenio.send_build_data, {})
+        self.assertRaises(TypeError, keenio.send_build_data, [])
+
+        buildjob = BuildJob()
+        keenio.send_build_data(buildjob)
+
+        # check if mock was called
+        self.assertEqual(add_event_func.call_args, None)
+        self.assertEqual(add_events_func.call_args, None)
