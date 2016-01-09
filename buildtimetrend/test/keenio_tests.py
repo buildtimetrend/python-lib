@@ -42,7 +42,6 @@ from buildtimetrend.keenio import get_result_color
 from buildtimetrend.keenio import get_total_build_jobs
 from buildtimetrend.keenio import get_total_builds
 from buildtimetrend.keenio import get_pct_passed_build_jobs
-from buildtimetrend.keenio import has_build_id
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import is_string
 import os
@@ -432,18 +431,18 @@ class TestKeen(unittest.TestCase):
 
     def test_has_build_id(self):
         # error is thrown when called without parameters
-        self.assertRaises(ValueError, has_build_id)
+        self.assertRaises(ValueError, keenio.has_build_id)
 
         # error is thrown when called with an invalid parameter
-        self.assertRaises(ValueError, has_build_id, None, None)
+        self.assertRaises(ValueError, keenio.has_build_id, None, None)
 
         # error is thrown when project_id or read key is not set
-        self.assertRaises(SystemError, has_build_id, "test", 123)
+        self.assertRaises(SystemError, keenio.has_build_id, "test", 123)
 
         # test with an invalid token
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
-        self.assertRaises(SystemError, has_build_id, "test", 123)
+        self.assertRaises(SystemError, keenio.has_build_id, "test", 123)
 
     @mock.patch('keen.count', return_value=0)
     def test_has_build_id_mock(self, keen_count_func):
@@ -451,15 +450,15 @@ class TestKeen(unittest.TestCase):
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
         # should return false if ID doesn't exist
-        self.assertFalse(has_build_id("test", 123))
+        self.assertFalse(keenio.has_build_id("test", 123))
 
         # should return true if does exist
         keen_count_func.return_value = 1
-        self.assertTrue(has_build_id("test", 123))
+        self.assertTrue(keenio.has_build_id("test", 123))
 
         # test raising ConnectionError
         keen_count_func.side_effect = self.raise_conn_err
-        self.assertRaises(SystemError, has_build_id, "test", 123)
+        self.assertRaises(SystemError, keenio.has_build_id, "test", 123)
 
     @mock.patch(
         'buildtimetrend.keenio.keen_io_generate_read_key',
