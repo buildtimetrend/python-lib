@@ -1,5 +1,4 @@
 nose
-coveralls
 mock
 funcsigs
 formencode

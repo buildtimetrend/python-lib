@@ -10,6 +10,7 @@ install:
   # install dependencies
   - CFLAGS="-O0" pip install -e .[native]
   # install test dependencies
+  - CFLAGS="-O0" pip install coveralls
   - python setup.py test
 script:
   - python setup.py nosetests
