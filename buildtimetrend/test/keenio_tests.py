@@ -992,3 +992,22 @@ class TestKeen(unittest.TestCase):
         # check if mock was called
         self.assertEqual(add_event_func.call_args, None)
         self.assertEqual(add_events_func.call_args, None)
+
+    @mock.patch('buildtimetrend.keenio.keen_add_event')
+    @mock.patch('buildtimetrend.keenio.keen_add_events')
+    def test_send_build_data_service(self, add_events_func, add_event_func):
+        """Test keenio.send_build_data_service()"""
+        # test invalid parameters
+        self.assertRaises(TypeError, keenio.send_build_data_service)
+        self.assertRaises(TypeError, keenio.send_build_data_service, None)
+        self.assertRaises(TypeError, keenio.send_build_data_service, 123)
+        self.assertRaises(TypeError, keenio.send_build_data_service, "text")
+        self.assertRaises(TypeError, keenio.send_build_data_service, {})
+        self.assertRaises(TypeError, keenio.send_build_data_service, [])
+
+        buildjob = BuildJob()
+        keenio.send_build_data_service(buildjob)
+
+        # check if mock was called
+        self.assertEqual(add_event_func.call_args, None)
+        self.assertEqual(add_events_func.call_args, None)
