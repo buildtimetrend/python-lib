@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # increase memory of virtualbox
   config.vm.provider "virtualbox" do |v|
-    v.memory = 1024
+    v.memory = 2048
   end
 
   # Disable automatic box update checking. If you disable this, then
