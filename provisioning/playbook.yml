@@ -19,12 +19,15 @@
     - name: "Install required libraries"
       apt: name={{item}} state=latest
       with_items:
+        - pkg-config
         - python-dev
         - libxml2-dev
         - libxslt1-dev
         - zlib1g-dev
         - python-libxml2
         - python-libxslt1
+        - libpng12-dev
+        - libfreetype6-dev
       register: libsinstalled
 
     - name: "Install buildtimetrend requirements"
