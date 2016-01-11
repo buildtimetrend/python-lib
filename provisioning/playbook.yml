@@ -3,11 +3,16 @@
     - name: "Install git"
       apt: name=git state=latest
 
-    - name: "Install python pip"
-      apt: name=python-pip state=latest
+    - name: "Download Pip installer"
+      get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
+      register: pipinstaller
+
+    - name: "Install Python pip"
+      command: python /tmp/get-pip.py
+      when: pipinstaller|success
       register: pipinstalled
 
-    - name: "Install python nose"
+    - name: "Install Python nose"
       apt: name=python-nose state=latest
       register: noseinstalled
 
