@@ -1,4 +1,7 @@
 - hosts: all
+  vars:
+    python_exec: python
+    pip_exec: pip
   tasks:
     - name: "Install git"
       apt: name=git state=latest
@@ -8,7 +11,7 @@
       register: pipinstaller
 
     - name: "Install Python pip"
-      command: python /tmp/get-pip.py
+      command: "{{ python_exec }} /tmp/get-pip.py"
       when: pipinstaller|success
       register: pipinstalled
 
@@ -31,9 +34,13 @@
       register: libsinstalled
 
     - name: "Install buildtimetrend requirements"
-      pip: requirements='/vagrant/requirements.txt'
+      pip:
+        requirements='/vagrant/requirements.txt'
+        executable={{ pip_exec }}
       when: pipinstalled|success and libsinstalled|success
 
     - name: "Install buildtimetrend native requirements"
-      pip: requirements='/vagrant/requirements_native.txt'
+      pip:
+        requirements='/vagrant/requirements_native.txt'
+        executable={{ pip_exec }}
       when: pipinstalled|success and libsinstalled|success
