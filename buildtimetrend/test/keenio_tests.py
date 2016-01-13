@@ -305,6 +305,7 @@ class TestKeen(unittest.TestCase):
         self.assertTrue(keen_is_readable())
 
     def test_generate_read_key(self):
+        """Test keenio.generate_read_key()"""
         # should return None if master key is not set
         self.assertEqual(None, keen_io_generate_read_key(None))
         self.assertEqual(None, keen_io_generate_read_key("test/project"))
@@ -317,6 +318,7 @@ class TestKeen(unittest.TestCase):
         )
 
     def test_generate_write_key(self):
+        """Test keenio.generate_write_key()"""
         # should return None if master key is not set
         self.assertEqual(None, keen_io_generate_write_key())
 
@@ -325,6 +327,7 @@ class TestKeen(unittest.TestCase):
         self.assertTrue(isinstance(keen_io_generate_write_key(), bytes))
 
     def test_get_repo_filter(self):
+        """Test keenio.get_repo_filter()"""
         self.assertEqual(None, get_repo_filter())
         self.assertEqual(None, get_repo_filter(None))
 
@@ -343,6 +346,7 @@ class TestKeen(unittest.TestCase):
         )
 
     def test_check_time_interval(self):
+        """Test keenio.check_time_interval()"""
         # empty or undefined defaults to 'week'
         self.assertDictEqual(
             {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
@@ -386,6 +390,7 @@ class TestKeen(unittest.TestCase):
         )
 
     def test_get_result_color(self):
+        """Test keenio.get_result_color()"""
         self.assertEqual("red", get_result_color())
         self.assertEqual("lightgrey", get_result_color(None))
         self.assertEqual("lightgrey", get_result_color(None, None))
@@ -431,6 +436,7 @@ class TestKeen(unittest.TestCase):
         self.assertEqual("red", get_result_color(-10, 75, 50))
 
     def test_has_build_id(self):
+        """Test keenio.has_build_id()"""
         # error is thrown when called without parameters
         self.assertRaises(ValueError, keenio.has_build_id)
 
@@ -447,6 +453,7 @@ class TestKeen(unittest.TestCase):
 
     @mock.patch('keen.count', return_value=0)
     def test_has_build_id_mock(self, keen_count_func):
+        """Test keenio.has_build_id() with a mocked keen.count"""
         # test with some token (value doesn't matter, keen.count is mocked)
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
@@ -466,6 +473,7 @@ class TestKeen(unittest.TestCase):
         return_value=None
     )
     def test_get_dashboard_keen_config(self, gen_key_func):
+        """Test keenio.get_dashboard_keen_config()"""
         self.assertDictEqual({}, get_dashboard_keen_config("test"))
 
         # test with a project id
@@ -505,6 +513,7 @@ class TestKeen(unittest.TestCase):
         )
 
     def test_get_avg_buildtime(self):
+        """Test keenio.get_avg_buildtime()"""
         patcher = mock.patch('keen.average', return_value=123)
         keen_avg_func = patcher.start()
 
@@ -555,6 +564,7 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, get_avg_buildtime("test/repo"))
 
     def test_get_total_build_jobs(self):
+        """Test keenio.get_total_build_jobs()"""
         patcher = mock.patch('keen.count_unique', return_value=234)
         keen_count_func = patcher.start()
 
@@ -605,6 +615,7 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, get_total_build_jobs("test/repo"))
 
     def test_get_passed_build_jobs(self):
+        """Test keenio.get_passed_build_jobs()"""
         patcher = mock.patch('keen.count_unique', return_value=34)
         keen_count_func = patcher.start()
 
@@ -669,6 +680,7 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, get_passed_build_jobs("test/repo"))
 
     def test_get_total_builds(self):
+        """Test keenio.get_total_builds()"""
         patcher = mock.patch('keen.count_unique', return_value=345)
         keen_count_func = patcher.start()
 
@@ -719,6 +731,7 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, get_total_builds("test/repo"))
 
     def test_get_latest_buildtime(self):
+        """Test keenio.get_latest_buildtime()"""
         patcher = mock.patch(
             'keen.extraction',
             return_value=[
@@ -802,6 +815,7 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, get_latest_buildtime("test/repo"))
 
     def test_get_all_projects(self):
+        """Test keenio.get_all_projects()"""
         patcher = mock.patch(
             'keen.select_unique',
             return_value=["project1", "project2"]
@@ -855,6 +869,7 @@ class TestKeen(unittest.TestCase):
         'buildtimetrend.keenio.get_passed_build_jobs', return_value=75
     )
     def test_pct_passed_build_jobs(self, passed_func, total_func):
+        """Test keenio.get_pct_passed_build_jobs()"""
         self.assertEqual(75, get_pct_passed_build_jobs("test/repo", "week"))
 
         # function was last called with argument "test/repo"
