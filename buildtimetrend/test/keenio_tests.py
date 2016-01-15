@@ -21,14 +21,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend import keenio
-from buildtimetrend.keenio import add_project_info_dict
-from buildtimetrend.keenio import add_project_info_list
-from buildtimetrend.keenio import keen_has_project_id
-from buildtimetrend.keenio import keen_has_master_key
-from buildtimetrend.keenio import keen_has_write_key
-from buildtimetrend.keenio import keen_has_read_key
-from buildtimetrend.keenio import keen_is_writable
-from buildtimetrend.keenio import keen_is_readable
 from buildtimetrend.keenio import check_time_interval
 from buildtimetrend.keenio import keen_io_generate_read_key
 from buildtimetrend.keenio import keen_io_generate_write_key
@@ -132,22 +124,22 @@ class TestKeen(unittest.TestCase):
     def test_add_project_info_dict(self):
         """Test keenio.add_project_info_dict()"""
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, add_project_info_dict)
+        self.assertRaises(TypeError, keenio.add_project_info_dict)
 
         # error is thrown when called with an invalid parameter
-        self.assertRaises(TypeError, add_project_info_dict, None)
-        self.assertRaises(TypeError, add_project_info_dict, "string")
+        self.assertRaises(TypeError, keenio.add_project_info_dict, None)
+        self.assertRaises(TypeError, keenio.add_project_info_dict, "string")
 
         # add empty parameters
         self.assertDictEqual(
             {"buildtime_trend": self.project_info},
-            add_project_info_dict({})
+            keenio.add_project_info_dict({})
         )
 
         # set dict to add to
         self.assertDictEqual(
             {"test": "value", "buildtime_trend": self.project_info},
-            add_project_info_dict({"test": "value"})
+            keenio.add_project_info_dict({"test": "value"})
         )
 
         # job.repo overrides buildtime_trend.project_name
@@ -160,7 +152,7 @@ class TestKeen(unittest.TestCase):
                 "buildtime_trend": tmp_project_info,
                 "job": {"repo": TEST_NAME},
             },
-            add_project_info_dict({
+            keenio.add_project_info_dict({
                 "test": "value",
                 "job": {"repo": TEST_NAME}
             })
@@ -174,7 +166,7 @@ class TestKeen(unittest.TestCase):
                 "job": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED},
                 "keen": {"timestamp": constants.ISOTIMESTAMP_FINISHED}
             },
-            add_project_info_dict({
+            keenio.add_project_info_dict({
                 "test": "value",
                 "job": {"finished_at": constants.SPLIT_TIMESTAMP_FINISHED}
             })
@@ -183,34 +175,34 @@ class TestKeen(unittest.TestCase):
     def test_add_project_info_list(self):
         """Test keenio.add_project_info_list()"""
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, add_project_info_list)
+        self.assertRaises(TypeError, keenio.add_project_info_list)
 
         # error is thrown when called with an invalid parameter
-        self.assertRaises(TypeError, add_project_info_list, None)
+        self.assertRaises(TypeError, keenio.add_project_info_list, None)
 
         # list should only have a dict as element
-        self.assertRaises(TypeError, add_project_info_list, ["string"])
+        self.assertRaises(TypeError, keenio.add_project_info_list, ["string"])
 
         # use empty list
-        self.assertListEqual([], add_project_info_list([]))
+        self.assertListEqual([], keenio.add_project_info_list([]))
 
         # use list with empty dict as single element
         self.assertListEqual(
             [{"buildtime_trend": self.project_info}],
-            add_project_info_list([{}])
+            keenio.add_project_info_list([{}])
         )
 
         # list with one dict as element
         self.assertListEqual(
             [{"test": "value", "buildtime_trend": self.project_info}],
-            add_project_info_list([{"test": "value"}])
+            keenio.add_project_info_list([{"test": "value"}])
         )
 
         # list with two dict as element
         self.assertListEqual([
             {"test": "value", "buildtime_trend": self.project_info},
             {"test2": "value2", "buildtime_trend": self.project_info}],
-            add_project_info_list([
+            keenio.add_project_info_list([
                 {"test": "value"},
                 {"test2": "value2"}])
         )
@@ -219,93 +211,93 @@ class TestKeen(unittest.TestCase):
         """Test keenio.keen_has_project_id() with keen vars"""
         keen.project_id = "1234abcd"
 
-        self.assertTrue(keen_has_project_id())
+        self.assertTrue(keenio.keen_has_project_id())
 
     def test_keen_has_project_id_env_var(self):
         """Test keenio.keen_has_project_id() with env vars"""
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
         keen.project_id = "1234abcd"
 
-        self.assertTrue(keen_has_project_id())
+        self.assertTrue(keenio.keen_has_project_id())
 
     def test_keen_has_master_key_keen_var(self):
         """Test keenio.keen_has_master_key() with keen vars"""
         keen.master_key = "abcd1234"
         keen.project_id = "1234abcd"
 
-        self.assertTrue(keen_has_master_key())
+        self.assertTrue(keenio.keen_has_master_key())
 
     def test_keen_has_master_key_env_vars(self):
         """Test keenio.keen_has_master_key() with env vars"""
         os.environ["KEEN_MASTER_KEY"] = "abcd1234"
 
-        self.assertTrue(keen_has_master_key())
+        self.assertTrue(keenio.keen_has_master_key())
 
     def test_keen_is_writable_keen_var(self):
         """Test keenio.keen_is_writable() with keen vars"""
         # only set project id, check should fail
         keen.project_id = "1234abcd"
 
-        self.assertFalse(keen_is_writable())
+        self.assertFalse(keenio.keen_is_writable())
 
         # set write_key
         keen.write_key = "1234abcd5678efgh"
 
-        self.assertTrue(keen_is_writable())
+        self.assertTrue(keenio.keen_is_writable())
 
     def test_keen_is_writable_env_vars(self):
         """Test keenio.keen_is_writable() with env vars"""
         # only set project id, check should fail
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
-        self.assertFalse(keen_is_writable())
+        self.assertFalse(keenio.keen_is_writable())
 
         # set write_key
         os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
-        self.assertTrue(keen_is_writable())
+        self.assertTrue(keenio.keen_is_writable())
 
     def test_keen_has_write_key_keen_var(self):
         """Test keenio.keen_has_write_key() with keen vars"""
         # set write_key
         keen.write_key = "4567abcd5678efgh"
-        self.assertTrue(keen_has_write_key())
+        self.assertTrue(keenio.keen_has_write_key())
 
     def test_keen_has_write_key_env_vars(self):
         """Test keenio.keen_has_write_key() with env vars"""
         # set write_key
         os.environ["KEEN_WRITE_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(keen_has_write_key())
+        self.assertTrue(keenio.keen_has_write_key())
 
     def test_keen_has_read_key_keen_var(self):
         """Test keenio.keen_has_read_key() with keen vars"""
         # set read_key
         keen.read_key = "4567abcd5678efgh"
-        self.assertTrue(keen_has_read_key())
+        self.assertTrue(keenio.keen_has_read_key())
 
     def test_keen_has_read_key_env_vars(self):
         """Test keenio.keen_has_read_key() with env vars"""
         # set read_key
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(keen_has_read_key())
+        self.assertTrue(keenio.keen_has_read_key())
 
     def test_keen_is_readable_keen_var(self):
         """Test keenio.keen_is_readable() with keen vars"""
         # only set project id, check should fail
         keen.project_id = "1234abcd"
-        self.assertFalse(keen_is_readable())
+        self.assertFalse(keenio.keen_is_readable())
 
         # set read_key
         keen.read_key = "4567abcd5678efgh"
-        self.assertTrue(keen_is_readable())
+        self.assertTrue(keenio.keen_is_readable())
 
     def test_keen_is_readable_env_vars(self):
         """Test keenio.keen_is_readable() with env vars"""
         # only set project id, check should fail
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
-        self.assertFalse(keen_is_readable())
+        self.assertFalse(keenio.keen_is_readable())
 
         # set read_key
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(keen_is_readable())
+        self.assertTrue(keenio.keen_is_readable())
 
     def test_generate_read_key(self):
         """Test keenio.generate_read_key()"""

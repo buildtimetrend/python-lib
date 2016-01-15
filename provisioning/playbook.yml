@@ -36,11 +36,11 @@
     - name: "Install buildtimetrend requirements"
       pip:
         requirements='/vagrant/requirements.txt'
-        executable={{ pip_exec }}
+        virtualenv_python={{ python_exec }}
       when: pipinstalled|success and libsinstalled|success
 
     - name: "Install buildtimetrend native requirements"
       pip:
         requirements='/vagrant/requirements_native.txt'
-        executable={{ pip_exec }}
+        virtualenv_python={{ python_exec }}
       when: pipinstalled|success and libsinstalled|success
