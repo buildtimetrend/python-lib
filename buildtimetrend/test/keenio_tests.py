@@ -114,12 +114,12 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(None, keen.read_key)
         self.assertEqual(None, keen.master_key)
 
-        self.assertFalse(keen_has_project_id())
-        self.assertFalse(keen_has_master_key())
-        self.assertFalse(keen_has_write_key())
-        self.assertFalse(keen_has_read_key())
-        self.assertFalse(keen_is_writable())
-        self.assertFalse(keen_is_readable())
+        self.assertFalse(keenio.keen_has_project_id())
+        self.assertFalse(keenio.keen_has_master_key())
+        self.assertFalse(keenio.keen_has_write_key())
+        self.assertFalse(keenio.keen_has_read_key())
+        self.assertFalse(keenio.keen_is_writable())
+        self.assertFalse(keenio.keen_is_readable())
 
     def test_add_project_info_dict(self):
         """Test keenio.add_project_info_dict()"""
