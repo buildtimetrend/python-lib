@@ -44,3 +44,9 @@
         requirements='/vagrant/requirements_native.txt'
         executable={{ pip_exec }}
       when: pipinstalled|success and libsinstalled|success
+
+    - name: "Install buildtimetrend test requirements"
+      pip:
+        requirements='/vagrant/requirements_test.txt'
+        executable={{ pip_exec }}
+      when: pipinstalled|success
