@@ -39,6 +39,9 @@ pip-log.txt
 nosetests.xml
 .noseids
 
+# virtualenv
+venv-*
+
 # Translations
 *.mo
 
