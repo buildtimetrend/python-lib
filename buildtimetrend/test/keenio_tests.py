@@ -1021,3 +1021,26 @@ class TestKeen(unittest.TestCase):
         # check if mock was called
         self.assertEqual(add_event_func.call_args, None)
         self.assertEqual(add_events_func.call_args, None)
+
+        # set project id and write key
+        keen.project_id = "1234abcd"
+        keen.write_key = "1234abcd5678efgh"
+
+        keenio.send_build_data_service(buildjob)
+
+        # check if mock was called with correct parameters
+        args, kwargs = add_event_func.call_args
+        self.assertEqual(args[0], "build_jobs")
+        self.assertDictEqual(
+            args[1],
+            {"job": {
+                "duration": 0,
+                "stages": []
+            }}
+        )
+        self.assertDictEqual(kwargs, {})
+
+        args, kwargs = add_events_func.call_args
+        self.assertEqual(args[0], "build_substages")
+        self.assertListEqual(args[1], [])
+        self.assertDictEqual(kwargs, {})
