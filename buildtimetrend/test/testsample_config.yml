@@ -5,6 +5,7 @@ buildtimetrend:
     mode_native: true
     mode_keen: false
     loglevel: "INFO"
+    data_detail: "extended"
     dashboard_sample_configfile: "test/dashboard/config_sample.js"
     dashboard_configfile: "test/dashboard/config.js"
     task_queue:

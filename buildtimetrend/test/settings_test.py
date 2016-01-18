@@ -39,6 +39,7 @@ DEFAULT_SETTINGS = {
     "mode_native": False,
     "mode_keen": True,
     "loglevel": "WARNING",
+    "data_detail": "full",
     "multi_import": {
         "max_builds": 100,
         "delay": 3
@@ -176,6 +177,7 @@ class TestSettings(unittest.TestCase):
                 "mode_native": True,
                 "mode_keen": False,
                 "loglevel": "INFO",
+                "data_detail": "extended",
                 "setting1": "test_value1",
                 "dashboard_sample_configfile":
                 constants.DASHBOARD_SAMPLE_CONFIG_FILE,
@@ -257,6 +259,7 @@ class TestSettings(unittest.TestCase):
                 "mode_native": True,
                 "mode_keen": False,
                 "loglevel": "INFO",
+                "data_detail": "extended",
                 "setting1": "test_value1",
                 "dashboard_sample_configfile":
                 constants.DASHBOARD_SAMPLE_CONFIG_FILE,

@@ -4,6 +4,7 @@ buildtimetrend:
     mode_native: false
     mode_keen: true
     loglevel: "WARNING" # possible values : "DEBUG", "INFO", "WARNING", "ERROR"
+    data_detail: "full" # level of detail when storing build job data : "minimal", "basic", "full", "extended"
     dashboard_sample_configfile: "path/to/config_sample.js"
     dashboard_configfile: "path/to/config.js"
     task_queue:

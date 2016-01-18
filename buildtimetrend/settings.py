@@ -79,6 +79,9 @@ class Settings(object):
                 }
             )
 
+            # set level detail of build job data storage
+            self.add_setting("data_detail", "full")
+
         def set_project_name(self, name):
             """
             Set project name.
