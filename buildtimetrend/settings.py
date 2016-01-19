@@ -257,6 +257,7 @@ class Settings(object):
                                      "travis_account_token")
             self.env_var_to_settings("BUILD_TREND_CONFIGFILE",
                                      "dashboard_configfile")
+            self.env_var_to_settings("BTT_DATA_DETAIL", "data_detail")
 
             # load task queue environment variables
             self.load_env_vars_task_queue()

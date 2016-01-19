@@ -316,6 +316,7 @@ class TestSettings(unittest.TestCase):
         exp_max_builds = int(exp_max_builds)
         exp_delay = os.environ["BTT_MULTI_DELAY"] = "5"
         exp_delay = int(exp_delay)
+        exp_data_detail = os.environ["BTT_DATA_DETAIL"] = "basic"
 
         self.settings.load_env_vars()
 
@@ -336,6 +337,9 @@ class TestSettings(unittest.TestCase):
             {"max_builds": exp_max_builds, "delay": exp_delay},
             self.settings.get_setting("multi_import")
         )
+        self.assertEqual(
+            exp_data_detail, self.settings.get_setting("data_detail")
+        )
 
         # reset test environment variables
         del os.environ["BTT_LOGLEVEL"]
@@ -344,6 +348,7 @@ class TestSettings(unittest.TestCase):
         del os.environ["BUILD_TREND_CONFIGFILE"]
         del os.environ["BTT_MULTI_MAX_BUILDS"]
         del os.environ["BTT_MULTI_DELAY"]
+        del os.environ["BTT_DATA_DETAIL"]
 
     def test_load_env_vars_task_queue(self):
         """Test loading config env vars task queue"""
