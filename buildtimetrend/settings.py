@@ -125,6 +125,19 @@ class Settings(object):
             """
             return self.settings.get_item(name)
 
+        def get_value_or_setting(self, name, value=None):
+            """
+            Get a setting if value is not defined.
+
+            Parameters :
+            - name : Setting name
+            - value : value
+            """
+            if value is None:
+                return self.get_setting(name)
+            else:
+                return value
+
         def load_settings(self, argv=None, config_file="config.yml"):
             """
             Load config settings.

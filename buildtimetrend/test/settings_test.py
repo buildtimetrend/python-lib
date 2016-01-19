@@ -145,6 +145,32 @@ class TestSettings(unittest.TestCase):
         self.assertDictEqual(DEFAULT_SETTINGS,
                              self.settings.settings.get_items())
 
+    def test_get_value_or_setting(self):
+        """Test Settings.get_value_or_setting()"""
+        self.assertEqual(None, self.settings.get_value_or_setting("test_name"))
+        self.assertEqual(
+            "value1",
+            self.settings.get_value_or_setting("test_name", "value1")
+        )
+
+        self.settings.add_setting("test_name", "setting_value2")
+        self.assertEqual(
+            "setting_value2",
+            self.settings.get_value_or_setting("test_name")
+        )
+        self.assertEqual(
+            "value1",
+            self.settings.get_value_or_setting("test_name", "value1")
+        )
+        self.assertEqual(
+            "",
+            self.settings.get_value_or_setting("test_name", "")
+        )
+        self.assertEqual(
+            "setting_value2",
+            self.settings.get_value_or_setting("test_name", None)
+        )
+
     def test_no_config_file(self):
         """Test Settings.load_config_file() with an invalid file name"""
         # function should return false when file doesn't exist
