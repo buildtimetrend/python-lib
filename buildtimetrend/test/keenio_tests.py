@@ -1026,6 +1026,36 @@ class TestKeen(unittest.TestCase):
         self.assertListEqual(args[1], [])
         self.assertDictEqual(kwargs, {})
 
+        # test data_detail parameter = basic
+        add_event_func.reset_mock()
+        add_events_func.reset_mock()
+        keenio.send_build_data(buildjob, 'basic')
+        self.assertTrue(add_event_func.called)
+        self.assertFalse(add_events_func.called)
+
+        # test with "minimal" setting and "basic" override
+        Settings().add_setting("data_detail", "minimal")
+        # test with "basic" override
+        add_event_func.reset_mock()
+        add_events_func.reset_mock()
+        keenio.send_build_data(buildjob, 'basic')
+        self.assertTrue(add_event_func.called)
+        self.assertFalse(add_events_func.called)
+
+        # test with "minimal" setting and "full" override
+        add_event_func.reset_mock()
+        add_events_func.reset_mock()
+        keenio.send_build_data(buildjob, 'full')
+        self.assertTrue(add_event_func.called)
+        self.assertTrue(add_events_func.called)
+
+        # test with "minimal" setting and no override
+        add_event_func.reset_mock()
+        add_events_func.reset_mock()
+        keenio.send_build_data(buildjob)
+        self.assertTrue(add_event_func.called)
+        self.assertFalse(add_events_func.called)
+
     @mock.patch('buildtimetrend.keenio.keen_add_event')
     @mock.patch('buildtimetrend.keenio.keen_add_events')
     def test_send_build_data_service(self, add_events_func, add_event_func):
