@@ -58,7 +58,8 @@ class TestKeen(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up test fixture."""
-        cls.project_info = Settings().get_project_info()
+        cls.settings = Settings()
+        cls.project_info = cls.settings.get_project_info()
         cls.maxDiff = None
 
         # copy Keen.io environment variables
@@ -86,6 +87,10 @@ class TestKeen(unittest.TestCase):
 
     def setUp(self):
         """Initialise test environment before each test."""
+        # reinit settings singleton
+        if self.settings is not None:
+            self.settings.__init__()
+
         # reset Keen.io environment variables before each test
         if "KEEN_PROJECT_ID" in os.environ:
             del os.environ["KEEN_PROJECT_ID"]
@@ -1034,7 +1039,7 @@ class TestKeen(unittest.TestCase):
         self.assertFalse(add_events_func.called)
 
         # test with "minimal" setting and "basic" override
-        Settings().add_setting("data_detail", "minimal")
+        self.settings.add_setting("data_detail", "minimal")
         # test with "basic" override
         add_event_func.reset_mock()
         add_events_func.reset_mock()
@@ -1097,3 +1102,33 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(args[0], "build_substages")
         self.assertListEqual(args[1], [])
         self.assertDictEqual(kwargs, {})
+
+        # test data_detail parameter = basic
+        add_event_func.reset_mock()
+        add_events_func.reset_mock()
+        keenio.send_build_data_service(buildjob, 'basic')
+        self.assertTrue(add_event_func.called)
+        self.assertFalse(add_events_func.called)
+
+        # test with "minimal" setting and "basic" override
+        self.settings.add_setting("data_detail", "minimal")
+        # test with "basic" override
+        add_event_func.reset_mock()
+        add_events_func.reset_mock()
+        keenio.send_build_data_service(buildjob, 'basic')
+        self.assertTrue(add_event_func.called)
+        self.assertFalse(add_events_func.called)
+
+        # test with "minimal" setting and "full" override
+        add_event_func.reset_mock()
+        add_events_func.reset_mock()
+        keenio.send_build_data_service(buildjob, 'full')
+        self.assertTrue(add_event_func.called)
+        self.assertTrue(add_events_func.called)
+
+        # test with "minimal" setting and no override
+        add_event_func.reset_mock()
+        add_events_func.reset_mock()
+        keenio.send_build_data_service(buildjob)
+        self.assertTrue(add_event_func.called)
+        self.assertFalse(add_events_func.called)
