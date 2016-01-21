@@ -63,6 +63,32 @@ def is_repo_allowed(repo):
     return True
 
 
+def get_repo_data_detail(repo):
+    """
+    Get level of data detail storage of a repo.
+
+    A repository name is checked against a list of repository names.
+    If a match is found, the corresponding data detail level is used.
+    Else, the default global setting is returned.
+
+    Parameters:
+    -repo : repository name
+    """
+    if repo is None:
+        logger.warning("Repo is not defined")
+
+
+    #repo_list = Settings().get_setting("repo_data_detail")
+    #if denied_repo is not None and \
+    #        any(x in repo for x in denied_repo) or \
+    #        allowed_repo is not None and \
+    #        not any(x in repo for x in allowed_repo):
+    #    return False
+
+    # return default global data_detail setting
+    return Settings().get_setting("data_detail")
+
+
 def format_duration(duration):
     """
     Format duration from seconds to hours, minutes and seconds.
