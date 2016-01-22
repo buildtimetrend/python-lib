@@ -6,6 +6,10 @@ buildtimetrend:
     mode_keen: false
     loglevel: "INFO"
     data_detail: "extended"
+    repo_data_detail:
+        "user1/": "full"
+        "user2": "extended"
+        "test/repo": "basic"
     dashboard_sample_configfile: "test/dashboard/config_sample.js"
     dashboard_configfile: "test/dashboard/config.js"
     task_queue:

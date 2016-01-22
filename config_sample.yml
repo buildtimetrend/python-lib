@@ -5,6 +5,10 @@ buildtimetrend:
     mode_keen: true
     loglevel: "WARNING" # possible values : "DEBUG", "INFO", "WARNING", "ERROR"
     data_detail: "full" # level of detail when storing build job data : "minimal", "basic", "full", "extended"
+    repo_data_detail:
+        "user/repo": "minimal"
+        "user2/repo": "basic"
+        "user3/": "full"
     dashboard_sample_configfile: "path/to/config_sample.js"
     dashboard_configfile: "path/to/config.js"
     task_queue:

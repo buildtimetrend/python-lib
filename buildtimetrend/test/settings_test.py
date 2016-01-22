@@ -204,6 +204,11 @@ class TestSettings(unittest.TestCase):
                 "mode_keen": False,
                 "loglevel": "INFO",
                 "data_detail": "extended",
+                'repo_data_detail': {
+                    'user1/': 'full',
+                    'user2': 'extended',
+                    'test/repo': 'basic'
+                },
                 "setting1": "test_value1",
                 "dashboard_sample_configfile":
                 constants.DASHBOARD_SAMPLE_CONFIG_FILE,
@@ -286,6 +291,11 @@ class TestSettings(unittest.TestCase):
                 "mode_keen": False,
                 "loglevel": "INFO",
                 "data_detail": "extended",
+                'repo_data_detail': {
+                    'user1/': 'full',
+                    'user2': 'extended',
+                    'test/repo': 'basic'
+                },
                 "setting1": "test_value1",
                 "dashboard_sample_configfile":
                 constants.DASHBOARD_SAMPLE_CONFIG_FILE,
