@@ -1,52 +1,7 @@
 - hosts: all
-  vars:
-    python_exec: python
-    pip_exec: pip
   tasks:
     - name: "Install git"
       apt: name=git state=latest
 
-    - name: "Download Pip installer"
-      get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
-      register: pipinstaller
-
-    - name: "Install Python pip"
-      command: "{{ python_exec }} /tmp/get-pip.py"
-      when: pipinstaller|success
-      register: pipinstalled
-
-    - name: "Install Python nose"
-      apt: name="{{ python_exec }}-nose" state=latest
-      register: noseinstalled
-
-    - name: "Install required libraries"
-      apt: name={{item}} state=latest
-      with_items:
-        - pkg-config
-        - "{{ python_exec }}-dev"
-        - libxml2-dev
-        - libxslt1-dev
-        - zlib1g-dev
-        - python-libxml2
-        - python-libxslt1
-        - libpng12-dev
-        - libfreetype6-dev
-      register: libsinstalled
-
-    - name: "Install buildtimetrend requirements"
-      pip:
-        requirements='/vagrant/requirements.txt'
-        executable={{ pip_exec }}
-      when: pipinstalled|success and libsinstalled|success
-
-    - name: "Install buildtimetrend native requirements"
-      pip:
-        requirements='/vagrant/requirements_native.txt'
-        executable={{ pip_exec }}
-      when: pipinstalled|success and libsinstalled|success
-
-    - name: "Install buildtimetrend test requirements"
-      pip:
-        requirements='/vagrant/requirements_test.txt'
-        executable={{ pip_exec }}
-      when: pipinstalled|success
+  roles:
+    - {role: python_deps, python_exec: python, pip_exec: pip}
