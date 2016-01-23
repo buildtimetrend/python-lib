@@ -5,3 +5,4 @@
 
   roles:
     - {role: python_deps, python_exec: python, pip_exec: pip}
+    - {role: python_deps, python_exec: python3, pip_exec: pip3}
