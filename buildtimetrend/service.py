@@ -74,19 +74,18 @@ def get_repo_data_detail(repo):
     Parameters:
     -repo : repository name
     """
+    settings = Settings()
+
     if repo is None:
         logger.warning("Repo is not defined")
-
-
-    #repo_list = Settings().get_setting("repo_data_detail")
-    #if denied_repo is not None and \
-    #        any(x in repo for x in denied_repo) or \
-    #        allowed_repo is not None and \
-    #        not any(x in repo for x in allowed_repo):
-    #    return False
+    else:
+        repo_settings = settings.get_setting("repo_data_detail")
+        for repo_substring, setting in repo_settings.iteritems():
+            if repo_substring in repo:
+                return setting
 
     # return default global data_detail setting
-    return Settings().get_setting("data_detail")
+    return settings.get_setting("data_detail")
 
 
 def format_duration(duration):

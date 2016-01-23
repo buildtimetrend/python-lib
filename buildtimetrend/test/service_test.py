@@ -21,6 +21,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
+from buildtimetrend import service
 from buildtimetrend.service import is_repo_allowed
 from buildtimetrend.service import format_duration
 from buildtimetrend.service import check_process_parameters
@@ -114,6 +115,53 @@ class TestService(unittest.TestCase):
         self.assertFalse(is_repo_allowed("name/test1"))
         self.assertTrue(is_repo_allowed("name/test2"))
         self.assertFalse(is_repo_allowed("owner/repo"))
+
+    def test_get_repo_data_detail(self):
+        """Test get_repo_data_detail()"""
+        # error is thrown when called without parameters
+        self.assertRaises(TypeError, service.get_repo_data_detail)
+
+        # default global setting 'data_detail' is returned when no repo matches
+        self.assertEqual("full", service.get_repo_data_detail(None))
+        self.assertEqual("full", service.get_repo_data_detail(""))
+        self.assertEqual("full", service.get_repo_data_detail("test/repo"))
+
+        # set other default 'data_detail' setting
+        self.settings.add_setting("data_detail", "minimal")
+        self.assertEqual("minimal", service.get_repo_data_detail(None))
+        self.assertEqual("minimal", service.get_repo_data_detail(""))
+        self.assertEqual("minimal", service.get_repo_data_detail("test/repo"))
+
+        # set repo settings
+        self.settings.add_setting(
+            "repo_data_detail",
+            {
+                "user1/": "basic",
+                "user2/test_repo_full": "full",
+                "test_repo_ext": "extended"
+            }
+        )
+        self.assertEqual("minimal", service.get_repo_data_detail(""))
+        self.assertEqual("minimal", service.get_repo_data_detail("test/repo"))
+        self.assertEqual("basic", service.get_repo_data_detail("user1/repo1"))
+        self.assertEqual("basic", service.get_repo_data_detail("user1/repo2"))
+        self.assertEqual("minimal", service.get_repo_data_detail("user2/repo2"))
+        self.assertEqual(
+            "full",
+            service.get_repo_data_detail("user2/test_repo_full")
+        )
+        self.assertEqual(
+            "extended",
+            service.get_repo_data_detail("user1/test_repo_ext")
+        )
+        self.assertEqual(
+            "extended",
+            service.get_repo_data_detail("user2/test_repo_ext")
+        )
+        self.assertEqual(
+            "extended",
+            service.get_repo_data_detail("user3/test_repo_ext")
+        )
 
     def test_format_duration(self):
         """Test format_duration()"""
