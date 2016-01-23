@@ -80,7 +80,7 @@ def get_repo_data_detail(repo):
         logger.warning("Repo is not defined")
     else:
         repo_settings = settings.get_setting("repo_data_detail")
-        for repo_substring, setting in repo_settings.iteritems():
+        for repo_substring, setting in repo_settings.items():
             if repo_substring in repo:
                 return setting
 
