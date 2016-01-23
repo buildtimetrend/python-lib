@@ -150,10 +150,8 @@ class TestService(unittest.TestCase):
             "full",
             service.get_repo_data_detail("user2/test_repo_full")
         )
-        self.assertEqual(
-            "extended",
-            service.get_repo_data_detail("user1/test_repo_ext")
-        )
+        # test matching substring
+        # don't test "user1/test_repo_ext", result could match two rules
         self.assertEqual(
             "extended",
             service.get_repo_data_detail("user2/test_repo_ext")
