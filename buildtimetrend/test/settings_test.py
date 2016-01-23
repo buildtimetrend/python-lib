@@ -40,6 +40,7 @@ DEFAULT_SETTINGS = {
     "mode_keen": True,
     "loglevel": "WARNING",
     "data_detail": "full",
+    "repo_data_detail": {},
     "multi_import": {
         "max_builds": 100,
         "delay": 3

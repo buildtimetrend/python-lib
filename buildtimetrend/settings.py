@@ -81,6 +81,7 @@ class Settings(object):
 
             # set level detail of build job data storage
             self.add_setting("data_detail", "full")
+            self.add_setting("repo_data_detail", {})
 
         def set_project_name(self, name):
             """
