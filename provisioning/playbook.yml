@@ -16,14 +16,14 @@
       register: pipinstalled
 
     - name: "Install Python nose"
-      apt: name=python-nose state=latest
+      apt: name="{{ python_exec }}-nose" state=latest
       register: noseinstalled
 
     - name: "Install required libraries"
       apt: name={{item}} state=latest
       with_items:
         - pkg-config
-        - python-dev
+        - "{{ python_exec }}-dev"
         - libxml2-dev
         - libxslt1-dev
         - zlib1g-dev
