@@ -154,7 +154,10 @@ def send_build_data(buildjob, detail=None):
     data_detail = Settings().get_value_or_setting("data_detail", detail)
 
     if keen_is_writable():
-        logger.info("Sending client build job data to Keen.io")
+        logger.info(
+            "Sending client build job data to Keen.io (data detail: %s)",
+            data_detail
+        )
         keen_add_event("build_jobs", {"job": buildjob.to_dict()})
         if data_detail in ("full", "extended"):
             keen_add_events("build_stages", buildjob.stages_to_list())
@@ -175,7 +178,10 @@ def send_build_data_service(buildjob, detail=None):
     data_detail = Settings().get_value_or_setting("data_detail", detail)
 
     if keen_is_writable():
-        logger.info("Sending service build job data to Keen.io")
+        logger.info(
+            "Sending service build job data to Keen.io (data detail: %s)",
+            data_detail
+        )
         keen_add_event("build_jobs", {"job": buildjob.to_dict()})
         if data_detail in ("full", "extended"):
             keen_add_events("build_substages", buildjob.stages_to_list())
