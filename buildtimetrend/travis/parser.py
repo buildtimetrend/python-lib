@@ -257,26 +257,31 @@ class TravisData(object):
         Parameters:
         - job_data : dictionary with Travis CI job data
         """
-        build_matrix = Collection()
+        # check if job config data exists
+        if 'job' not in job_data or 'config' not in job_data['job']:
+            logger.warning("Job config data doesn't exist")
+            return
 
+        build_matrix = Collection()
         job_config = job_data['job']['config']
 
-        language = job_config['language']
-        build_matrix.add_item("language", language)
+        if 'language' in job_config:
+            language = job_config['language']
+            build_matrix.add_item('language', language)
 
-        # set language version
-        # ('d', 'dart', 'go', 'perl', 'php', 'python', 'rust')
-        if language in job_config:
-            if language == "android":
-                build_matrix.add_item(
-                    "language_components",
-                    " ".join(job_config[language]["components"])
-                )
-            else:
-                build_matrix.add_item(
-                    "language_version",
-                    str(job_config[language])
-                )
+            # set language version
+            # ('d', 'dart', 'go', 'perl', 'php', 'python', 'rust')
+            if language in job_config:
+                if language == 'android':
+                    build_matrix.add_item(
+                        "language_components",
+                        " ".join(job_config[language]["components"])
+                    )
+                else:
+                    build_matrix.add_item(
+                        'language_version',
+                        str(job_config[language])
+                    )
 
         # language specific build matrix parameters
         parameters = {
