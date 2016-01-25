@@ -36,6 +36,9 @@ STAGES_RESULT = [{
 
 
 class TestStages(unittest.TestCase):
+
+    """Unit tests for Stages class"""
+
     def setUp(self):
         """Initialise test environment before each test."""
         self.stages = Stages()
@@ -43,6 +46,7 @@ class TestStages(unittest.TestCase):
         self.maxDiff = None
 
     def test_novalue(self):
+        """Test initial state the function and classs instances."""
         # number of stages should be zero
         self.assertEqual(0, len(self.stages.stages))
         # test total duration
@@ -57,6 +61,7 @@ class TestStages(unittest.TestCase):
         self.assertEqual(b"<stages/>\n", self.stages.to_xml_string())
 
     def test_nofile(self):
+        """Test with a nonexisting file."""
         # function should return false when file doesn't exist
         self.assertFalse(self.stages.read_csv('nofile.csv'))
         self.assertFalse(self.stages.read_csv(''))
@@ -65,6 +70,7 @@ class TestStages(unittest.TestCase):
         self.assertRaises(TypeError, self.stages.read_csv)
 
     def test_set_end_timestamp(self):
+        """Test set_end_timestamp()"""
         self.assertEqual(0, self.stages.end_timestamp)
 
         self.stages.set_end_timestamp("string")
@@ -77,6 +83,7 @@ class TestStages(unittest.TestCase):
         self.assertEqual(123, self.stages.end_timestamp)
 
     def test_read_csv(self):
+        """Test read_csv()"""
         # read and parse sample file
         self.assertTrue(
             self.stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE)
@@ -116,6 +123,7 @@ class TestStages(unittest.TestCase):
             self.stages.stages)
 
     def test_parse_timestamps_end(self):
+        """Test parse_timestamps() with end tag"""
         # use 'end' to end timestamp parsing
         self.stages.parse_timestamps([
             ["stage1", constants.TIMESTAMP1],
@@ -125,6 +133,7 @@ class TestStages(unittest.TestCase):
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
     def test_parse_timestamps_caps(self):
+        """Test parse_timestamps() with End tag"""
         # use 'End' to end timestamp parsing
         self.stages.parse_timestamps([
             ["stage1", constants.TIMESTAMP1],
@@ -134,6 +143,7 @@ class TestStages(unittest.TestCase):
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
     def test_parse_timestamps_end_no_match(self):
+        """Test parse_timestamps() with not-matching end tag"""
         # use 'end_tag' as stage name, this shouldn't end time parsing
         self.stages.parse_timestamps([
             ["stage1", constants.TIMESTAMP1],
@@ -158,6 +168,7 @@ class TestStages(unittest.TestCase):
             self.stages.stages)
 
     def test_parse_timestamps_done(self):
+        """Test parse_timestamps() with done tag"""
         # use 'done' as end stage name
         self.stages.parse_timestamps([
             ["stage1", constants.TIMESTAMP1],
@@ -167,7 +178,8 @@ class TestStages(unittest.TestCase):
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
     def test_parse_timestamps_finished(self):
-        # use 'end' as end stage name
+        """Test parse_timestamps() with finished tag"""
+        # use 'finished' as end stage name
         self.stages.parse_timestamps([
             ["stage1", constants.TIMESTAMP1],
             ["finished", constants.TIMESTAMP4],
@@ -176,6 +188,7 @@ class TestStages(unittest.TestCase):
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
     def test_parse_timestamps_completed(self):
+        """Test parse_timestamps() with completed tag"""
         # use 'completed' as end stage name
         self.stages.parse_timestamps([
             ["stage1", constants.TIMESTAMP1],
@@ -185,6 +198,7 @@ class TestStages(unittest.TestCase):
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
     def test_parse_timestamps_end_timestamp(self):
+        """Test parse_timestamps() with end timestamp"""
         # no end_timestamp set
         self.stages.parse_timestamps([["stage1", constants.TIMESTAMP1]])
         self.assertEqual(0, len(self.stages.stages))
@@ -196,6 +210,7 @@ class TestStages(unittest.TestCase):
         self.assertListEqual(STAGES_RESULT, self.stages.stages)
 
     def test_parse_timestamps_nanoseconds(self):
+        """Test parse_timestamps() with nanosecond timestamps"""
         self.stages.set_end_timestamp(constants.TIMESTAMP_FINISHED)
 
         self.stages.parse_timestamps([["stage1", constants.TIMESTAMP_STARTED]])
@@ -217,6 +232,7 @@ class TestStages(unittest.TestCase):
         )
 
     def test_create_stage(self):
+        """Test create_stage()"""
         self.assertEqual(
             None,
             self.stages.create_stage("stage1", "string", "string")
@@ -255,6 +271,7 @@ class TestStages(unittest.TestCase):
         )
 
     def test_total_duration(self):
+        """Test total_duration()"""
         # read and parse sample file
         self.assertTrue(
             self.stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE)
@@ -264,6 +281,7 @@ class TestStages(unittest.TestCase):
         self.assertEqual(17, self.stages.total_duration())
 
     def test_to_xml(self):
+        """Test to_xml()"""
         # read and parse sample file
         self.stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
@@ -276,6 +294,7 @@ class TestStages(unittest.TestCase):
         self.assertTrue(xml_compare(expected_xml, self.stages.to_xml()))
 
     def test_to_xml_string(self):
+        """Test to_xml_string()"""
         # read and parse sample file
         self.stages.read_csv(constants.TEST_SAMPLE_TIMESTAMP_FILE)
 
@@ -289,6 +308,7 @@ class TestStages(unittest.TestCase):
             self.stages.to_xml_string())
 
     def test_add_stage(self):
+        """Test add_stage()"""
         # error is thrown when called without parameters
         self.assertRaises(TypeError, self.stages.add_stage)
 
@@ -372,6 +392,7 @@ class TestStages(unittest.TestCase):
             self.stages.stages)
 
     def test_add_stage_incomplete(self):
+        """Test add_stage() with an incomplete timestamp"""
         # add a stage without started_at timestamp
         stage = Stage()
         stage.set_name("stage1")
