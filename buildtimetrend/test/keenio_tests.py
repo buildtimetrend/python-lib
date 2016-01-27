@@ -21,7 +21,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend import keenio
-from buildtimetrend.keenio import check_time_interval
 from buildtimetrend.keenio import keen_io_generate_read_key
 from buildtimetrend.keenio import keen_io_generate_write_key
 from buildtimetrend.keenio import get_all_projects
@@ -30,7 +29,6 @@ from buildtimetrend.keenio import get_dashboard_keen_config
 from buildtimetrend.keenio import get_latest_buildtime
 from buildtimetrend.keenio import get_passed_build_jobs
 from buildtimetrend.keenio import get_repo_filter
-from buildtimetrend.keenio import get_result_color
 from buildtimetrend.keenio import get_total_build_jobs
 from buildtimetrend.keenio import get_total_builds
 from buildtimetrend.keenio import get_pct_passed_build_jobs
@@ -350,90 +348,94 @@ class TestKeen(unittest.TestCase):
         # empty or undefined defaults to 'week'
         self.assertDictEqual(
             {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
-            check_time_interval()
+            keenio.check_time_interval()
         )
         self.assertDictEqual(
             {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
-            check_time_interval(None)
+            keenio.check_time_interval(None)
         )
         self.assertDictEqual(
             {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
-            check_time_interval(1234)
+            keenio.check_time_interval(1234)
         )
         self.assertDictEqual(
             {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
-            check_time_interval([])
+            keenio.check_time_interval([])
         )
 
         # valid entries : week, month, year
         self.assertDictEqual(
             {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
-            check_time_interval("week")
+            keenio.check_time_interval("week")
         )
         self.assertDictEqual(
             {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 600},
-            check_time_interval("month")
+            keenio.check_time_interval("month")
         )
         self.assertDictEqual(
             {'name': 'year', 'timeframe': 'this_52_weeks', 'max_age': 1800},
-            check_time_interval("year")
+            keenio.check_time_interval("year")
         )
 
         # valid entries are case insensitive
         self.assertDictEqual(
             {'name': 'week', 'timeframe': 'this_7_days', 'max_age': 600},
-            check_time_interval("wEEk")
+            keenio.check_time_interval("wEEk")
         )
         self.assertDictEqual(
             {'name': 'month', 'timeframe': 'this_30_days', 'max_age': 600},
-            check_time_interval("moNth")
+            keenio.check_time_interval("moNth")
         )
 
     def test_get_result_color(self):
         """Test keenio.get_result_color()"""
-        self.assertEqual("red", get_result_color())
-        self.assertEqual("lightgrey", get_result_color(None))
-        self.assertEqual("lightgrey", get_result_color(None, None))
-        self.assertEqual("lightgrey", get_result_color(None, None, None))
-        self.assertEqual("lightgrey", get_result_color(None))
-        self.assertEqual("lightgrey", get_result_color(123, None))
-        self.assertEqual("lightgrey", get_result_color(123, 34, None))
-        self.assertEqual("lightgrey", get_result_color("string"))
-        self.assertEqual("lightgrey", get_result_color(123, "string"))
-        self.assertEqual("lightgrey", get_result_color(123, 34, "string"))
+        self.assertEqual("red", keenio.get_result_color())
+        self.assertEqual("lightgrey", keenio.get_result_color(None))
+        self.assertEqual("lightgrey", keenio.get_result_color(None, None))
+        self.assertEqual(
+            "lightgrey", keenio.get_result_color(None, None, None)
+        )
+        self.assertEqual("lightgrey", keenio.get_result_color(None))
+        self.assertEqual("lightgrey", keenio.get_result_color(123, None))
+        self.assertEqual("lightgrey", keenio.get_result_color(123, 34, None))
+        self.assertEqual("lightgrey", keenio.get_result_color("string"))
+        self.assertEqual("lightgrey", keenio.get_result_color(123, "string"))
+        self.assertEqual(
+            "lightgrey", keenio.get_result_color(123, 34, "string")
+        )
 
         # test 'OK' threshold
-        self.assertEqual("green", get_result_color(100))
-        self.assertEqual("green", get_result_color(100.0))
-        self.assertEqual("green", get_result_color(91))
-        self.assertEqual("green", get_result_color(90))
-        self.assertEqual("green", get_result_color(90.0))
+        self.assertEqual("green", keenio.get_result_color(100))
+        self.assertEqual("green", keenio.get_result_color(100.0))
+        self.assertEqual("green", keenio.get_result_color(91))
+        self.assertEqual("green", keenio.get_result_color(90))
+        self.assertEqual("green", keenio.get_result_color(90.0))
 
         # test 'warning' threshold
-        self.assertEqual("yellow", get_result_color(89))
-        self.assertEqual("yellow", get_result_color(89.9))
-        self.assertEqual("yellow", get_result_color(71))
-        self.assertEqual("yellow", get_result_color(70))
-        self.assertEqual("yellow", get_result_color(70.0))
+        self.assertEqual("yellow", keenio.get_result_color(89))
+        self.assertEqual("yellow", keenio.get_result_color(89.9))
+        self.assertEqual("yellow", keenio.get_result_color(71))
+        self.assertEqual("yellow", keenio.get_result_color(70))
+        self.assertEqual("yellow", keenio.get_result_color(70.0))
 
-         # test 'error' threshold
-        self.assertEqual("red", get_result_color(69))
-        self.assertEqual("red", get_result_color(69.9))
-        self.assertEqual("red", get_result_color(50))
-        self.assertEqual("red", get_result_color(50.0))
-        self.assertEqual("red", get_result_color(0))
-        self.assertEqual("red", get_result_color(-10))
+        # test 'error' threshold
+        self.assertEqual("red", keenio.get_result_color(69))
+        self.assertEqual("red", keenio.get_result_color(69.9))
+        self.assertEqual("red", keenio.get_result_color(50))
+        self.assertEqual("red", keenio.get_result_color(50.0))
+        self.assertEqual("red", keenio.get_result_color(0))
+        self.assertEqual("red", keenio.get_result_color(-10))
 
         # test custom thresholds
-        self.assertEqual("green", get_result_color(100, 75, 50))
-        self.assertEqual("green", get_result_color(76, 75, 50))
-        self.assertEqual("green", get_result_color(75, 75, 50))
-        self.assertEqual("yellow", get_result_color(74, 75, 50))
-        self.assertEqual("yellow", get_result_color(51, 75, 50))
-        self.assertEqual("yellow", get_result_color(50, 75, 50))
-        self.assertEqual("red", get_result_color(49, 75, 50))
-        self.assertEqual("red", get_result_color(0, 75, 50))
-        self.assertEqual("red", get_result_color(-10, 75, 50))
+        self.assertEqual("green", keenio.get_result_color(100, 75, 50))
+        self.assertEqual("green", keenio.get_result_color(76, 75, 50))
+        self.assertEqual("green", keenio.get_result_color(75, 75, 50))
+        self.assertEqual("yellow", keenio.get_result_color(74, 75, 50))
+        self.assertEqual("yellow", keenio.get_result_color(51, 75, 50))
+        self.assertEqual("yellow", keenio.get_result_color(50, 75, 50))
+        self.assertEqual("red", keenio.get_result_color(49, 75, 50))
+        self.assertEqual("red", keenio.get_result_color(0, 75, 50))
+        self.assertEqual("red", keenio.get_result_color(-10, 75, 50))
 
     def test_has_build_id(self):
         """Test keenio.has_build_id()"""
