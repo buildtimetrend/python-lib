@@ -158,7 +158,10 @@ def send_build_data(buildjob, detail=None):
             "Sending client build job data to Keen.io (data detail: %s)",
             data_detail
         )
+        # store build job data
         keen_add_event("build_jobs", {"job": buildjob.to_dict()})
+
+        # store build stages
         if data_detail in ("full", "extended"):
             keen_add_events("build_stages", buildjob.stages_to_list())
 
@@ -199,6 +202,10 @@ def keen_add_event(event_collection, payload):
 
     # submit list of events to Keen.io
     keen.add_event(event_collection, payload)
+    logger.info(
+        "Sent single event to '%s' collection (Keen.io)",
+        event_collection
+    )
 
 
 def keen_add_events(event_collection, payload):
@@ -213,6 +220,10 @@ def keen_add_events(event_collection, payload):
 
     # submit list of events to Keen.io
     keen.add_events({event_collection: payload})
+    logger.info(
+        "Sent multiple events to '%s' collection (Keen.io)",
+        event_collection
+    )
 
 
 def add_project_info_dict(payload):
