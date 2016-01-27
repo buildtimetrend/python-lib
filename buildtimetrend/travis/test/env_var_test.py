@@ -49,7 +49,7 @@ class TestTravisEnvVar(unittest.TestCase):
         self.assertEqual(None, settings.get_setting("pull_request"))
         self.assertEqual(buildtimetrend.NAME, settings.get_project_name())
 
-        #setup Travis env vars
+        # setup Travis env vars
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
             expected_build = os.environ["TRAVIS_BUILD_NUMBER"]
@@ -147,7 +147,7 @@ class TestTravisEnvVar(unittest.TestCase):
 
         self.assertEqual(None, settings.get_setting("build_matrix"))
 
-        #setup Travis env vars
+        # setup Travis env vars
         if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "true":
             reset_travis_vars = False
             expected_os = os.environ["TRAVIS_OS_NAME"]

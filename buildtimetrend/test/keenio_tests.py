@@ -45,9 +45,9 @@ from buildtimetrend.test import constants
 
 
 class TestKeen(unittest.TestCase):
-    
+
     """Unit tests for Keen related functions"""
-     
+
     copy_keen_project_id = None
     copy_keen_write_key = None
     copy_keen_read_key = None

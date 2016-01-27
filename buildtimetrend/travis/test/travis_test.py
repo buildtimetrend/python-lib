@@ -435,7 +435,7 @@ class TestTravisData(unittest.TestCase):
 
     def test_novalue(self):
         """Test freshly initialised Buildjob object."""
-         # data should be empty
+        # data should be empty
         self.assertEqual(0, len(self.travis_data.builds_data))
         self.assertEqual(None, self.travis_data.get_started_at())
         self.assertEqual(None, self.travis_data.get_finished_at())
@@ -747,7 +747,9 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.current_job.properties.get_items())
 
     def test_no_logfile(self):
-        """Test TravisData.parse_job_log_file() with an invalid or empty file"""
+        """
+        Test TravisData.parse_job_log_file() with an invalid or empty file
+        """
         # number of stages should be zero when file doesn't exist
         self.assertFalse(self.travis_data.parse_job_log_file('nofile.csv'))
         self.assertEqual(0, len(self.travis_data.current_job.stages.stages))

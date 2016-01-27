@@ -36,7 +36,7 @@ class TestTrend(unittest.TestCase):
 
     def test_novalue(self):
         """Test freshly initialised object."""
-         # number of builds and stages should be zero
+        # number of builds and stages should be zero
         self.assertEqual(0, len(self.trend.builds))
         self.assertEqual(0, len(self.trend.stages))
 

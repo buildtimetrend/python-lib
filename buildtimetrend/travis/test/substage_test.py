@@ -41,7 +41,7 @@ class TestTravisSubstage(unittest.TestCase):
 
     def test_novalue(self):
         """Test freshly initialised Substage object."""
-         # data should be empty
+        # data should be empty
         self.assertFalse(self.substage.has_name())
         self.assertFalse(self.substage.has_timing_hash())
         self.assertFalse(self.substage.has_command())

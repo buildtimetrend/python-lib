@@ -145,7 +145,10 @@ class TestService(unittest.TestCase):
         self.assertEqual("minimal", service.get_repo_data_detail("test/repo"))
         self.assertEqual("basic", service.get_repo_data_detail("user1/repo1"))
         self.assertEqual("basic", service.get_repo_data_detail("user1/repo2"))
-        self.assertEqual("minimal", service.get_repo_data_detail("user2/repo2"))
+        self.assertEqual(
+            "minimal",
+            service.get_repo_data_detail("user2/repo2")
+        )
         self.assertEqual(
             "full",
             service.get_repo_data_detail("user2/test_repo_full")

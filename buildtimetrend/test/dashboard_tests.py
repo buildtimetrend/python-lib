@@ -116,8 +116,8 @@ class TestDashboard(unittest.TestCase):
 
     @mock.patch(
         'buildtimetrend.dashboard.get_config_string',
-        return_value="var config = {'projectName': 'test/repo3'};\n" \
-            "var keenConfig = {'projectId': '1234abcd'};"
+        return_value="var config = {'projectName': 'test/repo3'};\n"
+        "var keenConfig = {'projectId': '1234abcd'};"
     )
     def test_generate_config_file(self, get_cfg_str_func):
         """Test dashboard.generate_config_file()"""
