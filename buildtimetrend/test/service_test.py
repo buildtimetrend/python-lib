@@ -22,7 +22,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 from buildtimetrend import service
-from buildtimetrend.service import format_duration
 from buildtimetrend.service import check_process_parameters
 from buildtimetrend.service import validate_travis_request
 from buildtimetrend.service import validate_task_parameters
@@ -166,32 +165,32 @@ class TestService(unittest.TestCase):
     def test_format_duration(self):
         """Test format_duration()"""
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, format_duration)
+        self.assertRaises(TypeError, service.format_duration)
 
-        self.assertEqual("unknown", format_duration(None))
-        self.assertEqual("unknown", format_duration("string"))
-        self.assertEqual("unknown", format_duration(-1))
+        self.assertEqual("unknown", service.format_duration(None))
+        self.assertEqual("unknown", service.format_duration("string"))
+        self.assertEqual("unknown", service.format_duration(-1))
 
-        self.assertEqual("0s", format_duration(0))
-        self.assertEqual("1s", format_duration(1))
-        self.assertEqual("1s", format_duration(1.4))
-        self.assertEqual("2s", format_duration(1.9))
-        self.assertEqual("2s", format_duration(2.1))
+        self.assertEqual("0s", service.format_duration(0))
+        self.assertEqual("1s", service.format_duration(1))
+        self.assertEqual("1s", service.format_duration(1.4))
+        self.assertEqual("2s", service.format_duration(1.9))
+        self.assertEqual("2s", service.format_duration(2.1))
 
-        self.assertEqual("59s", format_duration(59.1))
-        self.assertEqual("1m 0s", format_duration(59.7))
-        self.assertEqual("1m 0s", format_duration(60))
-        self.assertEqual("1m 0s", format_duration(60.3))
-        self.assertEqual("1m 1s", format_duration(60.6))
-        self.assertEqual("1m 1s", format_duration(61))
+        self.assertEqual("59s", service.format_duration(59.1))
+        self.assertEqual("1m 0s", service.format_duration(59.7))
+        self.assertEqual("1m 0s", service.format_duration(60))
+        self.assertEqual("1m 0s", service.format_duration(60.3))
+        self.assertEqual("1m 1s", service.format_duration(60.6))
+        self.assertEqual("1m 1s", service.format_duration(61))
 
-        self.assertEqual("59m 59s", format_duration(3599.3))
-        self.assertEqual("1h 0m 0s", format_duration(3599.7))
-        self.assertEqual("1h 0m 0s", format_duration(3600))
-        self.assertEqual("1h 0m 0s", format_duration(3600.3))
-        self.assertEqual("1h 0m 1s", format_duration(3601))
+        self.assertEqual("59m 59s", service.format_duration(3599.3))
+        self.assertEqual("1h 0m 0s", service.format_duration(3599.7))
+        self.assertEqual("1h 0m 0s", service.format_duration(3600))
+        self.assertEqual("1h 0m 0s", service.format_duration(3600.3))
+        self.assertEqual("1h 0m 1s", service.format_duration(3601))
 
-        self.assertEqual("2h 5m 0s", format_duration(7500))
+        self.assertEqual("2h 5m 0s", service.format_duration(7500))
 
     def test_check_process_parameters(self):
         """Test check_process_parameters()"""
