@@ -22,7 +22,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 from buildtimetrend import service
-from buildtimetrend.service import is_repo_allowed
 from buildtimetrend.service import format_duration
 from buildtimetrend.service import check_process_parameters
 from buildtimetrend.service import validate_travis_request
@@ -57,49 +56,49 @@ class TestService(unittest.TestCase):
     def test_is_repo_allowed(self):
         """Test is_repo_allowed()"""
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, is_repo_allowed)
+        self.assertRaises(TypeError, service.is_repo_allowed)
 
         # error is thrown when called with an invalid parameter
-        self.assertFalse(is_repo_allowed(None))
+        self.assertFalse(service.is_repo_allowed(None))
 
         # repo is allowed by default
-        self.assertTrue(is_repo_allowed("name/repo"))
+        self.assertTrue(service.is_repo_allowed("name/repo"))
 
     def test_is_repo_allowed_set_denied(self):
         """Test is_repo_allowed() by using the 'denied_repo' setting"""
         # test denied repo
         self.settings.add_setting("denied_repo", {"test1"})
 
-        self.assertTrue(is_repo_allowed("name/repo"))
-        self.assertFalse(is_repo_allowed("name/test1"))
-        self.assertTrue(is_repo_allowed("name/test2"))
+        self.assertTrue(service.is_repo_allowed("name/repo"))
+        self.assertFalse(service.is_repo_allowed("name/test1"))
+        self.assertTrue(service.is_repo_allowed("name/test2"))
 
     def test_is_repo_allowed_set_denied_multi(self):
         """Test is_repo_allowed() by using multiple 'denied_repo' settings"""
         # test multiple denied repos
         self.settings.add_setting("denied_repo", {"test1", "test2"})
 
-        self.assertTrue(is_repo_allowed("name/repo"))
-        self.assertFalse(is_repo_allowed("name/test1"))
-        self.assertFalse(is_repo_allowed("name/test2"))
+        self.assertTrue(service.is_repo_allowed("name/repo"))
+        self.assertFalse(service.is_repo_allowed("name/test1"))
+        self.assertFalse(service.is_repo_allowed("name/test2"))
 
     def test_is_repo_allowed_set_allowed(self):
         """Test is_repo_allowed() by using the 'allowed_repo' setting"""
         # test allowed repo
         self.settings.add_setting("allowed_repo", {"test1"})
 
-        self.assertFalse(is_repo_allowed("name/repo"))
-        self.assertTrue(is_repo_allowed("name/test1"))
-        self.assertFalse(is_repo_allowed("name/test2"))
+        self.assertFalse(service.is_repo_allowed("name/repo"))
+        self.assertTrue(service.is_repo_allowed("name/test1"))
+        self.assertFalse(service.is_repo_allowed("name/test2"))
 
     def test_is_repo_allowed_set_allowed_multi(self):
         """Test is_repo_allowed() by using multiple 'allowed_repo' settings"""
         # test multiple allowed repos
         self.settings.add_setting("allowed_repo", {"test1", "test2"})
 
-        self.assertFalse(is_repo_allowed("name/repo"))
-        self.assertTrue(is_repo_allowed("name/test1"))
-        self.assertTrue(is_repo_allowed("name/test2"))
+        self.assertFalse(service.is_repo_allowed("name/repo"))
+        self.assertTrue(service.is_repo_allowed("name/test1"))
+        self.assertTrue(service.is_repo_allowed("name/test2"))
 
     def test_is_repo_allowed_set_denied_allowed(self):
         """
@@ -111,10 +110,10 @@ class TestService(unittest.TestCase):
         # set allowed repo
         self.settings.add_setting("allowed_repo", {"name"})
 
-        self.assertTrue(is_repo_allowed("name/repo"))
-        self.assertFalse(is_repo_allowed("name/test1"))
-        self.assertTrue(is_repo_allowed("name/test2"))
-        self.assertFalse(is_repo_allowed("owner/repo"))
+        self.assertTrue(service.is_repo_allowed("name/repo"))
+        self.assertFalse(service.is_repo_allowed("name/test1"))
+        self.assertTrue(service.is_repo_allowed("name/test2"))
+        self.assertFalse(service.is_repo_allowed("owner/repo"))
 
     def test_get_repo_data_detail(self):
         """Test get_repo_data_detail()"""
