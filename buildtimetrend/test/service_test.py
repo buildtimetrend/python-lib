@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 """
-Unit tests for Service
+Unit tests for service related functions
 
 Copyright (C) 2014-2016 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 
@@ -35,7 +35,7 @@ import keen
 
 class TestService(unittest.TestCase):
 
-    """Unit tests for dashboard related functions"""
+    """Unit tests for service related functions"""
 
     @classmethod
     def setUpClass(cls):

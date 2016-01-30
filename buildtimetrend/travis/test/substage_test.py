@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 #
-# Unit tests for Trend class
+# Unit tests for TravisSubstage class
 #
 # Copyright (C) 2014-2016 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #

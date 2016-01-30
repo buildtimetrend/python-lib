@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 #
-# Unit tests for Travis env_var related functions
+# Unit tests for Travis CI environment variable related functions
 #
 # Copyright (C) 2014-2016 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -29,7 +29,7 @@ import unittest
 
 class TestTravisEnvVar(unittest.TestCase):
 
-    """Unit tests for Travis CI env var loading functions"""
+    """Unit tests for Travis CI environment variable related functions"""
 
     def setUp(self):
         """Initialise test environment before each test."""

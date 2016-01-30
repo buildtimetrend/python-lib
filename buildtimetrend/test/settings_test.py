@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 #
-# Unit tests for Settings
+# Unit tests for Settings class
 #
 # Copyright (C) 2014-2016 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #

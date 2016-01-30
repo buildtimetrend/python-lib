@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 #
-# Unit tests for Tools
+# Unit tests for tools related functions
 #
 # Copyright (C) 2014-2016 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
@@ -47,7 +47,7 @@ from buildtimetrend.test import constants
 
 class TestTools(unittest.TestCase):
 
-    """Unit tests for tools functions"""
+    """Unit tests for tools related functions"""
 
     @classmethod
     def setUpClass(cls):

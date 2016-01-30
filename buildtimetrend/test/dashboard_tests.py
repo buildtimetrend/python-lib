@@ -1,6 +1,6 @@
 # vim: set expandtab sw=4 ts=4:
 #
-# Unit tests for Dashboard related functions
+# Unit tests for dashboard related functions
 #
 # Copyright (C) 2014-2016 Dieter Adriaenssens <ruleant@users.sourceforge.net>
 #
