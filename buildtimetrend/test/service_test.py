@@ -22,7 +22,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 from buildtimetrend import service
-from buildtimetrend.service import check_process_parameters
 from buildtimetrend.service import validate_travis_request
 from buildtimetrend.service import validate_task_parameters
 from buildtimetrend.settings import Settings
@@ -198,29 +197,35 @@ class TestService(unittest.TestCase):
         no_repo_build = "Repo or build are not set, format : " \
             "/travis/<repo_owner>/<repo_name>/<build>"
 
-        self.assertEqual(no_repo_build, check_process_parameters())
-        self.assertEqual(no_repo_build, check_process_parameters("user/repo"))
-        self.assertEqual(no_repo_build, check_process_parameters(None, 1234))
+        self.assertEqual(no_repo_build, service.check_process_parameters())
+        self.assertEqual(
+            no_repo_build,
+            service.check_process_parameters("user/repo")
+        )
+        self.assertEqual(
+            no_repo_build,
+            service.check_process_parameters(None, 1234)
+        )
 
         # repo is not allowed
         # set denied repo
         self.settings.add_setting("denied_repo", {"test1"})
         self.assertEqual(
             "Project 'user/test1' is not allowed.",
-            check_process_parameters("user/test1", 1234)
+            service.check_process_parameters("user/test1", 1234)
         )
 
         # Keen.io write key is not set
         self.assertEqual(
             "Keen IO write key not set, no data was sent",
-            check_process_parameters("user/repo", 1234)
+            service.check_process_parameters("user/repo", 1234)
         )
 
         # set keen project ID and write key
         keen.project_id = "1234abcd"
         keen.write_key = "1234abcd5678efgh"
         with self.assertRaises(Exception) as exc:
-            check_process_parameters("user/repo", 1234)
+            service.check_process_parameters("user/repo", 1234)
         self.assertEqual(
             "Error checking if build exists.", str(exc.exception)
         )
@@ -234,11 +239,14 @@ class TestService(unittest.TestCase):
 
         self.assertEqual(
             "Build #1234 of project user/repo already exists in database",
-            check_process_parameters("user/repo", 1234)
+            service.check_process_parameters("user/repo", 1234)
         )
 
         has_build_id_func.return_value = False
-        self.assertEqual(None, check_process_parameters("user/repo", 1234))
+        self.assertEqual(
+            None,
+            service.check_process_parameters("user/repo", 1234)
+        )
 
     def test_validate_travis_request(self):
         """Test validate_travis_request()"""
