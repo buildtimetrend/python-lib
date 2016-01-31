@@ -23,7 +23,6 @@
 from buildtimetrend import keenio
 from buildtimetrend.keenio import keen_io_generate_read_key
 from buildtimetrend.keenio import keen_io_generate_write_key
-from buildtimetrend.keenio import get_dashboard_keen_config
 from buildtimetrend.keenio import get_latest_buildtime
 from buildtimetrend.keenio import get_passed_build_jobs
 from buildtimetrend.keenio import get_repo_filter
@@ -474,22 +473,22 @@ class TestKeen(unittest.TestCase):
     )
     def test_get_dashboard_keen_config(self, gen_key_func):
         """Test keenio.get_dashboard_keen_config()"""
-        self.assertDictEqual({}, get_dashboard_keen_config("test"))
+        self.assertDictEqual({}, keenio.get_dashboard_keen_config("test"))
 
         # test with a project id
         keen.master_key = '4567abcd5678efgh'
-        self.assertDictEqual({}, get_dashboard_keen_config("test"))
+        self.assertDictEqual({}, keenio.get_dashboard_keen_config("test"))
 
         # test with a KEEN_PROJECT_ID
         os.environ["KEEN_PROJECT_ID"] = 'abcd1234'
         self.assertDictEqual(
-            {'projectId': 'abcd1234'}, get_dashboard_keen_config("test")
+            {'projectId': 'abcd1234'}, keenio.get_dashboard_keen_config("test")
         )
 
         # test with a keen.project_id
         keen.project_id = '1234abcd'
         self.assertDictEqual(
-            {'projectId': '1234abcd'}, get_dashboard_keen_config("test")
+            {'projectId': '1234abcd'}, keenio.get_dashboard_keen_config("test")
         )
 
         # test with a generated read_key
@@ -499,7 +498,7 @@ class TestKeen(unittest.TestCase):
                 'projectId': '1234abcd',
                 'readKey': 'fedcba9876543210abcdefg'
             },
-            get_dashboard_keen_config("test")
+            keenio.get_dashboard_keen_config("test")
         )
 
         # test with a generated read_key (bytes)
@@ -509,7 +508,7 @@ class TestKeen(unittest.TestCase):
                 'projectId': '1234abcd',
                 'readKey': 'fedcba9876543210abcdefg'
             },
-            get_dashboard_keen_config("test")
+            keenio.get_dashboard_keen_config("test")
         )
 
     def test_get_avg_buildtime(self):
