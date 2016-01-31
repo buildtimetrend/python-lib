@@ -23,7 +23,6 @@
 from buildtimetrend import keenio
 from buildtimetrend.keenio import keen_io_generate_read_key
 from buildtimetrend.keenio import keen_io_generate_write_key
-from buildtimetrend.keenio import get_all_projects
 from buildtimetrend.keenio import get_avg_buildtime
 from buildtimetrend.keenio import get_dashboard_keen_config
 from buildtimetrend.keenio import get_latest_buildtime
@@ -824,12 +823,12 @@ class TestKeen(unittest.TestCase):
         )
         keen_select_func = patcher.start()
 
-        self.assertListEqual([], get_all_projects())
+        self.assertListEqual([], keenio.get_all_projects())
 
         # test with some token (value doesn't matter, keen.extract is mocked)
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
-        self.assertListEqual(["project1", "project2"], get_all_projects())
+        self.assertListEqual(["project1", "project2"], keenio.get_all_projects())
 
         # test parameters passed to keen.average
         args, kwargs = keen_select_func.call_args
@@ -838,29 +837,29 @@ class TestKeen(unittest.TestCase):
 
         # returned value is invalid
         keen_select_func.return_value = "invalid"
-        self.assertListEqual([], get_all_projects())
+        self.assertListEqual([], keenio.get_all_projects())
 
         # returned value is empty
         keen_select_func.return_value = None
-        self.assertListEqual([], get_all_projects())
+        self.assertListEqual([], keenio.get_all_projects())
         keen_select_func.return_value = []
-        self.assertListEqual([], get_all_projects())
+        self.assertListEqual([], keenio.get_all_projects())
 
         # returned value isn't a list
         keen_select_func.return_value = {}
-        self.assertListEqual([], get_all_projects())
+        self.assertListEqual([], keenio.get_all_projects())
         keen_select_func.return_value = 1234
-        self.assertListEqual([], get_all_projects())
+        self.assertListEqual([], keenio.get_all_projects())
         keen_select_func.return_value = "test"
-        self.assertListEqual([], get_all_projects())
+        self.assertListEqual([], keenio.get_all_projects())
 
         # test raising ConnectionError
         keen_select_func.side_effect = self.raise_conn_err
-        self.assertListEqual([], get_all_projects())
+        self.assertListEqual([], keenio.get_all_projects())
 
         # test raising KeenApiError (call with invalid read_key)
         patcher.stop()
-        self.assertListEqual([], get_all_projects())
+        self.assertListEqual([], keenio.get_all_projects())
 
     # decorators are applied from the bottom up see
     # https://docs.python.org/dev/library/unittest.mock.html#nesting-patch-decorators
