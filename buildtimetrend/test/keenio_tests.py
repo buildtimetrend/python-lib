@@ -23,7 +23,6 @@
 from buildtimetrend import keenio
 from buildtimetrend.keenio import keen_io_generate_read_key
 from buildtimetrend.keenio import keen_io_generate_write_key
-from buildtimetrend.keenio import get_latest_buildtime
 from buildtimetrend.keenio import get_passed_build_jobs
 from buildtimetrend.keenio import get_repo_filter
 from buildtimetrend.keenio import get_total_build_jobs
@@ -743,13 +742,13 @@ class TestKeen(unittest.TestCase):
         )
         keen_extract_func = patcher.start()
 
-        self.assertEqual(-1, get_latest_buildtime())
-        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        self.assertEqual(-1, keenio.get_latest_buildtime())
+        self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
         # test with some token (value doesn't matter, keen.extract is mocked)
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
-        self.assertEqual(345.56, get_latest_buildtime("test/repo"))
+        self.assertEqual(345.56, keenio.get_latest_buildtime("test/repo"))
 
         # test parameters passed to keen.average
         args, kwargs = keen_extract_func.call_args
@@ -777,11 +776,11 @@ class TestKeen(unittest.TestCase):
                 }
             }
         ]
-        self.assertEqual(123.45, get_latest_buildtime("test/repo"))
+        self.assertEqual(123.45, keenio.get_latest_buildtime("test/repo"))
 
         # return -1 if no value is returned
         keen_extract_func.return_value = []
-        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
         # returned value is invalid
         keen_extract_func.return_value = [
@@ -791,27 +790,27 @@ class TestKeen(unittest.TestCase):
                 }
             }
         ]
-        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
         # returned value is empty
         keen_extract_func.return_value = None
-        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
         # returned value isn't a list
         keen_extract_func.return_value = {}
-        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
         keen_extract_func.return_value = 1234
-        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
         keen_extract_func.return_value = "test"
-        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
         # test raising ConnectionError
         keen_extract_func.side_effect = self.raise_conn_err
-        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
         patcher.stop()
-        self.assertEqual(-1, get_latest_buildtime("test/repo"))
+        self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
     def test_get_all_projects(self):
         """Test keenio.get_all_projects()"""
