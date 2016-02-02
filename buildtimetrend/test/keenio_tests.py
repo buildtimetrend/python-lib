@@ -23,7 +23,6 @@
 from buildtimetrend import keenio
 from buildtimetrend.keenio import keen_io_generate_read_key
 from buildtimetrend.keenio import keen_io_generate_write_key
-from buildtimetrend.keenio import get_passed_build_jobs
 from buildtimetrend.keenio import get_repo_filter
 from buildtimetrend.keenio import get_total_build_jobs
 from buildtimetrend.keenio import get_total_builds
@@ -617,13 +616,13 @@ class TestKeen(unittest.TestCase):
         patcher = mock.patch('keen.count_unique', return_value=34)
         keen_count_func = patcher.start()
 
-        self.assertEqual(-1, get_passed_build_jobs())
-        self.assertEqual(-1, get_passed_build_jobs("test/repo"))
+        self.assertEqual(-1, keenio.get_passed_build_jobs())
+        self.assertEqual(-1, keenio.get_passed_build_jobs("test/repo"))
 
         # test with some token (value doesn't matter, keen.average is mocked)
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
-        self.assertEqual(34, get_passed_build_jobs("test/repo"))
+        self.assertEqual(34, keenio.get_passed_build_jobs("test/repo"))
 
         # test parameters passed to keen.average
         args, kwargs = keen_count_func.call_args
@@ -646,7 +645,7 @@ class TestKeen(unittest.TestCase):
             ]
         })
 
-        self.assertEqual(34, get_passed_build_jobs("test/repo2", "year"))
+        self.assertEqual(34, keenio.get_passed_build_jobs("test/repo2", "year"))
 
         # test parameters passed to keen.average
         args, kwargs = keen_count_func.call_args
@@ -671,11 +670,11 @@ class TestKeen(unittest.TestCase):
 
         # test raising ConnectionError
         keen_count_func.side_effect = self.raise_conn_err
-        self.assertEqual(-1, get_passed_build_jobs("test/repo"))
+        self.assertEqual(-1, keenio.get_passed_build_jobs("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
         patcher.stop()
-        self.assertEqual(-1, get_passed_build_jobs("test/repo"))
+        self.assertEqual(-1, keenio.get_passed_build_jobs("test/repo"))
 
     def test_get_total_builds(self):
         """Test keenio.get_total_builds()"""
