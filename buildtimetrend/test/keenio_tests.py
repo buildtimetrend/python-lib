@@ -23,7 +23,6 @@
 from buildtimetrend import keenio
 from buildtimetrend.keenio import keen_io_generate_read_key
 from buildtimetrend.keenio import keen_io_generate_write_key
-from buildtimetrend.keenio import get_repo_filter
 from buildtimetrend.keenio import get_total_build_jobs
 from buildtimetrend.keenio import get_total_builds
 from buildtimetrend.keenio import get_pct_passed_build_jobs
@@ -321,21 +320,21 @@ class TestKeen(unittest.TestCase):
 
     def test_get_repo_filter(self):
         """Test keenio.get_repo_filter()"""
-        self.assertEqual(None, get_repo_filter())
-        self.assertEqual(None, get_repo_filter(None))
+        self.assertEqual(None, keenio.get_repo_filter())
+        self.assertEqual(None, keenio.get_repo_filter(None))
 
         self.assertDictEqual({
             "property_name": "buildtime_trend.project_name",
             "operator": "eq",
             "property_value": "repo/name"},
-            get_repo_filter("repo/name")
+            keenio.get_repo_filter("repo/name")
         )
 
         self.assertDictEqual({
             "property_name": "buildtime_trend.project_name",
             "operator": "eq",
             "property_value": "1234"},
-            get_repo_filter(1234)
+            keenio.get_repo_filter(1234)
         )
 
     def test_check_time_interval(self):
