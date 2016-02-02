@@ -644,7 +644,9 @@ class TestKeen(unittest.TestCase):
             ]
         })
 
-        self.assertEqual(34, keenio.get_passed_build_jobs("test/repo2", "year"))
+        self.assertEqual(
+            34, keenio.get_passed_build_jobs("test/repo2", "year")
+        )
 
         # test parameters passed to keen.average
         args, kwargs = keen_count_func.call_args
@@ -823,7 +825,10 @@ class TestKeen(unittest.TestCase):
         # test with some token (value doesn't matter, keen.extract is mocked)
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
-        self.assertListEqual(["project1", "project2"], keenio.get_all_projects())
+        self.assertListEqual(
+            ["project1", "project2"],
+            keenio.get_all_projects()
+        )
 
         # test parameters passed to keen.average
         args, kwargs = keen_select_func.call_args
