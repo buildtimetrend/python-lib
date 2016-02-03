@@ -21,9 +21,12 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend.trend import Trend
+import os
+from buildtimetrend import tools
 import unittest
 
 TEST_SAMPLE_FILE = 'buildtimetrend/test/testsample_buildtimes.xml'
+TEST_TREND_FILE = '/tmp/test_trend.png'
 
 
 class TestTrend(unittest.TestCase):
@@ -33,6 +36,11 @@ class TestTrend(unittest.TestCase):
     def setUp(self):
         """Initialise test environment before each test."""
         self.trend = Trend()
+
+    def tearDown(self):
+        """Clean up after tests"""
+        if (tools.check_file(TEST_TREND_FILE)):
+            os.remove(TEST_TREND_FILE)
 
     def test_novalue(self):
         """Test freshly initialised object."""
@@ -66,3 +74,18 @@ class TestTrend(unittest.TestCase):
             {'stage1': [4, 3, 2], 'stage2': [5, 6, 7], 'stage3': [10, 11, 12],
              'stage4': [1, 0, 3], 'stage5': [0, 6, 0]},
             self.trend.stages)
+
+    def test_generate(self):
+        """Test generate()"""
+        self.trend.builds = ['10', '11.1', '#3']
+        self.trend.stages = {
+            'stage1': [4, 3, 2],
+            'stage2': [5, 6, 7],
+            'stage3': [10, 11, 12],
+            'stage4': [1, 0, 3],
+            'stage5': [0, 6, 0]
+        }
+
+        self.assertFalse(tools.check_file(TEST_TREND_FILE))
+        self.trend.generate(TEST_TREND_FILE)
+        self.assertTrue(tools.check_file(TEST_TREND_FILE))

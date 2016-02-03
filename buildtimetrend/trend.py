@@ -26,6 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 from lxml import etree
 from buildtimetrend import logger
 from buildtimetrend.tools import check_file
+from collections import OrderedDict
 import matplotlib
 # Force matplotlib to not use any Xwindow backend.
 matplotlib.use('Agg')
@@ -111,9 +112,13 @@ class Trend(object):
         """
         fig, axes = plt.subplots()
 
+        # sort stages by key
+        stages = OrderedDict(sorted(self.stages.items()))
+
         # add data
-        x_values = range(len(self.builds))
-        plots = plt.stackplot(x_values, self.stages.values())
+        x_values = list(range(len(self.builds)))
+        y_values = list(stages.values())
+        plots = plt.stackplot(x_values, y_values)
         plt.xticks(x_values, self.builds, rotation=45, size=10)
 
         # label axes and add graph title
@@ -128,7 +133,11 @@ class Trend(object):
             legend_proxies.append(
                 plt.Rectangle((0, 0), 1, 1, fc=plot.get_facecolor()[0]))
         # add legend in reverse order, in upper left corner
-        axes.legend(legend_proxies[::-1], self.stages.keys()[::-1], loc=2)
+        axes.legend(
+            legend_proxies[::-1],
+            list(stages.keys())[::-1],
+            loc=2
+        )
 
         # save figure
         plt.savefig(trend_file)
