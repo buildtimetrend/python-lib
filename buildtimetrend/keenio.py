@@ -98,7 +98,7 @@ def keen_is_readable():
     return False
 
 
-def keen_io_generate_read_key(repo):
+def generate_read_key(repo):
     """
     Create scoped key for reading only the build-stages related data.
 
@@ -122,7 +122,7 @@ def keen_io_generate_read_key(repo):
     return scoped_keys.encrypt(master_key, privileges)
 
 
-def keen_io_generate_write_key():
+def generate_write_key():
     """Create scoped key for write access to Keen.io database."""
     if not keen_has_master_key():
         logger.warning("Keen.io Write Key was not created,"
@@ -296,7 +296,7 @@ def get_dashboard_keen_config(repo):
     keen_config['projectId'] = str(keen_project_id)
 
     # generate read key
-    read_key = keen_io_generate_read_key(repo)
+    read_key = generate_read_key(repo)
     if read_key is not None:
         # convert bytes to string
         if isinstance(read_key, bytes):

@@ -21,8 +21,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend import keenio
-from buildtimetrend.keenio import keen_io_generate_read_key
-from buildtimetrend.keenio import keen_io_generate_write_key
 from buildtimetrend.keenio import get_pct_passed_build_jobs
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import is_string
@@ -297,24 +295,24 @@ class TestKeen(unittest.TestCase):
     def test_generate_read_key(self):
         """Test keenio.generate_read_key()"""
         # should return None if master key is not set
-        self.assertEqual(None, keen_io_generate_read_key(None))
-        self.assertEqual(None, keen_io_generate_read_key("test/project"))
+        self.assertEqual(None, keenio.generate_read_key(None))
+        self.assertEqual(None, keenio.generate_read_key("test/project"))
 
         # set master_key
         os.environ["KEEN_MASTER_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(isinstance(keen_io_generate_read_key(None), bytes))
+        self.assertTrue(isinstance(keenio.generate_read_key(None), bytes))
         self.assertTrue(
-            isinstance(keen_io_generate_read_key("test/project"), bytes)
+            isinstance(keenio.generate_read_key("test/project"), bytes)
         )
 
     def test_generate_write_key(self):
         """Test keenio.generate_write_key()"""
         # should return None if master key is not set
-        self.assertEqual(None, keen_io_generate_write_key())
+        self.assertEqual(None, keenio.generate_write_key())
 
         # set master_key
         os.environ["KEEN_MASTER_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(isinstance(keen_io_generate_write_key(), bytes))
+        self.assertTrue(isinstance(keenio.generate_write_key(), bytes))
 
     def test_get_repo_filter(self):
         """Test keenio.get_repo_filter()"""
@@ -463,7 +461,7 @@ class TestKeen(unittest.TestCase):
         self.assertRaises(SystemError, keenio.has_build_id, "test", 123)
 
     @mock.patch(
-        'buildtimetrend.keenio.keen_io_generate_read_key',
+        'buildtimetrend.keenio.generate_read_key',
         return_value=None
     )
     def test_get_dashboard_keen_config(self, gen_key_func):

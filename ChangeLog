@@ -26,6 +26,9 @@ v0.4 (not yet released)
 - issue #124 : specify level of detail when storing build job data, with
   `data_detail` and `repo_data_detail` config settings and BTT_DATA_DETAIL env var
 - issue #140 : properly check if all required components exist in Travis job config
+- rename methods :
+  * keenio.keen_io_generate_read_key -> keenio.generate_read_key()
+  * keenio.keen_io_generate_write_key -> keenio.generate_write_key()
 
 v0.3 (released on 17Nov2015)
 - move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut
