@@ -21,7 +21,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from buildtimetrend import keenio
-from buildtimetrend.keenio import get_pct_passed_build_jobs
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import is_string
 from buildtimetrend.buildjob import BuildJob
@@ -867,7 +866,7 @@ class TestKeen(unittest.TestCase):
     )
     def test_pct_passed_build_jobs(self, passed_func, total_func):
         """Test keenio.get_pct_passed_build_jobs()"""
-        self.assertEqual(75, get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(75, keenio.get_pct_passed_build_jobs("test/repo", "week"))
 
         # function was last called with argument "test/repo"
         args, kwargs = total_func.call_args
@@ -879,18 +878,18 @@ class TestKeen(unittest.TestCase):
         self.assertDictEqual(kwargs, {})
 
         total_func.return_value = 150
-        self.assertEqual(50, get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(50, keenio.get_pct_passed_build_jobs("test/repo", "week"))
 
         total_func.return_value = 0
-        self.assertEqual(-1, get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(-1, keenio.get_pct_passed_build_jobs("test/repo", "week"))
         total_func.return_value = -1
-        self.assertEqual(-1, get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(-1, keenio.get_pct_passed_build_jobs("test/repo", "week"))
 
         total_func.return_value = 100
         passed_func.return_value = 0
-        self.assertEqual(0, get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(0, keenio.get_pct_passed_build_jobs("test/repo", "week"))
         passed_func.return_value = -1
-        self.assertEqual(-1, get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(-1, keenio.get_pct_passed_build_jobs("test/repo", "week"))
 
     @mock.patch('keen.add_event')
     def test_keen_add_event(self, add_event_func):
