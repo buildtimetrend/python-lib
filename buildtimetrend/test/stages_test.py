@@ -39,11 +39,15 @@ class TestStages(unittest.TestCase):
 
     """Unit tests for Stages class"""
 
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixture."""
+        # show full diff in case of assert mismatch
+        cls.maxDiff = None
+
     def setUp(self):
         """Initialise test environment before each test."""
         self.stages = Stages()
-        # show full diff in case of assert mismatch
-        self.maxDiff = None
 
     def test_novalue(self):
         """Test initial state the function and classs instances."""
@@ -456,9 +460,14 @@ class TestStages(unittest.TestCase):
 
 
 class TestStage(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixture."""
+        # show full diff in case of assert mismatch
+        cls.maxDiff = None
+
     def setUp(self):
         """Initialise test environment before each test."""
-        self.maxDiff = None
         self.stage = Stage()
 
     def test_novalue(self):

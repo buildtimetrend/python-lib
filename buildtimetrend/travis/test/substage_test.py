@@ -34,9 +34,14 @@ class TestTravisSubstage(unittest.TestCase):
 
     """Unit tests for TravisSubstage class"""
 
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixture."""
+        # show full diff in case of assert mismatch
+        cls.maxDiff = None
+
     def setUp(self):
         """Initialise test environment before each test."""
-        self.maxDiff = None
         self.substage = TravisSubstage()
 
     def test_novalue(self):

@@ -56,6 +56,9 @@ class TestSettings(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up test fixture."""
+        # show full diff in case of assert mismatch
+        cls.maxDiff = None
+
         cls.settings = Settings()
 
         cls.project_name = buildtimetrend.NAME

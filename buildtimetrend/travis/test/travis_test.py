@@ -428,9 +428,14 @@ class TestTravisData(unittest.TestCase):
 
     """Unit tests for TravisData class"""
 
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixture."""
+        # show full diff in case of assert mismatch
+        cls.maxDiff = None
+
     def setUp(self):
         """Initialise test environment before each test."""
-        self.maxDiff = None
         self.travis_data = TravisData(TEST_REPO, TEST_BUILD)
 
     def test_novalue(self):

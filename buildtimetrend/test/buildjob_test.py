@@ -35,11 +35,15 @@ class TestBuildJob(unittest.TestCase):
 
     """Unit tests for BuildJob class"""
 
+    @classmethod
+    def setUpClass(cls):
+        """Set up test fixture."""
+        # show full diff in case of assert mismatch
+        cls.maxDiff = None
+
     def setUp(self):
         """Initialise test environment before each test."""
         self.build = BuildJob()
-        # show full diff in case of assert mismatch
-        self.maxDiff = None
         # reinitialise settings
         Settings().__init__()
 
