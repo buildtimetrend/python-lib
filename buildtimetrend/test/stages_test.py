@@ -50,7 +50,7 @@ class TestStages(unittest.TestCase):
         self.stages = Stages()
 
     def test_novalue(self):
-        """Test initial state the function and classs instances."""
+        """Test initial state the function and class instances."""
         # number of stages should be zero
         self.assertEqual(0, len(self.stages.stages))
         # test total duration
@@ -460,6 +460,9 @@ class TestStages(unittest.TestCase):
 
 
 class TestStage(unittest.TestCase):
+
+    """Unit tests for Stage class"""
+
     @classmethod
     def setUpClass(cls):
         """Set up test fixture."""
@@ -471,12 +474,14 @@ class TestStage(unittest.TestCase):
         self.stage = Stage()
 
     def test_novalue(self):
+        """Test initial state the function and class instances."""
         # number of stages should be zero
         self.assertEqual(2, len(self.stage.data))
         # test total duration
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
     def test_set_name(self):
+        """Test set_name()"""
         # name should be a string
         self.assertFalse(self.stage.set_name(None))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
@@ -492,6 +497,7 @@ class TestStage(unittest.TestCase):
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
     def test_set_command(self):
+        """Test set_command()"""
         # command should be a string
         self.assertFalse(self.stage.set_command(None))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
@@ -509,6 +515,7 @@ class TestStage(unittest.TestCase):
             self.stage.to_dict())
 
     def test_set_duration(self):
+        """Test set_duration()"""
         # duration should be a number
         self.assertFalse(self.stage.set_duration(None))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
@@ -535,6 +542,7 @@ class TestStage(unittest.TestCase):
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
     def test_set_duration_nano(self):
+        """Test set_duration_nano()"""
         # duration should be a number
         self.assertFalse(self.stage.set_duration_nano(None))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
@@ -561,6 +569,7 @@ class TestStage(unittest.TestCase):
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
 
     def test_set_timestamp(self):
+        """Test set_timestamp()"""
         # timestamp should be valid
         self.assertFalse(self.stage.set_timestamp("event1", None))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
@@ -596,6 +605,7 @@ class TestStage(unittest.TestCase):
             self.stage.to_dict())
 
     def test_set_timestamp_nano(self):
+        """Test set_timestamp_nano()"""
         # test 0 timestamp (epoch)
         self.assertTrue(self.stage.set_timestamp_nano("event1", 0))
         self.assertDictEqual(
@@ -628,6 +638,7 @@ class TestStage(unittest.TestCase):
             self.stage.to_dict())
 
     def test_set_started_at(self):
+        """Test set_started_at()"""
         # timestamp should be valid
         self.assertFalse(self.stage.set_started_at(None))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
@@ -663,6 +674,7 @@ class TestStage(unittest.TestCase):
             self.stage.to_dict())
 
     def test_set_started_at_nano(self):
+        """Test set_started_at_nano()"""
         # test timestamp
         self.assertTrue(
             self.stage.set_started_at_nano(constants.TIMESTAMP_NANO_TESTDATE)
@@ -679,6 +691,7 @@ class TestStage(unittest.TestCase):
             self.stage.to_dict())
 
     def test_set_finished_at(self):
+        """Test set_finished_at()"""
         # timestamp should be valid
         self.assertFalse(self.stage.set_finished_at(None))
         self.assertDictEqual({"name": "", "duration": 0}, self.stage.to_dict())
@@ -714,6 +727,7 @@ class TestStage(unittest.TestCase):
             self.stage.to_dict())
 
     def test_set_finished_at_nano(self):
+        """Test set_finished_at_nano()"""
         # test timestamp
         self.assertTrue(
             self.stage.set_finished_at_nano(constants.TIMESTAMP_NANO_TESTDATE)
@@ -730,6 +744,7 @@ class TestStage(unittest.TestCase):
             self.stage.to_dict())
 
     def test_todict(self):
+        """Test todict()"""
         self.assertTrue(self.stage.set_name("stage.1"))
         self.assertTrue(self.stage.set_duration(11.2345))
         self.assertTrue(self.stage.set_command("command1.sh"))
