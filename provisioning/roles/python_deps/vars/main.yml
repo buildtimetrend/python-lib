@@ -1,2 +1,6 @@
 python_exec: python
 pip_exec: pip
+python_requirements:
+  - '/vagrant/requirements.txt'
+  - '/vagrant/requirements_test.txt'
+  - '/vagrant/requirements_native.txt'

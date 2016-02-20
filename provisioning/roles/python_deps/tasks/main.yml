@@ -30,7 +30,4 @@
     requirements={{ item }}
     executable={{ pip_exec }}
   when: pipinstalled|success and libsinstalled|success
-  with_items:
-    - '/vagrant/requirements.txt'
-    - '/vagrant/requirements_native.txt'
-    - '/vagrant/requirements_test.txt'
+  with_items: "{{ python_requirements }}"
