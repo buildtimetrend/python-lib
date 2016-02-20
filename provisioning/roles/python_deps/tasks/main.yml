@@ -15,7 +15,7 @@
   apt: name={{ item }} state=latest
   with_items:
     - pkg-config
-    - "{{ python_exec }}-dev"
+    - "python{{ python_version }}-dev"
     - "{{ extra_libraries }}"
   register: libsinstalled
 

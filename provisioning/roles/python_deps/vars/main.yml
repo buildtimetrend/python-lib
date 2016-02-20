@@ -1,5 +1,6 @@
-python_exec: python
-pip_exec: pip
+python_version: ''
+python_exec: "python{{ python_version }}"
+pip_exec: "pip{{ python_version }}"
 python_requirements:
   - '/vagrant/requirements.txt'
   - '/vagrant/requirements_test.txt'
