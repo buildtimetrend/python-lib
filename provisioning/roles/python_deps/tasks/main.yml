@@ -25,20 +25,12 @@
     - libfreetype6-dev
   register: libsinstalled
 
-- name: "Install buildtimetrend requirements"
+- name: "Install python requirements"
   pip:
-    requirements='/vagrant/requirements.txt'
+    requirements={{ item }}
     executable={{ pip_exec }}
   when: pipinstalled|success and libsinstalled|success
-
-- name: "Install buildtimetrend native requirements"
-  pip:
-    requirements='/vagrant/requirements_native.txt'
-    executable={{ pip_exec }}
-  when: pipinstalled|success and libsinstalled|success
-
-- name: "Install buildtimetrend test requirements"
-  pip:
-    requirements='/vagrant/requirements_test.txt'
-    executable={{ pip_exec }}
-  when: pipinstalled|success
+  with_items:
+    - '/vagrant/requirements.txt'
+    - '/vagrant/requirements_native.txt'
+    - '/vagrant/requirements_test.txt'
