@@ -12,17 +12,11 @@
   register: noseinstalled
 
 - name: "Install required libraries"
-  apt: name={{item}} state=latest
+  apt: name={{ item }} state=latest
   with_items:
     - pkg-config
     - "{{ python_exec }}-dev"
-    - libxml2-dev
-    - libxslt1-dev
-    - zlib1g-dev
-    - python-libxml2
-    - python-libxslt1
-    - libpng12-dev
-    - libfreetype6-dev
+    - "{{ extra_libraries }}"
   register: libsinstalled
 
 - name: "Install python requirements"
