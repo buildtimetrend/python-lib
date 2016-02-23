@@ -4,5 +4,19 @@
       apt: name=git state=latest
 
   roles:
-    - {role: python_deps}
-    - {role: python_deps, python_version: "3"}
+    - {role: buildtimetrend.python_deps, python_deps_requirements: "{{ reqs }}", python_deps_extra_libs: "{{ extra_libs }}"}
+    - {role: buildtimetrend.python_deps, python_deps_requirements: "{{ reqs }}", python_deps_extra_libs: "{{ extra_libs }}", python_deps_python_version: "3"}
+
+  vars:
+    reqs:
+      - '/vagrant/requirements.txt'
+      - '/vagrant/requirements_test.txt'
+      - '/vagrant/requirements_native.txt'
+    extra_libs:
+      - libxml2-dev
+      - libxslt1-dev
+      - zlib1g-dev
+      - python-libxml2
+      - python-libxslt1
+      - libpng12-dev
+      - libfreetype6-dev
