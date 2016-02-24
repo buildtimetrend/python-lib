@@ -4,8 +4,17 @@
       apt: name=git state=latest
 
   roles:
-    - {role: buildtimetrend.python_deps, python_deps_requirements: "{{ reqs }}", python_deps_extra_libs: "{{ extra_libs }}"}
-    - {role: buildtimetrend.python_deps, python_deps_requirements: "{{ reqs }}", python_deps_extra_libs: "{{ extra_libs }}", python_deps_python_version: "3"}
+    - {
+        role: buildtimetrend.python_deps,
+        python_deps_requirements: "{{ reqs }}",
+        python_deps_extra_libs: "{{ extra_libs }}"
+      }
+    - {
+        role: buildtimetrend.python_deps,
+        python_deps_requirements: "{{ reqs }}",
+        python_deps_extra_libs: "{{ extra_libs }}",
+        python_deps_python_version: "3"
+      }
 
   vars:
     reqs:
