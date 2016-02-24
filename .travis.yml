@@ -5,6 +5,7 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
+  - "nightly"
 # enable building on container-based infrastructure
 sudo: false
 install:
