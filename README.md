@@ -5,9 +5,9 @@ Visualise what's trending in your build process
 
 [![Buildtime Trend Python library](http://img.shields.io/badge/release-v0.3-blue.svg)](https://github.com/buildtimetrend/python-lib/releases/latest)
 [![Buildtime Trend Python library (dev)](http://img.shields.io/badge/dev-v0.4.dev-blue.svg)](https://github.com/buildtimetrend/python-lib/zipball/master)
-[![Latest Version](https://pypip.in/version/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
-[![Downloads](https://pypip.in/download/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
-[![Supported Python versions](https://pypip.in/py_versions/buildtimetrend/badge.svg)](https://pypi.python.org/pypi/buildtimetrend/)
+[![PyPI Latest Version](https://img.shields.io/pypi/v/buildtimetrend.svg)](https://pypi.python.org/pypi/buildtimetrend/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/buildtimetrend.svg)](https://pypi.python.org/pypi/buildtimetrend/)
+[![PyPI Supported Python versions](https://img.shields.io/pypi/pyversions/buildtimetrend.svg)](https://pypi.python.org/pypi/buildtimetrend/)
 [![Can I Use Python 3?](https://caniusepython3.com/project/buildtimetrend.svg)](https://caniusepython3.com/project/buildtimetrend)
 
 [![Build Status](https://travis-ci.org/buildtimetrend/python-lib.svg?branch=master)](https://travis-ci.org/buildtimetrend/python-lib)
