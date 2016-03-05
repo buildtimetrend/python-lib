@@ -23,6 +23,7 @@
       - '/vagrant/requirements_test.txt'
       - '/vagrant/requirements_native.txt'
     extra_libs:
+      - g++
       - libxml2-dev
       - libxslt1-dev
       - zlib1g-dev
