@@ -31,6 +31,7 @@ import copy
 import unittest
 import mock
 from buildtimetrend.test import constants
+from datetime import datetime, timedelta
 
 
 class TestKeen(unittest.TestCase):
@@ -890,6 +891,21 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(0, keenio.get_pct_passed_build_jobs("test/repo", "week"))
         passed_func.return_value = -1
         self.assertEqual(-1, keenio.get_pct_passed_build_jobs("test/repo", "week"))
+
+    @mock.patch('keen.maximum')
+    def test_get_days_since_fail(self, failed_func):
+        """Test keenio.get_days_since_fail()"""
+        failed_func.return_value = (
+            (datetime.now() - timedelta(days=5)) - datetime(1970, 1, 1)
+        ).total_seconds()
+
+        self.assertEqual(-1, keenio.get_days_since_fail())
+        self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
+
+        # test with some token (value doesn't matter, keen.maximum is mocked)
+        keen.project_id = "1234abcd"
+        keen.read_key = "4567abcd5678efgh"
+        self.assertEqual(5, keenio.get_days_since_fail("test/repo"))
 
     @mock.patch('keen.add_event')
     def test_keen_add_event(self, add_event_func):

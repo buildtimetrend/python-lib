@@ -28,6 +28,8 @@ from buildtimetrend import logger
 import copy
 import keen
 import requests
+from datetime import datetime
+import math
 from keen import scoped_keys
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_dict
@@ -508,6 +510,44 @@ def get_latest_buildtime(repo=None):
             check_dict(result[0], None, ['job']) and \
             check_dict(result[0]['job'], None, ['duration']):
         return result[0]['job']['duration']
+
+    return -1
+
+
+def get_days_since_fail(repo=None):
+    """
+    Query Keen.io database and retrieve time since last failed buildjob.
+
+    Parameters :
+    - repo : repo name (fe. buildtimetrend/python-lib)
+    """
+    if repo is None or not keen_is_readable():
+        return -1
+
+    try:
+        failed_timestamp = keen.maximum(
+            "build_jobs",
+            target_property="job.finished_at.timestamp_seconds",
+            filters=[
+                get_repo_filter(repo),
+                {
+                    "operator": "ne",
+                    "property_name": "job.result",
+                    "property_value": "passed"
+                }
+            ]
+        )
+    except requests.ConnectionError:
+        logger.error("Connection to Keen.io API failed")
+        return -1
+    except keen.exceptions.KeenApiError as msg:
+        logger.error("Error in keenio.get_days_since_fail() : " + str(msg))
+        return -1
+
+    if failed_timestamp > 0:
+        dt_failed = datetime.fromtimestamp(failed_timestamp)
+        dt_now = datetime.now()
+        return math.floor((dt_now - dt_failed).total_seconds() / (3600 * 24))
 
     return -1
 
