@@ -29,6 +29,7 @@ v0.4 (not yet released)
 - rename methods :
   * keenio.keen_io_generate_read_key -> keenio.generate_read_key()
   * keenio.keen_io_generate_write_key -> keenio.generate_write_key()
+- issue #38 : add keenio.get_days_since_fail()
 
 v0.3 (released on 17Nov2015)
 - move buildtimetrend.tools.get_logger() to buildtimetrend.get_logger() and create buildtimetrend.logger shortcut
