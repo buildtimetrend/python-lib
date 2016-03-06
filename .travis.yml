@@ -23,6 +23,7 @@ deploy:
   user: Dieter.Adriaenssens
   on:
     tags: true
+    python: 3.5
   password:
     secure: UGQmcX4npYdLhCJqJDxWLBvUVSZCYnvlqpvcSsDy6KC8ASwfK6lZh5pRmX/Z1dXDxKynsofJEyAJW9GrkUO7/9xx+r19/UzXbvQ1TS93NP47fNkXc3/ceCRH5gM2hGoQZKUJTL/hnX+aDKAb4c/L76kg+psptANu6iJMnC6yVY4=
 notifications:
