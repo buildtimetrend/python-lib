@@ -96,10 +96,6 @@ class TestKeen(unittest.TestCase):
         keen.read_key = None
         keen.master_key = None
 
-    def raise_conn_err(*args, **kwargs):
-        """Mock function raising a Connection Error"""
-        raise requests.ConnectionError
-
     def test_novalues(self):
         """Test initial state the function and classs instances."""
         self.assertEqual(None, keen.project_id)
@@ -457,7 +453,7 @@ class TestKeen(unittest.TestCase):
         self.assertTrue(keenio.has_build_id("test", 123))
 
         # test raising ConnectionError
-        keen_count_func.side_effect = self.raise_conn_err
+        keen_count_func.side_effect = requests.ConnectionError
         self.assertRaises(SystemError, keenio.has_build_id, "test", 123)
 
     @mock.patch(
@@ -548,7 +544,7 @@ class TestKeen(unittest.TestCase):
         })
 
         # test raising ConnectionError
-        keen_avg_func.side_effect = self.raise_conn_err
+        keen_avg_func.side_effect = requests.ConnectionError
         self.assertEqual(-1, keenio.get_avg_buildtime("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
@@ -599,7 +595,7 @@ class TestKeen(unittest.TestCase):
         })
 
         # test raising ConnectionError
-        keen_count_func.side_effect = self.raise_conn_err
+        keen_count_func.side_effect = requests.ConnectionError
         self.assertEqual(-1, keenio.get_total_build_jobs("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
@@ -666,7 +662,7 @@ class TestKeen(unittest.TestCase):
         })
 
         # test raising ConnectionError
-        keen_count_func.side_effect = self.raise_conn_err
+        keen_count_func.side_effect = requests.ConnectionError
         self.assertEqual(-1, keenio.get_passed_build_jobs("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
@@ -717,7 +713,7 @@ class TestKeen(unittest.TestCase):
         })
 
         # test raising ConnectionError
-        keen_count_func.side_effect = self.raise_conn_err
+        keen_count_func.side_effect = requests.ConnectionError
         self.assertEqual(-1, keenio.get_total_builds("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
@@ -801,7 +797,7 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
         # test raising ConnectionError
-        keen_extract_func.side_effect = self.raise_conn_err
+        keen_extract_func.side_effect = requests.ConnectionError
         self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
@@ -850,7 +846,7 @@ class TestKeen(unittest.TestCase):
         self.assertListEqual([], keenio.get_all_projects())
 
         # test raising ConnectionError
-        keen_select_func.side_effect = self.raise_conn_err
+        keen_select_func.side_effect = requests.ConnectionError
         self.assertListEqual([], keenio.get_all_projects())
 
         # test raising KeenApiError (call with invalid read_key)
@@ -917,7 +913,7 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
 
         # test raising ConnectionError
-        failed_func.side_effect = self.raise_conn_err
+        failed_func.side_effect = requests.ConnectionError
         self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
