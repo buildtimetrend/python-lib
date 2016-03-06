@@ -892,12 +892,15 @@ class TestKeen(unittest.TestCase):
         passed_func.return_value = -1
         self.assertEqual(-1, keenio.get_pct_passed_build_jobs("test/repo", "week"))
 
-    @mock.patch('keen.maximum')
-    def test_get_days_since_fail(self, failed_func):
+    def test_get_days_since_fail(self):
         """Test keenio.get_days_since_fail()"""
-        failed_func.return_value = (
-            (datetime.now() - timedelta(days=5)) - datetime(1970, 1, 1)
-        ).total_seconds()
+        patcher = mock.patch(
+            'keen.maximum',
+            return_value = (
+                (datetime.now() - timedelta(days=5)) - datetime(1970, 1, 1)
+            ).total_seconds()
+        )
+        failed_func = patcher.start()
 
         self.assertEqual(-1, keenio.get_days_since_fail())
         self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
@@ -906,6 +909,20 @@ class TestKeen(unittest.TestCase):
         keen.project_id = "1234abcd"
         keen.read_key = "4567abcd5678efgh"
         self.assertEqual(5, keenio.get_days_since_fail("test/repo"))
+
+        # when no failed builds are found, the query result is 0
+        failed_func.return_value = 0
+        self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
+        failed_func.return_value = -1
+        self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
+
+        # test raising ConnectionError
+        failed_func.side_effect = self.raise_conn_err
+        self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
+
+        # test raising KeenApiError (call with invalid read_key)
+        patcher.stop()
+        self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
 
     @mock.patch('keen.add_event')
     def test_keen_add_event(self, add_event_func):
