@@ -544,7 +544,7 @@ def get_days_since_fail(repo=None):
         logger.error("Error in keenio.get_days_since_fail() : " + str(msg))
         return -1
 
-    if failed_timestamp > 0:
+    if isinstance(failed_timestamp, (int, float))  and failed_timestamp > 0:
         dt_failed = datetime.fromtimestamp(failed_timestamp)
         dt_now = datetime.now()
         return math.floor((dt_now - dt_failed).total_seconds() / (3600 * 24))

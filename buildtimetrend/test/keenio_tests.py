@@ -906,6 +906,18 @@ class TestKeen(unittest.TestCase):
         keen.read_key = "4567abcd5678efgh"
         self.assertEqual(5, keenio.get_days_since_fail("test/repo"))
 
+        # repo doesn't exist
+        failed_func.return_value = None
+        self.assertEqual(-1, keenio.get_days_since_fail("test/no_repo"))
+
+        # unexpected return values (number expected)
+        failed_func.return_value = "some string"
+        self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
+        failed_func.return_value = {}
+        self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
+        failed_func.return_value = []
+        self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
+
         # when no failed builds are found, the query result is 0
         failed_func.return_value = 0
         self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
