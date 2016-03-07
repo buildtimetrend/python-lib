@@ -49,6 +49,9 @@ class TestKeen(unittest.TestCase):
         cls.settings = Settings()
         cls.project_info = cls.settings.get_project_info()
         cls.maxDiff = None
+        cls.test_api_error = {
+            "message": "test message", "error_code": "123"
+        }
 
         # copy Keen.io environment variables
         if "KEEN_PROJECT_ID" in os.environ:
@@ -548,7 +551,9 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, keenio.get_avg_buildtime("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
-        patcher.stop()
+        keen_avg_func.side_effect = keen.exceptions.KeenApiError(
+            self.test_api_error
+        )
         self.assertEqual(-1, keenio.get_avg_buildtime("test/repo"))
 
     def test_get_total_build_jobs(self):
@@ -599,7 +604,9 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, keenio.get_total_build_jobs("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
-        patcher.stop()
+        keen_count_func.side_effect = keen.exceptions.KeenApiError(
+            self.test_api_error
+        )
         self.assertEqual(-1, keenio.get_total_build_jobs("test/repo"))
 
     def test_get_passed_build_jobs(self):
@@ -666,7 +673,9 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, keenio.get_passed_build_jobs("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
-        patcher.stop()
+        keen_count_func.side_effect = keen.exceptions.KeenApiError(
+            self.test_api_error
+        )
         self.assertEqual(-1, keenio.get_passed_build_jobs("test/repo"))
 
     def test_get_total_builds(self):
@@ -717,7 +726,9 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, keenio.get_total_builds("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
-        patcher.stop()
+        keen_count_func.side_effect = keen.exceptions.KeenApiError(
+            self.test_api_error
+        )
         self.assertEqual(-1, keenio.get_total_builds("test/repo"))
 
     def test_get_latest_buildtime(self):
@@ -801,7 +812,9 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
-        patcher.stop()
+        keen_extract_func.side_effect = keen.exceptions.KeenApiError(
+            self.test_api_error
+        )
         self.assertEqual(-1, keenio.get_latest_buildtime("test/repo"))
 
     def test_get_all_projects(self):
@@ -850,7 +863,9 @@ class TestKeen(unittest.TestCase):
         self.assertListEqual([], keenio.get_all_projects())
 
         # test raising KeenApiError (call with invalid read_key)
-        patcher.stop()
+        keen_select_func.side_effect = keen.exceptions.KeenApiError(
+            self.test_api_error
+        )
         self.assertListEqual([], keenio.get_all_projects())
 
     # decorators are applied from the bottom up see
@@ -929,7 +944,9 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
 
         # test raising KeenApiError (call with invalid read_key)
-        patcher.stop()
+        failed_func.side_effect = keen.exceptions.KeenApiError(
+            self.test_api_error
+        )
         self.assertEqual(-1, keenio.get_days_since_fail("test/repo"))
 
     @mock.patch('keen.add_event')
