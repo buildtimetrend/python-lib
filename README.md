@@ -20,6 +20,7 @@ Visualise what's trending in your build process
 [![Buildtime trend](https://buildtimetrend-dev.herokuapp.com/badge/buildtimetrend/python-lib/latest)](https://buildtimetrend-dev.herokuapp.com/dashboard/buildtimetrend/python-lib/index.html)
 [![Total builds](https://buildtimetrend-dev.herokuapp.com/badge/buildtimetrend/python-lib/builds/month)](https://buildtimetrend-dev.herokuapp.com/dashboard/buildtimetrend/python-lib/index.html)
 [![Percentage passed build jobs](https://buildtimetrend-dev.herokuapp.com/badge/buildtimetrend/python-lib/passed/month)](https://buildtimetrend-dev.herokuapp.com/dashboard/buildtimetrend/python-lib/index.html)
+[![Days since last failed build job](https://buildtimetrend-dev.herokuapp.com/badge/buildtimetrend/python-lib/last_fail)](https://buildtimetrend-dev.herokuapp.com/dashboard/buildtimetrend/python-lib/index.html)
 
 [![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg)](http://stackshare.io/ruleant/buildtime-trend)
 [![status](https://sourcegraph.com/api/repos/github.com/buildtimetrend/python-lib/.badges/status.svg)](https://sourcegraph.com/github.com/buildtimetrend/python-lib)
