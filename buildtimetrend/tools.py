@@ -59,7 +59,7 @@ def split_timestamp(timestamp):
     """
     if not isinstance(timestamp, Number):
         raise TypeError(
-            "param timestamp should be a number %s" % type(timestamp)
+            "param timestamp should be a number {0!s}".format(type(timestamp))
         )
 
     ts_seconds = int(timestamp)
@@ -101,8 +101,8 @@ def split_datetime(timestamp_datetime):
     - timestamp_datetime : timestamp in datetime class format
     """
     if timestamp_datetime is None or type(timestamp_datetime) is not datetime:
-        raise TypeError("param %s should be a datetime instance" %
-                        'timestamp_datetime')
+        raise TypeError("param {0!s} should be a datetime instance".format(
+                        'timestamp_datetime'))
 
     timestamp_dict = {}
     timestamp_dict["isotimestamp"] = timestamp_datetime.isoformat()
@@ -218,7 +218,7 @@ def check_dict(param_dict, name=None, key_list=None):
         if name is None:
             return False
         else:
-            raise TypeError("param %s should be a dictionary" % name)
+            raise TypeError("param {0!s} should be a dictionary".format(name))
 
     # check if key_list is defined
     if key_list is None:
@@ -266,7 +266,7 @@ def is_list(param_list, name=None):
         if name is None:
             return False
         else:
-            raise TypeError("param %s should be a list" % name)
+            raise TypeError("param {0!s} should be a list".format(name))
 
     return True
 
@@ -287,7 +287,7 @@ def is_string(param, name=None):
         if name is None:
             return False
         else:
-            raise TypeError("param %s should be a string" % name)
+            raise TypeError("param {0!s} should be a string".format(name))
 
     return True
 
@@ -303,7 +303,7 @@ def check_num_string(num_string, name):
     """
     if num_string is None or not isinstance(num_string, (string_types, int)):
         raise TypeError(
-            "param %s should be a numerical string or an integer" % name
+            "param {0!s} should be a numerical string or an integer".format(name)
         )
 
     return int(num_string)
@@ -321,6 +321,6 @@ def get_repo_slug(repo_owner=None, repo_name=None):
     - repo_name : name of the Github repo, fe. `service`
     """
     if repo_owner is not None and repo_name is not None:
-        return "%s/%s" % (str(repo_owner), str(repo_name))
+        return "{0!s}/{1!s}".format(str(repo_owner), str(repo_name))
     else:
         return None

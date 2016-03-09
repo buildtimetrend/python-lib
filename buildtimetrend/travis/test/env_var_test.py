@@ -257,7 +257,7 @@ class TestTravisEnvVar(unittest.TestCase):
                     'os': expected_os,
                     'language': language['language'],
                     'language_version': expected_lang_version,
-                    'summary': "%s %s %s" % (
+                    'summary': "{0!s} {1!s} {2!s}".format(
                         language['language'],
                         expected_lang_version,
                         expected_os

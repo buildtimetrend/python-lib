@@ -31,7 +31,7 @@ import logging
 NAME = "buildtimetrend"
 VERSION = "0.4.dev10"
 SCHEMA_VERSION = "3"
-USER_AGENT = "%s/%s" % (NAME, VERSION)
+USER_AGENT = "{0!s}/{1!s}".format(NAME, VERSION)
 
 
 def get_logger():
@@ -50,11 +50,11 @@ def set_loglevel(loglevel):
     specify --log=DEBUG or --log=debug
     """
     if loglevel is None or type(loglevel) is not str:
-        raise TypeError("param %s should be a string" % 'loglevel')
+        raise TypeError("param {0!s} should be a string".format('loglevel'))
 
     numeric_level = getattr(logging, loglevel.upper(), None)
     if not isinstance(numeric_level, int):
-        raise ValueError('Invalid log level: %s' % loglevel)
+        raise ValueError('Invalid log level: {0!s}'.format(loglevel))
 
     # create handler
     log_handler = logging.StreamHandler()

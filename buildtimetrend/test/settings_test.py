@@ -274,8 +274,8 @@ class TestSettings(unittest.TestCase):
 
         argv = [
             scriptname,
-            "--ci=%s" % expected_ci,
-            "--repo=%s" % expected_project_name,
+            "--ci={0!s}".format(expected_ci),
+            "--repo={0!s}".format(expected_project_name),
             "argument"
         ]
 
@@ -485,12 +485,12 @@ class TestSettings(unittest.TestCase):
         argv = [
             scriptname,
             "--log=INFO",
-            "--ci=%s" % expected_ci,
-            "--build=%s" % expected_build,
-            "--job=%s" % expected_job,
-            "--branch=%s" % expected_branch,
-            "--repo=%s" % expected_project_name,
-            "--result=%s" % expected_result,
+            "--ci={0!s}".format(expected_ci),
+            "--build={0!s}".format(expected_build),
+            "--job={0!s}".format(expected_job),
+            "--branch={0!s}".format(expected_branch),
+            "--repo={0!s}".format(expected_project_name),
+            "--result={0!s}".format(expected_result),
             "--mode=keen",
             "--mode=native",
             "argument"
