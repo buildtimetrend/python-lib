@@ -583,7 +583,9 @@ class TestKeen(unittest.TestCase):
             }]
         })
 
-        self.assertEqual(234, keenio.get_total_build_jobs("test/repo2", "year"))
+        self.assertEqual(
+            234, keenio.get_total_build_jobs("test/repo2", "year")
+        )
 
         # test parameters passed to keen.average
         args, kwargs = keen_count_func.call_args
@@ -878,7 +880,9 @@ class TestKeen(unittest.TestCase):
     )
     def test_pct_passed_build_jobs(self, passed_func, total_func):
         """Test keenio.get_pct_passed_build_jobs()"""
-        self.assertEqual(75, keenio.get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(
+            75, keenio.get_pct_passed_build_jobs("test/repo", "week")
+        )
 
         # function was last called with argument "test/repo"
         args, kwargs = total_func.call_args
@@ -890,18 +894,28 @@ class TestKeen(unittest.TestCase):
         self.assertDictEqual(kwargs, {})
 
         total_func.return_value = 150
-        self.assertEqual(50, keenio.get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(
+            50, keenio.get_pct_passed_build_jobs("test/repo", "week")
+        )
 
         total_func.return_value = 0
-        self.assertEqual(-1, keenio.get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(
+            -1, keenio.get_pct_passed_build_jobs("test/repo", "week")
+        )
         total_func.return_value = -1
-        self.assertEqual(-1, keenio.get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(
+            -1, keenio.get_pct_passed_build_jobs("test/repo", "week")
+        )
 
         total_func.return_value = 100
         passed_func.return_value = 0
-        self.assertEqual(0, keenio.get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(
+            0, keenio.get_pct_passed_build_jobs("test/repo", "week")
+        )
         passed_func.return_value = -1
-        self.assertEqual(-1, keenio.get_pct_passed_build_jobs("test/repo", "week"))
+        self.assertEqual(
+            -1, keenio.get_pct_passed_build_jobs("test/repo", "week")
+        )
 
     def test_get_days_since_fail(self):
         """Test keenio.get_days_since_fail()"""
