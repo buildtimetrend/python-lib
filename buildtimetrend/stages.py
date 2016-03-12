@@ -151,7 +151,9 @@ class Stages(object):
         param stage Stage instance
         """
         if not isinstance(stage, Stage):
-            raise TypeError("param {0!s} should be a Stage instance".format(stage))
+            raise TypeError(
+                "param {0!s} should be a Stage instance".format(stage)
+            )
 
         # add stage
         self.stages.append(stage.to_dict())

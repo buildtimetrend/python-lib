@@ -302,9 +302,8 @@ def check_num_string(num_string, name):
     Return integer of numerical string, throws error when it isn't
     """
     if num_string is None or not isinstance(num_string, (string_types, int)):
-        raise TypeError(
-            "param {0!s} should be a numerical string or an integer".format(name)
-        )
+        err_msg = "param {0!s} should be a numerical string or an integer"
+        raise TypeError(err_msg.format(name))
 
     return int(num_string)
 
