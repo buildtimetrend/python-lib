@@ -62,7 +62,7 @@ class Trend(object):
             job_id = build_xml.get('job')
 
             if job_id is None and build_id is None:
-                build_name = "#{0:d}".format((index + 1))
+                build_name = "#{0:d}".format(index + 1)
             elif job_id is not None:
                 build_name = job_id
             else:
