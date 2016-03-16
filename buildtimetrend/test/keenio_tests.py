@@ -921,7 +921,7 @@ class TestKeen(unittest.TestCase):
         """Test keenio.get_days_since_fail()"""
         patcher = mock.patch(
             'keen.maximum',
-            return_value = (
+            return_value=(
                 (datetime.now() - timedelta(days=5)) - datetime(1970, 1, 1)
             ).total_seconds()
         )
