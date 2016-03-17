@@ -398,9 +398,9 @@ class TestTravis(unittest.TestCase):
         self.assertDictEqual(
             {"repo": expected_project_name, "build": expected_build},
             process_notification_payload(
-                u'{"number": "%s", "repository": '
-                u'{"owner_name": "%s", "name": "%s"}}'
-                % (expected_build, expected_owner, expected_repo)
+                u'{{"number": "{0!s}", "repository": '
+                u'{{"owner_name": "{1!s}", "name": "{2!s}"}}}}'.format(
+                expected_build, expected_owner, expected_repo)
             )
         )
 
