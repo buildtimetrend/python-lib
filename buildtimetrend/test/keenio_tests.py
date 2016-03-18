@@ -22,7 +22,6 @@
 
 from buildtimetrend import keenio
 from buildtimetrend.settings import Settings
-from buildtimetrend.tools import is_string
 from buildtimetrend.buildjob import BuildJob
 import os
 import keen
@@ -191,9 +190,11 @@ class TestKeen(unittest.TestCase):
         )
 
         # list with two dict as element
-        self.assertListEqual([
-            {"test": "value", "buildtime_trend": self.project_info},
-            {"test2": "value2", "buildtime_trend": self.project_info}],
+        self.assertListEqual(
+            [
+                {"test": "value", "buildtime_trend": self.project_info},
+                {"test2": "value2", "buildtime_trend": self.project_info}
+            ],
             keenio.add_project_info_list([
                 {"test": "value"},
                 {"test2": "value2"}])
@@ -318,17 +319,21 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(None, keenio.get_repo_filter())
         self.assertEqual(None, keenio.get_repo_filter(None))
 
-        self.assertDictEqual({
-            "property_name": "buildtime_trend.project_name",
-            "operator": "eq",
-            "property_value": "repo/name"},
+        self.assertDictEqual(
+            {
+                "property_name": "buildtime_trend.project_name",
+                "operator": "eq",
+                "property_value": "repo/name"
+            },
             keenio.get_repo_filter("repo/name")
         )
 
-        self.assertDictEqual({
-            "property_name": "buildtime_trend.project_name",
-            "operator": "eq",
-            "property_value": "1234"},
+        self.assertDictEqual(
+            {
+                "property_name": "buildtime_trend.project_name",
+                "operator": "eq",
+                "property_value": "1234"
+            },
             keenio.get_repo_filter(1234)
         )
 
