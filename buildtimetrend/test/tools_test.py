@@ -218,21 +218,27 @@ class TestTools(unittest.TestCase):
 
         # function should return false if both files
         # were modified at the same time
-        self.assertFalse(file_is_newer(
-            constants.TEST_SAMPLE_TIMESTAMP_FILE,
-            constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.assertFalse(
+            file_is_newer(
+                constants.TEST_SAMPLE_TIMESTAMP_FILE,
+                constants.TEST_SAMPLE_TIMESTAMP_FILE
+            )
         )
 
         # file 1 is newer than file 2
-        self.assertTrue(file_is_newer(
-            NEWER_FILE,
-            constants.TEST_SAMPLE_TIMESTAMP_FILE)
+        self.assertTrue(
+            file_is_newer(
+                NEWER_FILE,
+                constants.TEST_SAMPLE_TIMESTAMP_FILE
+            )
         )
 
         # file 1 is older than file 2
-        self.assertFalse(file_is_newer(
-            constants.TEST_SAMPLE_TIMESTAMP_FILE,
-            NEWER_FILE)
+        self.assertFalse(
+            file_is_newer(
+                constants.TEST_SAMPLE_TIMESTAMP_FILE,
+                NEWER_FILE
+            )
         )
 
     def test_is_dict(self):
