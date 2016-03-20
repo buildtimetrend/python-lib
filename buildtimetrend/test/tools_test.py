@@ -21,7 +21,6 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from builtins import str
-import buildtimetrend
 from buildtimetrend.tools import format_timestamp
 from buildtimetrend.tools import split_timestamp
 from buildtimetrend.tools import split_isotimestamp
@@ -40,7 +39,6 @@ from buildtimetrend.settings import Settings
 from datetime import datetime
 from decimal import Decimal
 from dateutil.tz import tzutc
-import os
 import unittest
 from buildtimetrend.test import constants
 
