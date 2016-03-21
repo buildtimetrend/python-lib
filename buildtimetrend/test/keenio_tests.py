@@ -20,17 +20,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import os
+import copy
+import unittest
+from datetime import datetime, timedelta
+import keen
+import requests
+import mock
 from buildtimetrend import keenio
 from buildtimetrend.settings import Settings
 from buildtimetrend.buildjob import BuildJob
-import os
-import keen
-import requests
-import copy
-import unittest
-import mock
 from buildtimetrend.test import constants
-from datetime import datetime, timedelta
 
 
 class TestKeen(unittest.TestCase):

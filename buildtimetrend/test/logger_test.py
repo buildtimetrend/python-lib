@@ -20,11 +20,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import buildtimetrend
-from buildtimetrend import set_loglevel
 import unittest
 import logging
-
+import buildtimetrend
+from buildtimetrend import set_loglevel
 
 class TestLogger(unittest.TestCase):
 

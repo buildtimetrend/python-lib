@@ -20,8 +20,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from buildtimetrend.collection import Collection
 import unittest
+from buildtimetrend.collection import Collection
 
 
 class TestCollection(unittest.TestCase):
