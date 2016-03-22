@@ -100,7 +100,7 @@ def split_datetime(timestamp_datetime):
 
     - timestamp_datetime : timestamp in datetime class format
     """
-    if timestamp_datetime is None or type(timestamp_datetime) is not datetime:
+    if not isinstance(timestamp_datetime, datetime):
         raise TypeError(
             "param {0!s} should be a datetime instance".format(
                 'timestamp_datetime'
