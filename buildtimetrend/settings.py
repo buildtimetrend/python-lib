@@ -353,6 +353,6 @@ class Settings(object):
         """Redirect access to get singleton properties."""
         return getattr(self.instance, name)
 
-    def __setattr__(self, name):
+    def __setattr__(self, name, value):
         """Redirect access to set singleton properties."""
-        return setattr(self.instance, name)
+        return setattr(self.instance, name, value)
