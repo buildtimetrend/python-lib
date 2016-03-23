@@ -23,14 +23,14 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
-from lxml import etree
-from buildtimetrend import logger
-from buildtimetrend.tools import check_file
 from collections import OrderedDict
+from lxml import etree
 import matplotlib
 # Force matplotlib to not use any Xwindow backend.
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
+from buildtimetrend import logger
+from buildtimetrend.tools import check_file
 
 
 class Trend(object):

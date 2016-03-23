@@ -25,11 +25,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 import csv
+from lxml import etree
 from buildtimetrend import logger
 from buildtimetrend.tools import split_timestamp
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import nano2sec
-from lxml import etree
 
 
 class Stages(object):

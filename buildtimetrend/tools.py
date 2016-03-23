@@ -23,15 +23,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division
 from builtins import str
-from six import string_types
 import os
-from buildtimetrend import logger
 from datetime import datetime
-from dateutil.parser import parse
-from dateutil.tz import tzutc
 from decimal import Decimal
 from decimal import getcontext
 from numbers import Number
+from six import string_types
+from dateutil.parser import parse
+from dateutil.tz import tzutc
+from buildtimetrend import logger
 
 
 def format_timestamp(timestamp):
