@@ -602,7 +602,7 @@ def get_all_projects():
         logger.error("Error in keenio.get_all_projects() : " + str(msg))
         return []
 
-    if type(result) is list:
+    if is_list(result):
         return result
 
     return []
