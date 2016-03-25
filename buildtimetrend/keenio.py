@@ -24,12 +24,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 from __future__ import division
 from builtins import str
 import os
-from buildtimetrend import logger
 import copy
 import keen
-import requests
-from datetime import datetime
 import math
+from datetime import datetime
+import requests
+from buildtimetrend import logger
 from keen import scoped_keys
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_dict
