@@ -669,6 +669,37 @@ class TestTravisData(unittest.TestCase):
             self.travis_data.build_jobs["50398739"].properties.get_items()
         )
 
+    def test_no_pull_request_data(self):
+        """Test TravisData.process_pull_request_data() with no data"""
+        self.travis_data.current_build_data = {"test_value": "empty"}
+
+        self.travis_data.process_pull_request_data()
+
+        # retrieve pull request data
+        self.assertDictEqual(
+            {'is_pull_request': False},
+            self.travis_data.current_job.get_property("pull_request")
+        )
+
+    def test_pull_request_data(self):
+        """Test TravisData.process_pull_request_data() with valid data"""
+        self.travis_data.current_build_data = {
+            "pull_request": True,
+            "pull_request_title": "Test message",
+            "pull_request_number": 345
+        }
+
+        self.travis_data.process_pull_request_data()
+
+        # retrieve start time
+        self.assertDictEqual(
+            {
+                'is_pull_request': True,
+                'title': "Test message",
+                'number': 345
+            },
+            self.travis_data.current_job.get_property("pull_request")       )
+
     def test_get_build_matrix_no_job_data(self):
         """Test TravisData.set_build_matrix without job data"""
         self.travis_data.set_build_matrix(json.loads('{}'))
