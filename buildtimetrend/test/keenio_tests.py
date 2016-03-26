@@ -105,10 +105,10 @@ class TestKeen(unittest.TestCase):
         self.assertEqual(None, keen.read_key)
         self.assertEqual(None, keen.master_key)
 
-        self.assertFalse(keenio.keen_has_project_id())
-        self.assertFalse(keenio.keen_has_master_key())
-        self.assertFalse(keenio.keen_has_write_key())
-        self.assertFalse(keenio.keen_has_read_key())
+        self.assertFalse(keenio.has_project_id())
+        self.assertFalse(keenio.has_master_key())
+        self.assertFalse(keenio.has_write_key())
+        self.assertFalse(keenio.has_read_key())
         self.assertFalse(keenio.keen_is_writable())
         self.assertFalse(keenio.keen_is_readable())
 
@@ -200,31 +200,31 @@ class TestKeen(unittest.TestCase):
                 {"test2": "value2"}])
         )
 
-    def test_keen_has_project_id_keen_var(self):
-        """Test keenio.keen_has_project_id() with keen vars"""
+    def test_has_project_id_keen_var(self):
+        """Test keenio.has_project_id() with keen vars"""
         keen.project_id = "1234abcd"
 
-        self.assertTrue(keenio.keen_has_project_id())
+        self.assertTrue(keenio.has_project_id())
 
-    def test_keen_has_project_id_env_var(self):
-        """Test keenio.keen_has_project_id() with env vars"""
+    def test_has_project_id_env_var(self):
+        """Test keenio.has_project_id() with env vars"""
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
         keen.project_id = "1234abcd"
 
-        self.assertTrue(keenio.keen_has_project_id())
+        self.assertTrue(keenio.has_project_id())
 
-    def test_keen_has_master_key_keen_var(self):
-        """Test keenio.keen_has_master_key() with keen vars"""
+    def test_has_master_key_keen_var(self):
+        """Test keenio.has_master_key() with keen vars"""
         keen.master_key = "abcd1234"
         keen.project_id = "1234abcd"
 
-        self.assertTrue(keenio.keen_has_master_key())
+        self.assertTrue(keenio.has_master_key())
 
-    def test_keen_has_master_key_env_vars(self):
-        """Test keenio.keen_has_master_key() with env vars"""
+    def test_has_master_key_env_vars(self):
+        """Test keenio.has_master_key() with env vars"""
         os.environ["KEEN_MASTER_KEY"] = "abcd1234"
 
-        self.assertTrue(keenio.keen_has_master_key())
+        self.assertTrue(keenio.has_master_key())
 
     def test_keen_is_writable_keen_var(self):
         """Test keenio.keen_is_writable() with keen vars"""
@@ -248,29 +248,29 @@ class TestKeen(unittest.TestCase):
         os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
         self.assertTrue(keenio.keen_is_writable())
 
-    def test_keen_has_write_key_keen_var(self):
-        """Test keenio.keen_has_write_key() with keen vars"""
+    def test_has_write_key_keen_var(self):
+        """Test keenio.has_write_key() with keen vars"""
         # set write_key
         keen.write_key = "4567abcd5678efgh"
-        self.assertTrue(keenio.keen_has_write_key())
+        self.assertTrue(keenio.has_write_key())
 
-    def test_keen_has_write_key_env_vars(self):
-        """Test keenio.keen_has_write_key() with env vars"""
+    def test_has_write_key_env_vars(self):
+        """Test keenio.has_write_key() with env vars"""
         # set write_key
         os.environ["KEEN_WRITE_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(keenio.keen_has_write_key())
+        self.assertTrue(keenio.has_write_key())
 
-    def test_keen_has_read_key_keen_var(self):
-        """Test keenio.keen_has_read_key() with keen vars"""
+    def test_has_read_key_keen_var(self):
+        """Test keenio.has_read_key() with keen vars"""
         # set read_key
         keen.read_key = "4567abcd5678efgh"
-        self.assertTrue(keenio.keen_has_read_key())
+        self.assertTrue(keenio.has_read_key())
 
-    def test_keen_has_read_key_env_vars(self):
-        """Test keenio.keen_has_read_key() with env vars"""
+    def test_has_read_key_env_vars(self):
+        """Test keenio.has_read_key() with env vars"""
         # set read_key
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(keenio.keen_has_read_key())
+        self.assertTrue(keenio.has_read_key())
 
     def test_keen_is_readable_keen_var(self):
         """Test keenio.keen_is_readable() with keen vars"""

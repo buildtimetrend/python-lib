@@ -45,7 +45,7 @@ TIME_INTERVALS = {
 KEEN_PROJECT_INFO_NAME = "buildtime_trend"
 
 
-def keen_has_project_id():
+def has_project_id():
     """Check if Keen.io project ID is set."""
     if "KEEN_PROJECT_ID" in os.environ or keen.project_id is not None:
         return True
@@ -54,7 +54,7 @@ def keen_has_project_id():
     return False
 
 
-def keen_has_master_key():
+def has_master_key():
     """Check if Keen.io Master API key is set."""
     if "KEEN_MASTER_KEY" in os.environ or keen.master_key is not None:
         return True
@@ -63,7 +63,7 @@ def keen_has_master_key():
     return False
 
 
-def keen_has_write_key():
+def has_write_key():
     """Check if Keen.io Write Key is set."""
     if "KEEN_WRITE_KEY" in os.environ or keen.write_key is not None:
         return True
@@ -72,7 +72,7 @@ def keen_has_write_key():
     return False
 
 
-def keen_has_read_key():
+def has_read_key():
     """Check if Keen.io Read key is set."""
     if "KEEN_READ_KEY" in os.environ or keen.read_key is not None:
         return True
@@ -83,7 +83,7 @@ def keen_has_read_key():
 
 def keen_is_writable():
     """Check if login keys for Keen IO API are set, to allow writing."""
-    if keen_has_project_id() and keen_has_write_key():
+    if has_project_id() and has_write_key():
         return True
 
     logger.warning("Keen.io Write Key is not set")
@@ -92,7 +92,7 @@ def keen_is_writable():
 
 def keen_is_readable():
     """Check if login keys for Keen IO API are set, to allow reading."""
-    if keen_has_project_id() and keen_has_read_key():
+    if has_project_id() and has_read_key():
         return True
 
     logger.warning("Keen.io Read Key is not set")
@@ -105,7 +105,7 @@ def generate_read_key(repo):
 
     Param repo : github repository slug (fe. buildtimetrend/python-lib)
     """
-    if not keen_has_master_key():
+    if not has_master_key():
         logger.warning("Keen.io Read Key was not created,"
                        " keen.master_key is not defined.")
         return None
@@ -125,7 +125,7 @@ def generate_read_key(repo):
 
 def generate_write_key():
     """Create scoped key for write access to Keen.io database."""
-    if not keen_has_master_key():
+    if not has_master_key():
         logger.warning("Keen.io Write Key was not created,"
                        " keen.master_key is not defined.")
         return None
@@ -283,7 +283,7 @@ def get_dashboard_keen_config(repo):
     # initialise config settings
     keen_config = {}
 
-    if not keen_has_project_id() or not keen_has_master_key():
+    if not has_project_id() or not has_master_key():
         logger.warning("Keen.io related config settings could not be created,"
                        " keen.project_id and/or keen.master_key"
                        " are not defined.")
