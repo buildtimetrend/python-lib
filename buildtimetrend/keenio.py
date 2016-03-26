@@ -30,6 +30,7 @@ import math
 from datetime import datetime
 import requests
 from buildtimetrend import logger
+from keen import scoped_keys
 from buildtimetrend.settings import Settings
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import is_list
@@ -120,7 +121,7 @@ def generate_read_key(repo):
         privileges["filters"] = [get_repo_filter(repo)]
 
     logger.info("Keen.io Read Key is created for %s", repo)
-    return keen.scoped_keys.encrypt(master_key, privileges)
+    return scoped_keys.encrypt(master_key, privileges)
 
 
 def generate_write_key():
@@ -137,7 +138,7 @@ def generate_write_key():
     }
 
     logger.info("Keen.io Write Key is created")
-    return keen.scoped_keys.encrypt(master_key, privileges)
+    return scoped_keys.encrypt(master_key, privileges)
 
 
 def send_build_data(buildjob, detail=None):
