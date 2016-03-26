@@ -109,8 +109,8 @@ class TestKeen(unittest.TestCase):
         self.assertFalse(keenio.has_master_key())
         self.assertFalse(keenio.has_write_key())
         self.assertFalse(keenio.has_read_key())
-        self.assertFalse(keenio.keen_is_writable())
-        self.assertFalse(keenio.keen_is_readable())
+        self.assertFalse(keenio.is_writable())
+        self.assertFalse(keenio.is_readable())
 
     def test_add_project_info_dict(self):
         """Test keenio.add_project_info_dict()"""
@@ -226,27 +226,27 @@ class TestKeen(unittest.TestCase):
 
         self.assertTrue(keenio.has_master_key())
 
-    def test_keen_is_writable_keen_var(self):
-        """Test keenio.keen_is_writable() with keen vars"""
+    def test_is_writable_keen_var(self):
+        """Test keenio.is_writable() with keen vars"""
         # only set project id, check should fail
         keen.project_id = "1234abcd"
 
-        self.assertFalse(keenio.keen_is_writable())
+        self.assertFalse(keenio.is_writable())
 
         # set write_key
         keen.write_key = "1234abcd5678efgh"
 
-        self.assertTrue(keenio.keen_is_writable())
+        self.assertTrue(keenio.is_writable())
 
-    def test_keen_is_writable_env_vars(self):
-        """Test keenio.keen_is_writable() with env vars"""
+    def test_is_writable_env_vars(self):
+        """Test keenio.is_writable() with env vars"""
         # only set project id, check should fail
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
-        self.assertFalse(keenio.keen_is_writable())
+        self.assertFalse(keenio.is_writable())
 
         # set write_key
         os.environ["KEEN_WRITE_KEY"] = "1234abcd5678efgh"
-        self.assertTrue(keenio.keen_is_writable())
+        self.assertTrue(keenio.is_writable())
 
     def test_has_write_key_keen_var(self):
         """Test keenio.has_write_key() with keen vars"""
@@ -272,25 +272,25 @@ class TestKeen(unittest.TestCase):
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
         self.assertTrue(keenio.has_read_key())
 
-    def test_keen_is_readable_keen_var(self):
-        """Test keenio.keen_is_readable() with keen vars"""
+    def test_is_readable_keen_var(self):
+        """Test keenio.is_readable() with keen vars"""
         # only set project id, check should fail
         keen.project_id = "1234abcd"
-        self.assertFalse(keenio.keen_is_readable())
+        self.assertFalse(keenio.is_readable())
 
         # set read_key
         keen.read_key = "4567abcd5678efgh"
-        self.assertTrue(keenio.keen_is_readable())
+        self.assertTrue(keenio.is_readable())
 
-    def test_keen_is_readable_env_vars(self):
-        """Test keenio.keen_is_readable() with env vars"""
+    def test_is_readable_env_vars(self):
+        """Test keenio.is_readable() with env vars"""
         # only set project id, check should fail
         os.environ["KEEN_PROJECT_ID"] = "1234abcd"
-        self.assertFalse(keenio.keen_is_readable())
+        self.assertFalse(keenio.is_readable())
 
         # set read_key
         os.environ["KEEN_READ_KEY"] = "4567abcd5678efgh"
-        self.assertTrue(keenio.keen_is_readable())
+        self.assertTrue(keenio.is_readable())
 
     def test_generate_read_key(self):
         """Test keenio.generate_read_key()"""

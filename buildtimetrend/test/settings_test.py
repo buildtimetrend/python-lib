@@ -22,10 +22,9 @@
 
 from buildtimetrend.settings import Settings
 from buildtimetrend import logger
+from buildtimetrend import keenio
 from buildtimetrend import set_loglevel
 from buildtimetrend.collection import Collection
-from buildtimetrend.keenio import keen_is_writable
-from buildtimetrend.keenio import keen_is_readable
 import buildtimetrend
 import os
 import keen
@@ -233,8 +232,8 @@ class TestSettings(unittest.TestCase):
         self.assertEqual("12345678", keen.write_key)
         self.assertEqual("abcdefg", keen.read_key)
         self.assertEqual("7890abcd", keen.master_key)
-        self.assertTrue(keen_is_readable())
-        self.assertTrue(keen_is_writable())
+        self.assertTrue(keenio.is_readable())
+        self.assertTrue(keenio.is_writable())
 
     def test_load_multi_build_settings(self):
         """Test multi_import setting"""
@@ -320,8 +319,8 @@ class TestSettings(unittest.TestCase):
         self.assertEqual("12345678", keen.write_key)
         self.assertEqual("abcdefg", keen.read_key)
         self.assertEqual("7890abcd", keen.master_key)
-        self.assertTrue(keen_is_readable())
-        self.assertTrue(keen_is_writable())
+        self.assertTrue(keenio.is_readable())
+        self.assertTrue(keenio.is_writable())
 
         del os.environ["BUILD_TREND_CONFIGFILE"]
 

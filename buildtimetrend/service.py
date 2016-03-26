@@ -25,8 +25,8 @@ from __future__ import division
 import cgi
 from buildtimetrend import logger
 from buildtimetrend.settings import Settings
+from buildtimetrend import keenio
 from buildtimetrend.keenio import has_build_id
-from buildtimetrend.keenio import keen_is_writable
 
 
 def is_repo_allowed(repo):
@@ -159,7 +159,7 @@ def validate_task_parameters(repo=None, build=None):
     Check parameters (repo and build)
     Returns error message, None when all parameters are fine.
     """
-    if not keen_is_writable():
+    if not keenio.is_writable():
         return "Keen IO write key not set, no data was sent"
 
     try:

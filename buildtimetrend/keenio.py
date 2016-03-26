@@ -81,7 +81,7 @@ def has_read_key():
     return False
 
 
-def keen_is_writable():
+def is_writable():
     """Check if login keys for Keen IO API are set, to allow writing."""
     if has_project_id() and has_write_key():
         return True
@@ -90,7 +90,7 @@ def keen_is_writable():
     return False
 
 
-def keen_is_readable():
+def is_readable():
     """Check if login keys for Keen IO API are set, to allow reading."""
     if has_project_id() and has_read_key():
         return True
@@ -154,7 +154,7 @@ def send_build_data(buildjob, detail=None):
 
     data_detail = Settings().get_value_or_setting("data_detail", detail)
 
-    if keen_is_writable():
+    if is_writable():
         logger.info(
             "Sending client build job data to Keen.io (data detail: %s)",
             data_detail
@@ -181,7 +181,7 @@ def send_build_data_service(buildjob, detail=None):
 
     data_detail = Settings().get_value_or_setting("data_detail", detail)
 
-    if keen_is_writable():
+    if is_writable():
         logger.info(
             "Sending service build job data to Keen.io (data detail: %s)",
             data_detail
@@ -318,7 +318,7 @@ def get_avg_buildtime(repo=None, interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     """
-    if repo is None or not keen_is_readable():
+    if repo is None or not is_readable():
         return -1
 
     interval_data = check_time_interval(interval)
@@ -348,7 +348,7 @@ def get_total_build_jobs(repo=None, interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     """
-    if repo is None or not keen_is_readable():
+    if repo is None or not is_readable():
         return -1
 
     interval_data = check_time_interval(interval)
@@ -378,7 +378,7 @@ def get_passed_build_jobs(repo=None, interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     """
-    if repo is None or not keen_is_readable():
+    if repo is None or not is_readable():
         return -1
 
     interval_data = check_time_interval(interval)
@@ -460,7 +460,7 @@ def get_total_builds(repo=None, interval=None):
     - interval : timeframe, possible values : 'week', 'month', 'year',
                  anything else defaults to 'week'
     """
-    if repo is None or not keen_is_readable():
+    if repo is None or not is_readable():
         return -1
 
     interval_data = check_time_interval(interval)
@@ -488,7 +488,7 @@ def get_latest_buildtime(repo=None):
     Parameters :
     - repo : repo name (fe. buildtimetrend/python-lib)
     """
-    if repo is None or not keen_is_readable():
+    if repo is None or not is_readable():
         return -1
 
     try:
@@ -520,7 +520,7 @@ def get_days_since_fail(repo=None):
     Parameters :
     - repo : repo name (fe. buildtimetrend/python-lib)
     """
-    if repo is None or not keen_is_readable():
+    if repo is None or not is_readable():
         return -1
 
     try:
@@ -562,7 +562,7 @@ def has_build_id(repo=None, build_id=None):
     if repo is None or build_id is None:
         logger.error("Repo or build_id is not set")
         raise ValueError("Repo or build_id is not set")
-    if not keen_is_readable():
+    if not is_readable():
         raise SystemError("Keen.io Project ID or API Read Key is not set")
 
     try:
@@ -585,7 +585,7 @@ def has_build_id(repo=None, build_id=None):
 
 def get_all_projects():
     """Query Keen.io database and retrieve a list of all projects."""
-    if not keen_is_readable():
+    if not is_readable():
         return []
 
     try:
