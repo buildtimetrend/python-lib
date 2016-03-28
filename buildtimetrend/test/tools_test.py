@@ -27,7 +27,6 @@ from buildtimetrend.tools import check_file
 from buildtimetrend.tools import file_is_newer
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import keys_in_dict
-from buildtimetrend.tools import is_string
 from buildtimetrend.tools import check_num_string
 from buildtimetrend.tools import get_repo_slug
 from buildtimetrend.settings import Settings
@@ -256,16 +255,16 @@ class TestTools(unittest.TestCase):
         self.assertRaises(TypeError, check_dict)
 
         # error is thrown when called with an invalid parameter
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) as exc_msg:
             check_dict(None, "name")
         self.assertEqual(
-            "param name should be a dictionary", str(cm.exception)
+            "param name should be a dictionary", str(exc_msg.exception)
         )
 
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) as exc_msg:
             check_dict("string", "string_name")
         self.assertEqual(
-            "param string_name should be a dictionary", str(cm.exception)
+            "param string_name should be a dictionary", str(exc_msg.exception)
         )
 
         # should return true if parameter is a dictionary
@@ -322,14 +321,14 @@ class TestTools(unittest.TestCase):
         self.assertRaises(TypeError, tools.is_list)
 
         # error is thrown when called with an invalid parameter
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) as exc_msg:
             tools.is_list(None, "name")
-        self.assertEqual("param name should be a list", str(cm.exception))
+        self.assertEqual("param name should be a list", str(exc_msg.exception))
 
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) as exc_msg:
             tools.is_list("string", "string_name")
         self.assertEqual(
-            "param string_name should be a list", str(cm.exception)
+            "param string_name should be a list", str(exc_msg.exception)
         )
 
         # should return false if parameter is not a list (and name is not set)
@@ -344,44 +343,44 @@ class TestTools(unittest.TestCase):
 
     def test_is_string(self):
         """Test is_string()"""
-        self.assertRaises(TypeError, is_string)
+        self.assertRaises(TypeError, tools.is_string)
 
         # error is thrown when called with an invalid parameter
-        with self.assertRaises(TypeError) as cm:
-            is_string(None, "name")
+        with self.assertRaises(TypeError) as exc_msg:
+            tools.is_string(None, "name")
         self.assertEqual(
             "param name should be a string",
-            str(cm.exception)
+            str(exc_msg.exception)
         )
 
         # error is thrown when called with an invalid parameter
-        with self.assertRaises(TypeError) as cm:
-            is_string(123, "name")
+        with self.assertRaises(TypeError) as exc_msg:
+            tools.is_string(123, "name")
         self.assertEqual(
             "param name should be a string",
-            str(cm.exception)
+            str(exc_msg.exception)
         )
 
         # error is thrown when called with an invalid parameter
-        with self.assertRaises(TypeError) as cm:
-            is_string({}, "name")
+        with self.assertRaises(TypeError) as exc_msg:
+            tools.is_string({}, "name")
         self.assertEqual(
             "param name should be a string",
-            str(cm.exception)
+            str(exc_msg.exception)
         )
 
         # error is thrown when called with an invalid parameter
-        with self.assertRaises(TypeError) as cm:
-            is_string([], "name")
+        with self.assertRaises(TypeError) as exc_msg:
+            tools.is_string([], "name")
         self.assertEqual(
             "param name should be a string",
-            str(cm.exception)
+            str(exc_msg.exception)
         )
 
-        self.assertFalse(is_string(None))
-        self.assertFalse(is_string(None, None))
+        self.assertFalse(tools.is_string(None))
+        self.assertFalse(tools.is_string(None, None))
 
-        self.assertTrue(is_string("string", "name"))
+        self.assertTrue(tools.is_string("string", "name"))
 
     def test_num_string(self):
         """Test check_num_string()"""
@@ -391,11 +390,11 @@ class TestTools(unittest.TestCase):
         self.assertRaises(ValueError, check_num_string, "2.2", "name")
 
         # error is thrown when called with an invalid parameter
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(TypeError) as exc_msg:
             check_num_string(None, "name")
         self.assertEqual(
             "param name should be a numerical string or an integer",
-            str(cm.exception)
+            str(exc_msg.exception)
         )
 
         self.assertEqual(0, check_num_string(0, "name"))
