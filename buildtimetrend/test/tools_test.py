@@ -248,6 +248,9 @@ class TestTools(unittest.TestCase):
 
         self.assertFalse(is_dict(None))
         self.assertFalse(is_dict("not_a_dict"))
+        self.assertFalse(is_dict(4567))
+        self.assertFalse(is_dict(("string", "test")))
+        self.assertFalse(is_dict(["string", "test"]))
         self.assertTrue(is_dict({"string": "test"}))
 
     def test_check_dict(self):
@@ -335,6 +338,9 @@ class TestTools(unittest.TestCase):
         # should return false if parameter is not a list (and name is not set)
         self.assertFalse(is_list(None))
         self.assertFalse(is_list("string"))
+        self.assertFalse(is_list(4567))
+        self.assertFalse(is_list(("string", "test")))
+        self.assertFalse(is_list({"string": "test"}))
 
         # should return true if parameter is a list
         self.assertTrue(is_list(["string", "test"], "name"))
