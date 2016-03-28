@@ -35,6 +35,8 @@ v0.4 (not yet released)
   * keenio.keen_has_read_key() -> keenio.has_read_key()
   * keenio.keen_is_readable() -> keenio.is_readable()
   * keenio.keen_is_writable() -> keenio.is_writable()
+  * keenio.keen_add_event() -> keenio.add_event()
+  * keenio.keen_add_events() -> keenio.add_events()
 - issue #38 : add keenio.get_days_since_fail()
 
 v0.3 (released on 17Nov2015)

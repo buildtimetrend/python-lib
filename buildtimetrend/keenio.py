@@ -161,11 +161,11 @@ def send_build_data(buildjob, detail=None):
             data_detail
         )
         # store build job data
-        keen_add_event("build_jobs", {"job": buildjob.to_dict()})
+        add_event("build_jobs", {"job": buildjob.to_dict()})
 
         # store build stages
         if data_detail in ("full", "extended"):
-            keen_add_events("build_stages", buildjob.stages_to_list())
+            add_events("build_stages", buildjob.stages_to_list())
 
 
 def send_build_data_service(buildjob, detail=None):
@@ -187,12 +187,12 @@ def send_build_data_service(buildjob, detail=None):
             "Sending service build job data to Keen.io (data detail: %s)",
             data_detail
         )
-        keen_add_event("build_jobs", {"job": buildjob.to_dict()})
+        add_event("build_jobs", {"job": buildjob.to_dict()})
         if data_detail in ("full", "extended"):
-            keen_add_events("build_substages", buildjob.stages_to_list())
+            add_events("build_substages", buildjob.stages_to_list())
 
 
-def keen_add_event(event_collection, payload):
+def add_event(event_collection, payload):
     """
     Wrapper for keen.add_event(), adds project info.
 
@@ -210,7 +210,7 @@ def keen_add_event(event_collection, payload):
     )
 
 
-def keen_add_events(event_collection, payload):
+def add_events(event_collection, payload):
     """
     Wrapper for keen.add_events(), adds project info to each event.
 
