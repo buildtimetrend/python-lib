@@ -26,9 +26,6 @@ import re
 import json
 from buildtimetrend import logger
 from buildtimetrend import tools
-from buildtimetrend.tools import check_file
-from buildtimetrend.tools import check_dict
-from buildtimetrend.tools import is_string
 from buildtimetrend.buildjob import BuildJob
 from buildtimetrend.collection import Collection
 from buildtimetrend.travis.connector import TravisOrgConnector
@@ -112,7 +109,7 @@ class TravisData(object):
         Parameters:
         - command : cli command
         """
-        if not is_string(command):
+        if not tools.is_string(command):
             return ""
 
         if len(self.current_build_data) > 0 and \
@@ -356,7 +353,7 @@ class TravisData(object):
         Returns false if file doesn't exist, true if it was read successfully.
         """
         # load timestamps file
-        if not check_file(filename):
+        if not tools.check_file(filename):
             return False
 
         # read timestamps, calculate stage duration
@@ -440,7 +437,7 @@ class TravisData(object):
         # check if parameter worker_tags is a dictionary and
         # if it contains all required tags
         tag_list = list({'hostname', 'os'})
-        if check_dict(worker_tags, "worker_tags", tag_list):
+        if tools.check_dict(worker_tags, "worker_tags", tag_list):
             logger.debug("Worker tags : %s", worker_tags)
             self.current_job.add_property("worker", worker_tags)
 
@@ -472,14 +469,14 @@ class TravisData(object):
 
     def get_started_at(self):
         """Retrieve timestamp when build was started."""
-        if check_dict(self.current_build_data, key_list=["started_at"]):
+        if tools.check_dict(self.current_build_data, key_list=["started_at"]):
             return self.current_build_data['started_at']
         else:
             return None
 
     def get_finished_at(self):
         """Retrieve timestamp when build finished."""
-        if check_dict(self.current_build_data, key_list=["finished_at"]):
+        if tools.check_dict(self.current_build_data, key_list=["finished_at"]):
             return self.current_build_data['finished_at']
         else:
             return None
