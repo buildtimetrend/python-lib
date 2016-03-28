@@ -21,10 +21,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from builtins import str
-from buildtimetrend.tools import format_timestamp
-from buildtimetrend.tools import split_timestamp
-from buildtimetrend.tools import split_isotimestamp
-from buildtimetrend.tools import split_datetime
+from buildtimetrend import tools
 from buildtimetrend.tools import nano2sec
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import file_is_newer
@@ -56,97 +53,99 @@ class TestTools(unittest.TestCase):
     def test_format_timestamp(self):
         """Test format_timestamp()"""
         # test 0 timestamp (epoch)
-        self.assertEqual("1970-01-01T00:00:00", format_timestamp(0))
+        self.assertEqual("1970-01-01T00:00:00", tools.format_timestamp(0))
 
         # test timestamp
-        self.assertEqual("2014-07-09T12:38:33", format_timestamp(1404909513))
+        self.assertEqual(
+            "2014-07-09T12:38:33", tools.format_timestamp(1404909513)
+        )
 
     def test_split_timestamp(self):
         """Test split_timestamp()"""
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, split_timestamp)
+        self.assertRaises(TypeError, tools.split_timestamp)
 
         # error is thrown when called with an invalid parameter
-        self.assertRaises(TypeError, split_timestamp, None)
-        self.assertRaises(TypeError, split_timestamp, "string")
+        self.assertRaises(TypeError, tools.split_timestamp, None)
+        self.assertRaises(TypeError, tools.split_timestamp, "string")
 
         # test 0 timestamp (epoch)
         self.assertDictEqual(
-            constants.SPLIT_TIMESTAMP_EPOCH, split_timestamp(0)
+            constants.SPLIT_TIMESTAMP_EPOCH, tools.split_timestamp(0)
         )
 
         # test timestamp
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_TESTDATE,
-            split_timestamp(nano2sec(constants.TIMESTAMP_NANO_TESTDATE))
+            tools.split_timestamp(nano2sec(constants.TIMESTAMP_NANO_TESTDATE))
         )
 
         # test timestamp
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_STARTED,
-            split_timestamp(constants.TIMESTAMP_STARTED)
+            tools.split_timestamp(constants.TIMESTAMP_STARTED)
         )
 
         # test timestamp
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_FINISHED,
-            split_timestamp(nano2sec(constants.TIMESTAMP_NANO_FINISHED))
+            tools.split_timestamp(nano2sec(constants.TIMESTAMP_NANO_FINISHED))
         )
 
     def test_split_isotimestamp(self):
         """Test split_isotimestamp()"""
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, split_isotimestamp)
+        self.assertRaises(TypeError, tools.split_isotimestamp)
 
         # error is thrown when called with an invalid parameter
-        self.assertRaises(TypeError, split_isotimestamp, None)
-        self.assertRaises(TypeError, split_isotimestamp, 1234)
-        self.assertRaises(ValueError, split_isotimestamp, "string")
+        self.assertRaises(TypeError, tools.split_isotimestamp, None)
+        self.assertRaises(TypeError, tools.split_isotimestamp, 1234)
+        self.assertRaises(ValueError, tools.split_isotimestamp, "string")
 
         # test 0 timestamp (epoch) in UTC
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH,
-            split_isotimestamp("1970-01-01T00:00:00Z")
+            tools.split_isotimestamp("1970-01-01T00:00:00Z")
         )
 
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH,
-            split_isotimestamp("1970-01-01T00:00:00Z")
+            tools.split_isotimestamp("1970-01-01T00:00:00Z")
         )
 
         # test 0 timestamp (epoch), without timezone
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH_NOTZ,
-            split_isotimestamp("1970-01-01T00:00:00")
+            tools.split_isotimestamp("1970-01-01T00:00:00")
         )
 
         # test timestamp
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_TESTDATE,
-            split_isotimestamp(constants.ISOTIMESTAMP_TESTDATE)
+            tools.split_isotimestamp(constants.ISOTIMESTAMP_TESTDATE)
         )
 
     def test_split_datetime(self):
         """Test split_datetime()"""
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, split_datetime)
+        self.assertRaises(TypeError, tools.split_datetime)
 
         # error is thrown when called with an invalid parameter
-        self.assertRaises(TypeError, split_datetime, None)
-        self.assertRaises(TypeError, split_datetime, "string")
+        self.assertRaises(TypeError, tools.split_datetime, None)
+        self.assertRaises(TypeError, tools.split_datetime, "string")
 
         # test 0 timestamp (epoch) in UTC
         epoch_utc_dt = datetime.utcfromtimestamp(0).replace(tzinfo=tzutc())
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH,
-            split_datetime(epoch_utc_dt)
+            tools.split_datetime(epoch_utc_dt)
         )
 
         # test 0 timestamp (epoch), without timezone
         epoch_dt = datetime.utcfromtimestamp(0)
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_EPOCH_NOTZ,
-            split_datetime(epoch_dt)
+            tools.split_datetime(epoch_dt)
         )
 
         # test timestamp
@@ -155,7 +154,7 @@ class TestTools(unittest.TestCase):
 
         self.assertDictEqual(
             constants.SPLIT_TIMESTAMP_TESTDATE,
-            split_datetime(timestamp_dt)
+            tools.split_datetime(timestamp_dt)
         )
 
     def test_nano2sec(self):
