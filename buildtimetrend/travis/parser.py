@@ -25,6 +25,7 @@ from builtins import object
 import re
 import json
 from buildtimetrend import logger
+from buildtimetrend import tools
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import check_dict
 from buildtimetrend.tools import is_string
@@ -126,7 +127,7 @@ class TravisData(object):
         # check if build_config collection is empty
         if build_config:
             for stage_name, commands in build_config.items():
-                if type(commands) is list and command in commands:
+                if tools.is_list(commands) and command in commands:
                     substage_number = commands.index(command) + 1
                     substage_name = "{stage}.{substage:d}".format(
                         stage=stage_name, substage=substage_number
