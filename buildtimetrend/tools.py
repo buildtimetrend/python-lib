@@ -265,7 +265,7 @@ def is_list(param_list, name=None):
     - param_list: parameter that should be a list
     - name: name of the parameter
     """
-    if param_list is None or type(param_list) is not list:
+    if not isinstance(param_list, list):
         if name is None:
             return False
         else:
