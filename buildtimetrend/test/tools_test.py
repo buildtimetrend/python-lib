@@ -26,9 +26,7 @@ from buildtimetrend.tools import nano2sec
 from buildtimetrend.tools import check_file
 from buildtimetrend.tools import file_is_newer
 from buildtimetrend.tools import check_dict
-from buildtimetrend.tools import is_dict
 from buildtimetrend.tools import keys_in_dict
-from buildtimetrend.tools import is_list
 from buildtimetrend.tools import is_string
 from buildtimetrend.tools import check_num_string
 from buildtimetrend.tools import get_repo_slug
@@ -243,14 +241,14 @@ class TestTools(unittest.TestCase):
     def test_is_dict(self):
         """Test is_dict()"""
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, is_dict)
+        self.assertRaises(TypeError, tools.is_dict)
 
-        self.assertFalse(is_dict(None))
-        self.assertFalse(is_dict("not_a_dict"))
-        self.assertFalse(is_dict(4567))
-        self.assertFalse(is_dict(("string", "test")))
-        self.assertFalse(is_dict(["string", "test"]))
-        self.assertTrue(is_dict({"string": "test"}))
+        self.assertFalse(tools.is_dict(None))
+        self.assertFalse(tools.is_dict("not_a_dict"))
+        self.assertFalse(tools.is_dict(4567))
+        self.assertFalse(tools.is_dict(("string", "test")))
+        self.assertFalse(tools.is_dict(["string", "test"]))
+        self.assertTrue(tools.is_dict({"string": "test"}))
 
     def test_check_dict(self):
         """Test check_dict()"""
@@ -321,28 +319,28 @@ class TestTools(unittest.TestCase):
     def test_is_list(self):
         """Test is_list()"""
         # error is thrown when called without parameters
-        self.assertRaises(TypeError, is_list)
+        self.assertRaises(TypeError, tools.is_list)
 
         # error is thrown when called with an invalid parameter
         with self.assertRaises(TypeError) as cm:
-            is_list(None, "name")
+            tools.is_list(None, "name")
         self.assertEqual("param name should be a list", str(cm.exception))
 
         with self.assertRaises(TypeError) as cm:
-            is_list("string", "string_name")
+            tools.is_list("string", "string_name")
         self.assertEqual(
             "param string_name should be a list", str(cm.exception)
         )
 
         # should return false if parameter is not a list (and name is not set)
-        self.assertFalse(is_list(None))
-        self.assertFalse(is_list("string"))
-        self.assertFalse(is_list(4567))
-        self.assertFalse(is_list(("string", "test")))
-        self.assertFalse(is_list({"string": "test"}))
+        self.assertFalse(tools.is_list(None))
+        self.assertFalse(tools.is_list("string"))
+        self.assertFalse(tools.is_list(4567))
+        self.assertFalse(tools.is_list(("string", "test")))
+        self.assertFalse(tools.is_list({"string": "test"}))
 
         # should return true if parameter is a list
-        self.assertTrue(is_list(["string", "test"], "name"))
+        self.assertTrue(tools.is_list(["string", "test"], "name"))
 
     def test_is_string(self):
         """Test is_string()"""
