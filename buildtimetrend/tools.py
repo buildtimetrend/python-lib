@@ -196,7 +196,7 @@ def is_dict(param_dict):
     - param_dict: parameter that should be a dictonary
     Return true if parameter is a dictionary.
     """
-    return param_dict is not None and type(param_dict) is dict
+    return isinstance(param_dict, dict)
 
 
 def check_dict(param_dict, name=None, key_list=None):
