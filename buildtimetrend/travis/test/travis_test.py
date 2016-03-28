@@ -400,7 +400,8 @@ class TestTravis(unittest.TestCase):
             process_notification_payload(
                 u'{{"number": "{0!s}", "repository": '
                 u'{{"owner_name": "{1!s}", "name": "{2!s}"}}}}'.format(
-                expected_build, expected_owner, expected_repo)
+                    expected_build, expected_owner, expected_repo
+                )
             )
         )
 
@@ -698,7 +699,8 @@ class TestTravisData(unittest.TestCase):
                 'title': "Test message",
                 'number': 345
             },
-            self.travis_data.current_job.get_property("pull_request")       )
+            self.travis_data.current_job.get_property("pull_request")
+        )
 
     def test_get_build_matrix_no_job_data(self):
         """Test TravisData.set_build_matrix without job data"""

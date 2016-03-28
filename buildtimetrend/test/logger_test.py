@@ -25,6 +25,7 @@ import logging
 import buildtimetrend
 from buildtimetrend import set_loglevel
 
+
 class TestLogger(unittest.TestCase):
 
     """Unit tests for logger related functions"""
