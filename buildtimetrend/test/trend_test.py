@@ -37,7 +37,8 @@ class TestTrend(unittest.TestCase):
         """Initialise test environment before each test."""
         self.trend = Trend()
 
-    def tearDown(self):
+    @staticmethod
+    def tearDown():
         """Clean up after tests"""
         if (tools.check_file(TEST_TREND_FILE)):
             os.remove(TEST_TREND_FILE)
