@@ -317,7 +317,8 @@ class TestTravis(unittest.TestCase):
 
     """Unit tests for Travis CI related functions and classes"""
 
-    def setUp(self):
+    @staticmethod
+    def setUp():
         """Initialise test environment before each test."""
         # reinit settings singleton
         Settings().__init__()
