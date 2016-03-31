@@ -41,7 +41,8 @@ class TestDashboard(unittest.TestCase):
         cls.project_info = Settings().get_project_info()
         cls.maxDiff = None
 
-    def tearDown(self):
+    @staticmethod
+    def tearDown():
         """Clean up after tests"""
         if (check_file(constants.DASHBOARD_TEST_CONFIG_FILE)):
             os.remove(constants.DASHBOARD_TEST_CONFIG_FILE)

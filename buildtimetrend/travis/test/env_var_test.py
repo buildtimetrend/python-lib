@@ -31,7 +31,8 @@ class TestTravisEnvVar(unittest.TestCase):
 
     """Unit tests for Travis CI environment variable related functions"""
 
-    def setUp(self):
+    @staticmethod
+    def setUp():
         """Initialise test environment before each test."""
         # reinit settings singleton
         Settings().__init__()
