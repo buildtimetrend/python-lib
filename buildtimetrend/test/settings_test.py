@@ -20,17 +20,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import os
+import logging
+import unittest
+import keen
 from buildtimetrend.settings import Settings
 from buildtimetrend import logger
 from buildtimetrend import keenio
 from buildtimetrend import set_loglevel
-from buildtimetrend.collection import Collection
 import buildtimetrend
-import os
-import keen
-import unittest
 from buildtimetrend.test import constants
-import logging
 
 
 DEFAULT_SETTINGS = {
@@ -111,12 +110,14 @@ class TestSettings(unittest.TestCase):
         self.assertEqual("client_name", self.settings.get_setting("client"))
         self.assertEqual("0.1", self.settings.get_setting("client_version"))
 
-        self.assertDictEqual({
-            "lib_version": buildtimetrend.VERSION,
-            "schema_version": buildtimetrend.SCHEMA_VERSION,
-            "client": 'client_name',
-            "client_version": '0.1',
-            "project_name": self.project_name},
+        self.assertDictEqual(
+            {
+                "lib_version": buildtimetrend.VERSION,
+                "schema_version": buildtimetrend.SCHEMA_VERSION,
+                "client": 'client_name',
+                "client_version": '0.1',
+                "project_name": self.project_name
+            },
             self.settings.get_project_info()
         )
 
