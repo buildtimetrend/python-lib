@@ -577,3 +577,4 @@ class TestSettings(unittest.TestCase):
             config_dict["buildtimetrend"],
             DEFAULT_SETTINGS
         )
+        self.assertDictEqual(config_dict["keen"], {})
