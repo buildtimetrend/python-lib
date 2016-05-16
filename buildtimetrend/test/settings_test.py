@@ -39,6 +39,10 @@ DEFAULT_SETTINGS = {
     "loglevel": "WARNING",
     "data_detail": "full",
     "repo_data_detail": {},
+    "task_queue": {
+        "backend": "",
+        "broker_url": ""
+    },
     "multi_import": {
         "max_builds": 100,
         "delay": 3
@@ -565,3 +569,11 @@ class TestSettings(unittest.TestCase):
         self.assertFalse(self.settings.get_setting("mode_keen"))
         self.settings.set_mode("keen")
         self.assertTrue(self.settings.get_setting("mode_keen"))
+
+    def test_load_config_ini_file(self):
+        """Test loading config file using objconfig."""
+        config_dict = self.settings.load_config_ini_file("test_file")
+        self.assertDictEqual(
+            config_dict["buildtimetrend"],
+            DEFAULT_SETTINGS
+        )

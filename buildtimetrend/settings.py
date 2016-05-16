@@ -28,6 +28,8 @@ import getopt
 from collections import OrderedDict
 import yaml
 import keen
+from configobj import ConfigObj
+from validate import Validator
 import buildtimetrend
 from buildtimetrend.collection import Collection
 from buildtimetrend.tools import check_file
@@ -82,6 +84,13 @@ class Settings(object):
             # set level detail of build job data storage
             self.add_setting("data_detail", "full")
             self.add_setting("repo_data_detail", {})
+            self.add_setting(
+                "task_queue",
+                {
+                    "backend": "",
+                    "broker_url": ""
+                },
+            )
 
         def set_project_name(self, name):
             """
@@ -181,6 +190,32 @@ class Settings(object):
                     if "master_key" in config["keen"]:
                         keen.master_key = config["keen"]["master_key"]
                 return True
+
+        def load_config_ini_file(self, config_file="config.ini"):
+            """
+            Load settings from a config file, using objconfig.
+
+            Parameters :
+            - config_file : name of the config file
+            """
+            spec_filename = "buildtimetrend/config_spec.ini"
+
+            configspec = ConfigObj(
+                spec_filename,
+                interpolation=False,
+                list_values=False,
+                _inspec=True
+            )
+
+            config = ConfigObj(config_file, configspec=configspec)
+
+            if not config.validate(Validator()):
+                logger.warning(
+                    "Error validating config file %s",
+                    config_file
+                )
+
+            return config
 
         def get_project_info(self):
             """Get project info as a dictonary."""
