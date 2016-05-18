@@ -191,7 +191,7 @@ class Settings(object):
                         keen.master_key = config["keen"]["master_key"]
                 return True
 
-        def load_config_ini_file(self, config_file="config.ini"):
+        def load_config_ini_file(config_file="config.ini"):
             """
             Load settings from a config file, using objconfig.
 
