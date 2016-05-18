@@ -1,5 +1,5 @@
 nose
 mock
 coverage
-funcsigs
+funcsigs==0.4
 formencode
