@@ -1,3 +1,5 @@
+# Project discontinued, will be archived!
+
 Buildtime Trend Python library
 ==============================
 
